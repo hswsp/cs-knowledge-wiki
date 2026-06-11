@@ -9,7 +9,9 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "@esbuild/darwin-x64": "^0.27.7",
     "vitepress": "^2.0.0-alpha.17"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
