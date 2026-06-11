@@ -12,7 +12,7 @@ date: 2022-11-06
 
 我当时在后厨显示系统团队，该系统属于订单的下游业务。用户点完菜下单后，订单系统会通过发`kafka`消息给我们系统，系统读取消息后，做业务逻辑处理，持久化订单和菜品数据，然后展示到划菜客户端。这样厨师就知道哪个订单要做哪些菜，有些菜做好了，就可以通过该系统出菜。系统自动通知服务员上菜，如果服务员上完菜，修改菜品上菜状态，用户就知道哪些菜已经上了，哪些还没有上。这个系统可以大大提高后厨到用户的效率。
 
-![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/640.png)
+![Image](https://images.spumn.eu.cc/blog/4cc6bfb9c55f3f8c.png)
 
 事实证明，这一切的关键是消息中间件：`kafka`，如果它有问题，将会直接影响到后厨显示系统的功能。
 
@@ -36,11 +36,11 @@ date: 2022-11-06
 
 我们都知道`kafka`的`topic`是无序的，但是一个`topic`包含多个`partition`，**每个`partition`内部是有序的**。
 
-![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/641.png)
+![Image](https://images.spumn.eu.cc/blog/320aeb29e132c78a.png)
 
 如此一来，思路就变得清晰了：只要保证生产者写消息时，**按照一定的规则写到同一个`partition`**，**不同的消费者读不同的`partition`的消息**，就能保证生产和消费者消息的顺序。
 
-我们刚开始就是这么做的，同一个`商户编号`的消息写到同一个`partition`，`topic`中创建了`4`个`partition`，然后部署了`4`个消费者节点，构成`消费者组`，一个`partition`对应一个消费者节点。从理论上说，这套方案是能够保证消息顺序的。![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/642.png)
+我们刚开始就是这么做的，同一个`商户编号`的消息写到同一个`partition`，`topic`中创建了`4`个`partition`，然后部署了`4`个消费者节点，构成`消费者组`，一个`partition`对应一个消费者节点。从理论上说，这套方案是能够保证消息顺序的。![Image](https://images.spumn.eu.cc/blog/5a97f7d44bb02fc6.png)
 
 一切规划得看似“天衣无缝”，我们就这样”顺利“上线了。
 
@@ -56,7 +56,7 @@ date: 2022-11-06
 
 为什么这么说？
 
-假设订单系统发了：”下单“、”支付“、”完成“ 三条消息。![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/643.png)
+假设订单系统发了：”下单“、”支付“、”完成“ 三条消息。![Image](https://images.spumn.eu.cc/blog/a1921f59e12a2856.png)
 
 而”下单“消息由于网络原因我们系统处理失败了，而后面的两条消息的数据是无法入库的，因为只有”下单“消息的数据才是完整的数据，其他类型的消息只会更新状态。
 
@@ -99,7 +99,7 @@ date: 2022-11-06
 
 ## 1. 消息体过大
 
-虽说`kafka`号称支持`百万级的TPS`，但从`producer`发送消息到`broker`需要一次网络`IO`，`broker`写数据到磁盘需要一次磁盘`IO`（写操作），`consumer`从`broker`获取消息先经过一次磁盘`IO`（读操作），再经过一次网络`IO`。![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/644.png)
+虽说`kafka`号称支持`百万级的TPS`，但从`producer`发送消息到`broker`需要一次网络`IO`，`broker`写数据到磁盘需要一次磁盘`IO`（写操作），`consumer`从`broker`获取消息先经过一次磁盘`IO`（读操作），再经过一次网络`IO`。![Image](https://images.spumn.eu.cc/blog/b6d15e9519b061e0.png)
 
 一次简单的消息从生产到消费过程，需要经过`2次网络IO`和`2次磁盘IO`。如果消息体过大，势必会增加IO的耗时，进而影响kafka生产和消费的速度。消费者速度太慢的结果，就会出现消息积压情况。
 
@@ -117,7 +117,7 @@ date: 2022-11-06
 2. 后厨显示系统消费消息后，通过id调用订单系统的订单详情查询接口获取数据。
 3. 后厨显示系统判断数据库中是否有该订单的数据，如果没有则入库，有则更新。
 
-![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/645.png)
+![Image](https://images.spumn.eu.cc/blog/d52c188decf9cc06.png)
 
 果然这样调整之后，消息积压问题很长一段时间都没再出现。
 
@@ -129,7 +129,7 @@ date: 2022-11-06
 
 但这次有点诡异，不是所有`partition`上的消息都有积压，而是只有一个。
 
-![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/646.png)
+![Image](https://images.spumn.eu.cc/blog/a5e5f8172fe9c120.png)
 
 刚开始，我以为是消费那个`partition`消息的节点出了什么问题导致的。但是经过排查，没有发现任何异常。
 
@@ -145,7 +145,7 @@ date: 2022-11-06
 
 调整后按`订单号`路由到不同的`partition`，同一个订单号的消息，每次到发到同一个`partition`。
 
-![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/647.png)
+![Image](https://images.spumn.eu.cc/blog/4eba35b83285274c.png)
 
 调整后，消息积压的问题又有很长一段时间都没有再出现。我们的商户数量在这段时间，增长的非常快，越来越多了。
 
@@ -187,7 +187,7 @@ date: 2022-11-06
 
 幸好，线程数是可以通过`zookeeper`动态调整的，我把核心线程数调成了`8`个，核心线程数改成了`10`个。
 
-后面，运维把订单服务挂的2个节点重启后恢复正常了，以防万一，再多加了2个节点。为了确保订单服务不会出现问题，就保持目前的消费速度，后厨显示系统的消息积压问题，1小时候后也恢复正常了。![Image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/648.png)
+后面，运维把订单服务挂的2个节点重启后恢复正常了，以防万一，再多加了2个节点。为了确保订单服务不会出现问题，就保持目前的消费速度，后厨显示系统的消息积压问题，1小时候后也恢复正常了。![Image](https://images.spumn.eu.cc/blog/64ade364e4b3d984.png)
 
 后来，我们开了一次复盘会，得出的结论是：
 

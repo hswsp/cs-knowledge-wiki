@@ -14,7 +14,7 @@ date: 2023-02-05
 
 了解概念之后，逻辑卷是如何产生的就很清晰了：物理磁盘或者磁盘分区转换为物理卷，一个或多个物理卷聚集形成一个或多个卷组，而逻辑卷就是从某个卷组里面抽象出来的一块磁盘空间。具体架构如下：
 
-[![clipboard](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/823295-20200513231716132-1122001253.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231715436-764135301.png)
+[![clipboard](https://images.spumn.eu.cc/blog/d177afb5cfcca41c.png)](https://images.spumn.eu.cc/blog/175a0301ebfe0e1e.png)
 
 # **为什么要使用逻辑卷**
 
@@ -97,7 +97,7 @@ I/O size (minimum/optimal): 512 bytes / 512 bytes
 
 磁盘分区之后，磁盘id为83，如果要使用逻辑卷管理，需要将id改为8e，才能创建物理卷。
 
-[![image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/823295-20200513231717020-1298850562.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231716700-400843767.png)
+[![image](https://images.spumn.eu.cc/blog/ff02ffb7dd77b3e3.png)](https://images.spumn.eu.cc/blog/fbf7a335f2fb335b.png)
 
 分区1修改id过程如下：
 
@@ -151,7 +151,7 @@ Calling ioctl() to re-read partition table.
 
 按照上面的过程，修改分区2，最终结果如下：
 
-[![image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/823295-20200513231717728-1202598541.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231717369-997595744.png)
+[![image](https://images.spumn.eu.cc/blog/d8d21665948a9a8e.png)](https://images.spumn.eu.cc/blog/2b13f049655b8cec.png)
 
 接着进行创建物理卷(PV)即可
 
@@ -240,7 +240,7 @@ vgextend VG_NAME device1 ... devicen
 
 最终结果如下，发现PV数量和VG容量都发生了变化
 
-[![image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/823295-20200513231718445-783339278.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231718058-1985120739.png)
+[![image](https://images.spumn.eu.cc/blog/f5cab7f0552b7a53.png)](https://images.spumn.eu.cc/blog/be1f50100ebe2ed3.png)
 
 # **创建、扩容逻辑卷**
 
@@ -359,7 +359,7 @@ resize2fs device lv_device
 
 扩容前文件磁盘大小如下：
 
-[![image](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231719174-88647049.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231718812-1860533846.png)
+[![image](https://images.spumn.eu.cc/blog/4a39961695c2a831.png)](https://images.spumn.eu.cc/blog/b4fa60bf0b037636.png)
 
 进行扩容操作：
 
@@ -372,7 +372,7 @@ resize2fs device lv_device
 
 之后查看磁盘大小，未发生改变：
 
-[![image](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231719884-1598548425.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231719520-1867843347.png)
+[![image](https://images.spumn.eu.cc/blog/8119ed3889cf97f8.png)](https://images.spumn.eu.cc/blog/5738677b51eac72c.png)
 
 调整文件系统的大小：
 
@@ -387,4 +387,4 @@ The filesystem on /dev/VG_TEST/lv_test is now 390144 blocks long.
 
 确认磁盘大小已经发生了改变
 
-[![image](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/823295-20200513231720555-1199395255.png)](https://img2020.cnblogs.com/blog/823295/202005/823295-20200513231720209-2045634523.png)
+[![image](https://images.spumn.eu.cc/blog/a3fc3052b7ff65a1.png)](https://images.spumn.eu.cc/blog/52166ca1c8eb7572.png)

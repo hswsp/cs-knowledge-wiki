@@ -184,4 +184,4 @@ User [name=shiyu, sex=man, age=22]
 
 接收请求时json转实体类用的`@JsonProperty`，返回响应时实体类转json返回时用`@JSONField`
 
-![在这里插入图片描述](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/20210429104717140.png)
+![在这里插入图片描述](https://images.spumn.eu.cc/blog/6a63af36e756eb50.png)

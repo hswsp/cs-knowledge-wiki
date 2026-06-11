@@ -10,7 +10,7 @@ date: 2022-09-17
 
 Consensus algorithms are vital in large-scale, fault-tolerant systems because they enable a set of distributed/replicated machines or servers to work as a coherent group and agree on system state, even in the presence of failures or outages.
 
-![Consensus algorithms are important in distributed computing systems.](https://cdn.ttgtmedia.com/rms/onlineImages/networking-distributed_computing.jpg)
+![Consensus algorithms are important in distributed computing systems.](https://images.spumn.eu.cc/blog/efa89eaaba449135.jpg)
 
 There are basically two types of consensus algorithms: 
 
@@ -21,7 +21,7 @@ There are basically two types of consensus algorithms:
 
 The Byzantine Generals Problem is a game theory problem, which describes the difficulty decentralized parties have in arriving at consensus without relying on a trusted central party. Only decentralized systems face the Byzantine Generals problem, as they have no reliable source of information and no way of verifying the information they receive from other members of the network. The problem was explained aptly in [a paper by LESLIE LAMPORT, ROBERT SHOSTAK, and MARSHALL PEASE at Microsoft Research in 1982](https://lamport.azurewebsites.net/pubs/byz.pdf).
 
-![byzantine-generals-problem](https://river.com/learn/images/articles/byzantine-generals-problem.png)
+![byzantine-generals-problem](https://images.spumn.eu.cc/blog/d8d69fa9876d6514.png)
 
 So what I want to emphasize is that the Byzantine Generals problem describes the most difficult and complex distributed fault scenario. In addition to faulty behavior, there is also a scenario of malicious behavior. In the presence of malicious node behavior (such as in the blockchain technology of digital currencies), we must apply **Byzantine Fault Tolerance**.
 
@@ -86,7 +86,7 @@ type ApplyMsg
 
 this lab has also provided a diagram of Raft interactions that can help clarify how your Raft code interacts with the layers on top of it:
 
-![lab2 Raft interactions](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft-server.png)
+![lab2 Raft interactions](https://images.spumn.eu.cc/blog/b8e1574ba8f925ad.png)
 
 Combining the interactions diagram and test code, we can see how our Raft code works as a whole:
 
@@ -172,7 +172,7 @@ const (
 
 To represent the state of all the servers, we define `raftState`  to maintain various state variables: 
 
-![lab2 Raft State](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft1.png)
+![lab2 Raft State](https://images.spumn.eu.cc/blog/81dea4be7b05eb8c.png)
 
 ```go
 // raftState is used to maintain various state variables
@@ -284,7 +284,7 @@ type Raft struct {
 
 One important things to define PRC struct is that go RPC sends only struct fields whose names start with **capital letters**. **Sub-structures must also have capitalized field names** (e.g. fields of log records in an array). The `labgob` package will warn you about this; don't ignore the warnings.
 
-![lab2 Raft AppendEntries](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft2.png)
+![lab2 Raft AppendEntries](https://images.spumn.eu.cc/blog/877799e0e2f9e5af.png)
 
 ```go
 // AppendEntriesArgs is the command used to append entries to the
@@ -323,7 +323,7 @@ Another important things here is that, for all of the data structure, **attachin
 
 ## RequestVote RPC
 
-![lab2 Raft RequestVote](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft3.png)
+![lab2 Raft RequestVote](https://images.spumn.eu.cc/blog/6376ac7e7ed3c25d.png)
 
 ```go
 // RequestVoteArgs
@@ -366,7 +366,7 @@ func (arg RequestVoteReply) String() string {
 
 In the Raft paper, Snapshots are split into chunks for transmission; this gives the follower a sign of life with each chunk, so it can reset its election timer.
 
-![lab2 Raft InstallSnapshot](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft5.png)
+![lab2 Raft InstallSnapshot](https://images.spumn.eu.cc/blog/7b3d26ae33ae40d4.png)
 
 But here, for simplicity, we don't split Snapshots into several chunks. So we don't use the variable `offset` and `done` in this lab.
 
@@ -473,7 +473,7 @@ func (rf *Raft) ticker() {
 
 What is left is to code all the behaviors of different states for one server. Figure 2 describes the algorithm more precisely:
 
-![lab2 Raft Rules for Servers](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft4.png)
+![lab2 Raft Rules for Servers](https://images.spumn.eu.cc/blog/26e4f24b9894c205.png)
 
 # Leader Election
 
@@ -829,7 +829,7 @@ The *if*  here is crucial. **If the follower has all the entries the leader sent
 
 Figure 8 use a time sequence showing why a leader cannot determine commitment using log entries from older terms. To eliminate problems like the one in Figure 8, **Raft never commits log entries from previous terms by counting replicas**. Only log entries from the leader’s current term are committed by counting replicas.
 
-![lab2 Raft Figure 8](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/fig8.png)
+![lab2 Raft Figure 8](https://images.spumn.eu.cc/blog/926b82318334e37e.png)
 
 
 
@@ -1069,7 +1069,7 @@ However, it's now possible for a **follower to fall so far behind that the leade
 
 In Raft paper, Figure 12 can be a good illustration of the role of snapshots:
 
-![lab2 Raft Figure 12](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft12.png)
+![lab2 Raft Figure 12](https://images.spumn.eu.cc/blog/d3300671a6a40cbf.png)
 
 Simple explanation: 
 
@@ -1079,7 +1079,7 @@ Then we access the last stored information as the *snapshot* (`persister.SaveSta
 
 We can start with the diagram of Raft interactions as mentioned above:
 
-![lab2 Raft interactions](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/raft-server.png)
+![lab2 Raft interactions](https://images.spumn.eu.cc/blog/b8e1574ba8f925ad.png)
 
 ## Functions to Implement
 

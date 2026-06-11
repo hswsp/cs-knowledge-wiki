@@ -295,7 +295,7 @@ ldd bin/main
 
 得到的输出如下：
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/20210205163633237.png)
+![img](https://images.spumn.eu.cc/blog/06eb2e36d5a0a9b9.png)
 
 可以清楚的看到 main 确实链接了共享库 libhello，而且链接的是动态库 libhello.so.1
 
@@ -309,7 +309,7 @@ TARGET_LINK_LIBRARIES(main /root/cpp_test/backup/cmake_test/t4/thirdPath/libhell
 
 重新构建后再来看一下 main 的链接情况 ldd src/main
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/2021020516514337.png)
+![img](https://images.spumn.eu.cc/blog/21f103f3a058711a.png)
 
 说明，main 确实链接到了静态库 libhello.a
 

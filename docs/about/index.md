@@ -11,11 +11,11 @@ description: "My name is Champagne. I'm a full-time full stack engineer and part
 
 我唯一锲而不舍，愿意以自己的生命去努力的，只不过是保守我个人的心怀意念，在我有生之日，做一个真诚的人，不放弃对生活的热爱和执着，在有限的时空里，过无限广大的日子。
 
-![Hamilton's equations](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/Hamilton’s%20Equations1.png)
+![Hamilton's equations](https://images.spumn.eu.cc/blog/dc3345122c8f1c9f.png)
 
-![Hamilton's equations](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/Hamilton’s%20Equations.png)
+![Hamilton's equations](https://images.spumn.eu.cc/blog/a6c52d3dfcfdd0ee.png)
 
-![Euler-Lagrange equation](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST/img/Lagrange’s%20Equation.png)
+![Euler-Lagrange equation](https://images.spumn.eu.cc/blog/c7825070dd5c5b26.png)
 
 昨夜西风凋碧树，独上高楼，望尽天涯路。
 

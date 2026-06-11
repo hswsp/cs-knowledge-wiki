@@ -15,7 +15,7 @@ date: 2023-01-20
 
 如下图所示：
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/6035627-cc0a26ddd001d80d.webp)
+![img](https://images.spumn.eu.cc/blog/61a5d2b31e547e1c.webp)
 
 现在我们完成了dev分支的开发测试工作，需要把dev分支合并回master分支。
 
@@ -28,7 +28,7 @@ $ git checkout master
 $ git merge dev
 ```
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/6035627-97f36fc78c9a99f6.webp)
+![img](https://images.spumn.eu.cc/blog/d38941152494db75.webp)
 
 此时**还会生产一个`merge commit (D4')`，这个`merge commit`不包含任何代码改动**，而包含在dev分支上的几个commit列表(`D1`, `D2`和`D3`)。查看git的提交历史(git log)可以看到所有的这些提交历史记录。
 
@@ -41,7 +41,7 @@ $ git checkout master
 $ git merge --squash dev
 ```
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/6035627-ce670a59578a3cdf.webp)
+![img](https://images.spumn.eu.cc/blog/4201df9cfd7373c9.webp)
 
 在这个例子中，我们把D1，D2和D3的改动合并成了一个D。
 
@@ -78,7 +78,7 @@ pick <D3> Message for commit #3
 
 rebase之后的状态变为：
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/6035627-fa1836ff4bfb6a27.webp)
+![img](https://images.spumn.eu.cc/blog/3fc9b461356a1cd3.webp)
 
 D1'是D1和D2的合并。
 
@@ -86,6 +86,6 @@ D1'是D1和D2的合并。
 
 
 
-![img](https://cdn.jsdelivr.net/gh/hswsp/IMAGE_HOST@main/img/6035627-59db55375cfa040f.webp)
+![img](https://images.spumn.eu.cc/blog/4756456d61f19f54.webp)
 
 注意：在执行rebase的时候可能会出现冲突的问题，此时需要手工解决冲突的问题，然后执行(`git add`)命令；**所有冲突解决完之后，这时不需要执行(`git commit`)命令，而是运行(`git rebase --continue`)命令，一直到rebase完成**；如果中途想放弃rebase操作，可以运行(`git rebase --abort`)命令回到rebase之前的状态。
