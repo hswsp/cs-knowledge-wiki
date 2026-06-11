@@ -34,6 +34,7 @@ export default defineConfig({
           { text: 'Java', link: '/java/' },
           { text: 'C++', link: '/cpp/' },
           { text: '数据库', link: '/database/' },
+          { text: '系统设计', link: '/system-design/' },
           { text: '关于', link: '/about/' },
         ],
         sidebar: {
@@ -54,6 +55,9 @@ export default defineConfig({
           ],
           '/database/': [
             { text: '数据库', items: [{ text: '概览', link: '/database/' }] },
+          ],
+          '/system-design/': [
+            { text: '系统设计', items: [{ text: '概览', link: '/system-design/' }] },
           ],
         },
         outline: { label: '本页目录', level: [2, 3] },
@@ -84,6 +88,7 @@ export default defineConfig({
           { text: 'Java', link: '/en/java/' },
           { text: 'C++', link: '/en/cpp/' },
           { text: 'Database', link: '/en/database/' },
+          { text: 'System Design', link: '/en/system-design/' },
           { text: 'About', link: '/en/about/' },
         ],
         sidebar: {
@@ -104,6 +109,9 @@ export default defineConfig({
           ],
           '/en/database/': [
             { text: 'Database', items: [{ text: 'Overview', link: '/en/database/' }] },
+          ],
+          '/en/system-design/': [
+            { text: 'System Design', items: [{ text: 'Overview', link: '/en/system-design/' }] },
           ],
         },
         footer: {

@@ -12,6 +12,7 @@
 - Java
 - C++
 - 数据库（Database）
+- 系统设计（System Design）
 
 ## 本地开发
 
@@ -56,6 +57,7 @@ docs/
 ├── java/                  # 中文 - Java
 ├── cpp/                   # 中文 - C++
 ├── database/              # 中文 - 数据库
+├── system-design/         # 中文 - 系统设计
 ├── ml/                    # 中文 - 机器学习
 ├── about/                 # 中文 - 关于
 └── en/                    # 英文镜像
@@ -66,6 +68,7 @@ docs/
     ├── java/
     ├── cpp/
     ├── database/
+    ├── system-design/
     └── about/
 ```
 

@@ -4,7 +4,7 @@ layout: home
 hero:
   name: CS 知识库
   text: 从基础到实战的全栈笔记
-  tagline: 数学 · 算法 · Java · C++ · 数据库 —— 持续记录，认真分享。
+  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 数据库 · 系统设计 —— 持续记录，认真分享。
   image:
     src: /logo.svg
     alt: CS Knowledge Wiki
@@ -41,6 +41,10 @@ features:
     title: 数据库
     details: MySQL 索引与事务、Redis 原理、分布式存储
     link: /database/
+  - icon: 🏗️
+    title: 系统设计
+    details: 分布式理论、微服务、高可用架构、经典面试题
+    link: /system-design/
   - icon: 👤
     title: 关于我
     details: 了解作者，欢迎交流

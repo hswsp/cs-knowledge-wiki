@@ -4,7 +4,7 @@ layout: home
 hero:
   name: CS Knowledge Wiki
   text: Full-stack notes, from basics to practice
-  tagline: Math · Algorithms · Java · C++ · Databases — built with care.
+  tagline: Math · Algorithms · ML · Java · C++ · Databases · System Design — built with care.
   image:
     src: /logo.svg
     alt: CS Knowledge Wiki
@@ -41,6 +41,10 @@ features:
     title: Database
     details: MySQL indexing & transactions, Redis internals, distributed systems
     link: /en/database/
+  - icon: 🏗️
+    title: System Design
+    details: Distributed theory, microservices, HA architecture, classic problems
+    link: /en/system-design/
   - icon: 👤
     title: About
     details: About the author — feel free to reach out
