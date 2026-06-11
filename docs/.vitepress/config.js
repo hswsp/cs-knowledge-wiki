@@ -5,7 +5,7 @@ const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
 
 export default defineConfig({
   title: 'CS Knowledge Wiki',
-  description: 'A personal computer science knowledge base — math, algorithms, Java, C++, databases.',
+  description: 'A personal computer science knowledge base — math, algorithms, Java, C++, storage.',
   cleanUrls: true,
   lastUpdated: true,
   // 迁移自旧 Hexo 博客的文章里包含一些 localhost 占位与外部锚点，先放行死链检查
@@ -26,7 +26,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       title: 'CS 知识库',
-      description: '个人计算机知识库：数学 / 算法 / Java / C++ / 数据库 / 系统设计 / 工具 / OS',
+      description: '个人计算机知识库：数学 / 算法 / Java / C++ / 存储 / 系统设计 / 工具 / OS',
       themeConfig: {
         nav: [
           { text: '首页', link: '/' },
@@ -35,7 +35,6 @@ export default defineConfig({
           { text: '机器学习', link: '/ml/' },
           { text: 'Java', link: '/java/' },
           { text: 'C++', link: '/cpp/' },
-          { text: '数据库', link: '/database/' },
           { text: '存储', link: '/storage/' },
           { text: '系统设计', link: '/system-design/' },
           { text: '工具', link: '/tools/' },
@@ -95,23 +94,6 @@ export default defineConfig({
               ],
             },
           ],
-          '/database/': [
-            { text: '数据库', items: [{ text: '概览', link: '/database/' }] },
-            {
-              text: '分布式存储',
-              collapsed: false,
-              items: [
-                { text: 'HDFS 简介', link: '/database/distributed-storage/hdfs-intro' },
-              ],
-            },
-            {
-              text: '存储引擎',
-              collapsed: false,
-              items: [
-                { text: 'LSM Tree', link: '/database/storage-engine/lsm-tree' },
-              ],
-            },
-          ],
           '/system-design/': [
             { text: '系统设计', items: [{ text: '概览', link: '/system-design/' }] },
             {
@@ -133,8 +115,23 @@ export default defineConfig({
                 { text: 'Kafka 实践踩坑', link: '/system-design/messaging/kafka-practice' },
               ],
             },
+            {
+              text: '设计模式 →',
+              collapsed: false,
+              items: [
+                { text: '进入设计模式专题', link: '/system-design/design-pattern/' },
+              ],
+            },
+            {
+              text: '架构设计 →',
+              collapsed: false,
+              items: [
+                { text: '进入架构设计专题', link: '/system-design/architecture/' },
+              ],
+            },
           ],
           '/system-design/design-pattern/': [
+            { text: '设计模式', items: [{ text: '概览', link: '/system-design/design-pattern/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
             {
               text: '前言',
               collapsed: true,
@@ -311,8 +308,9 @@ export default defineConfig({
           ],
 
           '/system-design/architecture/': [
+            { text: '架构设计', items: [{ text: '概览', link: '/system-design/architecture/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
             {
-              text: 'architecture',
+              text: '开篇',
               collapsed: false,
               items: [
                 { text: 'Preface', link: '/system-design/architecture/preface' },
@@ -411,6 +409,21 @@ export default defineConfig({
           ],
 
           '/storage/': [
+            { text: '存储', items: [{ text: '概览', link: '/storage/' }] },
+            {
+              text: '分布式存储',
+              collapsed: false,
+              items: [
+                { text: 'HDFS 简介', link: '/storage/distributed-storage/hdfs-intro' },
+              ],
+            },
+            {
+              text: '存储引擎',
+              collapsed: false,
+              items: [
+                { text: 'LSM Tree', link: '/storage/storage-engine/lsm-tree' },
+              ],
+            },
             {
               text: 'cmu15-445',
               collapsed: true,
@@ -527,7 +540,7 @@ export default defineConfig({
       lang: 'en-US',
       link: '/en/',
       title: 'CS Knowledge Wiki',
-      description: 'A personal CS knowledge base: math, algorithms, Java, C++, databases.',
+      description: 'A personal CS knowledge base: math, algorithms, Java, C++, storage.',
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
@@ -536,7 +549,6 @@ export default defineConfig({
           { text: 'ML', link: '/en/ml/' },
           { text: 'Java', link: '/en/java/' },
           { text: 'C++', link: '/en/cpp/' },
-          { text: 'Database', link: '/en/database/' },
           { text: 'Storage', link: '/en/storage/' },
           { text: 'System Design', link: '/en/system-design/' },
           { text: 'About', link: '/en/about/' },
@@ -556,9 +568,6 @@ export default defineConfig({
           ],
           '/en/cpp/': [
             { text: 'C++', items: [{ text: 'Overview', link: '/en/cpp/' }] },
-          ],
-          '/en/database/': [
-            { text: 'Database', items: [{ text: 'Overview', link: '/en/database/' }] },
           ],
           '/en/system-design/': [
             { text: 'System Design', items: [{ text: 'Overview', link: '/en/system-design/' }] },

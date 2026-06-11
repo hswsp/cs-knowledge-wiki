@@ -4,7 +4,7 @@ layout: home
 hero:
   name: CS Knowledge Wiki
   text: Full-stack notes, from basics to practice
-  tagline: Math · Algorithms · ML · Java · C++ · Databases · System Design — built with care.
+  tagline: Math · Algorithms · ML · Java · C++ · Storage · System Design — built with care.
   image:
     src: /logo.svg
     alt: CS Knowledge Wiki
@@ -38,9 +38,9 @@ features:
     details: Modern C++, STL, templates, memory and multithreading
     link: /en/cpp/
   - icon: 🗄️
-    title: Database
-    details: MySQL indexing & transactions, Redis internals, distributed systems
-    link: /en/database/
+    title: Storage
+    details: MySQL, Redis, LSM-Tree, HDFS, CMU 15-445, distributed storage
+    link: /en/storage/
   - icon: 🏗️
     title: System Design
     details: Distributed theory, microservices, HA architecture, classic problems
