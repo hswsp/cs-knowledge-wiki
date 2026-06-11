@@ -30,6 +30,7 @@ export default defineConfig({
           { text: '首页', link: '/' },
           { text: '数学', link: '/math/' },
           { text: '算法', link: '/algorithm/' },
+          { text: '机器学习', link: '/ml/' },
           { text: 'Java', link: '/java/' },
           { text: 'C++', link: '/cpp/' },
           { text: '数据库', link: '/database/' },
@@ -41,6 +42,9 @@ export default defineConfig({
           ],
           '/algorithm/': [
             { text: '算法', items: [{ text: '概览', link: '/algorithm/' }] },
+          ],
+          '/ml/': [
+            { text: '机器学习', items: [{ text: '概览', link: '/ml/' }] },
           ],
           '/java/': [
             { text: 'Java', items: [{ text: '概览', link: '/java/' }] },
@@ -76,6 +80,7 @@ export default defineConfig({
           { text: 'Home', link: '/en/' },
           { text: 'Math', link: '/en/math/' },
           { text: 'Algorithms', link: '/en/algorithm/' },
+          { text: 'ML', link: '/en/ml/' },
           { text: 'Java', link: '/en/java/' },
           { text: 'C++', link: '/en/cpp/' },
           { text: 'Database', link: '/en/database/' },
@@ -87,6 +92,9 @@ export default defineConfig({
           ],
           '/en/algorithm/': [
             { text: 'Algorithms', items: [{ text: 'Overview', link: '/en/algorithm/' }] },
+          ],
+          '/en/ml/': [
+            { text: 'Machine Learning', items: [{ text: 'Overview', link: '/en/ml/' }] },
           ],
           '/en/java/': [
             { text: 'Java', items: [{ text: 'Overview', link: '/en/java/' }] },

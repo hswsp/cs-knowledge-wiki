@@ -25,6 +25,10 @@ features:
     title: Algorithms
     details: Data structures, classic algorithms, and LeetCode solutions
     link: /en/algorithm/
+  - icon: 🤖
+    title: Machine Learning
+    details: Classic ML, deep learning, NLP, CV, and LLMs — theory to practice
+    link: /en/ml/
   - icon: ☕
     title: Java
     details: Core · Concurrency · JVM · Spring ecosystem

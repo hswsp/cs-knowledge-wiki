@@ -25,6 +25,10 @@ features:
     title: 算法
     details: 数据结构、经典算法、LeetCode 题解，构建解题思维
     link: /algorithm/
+  - icon: 🤖
+    title: 机器学习
+    details: 经典 ML、深度学习、NLP、CV、大模型，从理论到实战
+    link: /ml/
   - icon: ☕
     title: Java
     details: 基础 · 并发 · JVM · Spring 全家桶
