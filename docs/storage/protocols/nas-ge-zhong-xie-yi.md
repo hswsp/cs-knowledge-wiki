@@ -1,0 +1,138 @@
+---
+title: NAS各种协议
+date: '2023-11-16 20:53:10'
+meta: []
+permalink: /post/nas-various-protocols-z1hosza.html
+author:
+  name: champagne
+  link: https://github.com/hswsp
+---
+
+
+<!-- more -->
+
+
+# NAS各种协议
+
+随着智能化互联时代的来临，家中的智能设备越来越多：电视机、平板、游戏主机、电脑、手机等遍及家中各个角落，同时设备之间共享数据的需求变的越来越强烈。比如同步、备份手机上的照片和视频，在电视机上观看电脑中下载的影片、手机拍摄的视频，存储高清电影、音乐、VLOG 素材等。
+
+这时候在家中搭建一台 NAS（<span style="font-weight: bold;" class="bold">Network Attached Storage</span>：网络附属存储）存储服务器是不错的选择，在备份保障数据安全的同时给家庭娱乐带来更多方便。在企业中，NAS 也有着广泛的应用，其部署简单，扩展方便，在文件共享、容灾备份领域发挥了重要作用。
+
+NAS 存储服务器有许多专业厂商，比如群晖（ Synology）、铁威马（TerraMaster）等，动手能力强的用户可以 DIY 硬件开源系统自己搭建。不过这些不是今天讨论的话题，今天我们来讨论一下 NAS 常见的共享访问协议：NFS、FTP、SMB、WebDav、DLNA有什么区别，哪些速度快，哪些兼容性好，如何选择等。
+
+![image-20231116205443-mqhnylk](https://images.spumn.eu.cc/blog/8bb655e6737da878.png)
+
+# NFS
+
+NFS是 Network File System的简写，即网络文件系统,网络文件系统是FreeBSD支持的文件系统中的一种，也被称为NFS。NFS允许一个系统在网络上与它人共享目录和文件。通过使用NFS，用户和程序可以像访问本地文件一样访问远端系统上的文件。它由 Sun 公司（已被 Oracle 收购）开发，于 1984 年发布，最新版本 NFSv4.2 于 2016 年发布。NFS 基于开放网络运算远程过程调用（ONC RPC）协议：一个开放、标准的 RFC 协议，任何人或组织都可以依据标准实现它。
+
+NFS 通常使用在 Unix 操作系统上（比如 Solaris、AIX 及 HP-UX）和其他类 Unix 操作系统（例如 Linux 及 FreeBSD），同时在 macOS 和 Windows 系统也提供了 NFS 实现。不过在 Windows 系统上挂载 NFS 共享目录时，由于 Windows 自带的 NFS 客户端长久以来不支持 UTF-8，会致中文文件和目录显示为乱码。
+
+下面是NFS最显而易见的好处：
+
+1.本地工作站使用更少的磁盘空间，因为通常的数据可以存放在一台机器上而且可以通过网络访问到。
+
+2.用户不必在每个网络上机器里头都有一个home目录。Home目录可以被放在NFS服务器上并且在网络上处处可用。
+
+3.诸如软驱，CDROM，和Zip之类的存储设备可以在网络上面被别的机器使用。这可以减少整个网络上的可移动介质设备的数量。
+
+NFS 的优点是内核直接支持，部署简单、运行稳定，协议简单、传输效率高。
+
+NFS 的缺点是没有加密授权等功能，仅依靠 IP 地址或主机名来决定用户能否挂载共享目录，对具体目录和文件无法进行 ACL 权限控制（NFSv4 以前）。通常的做法是通过 Kerberos 对 NFS 进行认证及加密，不过部署配置比较麻烦。
+
+NFS至少有两个主要部分：一台服务器和一台（或者更多）客户机。客户机远程访问存放在服务器上的数据。为了正常工作，一些进程需要被配置并运行。
+
+# FTP/SFTP/SCP
+
+FTP（File Transfer ProtocoL）是TCP/IP应用层中的一个基础协议，通常使用 22 端口，负责将文件从一台计算机传输到另计算机，并保证文件传输的可靠性。FTP 协议的历史源远流长，第一版 FTP 协议于 1971 年发表为 RFC 114，此后经过多年的发展和完善。通常所说的 FTP 既可指 FTP 协议，也可指 FTP 应用程序。
+
+由于 FTP 是明文传输安全性不高，后来又出现了 SFTP 和 FTPS 等加密传输。FTP 的特点之一是独立于系统用户组，只要通讯端口开启就能方便访问，所以特别适合外网共享，一些老牌共享软件就常常通过 FTP 发布下载链接。
+
+FTP 主要用于客户端和服务器之间的文件上传和下载，并不适用于服务器上文件修改。因为 FTP 通常需要先获取远程文件的副本，然后对副本修改，最后再将修改后的文件副本上传服务器。
+
+虽然 FTP 的简单方便、容易部署，但 FTP 的传输效率低、安全性不佳，目前并不推荐使用。
+
+FTP、SFTP、SCP这三个都是直接传输的，我理解的是不擅长在线编辑，跨网传输，FTP非加密，明文传输，SCP和SFTP是基于SSH的加密，但SFTP支持断点续传，SCP不支持，没了。哦对，SSH、SCP和SFTP都是SSH软件包的组成部分，装了SSH这俩都直接能用。还可以用SFTP把远程文件像本地文件一样操作（GUI）。
+
+# SMB/Samba
+
+SMB（<span style="font-weight: bold;" class="bold">Server Message Block</span>）通信协议是微软和英特尔在1987年制定的协议，主要是作为Microsoft网络的通讯协议，它是当今世上网络文件系统协议两极之一的存在。
+
+SMB使用了NetBIOS的应用程序接口 （Application Program Interface，简称API）。另外，它是一个开放性的协议，允许了协议扩展——使得它变得更大而且复杂；大约有65个最上层的作业，而每个作业都超过120个函数，甚至Windows NT也没有全部支持到，最近微软又把 SMB 改名为 CIFS（Common Internet File System），并且加入了许多新的特色。
+
+Samba 是 SMB/CIFS（Server Message Block / Common Internet File System）网络协议的重新实现，可以在局域网不同计算机之间进行文件、打印机等资源共享，和 NFS 功能类似。
+
+SMB 最早是微软为自己需求设计的专用协议，用来实现微软主机之间的文件共享与打印共享，并不支持在 Linux 上运行。著名黑客、技术大牛 Andrew Tridgell 通过逆向工程，在 Linux 上实现的 SMB / CIFS 兼容协议，命名为 Samba，通过该程序实现了 Windows 和 Linux 之间的文件共享。
+
+SMB 协议是 C/S 类型协议，客户机通过该协议可以访问服务器上的共享文件系统、打印机及其他资源。通过设置“NetBIOS over TCP/IP”，Samba 不但能与局域网络主机分享资源，还能与全世界的电脑分享资源。
+
+SMB 的优点之一是兼容性好，在各平台获得了广泛支持，包括 Windows、Linux、macOS 等各系统挂载访问都很方便。另外 SMB 也是各种电视、电视盒子默认支持的协议，可以通过 SMB 远程播放电影、音乐和图片。
+
+另外 SMB 提供端到端加密、安全性高，配置选项丰富，支持 ACL 并支持多种用户认证模式。
+
+<span style="font-weight: bold;" class="bold">SMB 的缺点是传输效率稍低，速度不太稳定</span>，会有波动。
+
+# WebDAV
+
+WebDAV （<span style="font-weight: bold;" class="bold">Web-based Distributed Authoring and Versioning</span>） 一种<span style="font-weight: bold;" class="bold">基于HTTP 1.1协议的 通信协议</span>。它扩展 了HTTP 1.1，在GET、POST、HEAD等几个HTTP标准方法以外添加了一些新的方法，使应用程序可对Web Server 直接读写，并支持写文件锁定(Locking)及解锁(Unlock)，还可以支持文件的版本控制。
+
+简单而言，WebDAV 就是一种互联网方法，应用此方法可以在服务器上划出一块存储空间，可以使用用户名和密码来控制访问，让用户可以直接存储、下载、编辑文件。
+
+它需要配合客户端来使用，笔者比较推荐RaiDrive，免费工具。
+
+WebDAV 允许客户端进行下列操作：
+
+处理服务器上 WebDAV 发布目录中的资源。使用此功能，其优点例如:
+
+1. 具有正确权限的用户可以在 WebDAV目录中复制和移动文件。
+2. 修改与某些资源相关联的属性。例如，用户可写入并检索文件的属性信息。
+3. 锁定并解锁资源以便多个用户可同时读取一个文件。但每次只能有一个人修改文件。
+4. 搜索 WebDAV 目录中的文件的内容和属性。
+
+在服务器上设置 WebDAV 发布目录与通过 Internet 信息服务管理单元设置虚拟目录一样简单。设置好发布目录后，具有适当权限的用户就可以向服务器发布文档，并处理目录中的文件。
+
+WebDAV 为实现远程文件管理，向 HTTP/1.1 中追加了以下这些方法
+
+- `PROPFIND`：获取属性
+- `PROPPATCH`：修改属性
+- `MKCOL`：创建集合
+- `COPY`：复制资源及属性
+- `MOVE`：移动资源
+- `LOCK`：资源加锁
+- `UNLOCK`：资源解锁
+
+为配合扩展的方法，状态码也随之扩展。
+
+- 102 Processing：可正常处理请求， 但目前是处理中状态
+- 207 Multi-Status：存在多种状态
+- 422 Unprocessible Entity：格式正确， 内容有误
+- 423 Locked：资源已被加锁
+- 424 Failed Dependency：处理与某请求关联的请求失败， 因此不再维持依赖关系
+- 507 Insufficient Storage：保存空间不足
+
+由于 WebDAV 是基于 HTTP 的，所以具有 HTTP 的所有优点，包括容易穿越防火墙、使用 HTTPS 来传输数据，因此在很多方面可以替代 FTP。
+
+WebDAV 可以通过 Nginx 或 Apache 等 Web 服务器部署。在客户端 WebDAV 也获得了许多软件的支持，比如 Office 就可通过 WebDAV 编辑远程文档。
+
+# DLNA
+
+DLNA（DIGITAL LIVING NETWORK ALLIANCE，数字生活网络联盟) 其前身是DHWG （Digital Home Working Group，数字家庭工作组），成立于2003年6月24 日， 是由索尼 、 英特尔 、 微软等发起成立的一个非营利性的、合作性质的商业组织。
+
+DLNA旨在解决个人PC ，消费电器，移动设备在内的无线网络和有线网络的互联互通，使得数字媒体和内容服务的无限制的共享和增长成为可能。DLNA的口号是Enjoy your music, photos and videos, anywhere anytime。
+
+DLNA并不是创造技术，而是<span style="font-weight: bold;" class="bold">形成一种解决的方案，一种大家可以遵守的规范</span>。所以，其选择的各种技术和协议都是当前所应用很广泛的技术和协议。
+
+DLNA将其整个应用规定成5个功能组件。从下到上依次为：<span style="font-weight: bold;" class="bold">网络互连，网络协议，媒体传输，设备的发现控制和管理，媒体格式</span>。
+
+2017年2月20日，DLNA在其官网宣布：本组织的使命已经完成，已于2017年1月5日正式解散，相关的认证将移交给SpireSpark公司，未来不会再更新DLNA标准。
+
+# <span style="font-weight: bold;" class="bold">总结</span>
+
+个人总结如下表：
+
+<span style="font-weight: bold;" class="bold">总体来说smb协议的兼容性最好，windows/mac/linux均可支持，各个厂商的电视、盒子和各个手机端的播放器均支持smb协议传输，ftp和webdav原生支持的较少。</span>
+
+<span style="font-weight: bold;" class="bold">理论上三者速度相差并不大，这里测试的环境是KODI播放器，没深入了解过KODI读取文件的方式，但大视频文件一定不能用smb协议，杜比视界视频文件一定要用webdav，咨询过KODI其中的一位开发者，他表示webdav可以开启多通道读取文件的模式，有利于文件更快的传输，但并不代表所有播放器的表现都一致。</span>
+
+1. 想要兼容性好首选smb
+2. 如果播放器用的KODI，不用折腾，首选webdav
