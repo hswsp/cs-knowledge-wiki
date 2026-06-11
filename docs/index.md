@@ -4,14 +4,14 @@ layout: home
 hero:
   name: CS 知识库
   text: 从基础到实战的全栈笔记
-  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 数据库 · 系统设计 —— 持续记录，认真分享。
+  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 数据库 · 系统设计 · 工具 · OS —— 持续记录，认真分享。
   image:
     src: /logo.svg
     alt: CS Knowledge Wiki
   actions:
     - theme: brand
       text: 📚 开始阅读
-      link: /algorithm/
+      link: /database/
     - theme: alt
       text: ⭐ GitHub
       link: https://github.com/hswsp/cs-knowledge-wiki
@@ -38,13 +38,21 @@ features:
     details: 现代 C++、STL、模板、内存与多线程
     link: /cpp/
   - icon: 🗄️
-    title: 数据库
-    details: MySQL 索引与事务、Redis 原理、分布式存储
+    title: 数据库与存储
+    details: MySQL、Redis、LSM-Tree、HDFS、Paxos/Raft 分布式共识
     link: /database/
   - icon: 🏗️
     title: 系统设计
-    details: 分布式理论、微服务、高可用架构、经典面试题
+    details: 分布式理论、微服务、消息队列、高可用架构
     link: /system-design/
+  - icon: 🛠️
+    title: 工具
+    details: Git、CMake、Lucene、Hexo 等日常开发工具
+    link: /tools/
+  - icon: 🐧
+    title: 操作系统
+    details: Linux、内存、文件系统、进程调度
+    link: /os/
   - icon: 👤
     title: 关于我
     details: 了解作者，欢迎交流
