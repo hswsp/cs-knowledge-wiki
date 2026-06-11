@@ -297,7 +297,7 @@ simonhans.js.org
 
 进入设置，找到 Custom domain添加域名后保存即可，它会自动在你的repository相应的branch里生成一个CNAME的文件。
 
-![image](https://cdn.spphoto.top/img/webp)
+![image](https://images.spumn.eu.cc/blog/1b23c6d2ca1c8e88.webp)
 
 但是由于是静态博客，每次Hexo都会重新把之前的所有内容删除重写。所以我们需要把这个CNAME写到我们的Hexo源文件里。
 
@@ -394,3 +394,364 @@ yuxiaoshao.top
 新建相册页 `hexo new page photos`,编辑 `/source/photos/index.md`，输入以下内容：
 
 ```markdown
+---
+title: photos
+date: 2020-12-30 19:04:03
+layout: photo
+---
+
+<style>
+.ImageGrid {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  text-align: center;
+}
+.card {
+  overflow: hidden;
+  transition: .3s ease-in-out;
+  border-radius: 8px;
+  background-color: #efefef;
+  padding: 1.4px;
+}
+.ImageInCard img {
+  padding: 0;
+  border-radius: 8px;
+  width:100%;
+  height:100%;
+}
+@media (prefers-color-scheme: dark) {
+  .card {background-color: #333;}
+}
+</style>
+
+<div id="imageTab"></div>
+<div class="ImageGrid"></div>
+
+
+HTML
+```
+
+## 处理图片信息
+
+为了加快图片的加载速度,我使用`GitHub` +`jsDelivr`的方式，**网上有许多的教程，此处不再演示。**
+
+这里在Github上创建了一个Repository用来做图床。文件夹结构如图:
+
+![Screenshot 2025-07-10 at 11.57.12 PM](https://images.spumn.eu.cc/blog/e42a7e782b49ce1d.png)
+
+这样`jsDelivr`这种CDN生成的图片链接就是按`https://cdn.jsdelivr.net/gh/你的用户名/你的仓库名@发布的版本号/文件路径`格式给出的。
+
+我们需要列出这些图片链接的基本信息，这里主要是使用`image-size`访问照片文件夹，获取每张照片的大小和文件名，并生成对应的 `json` 文件. 
+
+creata.js文件如下：
+
+```javascript
+const fs = require('fs-extra');
+const path = require('path');
+const imageSize = require('image-size');
+
+const rootPath="./"
+
+class PhotoExtension {
+    constructor() {
+        this.size = 64;
+        this.offset = [0, 0];
+    }
+}
+
+class Photo {
+    constructor() {
+        this.dirName = '';
+        this.fileName = '';
+        this.iconID = '';
+        this.extension = new PhotoExtension();
+    }
+}
+
+class PhotoGroup {
+    constructor() {
+        this.name = '';
+        this.children = [];
+    }
+}
+
+function createPlotIconsData() {
+    let allPlots = [];
+    let allPlotGroups = [];
+
+    const plotJsonFile = path.join(__dirname, './photosInfo.json');
+    const plotGroupJsonFile = path.join(__dirname, './photos.json');
+
+    if (fs.existsSync(plotJsonFile)) {
+        allPlots = JSON.parse(fs.readFileSync(plotJsonFile));
+    }
+
+    if (fs.existsSync(plotGroupJsonFile)) {
+        allPlotGroups = JSON.parse(fs.readFileSync(plotGroupJsonFile));
+    }
+
+    fs.readdirSync(__dirname).forEach(function(dirName) {
+        const stats = fs.statSync(path.join(__dirname, dirName));
+        const isDir = stats.isDirectory();
+        if (isDir) {
+            const subfiles = fs.readdirSync(path.join(__dirname, dirName));
+            subfiles.forEach(function(subfileName) {
+                // 如果已经存在 则不再处理
+                // if (allPlots.find(o => o.fileName === subfileName && o.dirName === dirName)) {
+                //     return;
+                // }
+
+                // 新增标
+                const plot = new Photo();
+                plot.dirName = dirName;
+                plot.fileName = subfileName;
+                const imageInfo = imageSize(rootPath+dirName + "/" + subfileName);
+                plot.iconID = imageInfo.width + '.' + imageInfo.height + ' ' + subfileName;
+                allPlots.push(plot);
+                console.log(`RD: createPlotIconsData -> new plot`, plot);
+
+                // 为新增标添加分组 暂时以它所处的文件夹为分组
+                let group = allPlotGroups.find(o => o.name === dirName);
+                if (!group) {
+                    group = new PhotoGroup();
+                    group.name = dirName;
+                    allPlotGroups.push(group);
+                    console.log(`RD: createPlotIconsData -> new group`, group);
+                }
+                group.children.push(plot.iconID);
+            });
+        }
+    });
+
+    fs.writeJSONSync(plotJsonFile, allPlots);
+    fs.writeJSONSync(plotGroupJsonFile, allPlotGroups);
+}
+
+createPlotIconsData();
+```
+
+`npm i -S image-size`安装之后,把照片放在目录后，执行以下命令：
+
+```bash
+node gallery/create.js
+```
+
+如果报错，请注意检查保存本地照片的文件夹里有没有非图片类文件，特别是要删除如 `.DS_Store` 这样的隐藏文件。注意每次添加照片重新生成文件信息的时候需要把之前的删除再运行脚本，因为这个脚本写文件是往后续写的，不是删除之前的photos.json再重写的！！
+
+`json` 文件样例如下：
+
+```json
+[
+  {
+    "name": "广州一游",
+    "children": [
+      "1080.1440 圣心大教堂.jpg",
+      "1080.1440 广州塔顶夜晚景色.jpg",
+      "1080.1440 广州塔顶夜晚景色2.jpg",
+      "1080.1440 晚上广州塔.jpg",
+      "1080.1443 白天广州塔.jpg"
+    ]
+  },
+  {
+    "name": "澳门游玩",
+    "children": [
+      "1080.1443 夜晚澳门巴黎铁塔.jpg",
+      "1443.1080 微信图片_20210108213615.jpg",
+      "1443.1080 微信图片_20210108213635.jpg",
+      "1443.1080 微信图片_20210108213645.jpg",
+      "1443.1080 微信图片_20210108213707.jpg",
+      "1080.1443 白天澳门巴黎铁塔.jpg"
+    ]
+  }
+]
+```
+
+将`photos.json`拷贝到博客目录下的`photos`
+
+![Screenshot 2025-07-11 at 12.05.13 AM](https://images.spumn.eu.cc/blog/27cafe051e82284a.png)
+
+## 加载 js和css文件
+
+在 `/source/js/` 目录下创建 `photoWall.js`：
+
+```javascript
+var imgDataPath = "/photos/photos.json"; //图片名称高宽信息json文件路径，就是访问你博客图片页的路径
+var imgPath = "https://cdn.jsdelivr.net/gh/Cenergy/images/gallery/"; //图片访问路径
+var imgMaxNum = 50; //图片显示数量
+
+var windowWidth =
+  window.innerWidth ||
+  document.documentElement.clientWidth ||
+  document.body.clientWidth;
+if (windowWidth < 768) {
+  var imageWidth = 145; //图片显示宽度(手机端)
+} else {
+  var imageWidth = 250; //图片显示宽度
+}
+
+const photo = {
+  page: 1,
+  offset: imgMaxNum,
+  init: function () {
+    var that = this;
+    $.getJSON(imgDataPath, function (data) {
+      that.render(that.page, data);
+      //that.scroll(data);
+      that.eventListen(data);
+    });
+  },
+  constructHtml(options) {
+    const {
+      imageWidth,
+      imageX,
+      imageY,
+      name,
+      imgPath,
+      imgName,
+      imgNameWithPattern,
+    } = options;
+    const htmlEle = `<div class="card lozad" style="width:${imageWidth}px">
+                  <div class="ImageInCard" style="height:${
+                    (imageWidth * imageY) / imageX
+                  }px">
+                    <a data-fancybox="gallery" href="${imgPath}${name}/${imgNameWithPattern}"
+                          data-caption="${imgName}" title="${imgName}">
+                            <img  class="lazyload" data-src="${imgPath}${name}/${imgNameWithPattern}"
+                            src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                            onload="lzld(this)"
+                            lazyload="auto">
+                        </a>
+                  </div>
+                </div>`;
+    return htmlEle;
+  },
+  render: function (page, data = []) {
+    this.data = data;
+    if (!data.length) return;
+    var html,
+      imgNameWithPattern,
+      imgName,
+      imageSize,
+      imageX,
+      imageY,
+      li = "";
+
+    let liHtml = "";
+    let contentHtml = "";
+
+    data.forEach((item, index) => {
+      const activeClass = index === 0 ? "active" : "";
+      liHtml += `<li class="nav-item" role="presentation">
+          <a class="nav-link ${activeClass} photo-tab" id="home-tab" photo-uuid="${item.name}" data-toggle="tab" href="#${item.name}"  role="tab" aria-controls="${item.name}" aria-selected="true">${item.name}</a>
+        </li>`;
+    });
+    const [initData = {}] = data;
+    const { children = [],name } = initData;
+    children.forEach((item, index) => {
+      imgNameWithPattern = item.split(" ")[1];
+      imgName = imgNameWithPattern.split(".")[0];
+      imageSize = item.split(" ")[0];
+      imageX = imageSize.split(".")[0];
+      imageY = imageSize.split(".")[1];
+      let imgOptions = {
+        imageWidth,
+        imageX,
+        imageY,
+        name,
+        imgName,
+        imgPath,
+        imgNameWithPattern,
+      };
+      li += this.constructHtml(imgOptions);
+    });
+    contentHtml += ` <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">${li}</div>`;
+
+    const ulHtml = `<ul class="nav nav-tabs" id="myTab" role="tablist">${liHtml}</ul>`;
+    const tabContent = `<div class="tab-content" id="myTabContent">${contentHtml}</div>`;
+
+    $("#imageTab").append(ulHtml);
+    $(".ImageGrid").append(tabContent);
+    this.minigrid();
+  },
+  eventListen: function (data) {
+    let self = this;
+    var html,
+      imgNameWithPattern,
+      imgName,
+      imageSize,
+      imageX,
+      imageY,
+      li = "";
+    $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+      $(".ImageGrid").empty();
+      const selectId = $(e.target).attr("photo-uuid");
+      const selectedData = data.find((data) => data.name === selectId) || {};
+      const { children,name } = selectedData;
+      let li = "";
+      children.forEach((item, index) => {
+        imgNameWithPattern = item.split(" ")[1];
+        imgName = imgNameWithPattern.split(".")[0];
+        imageSize = item.split(" ")[0];
+        imageX = imageSize.split(".")[0];
+        imageY = imageSize.split(".")[1];
+        let imgOptions = {
+          imageWidth,
+          imageX,
+          imageY,
+          name,
+          imgName,
+          imgPath,
+          imgNameWithPattern,
+        };
+        li += self.constructHtml(imgOptions);
+      });
+      $(".ImageGrid").append(li);
+      self.minigrid();
+    });
+  },
+  minigrid: function () {
+    var grid = new Minigrid({
+      container: ".ImageGrid",
+      item: ".card",
+      gutter: 12,
+    });
+    grid.mount();
+    $(window).resize(function () {
+      grid.mount();
+    });
+  },
+};
+photo.init();
+```
+
+然后使用注册器将需要的`js`,`css`注入,在`scripts/injector.js`(如没有,则创建)中输入以下内容:
+
+```javascript
+const { root: siteRoot = "/" } = hexo.config;
+// layout为photo的时候导入这些js与css
+hexo.extend.injector.register(
+  "body_end",
+  `
+  <link rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css">
+  <script src="//cdn.jsdelivr.net/npm/minigrid@3.1.1/dist/minigrid.min.js"></script>
+  <script src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/lazyloadjs/3.2.2/lazyload.js"></script>
+    <script defer src="${siteRoot}js/photoWall.js"></script>`,
+  "photo"
+);
+```
+
+至此,已经能看到加载出图片了,但是假如不使用cdn或者其他懒加载策略的话会感觉很慢!!
+
+# 参考
+
+> 1. https://hexo.io/themes/
+> 2. https://github.com/blinkfox/hexo-theme-matery
+> 3. https://oujun.work/2021/08/01/Hexo-Theme-Fluid-Add-Gallery.html
+> 4. https://juejin.cn/post/6891086750484004877
+> 5. [关于给hexo博客增加相册页面（实现瀑布流相册，实现加密相册）](https://daocaisheng.github.io/2021/10/08/guan-yu-gei-hexo-bo-ke-zeng-jia-xiang-ce-ye-mian-shi-xian-pu-bu-liu-xiang-ce-shi-xian-jia-mi-xiang-ce/)
+> 6. https://blog.dlzhang.com/posts/31/
+> 7. [Hexo NexT 博客增加瀑布流相册页面](https://pinlyu.com/post/31/)
+> 8. [Hexo + Fluid 美化](https://emoryhuang.cn/blog/1729600336.html)
+> 9. [自动使用jsdelivr CDN 加速hexo的图片等静态资源加载](https://renzibei.com/2020/07/12/%E4%BD%BF%E7%94%A8jsdelivr-CDN-%E5%8A%A0%E9%80%9Fhexo%E7%9A%84%E5%9B%BE%E7%89%87%E7%AD%89%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD/)

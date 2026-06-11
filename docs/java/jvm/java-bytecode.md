@@ -29,7 +29,7 @@ public class Hello {
 
 首先我们先编写一个简单的 Java 代码作为演示例子，然后编译这个 Hello.java 文件得到 Hello.class 文件。我们知道 .class 是二进制文件，它无法被直接查看，当然我们可以通过一些二进制文件查看工具来阅读里面的内容。
 
-![（在 Visual Studio Code 里使用 hexdump for VSCode 插件查看到的内容）](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c8dea7c42a8e491098dfce263479c38d~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![（在 Visual Studio Code 里使用 hexdump for VSCode 插件查看到的内容）](https://images.spumn.eu.cc/blog/c15ab9aa9c379047.webp)
 
 一个符合标准的 `.class` 文件是以 `CA FE BA BE` 开头，这个四个字节均为魔数，JVM 根据这个开头来判断一个文件是否可能为 `.class` 文件，如果是才会继续执行。
 
@@ -41,7 +41,7 @@ public class Hello {
 
 在版本号后面则是常量池，它包含常量池计数器（constant_pool_count）和常量池数据区两个部分。前面两个字节 00 28 是计数器，用于表示常量池的容量计数值，代表常量池数据区有 `constant_pool_count - 1` 个常量。
 
-![常量池结构](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/662392269d41446ea26919114d18ae33~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![常量池结构](https://images.spumn.eu.cc/blog/86cfa71222c4fc70.webp)
 
 在常量池后面还有访问标志，很显然这个文件对于我们来说阅读起来并不方便，但是我们可以转换为助记符来帮助我们阅读。
 
@@ -66,7 +66,7 @@ public class Hello
 
 对于版本号，和我们上面所讲的一样，因此这里不再重复。而 flags 是关于这个类的相关修饰符，根据官方文档，它可能拥有的值如下：
 
-![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ed8c7325c495469da2d0b0e382ab1903~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](https://images.spumn.eu.cc/blog/82ffde7d2bee91a1.webp)
 
 ## 常量池
 
@@ -209,7 +209,7 @@ LineNumberTable:
 
 我们的 Java 程序在运行时是通过 `main()` 方法启动，它是程序的入口，我们的进程在启动时会为该方法创建一个主线程来执行代码。当我们使用多线程时，那么程序的进程将会拥有多个线程。每个线程的资源都拥有独自的资源，当然它们也可以共享进程的资源，那么在 JVM 中，根据资源的可用范围，可将内存区域分为线程独占和线程共享两个类别。
 
-![JVM内存布局](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/592d930aadd94e0a947fb844f97b8727~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![JVM内存布局](https://images.spumn.eu.cc/blog/063816e08fd40a8e.webp)
 
 对于每一个线程，都可将其拥有的内存空间分为 PC Register、Native Method Stack、JVM Stack 这 3 个区域，这 3 个区域对于线程来说都是独占的，其它线程无法进行访问。
 
@@ -217,7 +217,7 @@ LineNumberTable:
 - **JVM Stack** 用于存放调用方法时压入栈的栈帧。相信学过数据结构的对栈应该不陌生，JVM Stack 压入的单位为栈帧（Frame），用于存储数据、动态链接、方法返回值和调度异常等。每次调用一个方法都会创建一个新的栈帧压入 JVM Stack 来存储该方法的信息，当该方法调用完成时，对应的栈帧也会跟着被销毁。一个栈帧都有自己的局部变量数组、操作数栈、对当前方法类的运行常量池的引用。
 - **Native Method Stack** 则是用于调用操作系统本地方法时使用的栈空间。
 
-![JVM Stack 结构](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f55b35eb303f476c960a3d375a3a3965~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![JVM Stack 结构](https://images.spumn.eu.cc/blog/bdf75e291cd6efda.webp)
 
 每个线程都可用访问的内存空间为线程共享区域，它包含 Head 和 Method Area 两个部分，Head 用于存放实例对象，也是 GC 回收的主要区域，而 Method Area 用于存放类结构与静态变量。
 
@@ -229,7 +229,7 @@ LineNumberTable:
 
 假设程序运行 0 号指令前的状态如下，在 mian 方法栈帧里面，有着 operand stack（操作数栈），它的最大长度为 2（与 Code 下的 stack 的值一致），此外还有一个 local variable（本地变量表）来存放变量的值，其中下标为 0 的变量为主方法的参数 args，我们直接用这个字符串填充在那里来做一个标识（实际的值可能是一个空数组）。
 
-![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/56b46e0ada1147858d65b84bfa68c071~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](https://images.spumn.eu.cc/blog/710ee02568468660.webp)
 
 接下来我们一步步执行方法中的指令，在这里我们先对出现的几个指令做一个简单的介绍：
 
@@ -245,7 +245,7 @@ LineNumberTable:
 
 现在我们开始分析指令的执行，我们在上面知道了，我们的 Java 代码所对应的指令分别是偏移量为 0 和 1 的两个，最开始执行的是 `0: iconst_1`，该指令会把 int 常量 1 放置到 operand stack 中，之后执行的是 `1: istore_1`，把 operand stack 栈顶的 int 常量取出放到 local variable 下标为 1 的变量中，该过程图示如下。
 
-![iconst_1 与 istore_1 的执行过程](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0716730b1a0e4897a8f345f11df12cc3~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![iconst_1 与 istore_1 的执行过程](https://images.spumn.eu.cc/blog/46b59c8b7a65dfaf.webp)
 
 我们可以通过查看 LocalVariableTable 得知下标为 1 的变量在我们的 Java 程序中是 int 变量 a，因此上面这两条指令常量 1 赋值给变量 a。同样的，后面两条指令则是将常量 1 赋值给变量 b。这里要注意，操作数栈的数是被取出操作，被取出的数将不会继续在 operand stack 里面。
 
@@ -255,17 +255,17 @@ LineNumberTable:
 
 当执行 invokestatic 时会依次读取 operand stack 的数据作为方法的参数，并创建一个新的栈帧来执行方法，将数据放到 local variable 对应变量位置。
 
-![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/59adc8ee20d0400f807836a7a52e6249~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](https://images.spumn.eu.cc/blog/43916802ead5213b.webp)
 
 之后开始执行 `add()` 方法中的指令，首先执行的是两个 `iload` 指令，将 loca variable 对应下标的变量的值放到 operand stack 中，之后执行 `iadd` 取出 operand stack 中的值并进行加法运算，再把结果放到，最后执行 ireturn 取出 operand stack 顶部的 int 值进行返回。
 
-![执行了两个 iload 指令](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c8bcf3779bc3430ba736dd17b0e29f5a~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![执行了两个 iload 指令](https://images.spumn.eu.cc/blog/46394c978ec876e4.webp)
 
-![执行 iadd 指令](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f5dd7d4698594e98bea8b4f1f7949400~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![执行 iadd 指令](https://images.spumn.eu.cc/blog/718978282e39623f.webp)
 
-![ireturn 取出栈顶的 int 常量作为方法的返回值](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bee9441a876f419aa1a006cc7d20f3c1~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![ireturn 取出栈顶的 int 常量作为方法的返回值](https://images.spumn.eu.cc/blog/f9213b54163b0f81.webp)
 
-![执行 istore_3](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3e753288ac6e4a1ebc18e9f18a684b7b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![执行 istore_3](https://images.spumn.eu.cc/blog/8eddb22c35637cb8.webp)
 
 当执行完 `ireturn` 后，add 方法也就执行完成了，对应的栈帧也会跟着销毁。之后回到 main 方法中继续往下执行，到 `istore_3` 指令，该指令将栈顶的 int 值取出放到了 local variable 中 Solt 为 3 的地方，这样执行完 4~9 这几条指令后就完成了我们代码中的 `int c = add(a, b);` 这一行代码。那么接下来就是执行 `System.out.println(c);` 对应的指令将 2 打印到控制台了。
 
@@ -279,15 +279,15 @@ LineNumberTable:
 
 安装完这个插件，在顶部菜单栏的 View 中将会多出一个 Show Bytecode 按钮选项，我们可以在对应的 `.java` 文件中点击 View -> Show Bytecode，展示出该文件的 Byte Code。
 
-![View -> Show Bytecode](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6b63f89e92e44356aecaa751ba26bcb6~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![View -> Show Bytecode](https://images.spumn.eu.cc/blog/35df171ed2fb4025.webp)
 
-![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ff2c64b7ce24747a709434ccd0260f0~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![img](https://images.spumn.eu.cc/blog/f22b00b5df8d7d16.webp)
 
 在这里所展示的 Byte Code 格式与我们上面使用 `javap` 显示出来的不一样。首先在这里我们看不到常量池，因此在指令里也不会用引用的方式来表示常量池的内容。
 
 在这里它会将每一行 Java 代码的指令都区分开。例如 main 方法中的第一行指令对应的就是 L0 那一块，第一行的 LINENUMBER 对应上面 `javap` 中的 LineNumberTable，直接在这里描述当前 L0 这一块的指令对应的代码在文件中的位置。也因此我们不会在生成的这个 Byte Code 里面看到 LineNumberTable，因为它直接分布在各个指令块中了。
 
-![main 方法中的 L5](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/485654e735254ab7aef5432bd118a604~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
+![main 方法中的 L5](https://images.spumn.eu.cc/blog/3a89aad4cf21c5a7.webp)
 
 在方法的最后，会多出一块内容来描述方法的信息，在这里会将 LocalVariableTable 里的变量都列出来，但格式与 javap 的 LocalVariableTable 中的描述格式不一样，每一行 LOCALVARIABLE 代表一个变量，描述格式从左到右依次为变量名、类型、开始可见时的指令块、最后有效的位置、Solt。除了描述方法中出现的变量外，操作数栈最大深度和本地变量个数也在放在这里。
 
