@@ -2,12 +2,13 @@
 
 个人计算机知识库，基于 [VitePress](https://vitepress.dev/) 构建，支持中英文。
 
-🌐 在线访问：将通过 Cloudflare Pages 部署到 `https://<your-subdomain>.spumn.eu.cc`
+🌐 在线访问：[cswiki.spumn.eu.cc](https://cswiki.spumn.eu.cc)
 
 ## 内容分类
 
 - 数学（Math）
 - 算法（Algorithm）
+- 机器学习（Machine Learning）
 - Java
 - C++
 - 数据库（Database）
@@ -33,11 +34,13 @@ npm run docs:preview
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
 2. 选择 `cs-knowledge-wiki` 仓库，默认分支 `main`
 3. 构建设置：
-   - **Framework preset**: `VitePress`（或选 `None`）
+   - **Framework preset**: `None`
    - **Build command**: `npm run docs:build`
    - **Build output directory**: `docs/.vitepress/dist`
-   - **Node version** (环境变量): `NODE_VERSION = 20`
-4. 部署完成后，**Custom domains** → 添加子域名（例如 `wiki.spumn.eu.cc`），Cloudflare 会自动签发 HTTPS
+   - **Environment variables**: `NODE_VERSION = 20`
+4. 部署完成后，**Custom domains** → 添加子域名 `cswiki.spumn.eu.cc`，Cloudflare 会自动签发 HTTPS
+
+> ⚠️ **注意**：Framework preset 必须选 `None`，不能选 `VitePress`，否则 Cloudflare 会覆盖构建命令导致构建失败。
 
 ## 目录结构
 
@@ -53,11 +56,13 @@ docs/
 ├── java/                  # 中文 - Java
 ├── cpp/                   # 中文 - C++
 ├── database/              # 中文 - 数据库
+├── ml/                    # 中文 - 机器学习
 ├── about/                 # 中文 - 关于
 └── en/                    # 英文镜像
     ├── index.md
     ├── math/
     ├── algorithm/
+    ├── ml/
     ├── java/
     ├── cpp/
     ├── database/
