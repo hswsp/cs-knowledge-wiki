@@ -6,7 +6,8 @@
 
     就是用户定义的一系列数据库操作，这些操作可以视为一个完成的逻辑处理工作单元，要么全部执行，要么全部不执行，是不可分割的工作单元。
 * 事务的四大特性（简称**ACID**）：
-*
+  *
+  
   * **原子性（Atomicity）**：一个事务是一个**不可分割**的工作单位，事务中包括的操作要么都做，要么都不做。
   * **一致性（Consistency）**：事务必须是使数据库**从一个一致性状态变到另一个一致性状态**。一致性与原子性是密切相关的。
   * **隔离性（Isolation）**：一个事务的执行不能被其他事务干扰。即一个事务内部的操作及使用的数据对并发的其他事务是隔离的，并发执行的各个事务之间**不能互相干扰**.
@@ -23,7 +24,7 @@
 多个事务互相影响，并没有隔离好，就是我们刚才提到的事务的四大特性中的 **隔离性（Isolation）** 出现了问题 事务的隔离级别并没有设置好，下面我们来看下事务究竟有哪几种隔离级别
 
 * 隔离级别
-*
+  *
   * **读未提交（read uncommitted RU）：** 一个事务还没提交时，它做的变更就能被别的事务看到
   * **读提交（read committed RC）：** 一个事务提交之后，它做的变更才会被其他事务看到。
   * **可重复读（repeatable read RR）：** 一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。
@@ -31,27 +32,27 @@
 
 我们来看个例子，更加直观的了解这**四种隔离级别**和上述问题**脏读，不可重复读，幻读**的关系
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBT4zDX6F7ySEKMuibX9sTTDPdRsBz5l3sLr6hz4MBXlfnWvOsDbaJAdw/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBT4zDX6F7ySEKMuibX9sTTDPdRsBz5l3sLr6hz4MBXlfnWvOsDbaJAdw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 下面我们讨论下当事务处于**不同隔离级别**情况时，V1,V2,V3分别是什么不同的值吧
 
 * **读未提交 (RU)：** A事务可以读取到B事务修改的值，即便B事务没有提交。所以V1就是200
-*
+  *
   * V1 : 200
   * V2 : 200
   * V3 : 200
 * **读提交（RC）：** 当B事务没有提交的时候，A事务不可以看到B事务修改的值，只有提交以后才可以看到
-*
+  *
   * V1 : 100
   * V2 : 200
   * V3 : 200
 * **可重复读（RR）：** A事务多次读取数据，数据总和第一次读取的一样，
-*
+  *
   * V1 : 100
   * V2 : 100
   * V3 : 200
 * **串行化（S）：** 事务A在执行的时候，事务B会被锁住，等事务A执行结束后，事务B才可以继续执行
-*
+  *
   * V1 : 100
   * V2 : 100
   * V3 : 200
@@ -79,7 +80,7 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 
 假如说当前数据库有一条这样的数据，假设是事务ID为100的事务插入的这条数据，那么此条数据的结构如下
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBI9vPIzQeKLF4SGBRPiaW3EZna72u52icicicCj2EseagfyxgzPpc6pW38A/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBI9vPIzQeKLF4SGBRPiaW3EZna72u52icicicCj2EseagfyxgzPpc6pW38A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 后来，事务200，事务300，分别来修改此数据
 
@@ -93,7 +94,7 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 
 所以此时的版本链如下
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBp4TSgicAYnMflGZSrE1C7pmf1uWq469YmKwjK18vqpurUW5jaQe5N2g/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBp4TSgicAYnMflGZSrE1C7pmf1uWq469YmKwjK18vqpurUW5jaQe5N2g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 我们每更改一次数据，就会插入一条undo日志，并且记录的**roll\_pointer**指针会指向上一条记录，如图所示
 
@@ -119,11 +120,11 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 * 当 trx\_id < min\_trx\_id 时 : 生成此数据的事务已经在生成readView前提交了， **可见**
 * 当 trx\_id >= max\_trx\_id 时 :表明生成该数据的事务是在生成ReadView后才开启的， **不可见**
 * 当 min\_trx\_id <= trx\_id < max\_trx\_id 时
-*
+  *
   * trx\_id 在 m\_ids 列表里面 ：生成ReadView时，活跃事务还未提交，**不可见**
   * trx\_id 不在 m\_ids 列表里面 ：事务在生成readView前已经提交了，**可见**
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBLtB2RHudnaWicshmTMAqUpUapm5NqHmc8gcKva4msKW03le8acP2faA/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBLtB2RHudnaWicshmTMAqUpUapm5NqHmc8gcKva4msKW03le8acP2faA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 如果某个版本数据对当前事务不可见，那么则要顺着版本链继续向前寻找下个版本，继续这样判断，以此类推。
 
@@ -169,7 +170,7 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 
 **同颜色代表是同一事务内的操作**
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBw8FicymJezS2vYsVBImtib4MPFfibsEYZ2tWsH79GvpVlbSjAU7kl2lQg/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBw8FicymJezS2vYsVBImtib4MPFfibsEYZ2tWsH79GvpVlbSjAU7kl2lQg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 * 来我们静下心来好好分析一下此时T4时刻事务300要读了，**究竟会读到什么数据**？
 
@@ -190,7 +191,7 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 3. 当T7时刻时，事务400读取当前数据
 4. 此时这条数据的版本链如下
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBbxmzw9UQEz0p2ciaxmHdNib9icTk1YFUSQYniaQu8u5qEnSjaiaVBcQBVgg/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaBbxmzw9UQEz0p2ciaxmHdNib9icTk1YFUSQYniaQu8u5qEnSjaiaVBcQBVgg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 此时 （**重新生成一致性视图ReadView**）
 
@@ -207,7 +208,7 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 3. 当T10时刻时，事务300读取当前数据
 4. 此时这条数据的版本链如下
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaB8YpicX5Z8UZ3Ijs70ZWq1v6j6CMNX1Kawibm8n1nxSYNibvBTHTXWESBg/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaB8YpicX5Z8UZ3Ijs70ZWq1v6j6CMNX1Kawibm8n1nxSYNibvBTHTXWESBg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 此时 （**重新生成一致性视图ReadView**）
 
@@ -245,7 +246,7 @@ MVCC是怎么实现的呢？它靠的就是**版本链**和**一致性视图**
 
 此时的版本链是
 
-![Image](https://mmbiz.qpic.cn/mmbiz\_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaB8YpicX5Z8UZ3Ijs70ZWq1v6j6CMNX1Kawibm8n1nxSYNibvBTHTXWESBg/640?wx\_fmt=png\&tp=webp\&wxfrom=5\&wx\_lazy=1\&wx\_co=1)
+![Image](https://mmbiz.qpic.cn/mmbiz_png/LLmKDTN3cY4phERXFZaKaEwYOtuXcoiaB8YpicX5Z8UZ3Ijs70ZWq1v6j6CMNX1Kawibm8n1nxSYNibvBTHTXWESBg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 当前数据的事务id是200，数据是E，在当前事务活跃列表里面，所以数据不可见，根据回滚指针找到上个版本，发现事务id是300，当前事务也是300，可见，所以读取的数据是**D**
 
