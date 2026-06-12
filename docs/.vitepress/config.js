@@ -422,6 +422,7 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: 'LSM Tree', link: '/storage/storage-engine/lsm-tree' },
+                { text: '聊聊 MySQL 事务与 MVCC', link: '/storage/storage-engine/mvcc' },
               ],
             },
             {
