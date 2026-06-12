@@ -455,7 +455,6 @@ export default defineConfig({
                 { text: '24 - Embedded Database Logic', link: '/storage/cmu15-445/24-embedded-database-logic' },
                 { text: '26 - Live Call-in Q&A Lecture', link: '/storage/cmu15-445/26-live-call-in-q-a-lecture' },
                 { text: 'Embedded Database Logic', link: '/storage/cmu15-445/embedded-database-logic' },
-                { text: '聊聊MySql事务,MVCC', link: '/storage/cmu15-445/mvcc' },
                 { text: '[CMU 15-445 中文笔记] CMU15-445笔记-存储篇', link: '/storage/cmu15-445/cmu15445-bi-ji/cmu15445-bi-ji-cun-chu-pian' },
                 { text: '[CMU 15-445 中文笔记] CMU15-445笔记-索引篇', link: '/storage/cmu15-445/cmu15445-bi-ji/cmu15445-bi-ji-suo-yin-pian' },
                 { text: '[CMU 15-445 中文笔记] CMU15-445笔记-优化篇', link: '/storage/cmu15-445/cmu15445-bi-ji/cmu15445-bi-ji-you-hua-pian' },
