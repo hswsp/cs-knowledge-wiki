@@ -244,12 +244,43 @@ export default defineConfig({
           '/ml/': [
             { text: '机器学习', items: [
               { text: '概览', link: '/ml/' },
+              { text: 'Mamba 模型', link: '/ml/mamba-model' },
             ] },
             {
-              text: 'Learn Claude Code →',
+              text: 'Learn Claude Code',
               collapsed: false,
               items: [
                 { text: '进入 Learn Claude Code', link: '/ml/learn-claude-code/' },
+              ],
+            },
+            {
+              text: 'AI 基础理论',
+              collapsed: true,
+              items: [
+                { text: '概览', link: '/ml/foundations/' },
+                { text: 'Transformer 架构', link: '/ml/foundations/transformer' },
+                { text: 'KV Cache 与推理优化', link: '/ml/foundations/kv-cache' },
+                { text: 'Mamba 与状态空间模型 (SSM)', link: '/ml/foundations/mamba-and-ssm' },
+                { text: 'Mamba 模型', link: '/ml/mamba-model' },
+                { text: '多模态 AI (Multimodal AI)', link: '/ml/foundations/multimodal-ai' },
+                { text: '扩散模型 (Diffusion Models)', link: '/ml/foundations/diffusion-models' },
+                { text: '从规则到表示学习', link: '/ml/foundations/representation-learning' },
+                { text: '信息检索基础', link: '/ml/foundations/information-retrieval' },
+              ],
+            },
+            {
+              text: 'Transformer 解读',
+              collapsed: true,
+              items: [
+                { text: '概览', link: '/ml/transformer/' },
+                { text: '整体结构、数据流与实现思路', link: '/ml/transformer/overall-architecture' },
+                { text: 'Embedding 层', link: '/ml/transformer/embedding' },
+                { text: 'Multi-Head Attention 层', link: '/ml/transformer/multi-head-attention' },
+                { text: 'LayerNorm 层', link: '/ml/transformer/layernorm' },
+                { text: 'Encoder 组装', link: '/ml/transformer/encoder' },
+                { text: 'Decoder 拼装', link: '/ml/transformer/decoder' },
+                { text: 'Transformer 组装', link: '/ml/transformer/transformer-assembly' },
+                { text: '“预训练+微调”范式', link: '/ml/transformer/pretrain-finetune' },
               ],
             },
           ],

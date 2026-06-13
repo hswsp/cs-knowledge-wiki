@@ -12,6 +12,7 @@
 - [Transformer 架构](./foundations/transformer)
 - [KV Cache 与推理优化](./foundations/kv-cache)
 - [Mamba 与状态空间模型 (SSM)](./foundations/mamba-and-ssm)
+- [Mamba 模型](./mamba-model)
 - [多模态 AI (Multimodal AI)](./foundations/multimodal-ai)
 - [扩散模型 (Diffusion Models)](./foundations/diffusion-models)
 - [从规则到表示学习](./foundations/representation-learning)
