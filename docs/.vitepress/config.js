@@ -245,6 +245,21 @@ export default defineConfig({
             { text: '机器学习', items: [
                 { text: '概览', link: '/ml/' },
             ] },
+            {
+              text: 'Transformer 解读',
+              collapsed: false,
+              items: [
+                { text: '概览', link: '/ml/transformer/' },
+                { text: '整体结构、数据流与实现思路', link: '/ml/transformer/overall-architecture' },
+                { text: 'Embedding 层', link: '/ml/transformer/embedding' },
+                { text: 'Multi-Head Attention 层', link: '/ml/transformer/multi-head-attention' },
+                { text: 'LayerNorm 层', link: '/ml/transformer/layernorm' },
+                { text: 'Encoder 组装', link: '/ml/transformer/encoder' },
+                { text: 'Decoder 拼装', link: '/ml/transformer/decoder' },
+                { text: 'Transformer 组装', link: '/ml/transformer/transformer-assembly' },
+                { text: '“预训练+微调”范式', link: '/ml/transformer/pretrain-finetune' },
+              ],
+            },
           ],'/java/': [
             { text: 'Java', items: [
                 { text: '概览', link: '/java/' },

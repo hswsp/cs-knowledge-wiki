@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: CS 知识库
-  text: 我的计算机科学的全栈笔记
+  text: 个人计算机科学的全栈笔记
   tagline: 数学 · 算法 · 机器学习 · Java · C++ · 存储 · 系统设计 · 工具 · OS 
   image:
     src: /logo.svg
