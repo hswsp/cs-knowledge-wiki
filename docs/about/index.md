@@ -22,7 +22,7 @@ description: "My name is Champagne. I'm a full-time full stack engineer and part
 ## 笔记与博客
 
 - 语雀：[yangguangfanxing](https://www.yuque.com/yangguangfanxing)
-- 旧博客（Hexo）：[hswsp.github.io/blog](https://hswsp.github.io/blog)
+- 旧博客（Hexo）：[https://www.blog.spphoto.top](https://www.blog.spphoto.top)
 - 本站源码：[cs-knowledge-wiki](https://github.com/hswsp/cs-knowledge-wiki)
 
 ## 联系方式
