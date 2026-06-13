@@ -6,6 +6,8 @@
 
 # raftexample设计思路
 
+![raftexample 设计图](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/3cf837aabc570c4b.svg)
+
 raftexample由三个组件组成：由raft支持的kv存储、REST API服务器、和基于etcd/raft实现的共识服务器。
 
 - 由raft支持的kv存储是一个持有所有已提交的键值对的map。该存储建立了raft服务器和REST服务器间的通信桥梁。

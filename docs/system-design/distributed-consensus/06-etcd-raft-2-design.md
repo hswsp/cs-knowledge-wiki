@@ -2,6 +2,8 @@
 
 # 引言
 
+![etcd/raft 职责示意图](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/120f1fa9464b8f4b.svg)
+
 etcd/raft将Raft算法的实现分为了3个模块：Raft状态机、存储模块、传输模块。
 
 Raft状态机完全由etcd/raft负责，raft结构体即为其实现。使用etcd/raft的开发者不能直接操作raft结构体，只能通过etcd/raft提供的Node接口对其进行操作。
