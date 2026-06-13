@@ -26,10 +26,4 @@
 - [中文笔记](./cmu15-445/cmu15445-bi-ji/cmu15445-bi-ji-cun-chu-pian)（存储、索引、执行、优化）
 - [项目实验 (CMU-DB)](./cmu15-445/cmu-db/project-c-primer)（PROJECT #0 – #4）
 
-## 计划中
-
-- MySQL 索引与优化
-- 事务与 MVCC
-- Redis 数据结构与原理
-
 > 分布式一致性（Paxos / Raft）请见 [系统设计 → 分布式共识](../system-design/#分布式共识)

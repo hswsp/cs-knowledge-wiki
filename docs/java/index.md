@@ -20,12 +20,6 @@
 
 - [Spring Cloud 简介](./spring/spring-cloud-intro)
 
-## 计划中
-
-- 集合框架
-- MyBatis
-- Java 面试高频题
-
 ---
 
 *持续更新中...*
