@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: CS 知识库
-  text: 从基础到实战的全栈笔记
-  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 存储 · 系统设计 · 工具 · OS —— 持续记录，认真分享。
+  text: 我的计算机科学的全栈笔记
+  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 存储 · 系统设计 · 工具 · OS 
   image:
     src: /logo.svg
     alt: CS Knowledge Wiki
