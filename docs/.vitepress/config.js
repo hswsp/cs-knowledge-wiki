@@ -241,40 +241,7 @@ export default defineConfig({
     ],
   },
 ],
-          '/ml/': [
-            { text: '机器学习', items: [
-                { text: '概览', link: '/ml/' },
-            ] },
-            {
-              text: 'AI 基础理论',
-              collapsed: false,
-              items: [
-                { text: '概览', link: '/ml/foundations/' },
-                { text: 'Transformer 架构', link: '/ml/foundations/transformer' },
-                { text: 'KV Cache 与推理优化', link: '/ml/foundations/kv-cache' },
-                { text: 'Mamba 与状态空间模型 (SSM)', link: '/ml/foundations/mamba-and-ssm' },
-                { text: '多模态 AI (Multimodal AI)', link: '/ml/foundations/multimodal-ai' },
-                { text: '扩散模型 (Diffusion Models)', link: '/ml/foundations/diffusion-models' },
-                { text: '从规则到表示学习', link: '/ml/foundations/representation-learning' },
-                { text: '信息检索基础', link: '/ml/foundations/information-retrieval' },
-              ],
-            },
-            {
-              text: 'Transformer 解读',
-              collapsed: false,
-              items: [
-                { text: '概览', link: '/ml/transformer/' },
-                { text: '整体结构、数据流与实现思路', link: '/ml/transformer/overall-architecture' },
-                { text: 'Embedding 层', link: '/ml/transformer/embedding' },
-                { text: 'Multi-Head Attention 层', link: '/ml/transformer/multi-head-attention' },
-                { text: 'LayerNorm 层', link: '/ml/transformer/layernorm' },
-                { text: 'Encoder 组装', link: '/ml/transformer/encoder' },
-                { text: 'Decoder 拼装', link: '/ml/transformer/decoder' },
-                { text: 'Transformer 组装', link: '/ml/transformer/transformer-assembly' },
-                { text: '“预训练+微调”范式', link: '/ml/transformer/pretrain-finetune' },
-              ],
-            },
-          ],'/java/': [
+          '/ml/': [],'/java/': [
             { text: 'Java', items: [
                 { text: '概览', link: '/java/' },
                 { text: 'Java SPI 机制', link: '/java/basics/java-spi' },
@@ -319,7 +286,45 @@ export default defineConfig({
       { text: '进入架构设计专题', link: '/system-design/architecture/' },
     ],
   },
+  {
+    text: '分布式共识 →',
+    collapsed: false,
+    items: [
+      { text: '进入分布式共识专题', link: '/system-design/distributed-consensus/' },
+    ],
+  },
 ],
+          '/system-design/distributed-consensus/': [
+            { text: '分布式共识', items: [{ text: '概览', link: '/system-design/distributed-consensus/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
+            {
+              text: 'Raft 算法总结',
+              collapsed: true,
+              items: [
+                { text: 'Raft算法总结（一）', link: '/system-design/distributed-consensus/01-raft-summary-1' },
+                { text: 'Raft算法总结（二）', link: '/system-design/distributed-consensus/02-raft-summary-2' },
+                { text: '如何解决"幽灵复现"？', link: '/system-design/distributed-consensus/03-ghost-reappearance' },
+              ],
+            },
+            {
+              text: 'Gossip 协议',
+              collapsed: true,
+              items: [
+                { text: 'Gossip 协议详解', link: '/system-design/distributed-consensus/04-gossip-protocol' },
+              ],
+            },
+            {
+              text: 'etcd/raft 源码解读',
+              collapsed: true,
+              items: [
+                { text: '（一）raftexample', link: '/system-design/distributed-consensus/05-etcd-raft-1-raftexample' },
+                { text: '（二）总体设计', link: '/system-design/distributed-consensus/06-etcd-raft-2-design' },
+                { text: '（三）Raft选举', link: '/system-design/distributed-consensus/07-etcd-raft-3-election' },
+                { text: '（四）Raft日志', link: '/system-design/distributed-consensus/08-etcd-raft-4-log' },
+                { text: '（五）Raft成员变更', link: '/system-design/distributed-consensus/09-etcd-raft-5-membership' },
+                { text: '（六）只读请求优化', link: '/system-design/distributed-consensus/10-etcd-raft-6-readonly' },
+              ],
+            },
+          ],
           '/system-design/design-pattern/': [
             { text: '设计模式', items: [{ text: '概览', link: '/system-design/design-pattern/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
             {
