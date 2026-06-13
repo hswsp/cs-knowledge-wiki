@@ -241,7 +241,92 @@ export default defineConfig({
     ],
   },
 ],
-          '/ml/': [],'/java/': [
+          '/ml/': [
+            { text: '机器学习', items: [
+              { text: '概览', link: '/ml/' },
+            ] },
+            {
+              text: 'Learn Claude Code →',
+              collapsed: false,
+              items: [
+                { text: '进入 Learn Claude Code', link: '/ml/learn-claude-code/' },
+              ],
+            },
+          ],
+          '/ml/learn-claude-code/': [
+            { text: 'Learn Claude Code', items: [
+              { text: '概览', link: '/ml/learn-claude-code/' },
+              { text: '← 返回机器学习', link: '/ml/' },
+            ] },
+            {
+              text: '核心闭环',
+              collapsed: false,
+              items: [
+                { text: 's01 Agent 循环', link: '/ml/learn-claude-code/s01' },
+                { text: 's02 工具使用', link: '/ml/learn-claude-code/s02' },
+                { text: 's03 待办写入', link: '/ml/learn-claude-code/s03' },
+                { text: 's04 子代理', link: '/ml/learn-claude-code/s04' },
+                { text: 's05 技能系统', link: '/ml/learn-claude-code/s05' },
+                { text: 's06 上下文压缩', link: '/ml/learn-claude-code/s06' },
+              ],
+            },
+            {
+              text: '系统加固',
+              collapsed: true,
+              items: [
+                { text: 's07 权限系统', link: '/ml/learn-claude-code/s07' },
+                { text: 's08 Hook 系统', link: '/ml/learn-claude-code/s08' },
+                { text: 's09 记忆系统', link: '/ml/learn-claude-code/s09' },
+                { text: 's10 系统提示词', link: '/ml/learn-claude-code/s10' },
+                { text: 's11 错误恢复', link: '/ml/learn-claude-code/s11' },
+              ],
+            },
+            {
+              text: '任务运行时',
+              collapsed: true,
+              items: [
+                { text: 's12 任务系统', link: '/ml/learn-claude-code/s12' },
+                { text: 's13 后台任务', link: '/ml/learn-claude-code/s13' },
+                { text: 's14 定时调度', link: '/ml/learn-claude-code/s14' },
+              ],
+            },
+            {
+              text: '多 Agent 平台',
+              collapsed: true,
+              items: [
+                { text: 's15 Agent 团队', link: '/ml/learn-claude-code/s15' },
+                { text: 's16 团队协议', link: '/ml/learn-claude-code/s16' },
+                { text: 's17 自主代理', link: '/ml/learn-claude-code/s17' },
+                { text: 's18 Worktree 隔离', link: '/ml/learn-claude-code/s18' },
+                { text: 's19 MCP 与插件', link: '/ml/learn-claude-code/s19' },
+              ],
+            },
+            {
+              text: '参考资料',
+              collapsed: true,
+              items: [
+                { text: '参考资料索引', link: '/ml/learn-claude-code/reference/' },
+                { text: '系统全景总览', link: '/ml/learn-claude-code/reference/s00-architecture-overview' },
+                { text: '为什么这样安排章节顺序', link: '/ml/learn-claude-code/reference/s00d-chapter-order-rationale' },
+                { text: '本仓库代码阅读顺序', link: '/ml/learn-claude-code/reference/s00f-code-reading-order' },
+                { text: '参考仓库模块映射图', link: '/ml/learn-claude-code/reference/s00e-reference-module-map' },
+                { text: '教学范围与取舍', link: '/ml/learn-claude-code/reference/teaching-scope' },
+                { text: '术语表', link: '/ml/learn-claude-code/reference/glossary' },
+                { text: '关键数据结构地图', link: '/ml/learn-claude-code/reference/data-structures' },
+                { text: '对象与模块关系图', link: '/ml/learn-claude-code/reference/entity-map' },
+                { text: '查询控制平面', link: '/ml/learn-claude-code/reference/s00a-query-control-plane' },
+                { text: '一次请求生命周期', link: '/ml/learn-claude-code/reference/s00b-one-request-lifecycle' },
+                { text: 'Query 续行模型', link: '/ml/learn-claude-code/reference/s00c-query-transition-model' },
+                { text: '工具控制平面', link: '/ml/learn-claude-code/reference/s02a-tool-control-plane' },
+                { text: '工具执行运行时', link: '/ml/learn-claude-code/reference/s02b-tool-execution-runtime' },
+                { text: '消息与 Prompt 装配流水线', link: '/ml/learn-claude-code/reference/s10a-message-prompt-pipeline' },
+                { text: '运行时任务模型', link: '/ml/learn-claude-code/reference/s13a-runtime-task-model' },
+                { text: '队友-任务-车道模型', link: '/ml/learn-claude-code/reference/team-task-lane-model' },
+                { text: 'MCP 能力层地图', link: '/ml/learn-claude-code/reference/s19a-mcp-capability-layers' },
+              ],
+            },
+          ],
+          '/java/': [
             { text: 'Java', items: [
                 { text: '概览', link: '/java/' },
                 { text: 'Java SPI 机制', link: '/java/basics/java-spi' },

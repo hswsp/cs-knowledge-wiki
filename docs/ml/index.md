@@ -2,6 +2,10 @@
 
 > 从经典机器学习到深度学习，理论与实践并重。
 
+## Learn Claude Code
+
+- [进入 Learn Claude Code](./learn-claude-code/)
+
 ## AI 基础理论
 
 - [概览](./foundations/)
