@@ -1,6 +1,7 @@
 # Mamba 模型
 
 > 摘录自 [一文读懂：Mamba 模型，transformer的挑战者](https://zhuanlan.zhihu.com/p/26906183708?share_code=dXkNbr6fwRzE&utm_psn=2027800941852639363)
+>
 > Mamba 作为近期的深度学习新架构，被视为为超过transformer的序列建模构架，从文本nlp，语音到视觉处理，相关应用、研究、变体遍地开花。可以说，原本用Transformer做的工作都可以在mamba上重做一遍。
 
 
