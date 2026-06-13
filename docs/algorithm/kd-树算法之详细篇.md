@@ -1,150 +1,195 @@
 ---
-title: "kd 树算法之详细篇"
-description: "摘录自 https://zhuanlan.zhihu.com/p/23966698导语：在上一篇《kd 树算法之思路篇》中，我们介绍了如何用二叉树格式记录空间内的距离，并以其为依据进行高效的索引。在本篇文章中，我们将详细介绍 kd 树的构造以及 kd 树上的 kNN 算法。阅读本文前请掌握 k..."
+title: "kd 树的结构"
+description: "kd树是一个二叉树结构，它的每一个节点记载了[特征坐标，切分轴，指向左枝的指针，指向右枝的指针]。"
 ---
 
-# kd 树算法之详细篇
-
-**摘录自 **[https://zhuanlan.zhihu.com/p/23966698](https://zhuanlan.zhihu.com/p/23966698)
-
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704896011391-6e2d1883-4219-4f01-8046-f1e121887524.png)
-**导语**：在上一篇《[kd 树算法之思路篇](https://link.zhihu.com/?target=https%3A//www.joinquant.com/post/2627)》中，我们介绍了如何用二叉树格式记录空间内的距离，并以其为依据进行高效的索引。在本篇文章中，我们将详细介绍 kd 树的构造以及 kd 树上的 kNN 算法。
-阅读本文前请掌握 [kNN](https://www.joinquant.com/view/community/detail/a98b7021e7391c62f6369207242700b2)（**level-1**）的知识。
 # kd 树的结构
 kd树是一个二叉树结构，它的每一个节点记载了**[特征坐标，切分轴，指向左枝的指针，指向右枝的指针]**。
-其中，特征坐标是线性空间1813718137中的一个点1813718137。
-切分轴由一个整数1813718137表示，这里1813718137，是我们在 n 维空间中沿第 r 维进行一次分割。
-节点的左枝和右枝分别都是 kd 树，并且满足：如果 y 是左枝的一个特征坐标，那么1813718137并且如果 z 是右枝的一个特征坐标，那么1813718137。
-给定一个数据样本集 1813718137和切分轴 r , 以下递归算法将构建一个基于该数据集的 kd 树，每一次循环制作一个节点：
-- 如果 1813718137，记录 S 中唯一的一个点为当前节点的特征数据，并且不设左枝和右枝。（1813718137 指集合 S 中元素的数量）
-- 如果 1813718137：
-- 将 1813718137 内所有点按照第 r 个坐标的大小进行排序；
-- 选出该排列后的中位元素（如果一共有偶数个元素，则选择中位左边或右边的元素，左或右并无影响），作为当前节点的特征坐标，并且记录切分轴 r；
-- 将 1813718137 设为在 S 中所有排列在中位元素之前的元素； 1813718137 设为在 S 中所有排列在中位元素后的元素；
-- 当前节点的左枝设为以 1813718137 为数据集并且 r 为切分轴制作出的 kd 树；当前节点的右枝设为以 1813718137 为数据集并且 r 为切分轴制作出的 kd 树。再设 1813718137。（这里，我们想轮流沿着每一个维度进行分割；1813718137 是因为一共有 n 个维度，在沿着最后一个维度进行分割之后再重新回到第一个维度。）
-# 构造 kd 树的例子
-上面抽象的定义和算法确实是很不好理解，举一个例子会清楚很多。首先随机在 1813718137 中随机生成 13 个点作为我们的数据集。起始的切分轴1813718137；这里 1813718137 对应 1813718137 轴，而1813718137 对应 y 轴。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896743-46c2e35c-a24b-43ee-932e-3aa512bf999d.png)
+其中，特征坐标是线性空间![image](https://cdn.nlark.com/yuque/__latex/5985edecf98d01a96a170aafdff9d785.svg)中的一个点![image](https://cdn.nlark.com/yuque/__latex/9b9c0130978c524b8fe7b84fac3473dc.svg)。
+
+切分轴由一个整数![image](https://cdn.nlark.com/yuque/__latex/72cb3a229067770aeb6caa625a65a1a1.svg)表示，这里![image](https://cdn.nlark.com/yuque/__latex/ed7affcb25d7aaf9f202594326d5b90c.svg)，是我们在 n 维空间中沿第 r 维进行一次分割。
+
+节点的左枝和右枝分别都是 kd 树，并且满足：如果 y 是左枝的一个特征坐标，那么![image](https://cdn.nlark.com/yuque/__latex/b28650547bcdc30b30f32e931ad7eac4.svg)并且如果 z 是右枝的一个特征坐标，那么![image](https://cdn.nlark.com/yuque/__latex/1cca87f5d9f7a09d4ce04ce5209eead3.svg)。
+
+给定一个数据样本集 ![image](https://cdn.nlark.com/yuque/__latex/58a33a83a0a81d378d45e9cbb39f4a5d.svg)和切分轴 r , 以下递归算法将构建一个基于该数据集的 kd 树，每一次循环制作一个节点：
+
++ 如果 ![image](https://cdn.nlark.com/yuque/__latex/548cf77809eeb91ee73cae4848fda6a8.svg)，记录 S 中唯一的一个点为当前节点的特征数据，并且不设左枝和右枝。（![image](https://cdn.nlark.com/yuque/__latex/7b373ab7c130bb343daa9a2bdbcab738.svg) 指集合 S 中元素的数量）
++ 如果 ![image](https://cdn.nlark.com/yuque/__latex/6e5ad714cd383fd3d97dc269cbc849cb.svg)：
+    - 将 ![image](https://cdn.nlark.com/yuque/__latex/55fc237afbe535f7d8434985b848a6a7.svg) 内所有点按照第 r 个坐标的大小进行排序；
+    - 选出该排列后的中位元素（如果一共有偶数个元素，则选择中位左边或右边的元素，左或右并无影响），作为当前节点的特征坐标，并且记录切分轴 r；
+    - 将 ![image](https://cdn.nlark.com/yuque/__latex/7b622e9068e690067d403383d1670850.svg) 设为在 S 中所有排列在中位元素之前的元素； ![image](https://cdn.nlark.com/yuque/__latex/b0f2b72982bfb5baba405da86fa1a964.svg) 设为在 S 中所有排列在中位元素后的元素；
+    - 当前节点的左枝设为以 ![image](https://cdn.nlark.com/yuque/__latex/7b622e9068e690067d403383d1670850.svg) 为数据集并且 r 为切分轴制作出的 kd 树；当前节点的右枝设为以 ![image](https://cdn.nlark.com/yuque/__latex/b0f2b72982bfb5baba405da86fa1a964.svg) 为数据集并且 r 为切分轴制作出的 kd 树。再设 ![image](https://cdn.nlark.com/yuque/__latex/104f47b246f4f5d50eba5f9d71587db9.svg)。（这里，我们想轮流沿着每一个维度进行分割；![image](https://cdn.nlark.com/yuque/__latex/e6af7d388ea23dd009057eadfdf6a668.svg) 是因为一共有 n 个维度，在沿着最后一个维度进行分割之后再重新回到第一个维度。）
+
+# 构造 kd 树的例子
+上面抽象的定义和算法确实是很不好理解，举一个例子会清楚很多。首先随机在 ![image](https://cdn.nlark.com/yuque/__latex/6999ee7e3933e412077151a90d0a8488.svg) 中随机生成 13 个点作为我们的数据集。起始的切分轴![image](https://cdn.nlark.com/yuque/__latex/e1ca1bd3f2848acc164bc8f66db61675.svg)；这里 ![image](https://cdn.nlark.com/yuque/__latex/e1ca1bd3f2848acc164bc8f66db61675.svg) 对应 ![image](https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg) 轴，而![image](https://cdn.nlark.com/yuque/__latex/02bcfdbb3c56e42832b1196bdea196d6.svg) 对应 y 轴。
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896743-46c2e35c-a24b-43ee-932e-3aa512bf999d.png)
+
 首先先沿 x 坐标进行切分，我们选出 x 坐标的中位点，获取最根部节点的坐标
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896757-c3ba976b-b7b9-4ba1-905e-6fdaf619a3fb.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896757-c3ba976b-b7b9-4ba1-905e-6fdaf619a3fb.png)
+
 并且按照该点的x坐标将空间进行切分，所有 x 坐标小于 6.27 的数据用于构建左枝，x坐标大于 6.27 的点用于构建右枝。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896751-c6112a52-6e68-4ddd-ae54-b06ee39b60c4.png)
-在下一步中 1813718137 对应 y 轴，左右两边再按照 y 轴的排序进行切分，中位点记载于左右枝的节点。得到下面的树，左边的 x 是指这该层的节点都是沿 x 轴进行分割的。
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896751-c6112a52-6e68-4ddd-ae54-b06ee39b60c4.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896739-8b4cf2b7-3f22-420f-bfcd-cd2b06f22af7.png)
+在下一步中 ![image](https://cdn.nlark.com/yuque/__latex/6462d06bfb4f2f028a12793ce3dab9ad.svg) 对应 y 轴，左右两边再按照 y 轴的排序进行切分，中位点记载于左右枝的节点。得到下面的树，左边的 x 是指这该层的节点都是沿 x 轴进行分割的。
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896739-8b4cf2b7-3f22-420f-bfcd-cd2b06f22af7.png)
+
 空间的切分如下
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896736-48d05b24-d29e-4157-9724-ba91d485cd76.png)
-下一步中 1813718137，对应 x 轴，所以下面再按照 x 坐标进行排序和切分，有
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895896736-48d05b24-d29e-4157-9724-ba91d485cd76.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897057-baecb98d-044f-4fe0-a13a-0075195355c9.png)
+下一步中 ![image](https://cdn.nlark.com/yuque/__latex/6e1a7fab6291168df9a77f9ff9cd7a5a.svg)，对应 x 轴，所以下面再按照 x 坐标进行排序和切分，有
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897050-f5694278-a8a8-4f40-923f-6982d0bc3be7.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897057-baecb98d-044f-4fe0-a13a-0075195355c9.png)
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897050-f5694278-a8a8-4f40-923f-6982d0bc3be7.png)
+
 **最后每一部分都只剩一个点**，将他们记在最底部的节点中。因为不再有未被记录的点，所以不再进行切分。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897070-9c6ad6a9-dc6d-464d-9129-82f11dfe692b.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897070-9c6ad6a9-dc6d-464d-9129-82f11dfe692b.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897056-c9b7bb25-a014-4c6a-836b-862a20817cfd.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897056-c9b7bb25-a014-4c6a-836b-862a20817cfd.png)
+
 就此完成了 kd 树的构造。
+
 # kd 树上的 kNN 算法
 给定一个构建于一个样本集的 kd 树，下面的算法可以寻找距离某个点 p 最近的 k 个样本。
-- 设 L 为一个有 k 个空位的列表，用于保存已搜寻到的最近点。
-- 根据 p 的坐标值和每个节点的切分向下搜索（也就是说，如果树的节点是照 1813718137 进行切分，并且 p 的 r 坐标小于 a，则向左枝进行搜索；反之则走右枝）。
-- 当达到一个底部节点时，将其标记为访问过。如果 L 里不足 k 个点，则将当前节点的特征坐标加入 L ；如果 L 不为空并且当前节点的特征与 p 的距离**小于 L 里最长**的距离，则用当前特征替换掉 L 中离 p 最远的点。
-- 如果当前节点不是整棵树最顶端节点，执行 (a)；反之，输出 L，算法完成。
-- 向上爬一个节点。如果当前（向上爬之后的）节点未曾被访问过，将其标记为被访问过，然后执行 (b) 和 (c)；如果当前节点被访问过，再次执行 (a)。
-- 如果此时 L 里不足 k 个点，则将节点特征加入 L；如果 L 中已满 k 个点，且当前节点与 p 的距离小于 L 里最长的距离，则用节点特征替换掉 L 中离最远的点。
-- **计算 p 和当前节点切分线的距离。如果该距离大于等于 L 中距离 p 最远的距离并且 L 中已有 k 个点，则在切分线另一边不会有更近的点**，执行 (4)；如果该距离小于 L 中最远的距离或者 L 中不足 k 个点，则切分线另一边可能有更近的点，因此在当前节点的另一个枝从 (2) 开始执行。
+
+1. 设 L 为一个有 k 个空位的列表，用于保存已搜寻到的最近点。
+2. 根据 p 的坐标值和每个节点的切分向下搜索（也就是说，如果树的节点是照 ![image](https://cdn.nlark.com/yuque/__latex/8e402158bc6f97c5be60fd4178aa23dc.svg) 进行切分，并且 p 的 r 坐标小于 a，则向左枝进行搜索；反之则走右枝）。
+3. 当达到一个底部节点时，将其标记为访问过。如果 L 里不足 k 个点，则将当前节点的特征坐标加入 L ；如果 L 不为空并且当前节点的特征与 p 的距离**小于 L 里最长**的距离，则用当前特征替换掉 L 中离 p 最远的点。
+4. 如果当前节点不是整棵树最顶端节点，执行 (a)；反之，输出 L，算法完成。
+    1. 向上爬一个节点。如果当前（向上爬之后的）节点未曾被访问过，将其标记为被访问过，<u>然后执行 (b) 和 (c)；</u>如果当前节点被访问过，再次执行 (a)。
+    2. 如果此时 L 里不足 k 个点，则将节点特征加入 L；如果 L 中已满 k 个点，且当前节点与 p 的距离小于 L 里最长的距离，则用节点特征替换掉 L 中离最远的点。
+    3. **计算 p 和当前节点切分线的距离。如果该距离大于等于 L 中距离 p 最远的距离并且 L 中已有 k 个点，则在切分线另一边不会有更近的点**，执行 (4)；如果该距离小于 L 中最远的距离或者 L 中不足 k 个点，则切分线另一边可能有更近的点，因此在当前节点的另一个枝从 (2) 开始执行。
+
 # 应用例子
-设我们想查询的点为 1813718137，设距离函数是普通的 1813718137 距离，我们想找距离问题点最近的 1813718137 个点。如下：
+设我们想查询的点为 ![image](https://cdn.nlark.com/yuque/__latex/e6c11871059bf26accb1bb2ab3499815.svg)，设距离函数是普通的 ![image](https://cdn.nlark.com/yuque/__latex/12ea5d8dd1e9b2b63ca602dd183dde08.svg) 距离，我们想找距离问题点最近的 ![image](https://cdn.nlark.com/yuque/__latex/83aee1528ac6365e65df29b11c1f0a91.svg) 个点。如下：
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897072-b9f27b1a-9820-4c50-ac62-1eb1f1c0e9c5.png)
-首先执行 (2)，我们按照切分找到最底部节点。首先，我们在顶部开始
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897072-b9f27b1a-9820-4c50-ac62-1eb1f1c0e9c5.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897456-e0bbddbc-de2f-489c-8eaf-2c1b3dc27052.png)
+首先执行 (2)，我们按照切分找到最底部节点。首先，我们在顶部开始  
+
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897456-e0bbddbc-de2f-489c-8eaf-2c1b3dc27052.png)
+
 和这个节点的 x 轴比较一下，
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897369-f50fcc60-9432-4aa9-9fba-8420357f3eb5.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897369-f50fcc60-9432-4aa9-9fba-8420357f3eb5.png)
+
 p 的 x 轴更小。因此我们向左枝进行搜索：
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897466-4777db9c-0707-4d7c-8147-22d674b3fde8.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897466-4777db9c-0707-4d7c-8147-22d674b3fde8.png)
+
 这次对比 y 轴，
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897528-9f67ee6a-8005-4d8a-aefb-c36c295e5750.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897528-9f67ee6a-8005-4d8a-aefb-c36c295e5750.png)
+
 p 的 y 值更小，因此向左枝进行搜索：
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897549-f67a80d3-1ea1-48ba-9ca5-781b0931a27e.png)
-这个节点只有一个子枝，就不需要对比了。由此找到了最底部的节点 (−4.6,−10.55)。
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897549-f67a80d3-1ea1-48ba-9ca5-781b0931a27e.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897708-c890d782-9dd7-49b4-b708-3d2175e15ce2.png)
-在二维图上是
+这个节点只有一个子枝，就不需要对比了。由此找到了最底部的节点 (−4.6,−10.55)。  
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897799-f08603b3-a412-40f4-a7b9-2572d87e86b2.png)
-此时我们执行 (3)。将当前结点标记为访问过，并记录下 1813718137。啊，访问过的节点就在二叉树上显示为被划掉的好了。
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897708-c890d782-9dd7-49b4-b708-3d2175e15ce2.png)
+
+在二维图上是  
+
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897799-f08603b3-a412-40f4-a7b9-2572d87e86b2.png)
+
+此时我们执行 (3)。将当前结点标记为访问过，并记录下 ![image](https://cdn.nlark.com/yuque/__latex/52897842c81b35c300aa6567f5284238.svg)。啊，访问过的节点就在二叉树上显示为被划掉的好了。
+
 然后执行 (4)，嗯，不是最顶端节点。好，执行 (a)，我爬。上面的是 (−6.88,−5.4)。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897812-121c2d44-9e9f-487b-8901-9ab9a88c5ff3.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897812-121c2d44-9e9f-487b-8901-9ab9a88c5ff3.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897886-12a59fc8-e74a-4ae5-a8cd-3f98abde87d3.png)
-执行 (b)，因为我们记录下的点只有一个，小于 k=3，所以也将当前节点记录下，有 1813718137.再执行 (c)，因为当前节点的左枝是空的，所以直接跳过，回到步骤 (4)。(4) 看了一眼，好，不是顶部，交给你了，(a)。于是乎 (a) 又往上爬了一节。
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897886-12a59fc8-e74a-4ae5-a8cd-3f98abde87d3.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897906-e1972097-612d-4804-897a-c4c6910e5536.png)
+执行 (b)，因为我们记录下的点只有一个，小于 k=3，所以也将当前节点记录下，有 ![image](https://cdn.nlark.com/yuque/__latex/48933239d8da52e03037e77f27c993fb.svg).再执行 (c)，因为当前节点的左枝是空的，所以直接跳过，回到步骤 (4)。(4) 看了一眼，好，不是顶部，交给你了，(a)。于是乎 (a) 又往上爬了一节。  
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898063-4f03ea8f-6d87-4960-b2f0-8bc6e663f50b.png)
-(b) 说，由于还是不够三个点，于是将当前点也记录下，有 1813718137。当然，当前结点变为被访问过的。
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895897906-e1972097-612d-4804-897a-c4c6910e5536.png)
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898063-4f03ea8f-6d87-4960-b2f0-8bc6e663f50b.png)
+
+(b) 说，由于还是不够三个点，于是将当前点也记录下，有 ![image](https://cdn.nlark.com/yuque/__latex/98bda2da2665f344f5581ac1b9c1fc4e.svg)。当然，当前结点变为被访问过的。
+
 (c) 又发现，当前节点有其他的分枝，并且经计算得出 p 点和 L 中的三个点的距离分别是 `6.62`,`5.89`,`3.10`，但是 p 和当前节点的分割线的距离只有 2.14，小于与 L 的最大距离：
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898124-795b6d10-5f1f-4e1a-a605-f503b0f9ac71.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898124-795b6d10-5f1f-4e1a-a605-f503b0f9ac71.png)
+
 因此，在分割线的另一端可能有更近的点。于是我们在当前结点的另一个分枝从头执行 (2)。好，我们在红线这里：
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898214-8eda2767-4b5d-4fb2-8932-ffaaf661328b.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898214-8eda2767-4b5d-4fb2-8932-ffaaf661328b.png)
+
 要用 p 和这个节点比较 x 坐标:
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898181-61679bbf-bfba-4609-b980-591781efefc2.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898181-61679bbf-bfba-4609-b980-591781efefc2.png)
+
 p 的 x 坐标更大，因此探索右枝 (1.75,12.26)，并且发现右枝已经是最底部节点，因此启动 (3)。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898168-a76f912c-af99-459d-86fa-a897544383b2.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898168-a76f912c-af99-459d-86fa-a897544383b2.png)
+
 经计算，(1.75,12.26) 与 p 的距离是 17.48，要大于 p 与 L 的距离，因此我们不将其放入记录中。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898467-080c86bb-4cc0-43ba-a068-b083328a045d.png)
-然后 (4) 判断出不是顶端节点，呼出 (a)，爬。
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898467-080c86bb-4cc0-43ba-a068-b083328a045d.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898466-4cf2ee38-9aa6-42b0-8dcc-9a326e41109a.png)
+然后 (4) 判断出不是顶端节点，呼出 (a)，爬。  
+
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898466-4cf2ee38-9aa6-42b0-8dcc-9a326e41109a.png)
+
 (b) 出来一算，这个节点与 p 的距离是 4.91，要小于 p 与 L 的最大距离 6.62。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898503-76f4c2d9-fe12-4610-992a-7835dff4d128.png)
-因此，我们用这个新的节点替代 L 中离 p 最远的 1813718137。
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898503-76f4c2d9-fe12-4610-992a-7835dff4d128.png)
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898516-7e6d9945-dbfa-4ec4-a934-a5e9f4a07605.png)
+因此，我们用这个新的节点替代 L 中离 p 最远的 ![image](https://cdn.nlark.com/yuque/__latex/db9e46b3197f7bdcbeafac9302f1d8dc.svg)。
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898516-7e6d9945-dbfa-4ec4-a934-a5e9f4a07605.png)
+
 然后 (c) 又来了，我们比对 p 和当前节点的分割线的距离
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898607-52d3ba6b-9eb2-44e7-80f8-ba88dcc57124.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898607-52d3ba6b-9eb2-44e7-80f8-ba88dcc57124.png)
+
 这个距离小于 L 与 p 的最小距离，因此我们要到当前节点的另一个枝执行 (2)。当然，那个枝只有一个点，直接到 (3)。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898779-5934ee1d-39aa-4842-b9c5-8a3ad1e16460.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898779-5934ee1d-39aa-4842-b9c5-8a3ad1e16460.png)
+
 计算距离发现这个点离 p 比 L 更远，因此不进行替代。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898791-6e8ff2bd-4c3d-4047-b351-4bf68029b580.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898791-6e8ff2bd-4c3d-4047-b351-4bf68029b580.png)
+
 (4) 发现不是顶点，所以呼出 (a)。我们向上爬，
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898814-e37cb457-6f6c-44bd-845c-04015335eb86.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898814-e37cb457-6f6c-44bd-845c-04015335eb86.png)
+
 这个是已经访问过的了，所以再来（a），
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898820-2925c959-4278-4d5a-bd5a-455eee3865b5.png)
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895898820-2925c959-4278-4d5a-bd5a-455eee3865b5.png)
+
 好，（a）再爬，
 
-![image](https://cdn.nlark.com/yuque/0/2024/webp/22382307/1704895898925-a7625bbb-7094-4c07-a3f1-f894bbb1f430.webp)
+![](https://cdn.nlark.com/yuque/0/2024/webp/22382307/1704895898925-a7625bbb-7094-4c07-a3f1-f894bbb1f430.webp)
+
 啊！到顶点了。所以完了吗？当然不，还没轮到 (4) 呢。现在是 (b) 的回合。
+
 我们进行计算比对发现顶端节点与p的距离比L还要更远，因此不进行更新。
 
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895899093-650a141d-3df8-421d-a0dd-e503dbd3c71f.png)
-
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895899093-650a141d-3df8-421d-a0dd-e503dbd3c71f.png)  
 然后是 (c)，计算 p 和分割线的距离发现也是更远。
-![image](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895899126-606a74b6-8eb9-44b7-aba5-9866ce686355.png)
+
+![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704895899126-606a74b6-8eb9-44b7-aba5-9866ce686355.png)
+
 因此也不需要检查另一个分枝。
-然后执行 (4)，判断当前节点是顶点，因此计算完成！输出距离 p 最近的三个样本是 1813718137。
+
+然后执行 (4)，判断当前节点是顶点，因此计算完成！输出距离 p 最近的三个样本是 ![image](https://cdn.nlark.com/yuque/__latex/001c5571bc3adefe3864d00102e98288.svg)。
+
 # 结语
 kd 树的 kNN 算法节约了很大的计算量（虽然这点在少量数据上很难体现），但在理解上偏于复杂，希望本篇中的实例可以让读者清晰地理解这个算法。喜欢动手的读者可以尝试自己用代码实现 kd 树算法，但也可以用现成的机器学习包 scikit-learn 来进行计算。量化课堂的[下一篇文章](https://link.zhihu.com/?target=https%3A//www.joinquant.com/post/3227%3Ff%3Dstudy%26m%3Dmath)就将讲解如何用 scikit-learn 进行 kNN 分类。
+
