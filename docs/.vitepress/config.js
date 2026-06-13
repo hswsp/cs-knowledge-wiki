@@ -246,6 +246,20 @@ export default defineConfig({
                 { text: '概览', link: '/ml/' },
             ] },
             {
+              text: 'AI 基础理论',
+              collapsed: false,
+              items: [
+                { text: '概览', link: '/ml/foundations/' },
+                { text: 'Transformer 架构', link: '/ml/foundations/transformer' },
+                { text: 'KV Cache 与推理优化', link: '/ml/foundations/kv-cache' },
+                { text: 'Mamba 与状态空间模型 (SSM)', link: '/ml/foundations/mamba-and-ssm' },
+                { text: '多模态 AI (Multimodal AI)', link: '/ml/foundations/multimodal-ai' },
+                { text: '扩散模型 (Diffusion Models)', link: '/ml/foundations/diffusion-models' },
+                { text: '从规则到表示学习', link: '/ml/foundations/representation-learning' },
+                { text: '信息检索基础', link: '/ml/foundations/information-retrieval' },
+              ],
+            },
+            {
               text: 'Transformer 解读',
               collapsed: false,
               items: [
