@@ -11,6 +11,10 @@ export default defineConfig({
   // 迁移自旧 Hexo 博客的文章里包含一些 localhost 占位与外部锚点，先放行死链检查
   ignoreDeadLinks: true,
 
+  markdown: {
+    math: true,
+  },
+
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
   ],

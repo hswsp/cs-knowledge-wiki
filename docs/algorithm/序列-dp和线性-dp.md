@@ -66,9 +66,9 @@ description: "这是 LeetCode 上的「139. 单词拆分」，难度为「中等
 
 
 
-+ ![image](https://g.yuque.com/gr/latex?1%5Cle%20s.length%20%5Cle%20300)
-+ ![image](https://g.yuque.com/gr/latex?1%20%5Cle%20wordDict.length%20%5Cle%201000)
-+ ![image](https://g.yuque.com/gr/latex?1%20%5Cle%20wordDict%5Bi%5D.length%20%5Cle%2020)
++ $1\le s.length \le 300$
++ $1 \le wordDict.length \le 1000$
++ $1 \le wordDict[i].length \le 20$
 + `s` 和 `wordDict[i]` 仅有小写英文字母组成
 + `wordDict` 中的所有字符串 互不相同
 
@@ -77,23 +77,23 @@ description: "这是 LeetCode 上的「139. 单词拆分」，难度为「中等
 # 序列 DP
 
 
-将字符串 `s` 长度记为![image](https://g.yuque.com/gr/latex?n)，`wordDict` 长度记为![image](https://g.yuque.com/gr/latex?m)。为了方便，我们调整字符串 `s` 以及将要用到的动规数组的下标从![image](https://g.yuque.com/gr/latex?1)开始。
+将字符串 `s` 长度记为$n$，`wordDict` 长度记为$m$。为了方便，我们调整字符串 `s` 以及将要用到的动规数组的下标从$1$开始。
 
 
 
-定义![image](https://g.yuque.com/gr/latex?f%5Bi%5D)**为考虑前**![image](https://g.yuque.com/gr/latex?i)**个字符，能否使用 **`**wordDict**`** 拼凑出来：当**![image](https://g.yuque.com/gr/latex?f%5Bi%5D%20%3D%20true)**代表**![image](https://g.yuque.com/gr/latex?s%5B1...i%5D)**能够使用 **`**wordDict**`** 所拼凑**，反之则不能。
+定义$f[i]$**为考虑前**$i$**个字符，能否使用 **`**wordDict**`** 拼凑出来：当**$f[i] = true$**代表**$s[1...i]$**能够使用 **`**wordDict**`** 所拼凑**，反之则不能。
 
 
 
-不失一般性考虑![image](https://g.yuque.com/gr/latex?f%5Bi%5D)该如何转移：由于![image](https://g.yuque.com/gr/latex?f%5Bi%5D) 需要考虑![image](https://g.yuque.com/gr/latex?s%5B1...i%5D) 范围内的字符，若 ![image](https://g.yuque.com/gr/latex?f%5Bi%5D)为 `True` 说明整个![image](https://g.yuque.com/gr/latex?s%5B1...i%5D)  都能够使用 `wordDict` 拼凑，自然也包括最后一个字符![image](https://g.yuque.com/gr/latex?s%5Bi%5D) 所在字符串 `sub`。
+不失一般性考虑$f[i]$该如何转移：由于$f[i]$ 需要考虑$s[1...i]$ 范围内的字符，若 $f[i]$为 `True` 说明整个$s[1...i]$  都能够使用 `wordDict` 拼凑，自然也包括最后一个字符$s[i]$ 所在字符串 `sub`。
 
 
 
-**我们可以枚举最后一个字符所在字符串的左端点**![image](https://g.yuque.com/gr/latex?j)** ，若**![image](https://g.yuque.com/gr/latex?sub%20%3D%20s%5Bj...i%5D)** 在 **`**wordDict**`** 中出现过，并且**![image](https://g.yuque.com/gr/latex?f%5Bj-1%5D%3Dtrue)** ，说明**![image](https://g.yuque.com/gr/latex?s%5B0...(j-1)%5D)** 能够被拼凑，并且子串 **`**sub**`** 也在 **`**wordDict**`**，可得 **`**f[i] = True**`**。**
+**我们可以枚举最后一个字符所在字符串的左端点**$j$** ，若**$sub = s[j...i]$** 在 **`**wordDict**`** 中出现过，并且**$f[j-1]=true$** ，说明**$s[0...(j-1)]$** 能够被拼凑，并且子串 **`**sub**`** 也在 **`**wordDict**`**，可得 **`**f[i] = True**`**。**
 
 
 
-为了快速判断某个字符是否在 `wordDict` 中出现，我们可以使用 `Set` 结构对![image](https://g.yuque.com/gr/latex?wordDict%5Bi%5D) 进行转存。
+为了快速判断某个字符是否在 `wordDict` 中出现，我们可以使用 `Set` 结构对$wordDict[i]$ 进行转存。
 
 # 代码
 c++代码：
@@ -183,8 +183,8 @@ class Solution:
 
 
 
-+ 时间复杂度：将 `wordDict` 转存在 `Set` 复杂度为![image](https://g.yuque.com/gr/latex?O(m)) ；`DP` 过程复忽裁剪子串和查询 `Set` 结构的常数，复杂度为![image](https://g.yuque.com/gr/latex?O(n%5E2))
-+ 空间复杂度：![image](https://g.yuque.com/gr/latex?O(n%2Bm))
++ 时间复杂度：将 `wordDict` 转存在 `Set` 复杂度为$O(m)$ ；`DP` 过程复忽裁剪子串和查询 `Set` 结构的常数，复杂度为$O(n^2)$
++ 空间复杂度：$O(n+m)$
 
 
 
@@ -195,7 +195,7 @@ class Solution:
 
 
 
-**线性 DP** 通常强调「状态转移所依赖的前驱状态」是由给定数组所提供的，即**拓扑序是由原数组直接给出**。更大白话来说就是**通常有**![image](https://g.yuque.com/gr/latex?f%5Bi%5D%5B...%5D)** 依赖于 **![image](https://g.yuque.com/gr/latex?f%5Bi-1%5D%5B...%5D)**。**
+**线性 DP** 通常强调「状态转移所依赖的前驱状态」是由给定数组所提供的，即**拓扑序是由原数组直接给出**。更大白话来说就是**通常有**$f[i][...]$** 依赖于 **$f[i-1][...]$**。**
 
 
 
@@ -203,7 +203,7 @@ class Solution:
 
 
 
-**序列 DP** 通常需要结合题意来寻找前驱状态，即**需要自身寻找拓扑序关系**（例如本题，需要自己通过枚举的方式来找左端点，从而找到可转移的前驱状态![image](https://g.yuque.com/gr/latex?f%5Bj-1%5D) ）。
+**序列 DP** 通常需要结合题意来寻找前驱状态，即**需要自身寻找拓扑序关系**（例如本题，需要自己通过枚举的方式来找左端点，从而找到可转移的前驱状态$f[j-1]$ ）。
 
 
 

@@ -29,7 +29,7 @@ int minFallingPathSum(int[][] matrix);
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_jpg/gibkIz0MVqdFe2jbGC2F9TiazEvzzfHuFpvCWSK6L17XIYFp69CbIXs5bHMd7xooOhfNDluRLtgakJq4k8iaktZOA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/1e23d07ca758e554.webp)
 
 
 
@@ -87,7 +87,7 @@ public int minFallingPathSum(int[][] matrix) {
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_jpg/gibkIz0MVqdFe2jbGC2F9TiazEvzzfHuFpVwn7c4Qpt1ib0tr1Fbn6iaA1uM0ias72V1ptVPYSsZSRsWme7As5xia9zg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/883e15d0464cc984.webp)
 
 
 

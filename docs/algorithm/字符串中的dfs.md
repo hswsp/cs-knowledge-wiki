@@ -40,9 +40,9 @@ Explanation: The longest substring is "ababb", as 'a' is repeated 2 times and 'b
 
 **Constraints:**
 
-+ ![image](https://g.yuque.com/gr/latex?1%20%3C%3D%20s.length%20%3C%3D%2010%5E4)
++ $1 <= s.length <= 10^4$
 + `**s**`** consists of only lowercase English letters.**
-+ ![image](https://g.yuque.com/gr/latex?1%20%3C%3D%20k%20%3C%3D%2010%5E5)
++ $1 <= k <= 10^5$
 
 # 分治
 
@@ -51,7 +51,7 @@ Explanation: The longest substring is "ababb", as 'a' is repeated 2 times and 'b
 
 
 
-对于字符串 s，如果存在某个字符 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bch%7D)，它的出现次数大于 0 且小于 k，则任何包含 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bch%7D) 的子串都不可能满足要求。也就是说，**我们将字符串按照 **![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bch%7D)** 切分成若干段**，则满足要求的最长子串一定出现在某个被切分的段内，而不能跨越一个或多个段。因此，可以考虑分治的方式求解本题。
+对于字符串 s，如果存在某个字符 $\textit{ch}$，它的出现次数大于 0 且小于 k，则任何包含 $\textit{ch}$ 的子串都不可能满足要求。也就是说，**我们将字符串按照 **$\textit{ch}$** 切分成若干段**，则满足要求的最长子串一定出现在某个被切分的段内，而不能跨越一个或多个段。因此，可以考虑分治的方式求解本题。
 
 
 
@@ -104,8 +104,8 @@ public:
 ## **复杂度分析**
 
 
-+ 时间复杂度：![image](https://g.yuque.com/gr/latex?O(N%5Ccdot%20%7C%5CSigma%7C))，其中 ![image](https://g.yuque.com/gr/latex?N) 为字符串的长度，![image](https://g.yuque.com/gr/latex?%5CSigma)为字符集，本题中字符串仅包含小写字母，因此![image](https://cdn.nlark.com/yuque/__latex/187d4c3dd00b5ef2e46ba47218d8445f.svg) 。由于**每次递归调用都会完全去除某个字符**，因此递归深度最多为![image](https://cdn.nlark.com/yuque/__latex/50c7da7f7b5a3542c3df51a471e7782a.svg)。
-+ 空间复杂度：![image](https://g.yuque.com/gr/latex?O(%7C%5CSigma%7C%5E2))。递归的深度为 ![image](https://g.yuque.com/gr/latex?O(%7C%5CSigma%7C))，每层递归需要开辟 ![image](https://g.yuque.com/gr/latex?O(%7C%5CSigma%7C))的额外空间。
++ 时间复杂度：$O(N\cdot |\Sigma|)$，其中 $N$ 为字符串的长度，$\Sigma$为字符集，本题中字符串仅包含小写字母，因此![image](https://images.spumn.eu.cc/blog/142e6db46c928c0d.svg) 。由于**每次递归调用都会完全去除某个字符**，因此递归深度最多为![image](https://images.spumn.eu.cc/blog/feba0148b6023917.svg)。
++ 空间复杂度：$O(|\Sigma|^2)$。递归的深度为 $O(|\Sigma|)$，每层递归需要开辟 $O(|\Sigma|)$的额外空间。
 
 
 
@@ -164,15 +164,15 @@ public:
 
 
 
-我们枚举最长子串中的**字符种类数目**，它最小为 1，最大为 ![image](https://g.yuque.com/gr/latex?%7C%5CSigma%7C)（字符集的大小，本题中为 26）。
+我们枚举最长子串中的**字符种类数目**，它最小为 1，最大为 $|\Sigma|$（字符集的大小，本题中为 26）。
 
 
 
-对于给定的字符种类数量 t，我们维护滑动窗口的左右边界 l,r、滑动窗口内部每个字符出现的次数 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bcnt%7D)，以及滑动窗口内的字符种类数目 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Btotal%7D)。当 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Btotal%7D%20%3E%20t) 时，我们不断地右移左边界 l，并对应地更新 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bcnt%7D)以及 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Btotal%7D)，直到 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Btotal%7D%20%5Cle%20t) 为止。这样，对于任何一个右边界 r，我们都能找到最小的 l（记为 ![image](https://g.yuque.com/gr/latex?l_%7Bmin%7D)），使得 ![image](https://g.yuque.com/gr/latex?s%5Bl_%7Bmin%7D...r%5D) 之间的字符种类数目不多于 t。
+对于给定的字符种类数量 t，我们维护滑动窗口的左右边界 l,r、滑动窗口内部每个字符出现的次数 $\textit{cnt}$，以及滑动窗口内的字符种类数目 $\textit{total}$。当 $\textit{total} > t$ 时，我们不断地右移左边界 l，并对应地更新 $\textit{cnt}$以及 $\textit{total}$，直到 $\textit{total} \le t$ 为止。这样，对于任何一个右边界 r，我们都能找到最小的 l（记为 $l_{min}$），使得 $s[l_{min}...r]$ 之间的字符种类数目不多于 t。
 
 
 
-对于任何一组 ![image](https://g.yuque.com/gr/latex?l_%7Bmin%7D%2C%20r)而言，如果 ![image](https://g.yuque.com/gr/latex?s%5Bl_%7Bmin%7D...r%5D)之间存在某个出现次数小于 k （且不为 0，下文不再特殊说明）的字符，我们可以断定：对于任何 ![image](https://g.yuque.com/gr/latex?l'%20%5Cin%20(l_%7Bmin%7D%2C%20r)) 而言，![image](https://g.yuque.com/gr/latex?s%5Bl'...r%5D)依然不可能是满足题意的子串，因为：
+对于任何一组 $l_{min}, r$而言，如果 $s[l_{min}...r]$之间存在某个出现次数小于 k （且不为 0，下文不再特殊说明）的字符，我们可以断定：对于任何 $l' \in (l_{min}, r)$ 而言，$s[l'...r]$依然不可能是满足题意的子串，因为：
 
 + 要么该字符的出现次数降为 0，此时子串内虽然少了一个出现次数小于 k 的字符，**但字符种类数目也随之小于 t 了**；
 + 要么该字符的出现次数降为非 0 整数，此时该字符的出现次数依然小于 k。
@@ -183,23 +183,23 @@ public:
 
 
 
-根据上面的结论，我们发现：当限定字符种类数目为 t 时，满足题意的最长子串，就一定出自某个 ![image](https://g.yuque.com/gr/latex?s%5Bl_%7Bmin%7D...r%5D)。因此，在滑动窗口的维护过程中，就可以直接得到最长子串的大小。
+根据上面的结论，我们发现：当限定字符种类数目为 t 时，满足题意的最长子串，就一定出自某个 $s[l_{min}...r]$。因此，在滑动窗口的维护过程中，就可以直接得到最长子串的大小。
 
 
 
-此外还剩下一个细节：如何判断某个子串内的字符是否都出现了至少 k 次？我们当然可以每次遍历 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bcnt%7D) 数组，但是这会带来 ![image](https://g.yuque.com/gr/latex?O(%7C%5CSigma%7C))的额外开销。
+此外还剩下一个细节：如何判断某个子串内的字符是否都出现了至少 k 次？我们当然可以每次遍历 $\textit{cnt}$ 数组，但是这会带来 $O(|\Sigma|)$的额外开销。
 
 
 
-我们可以维护一个计数器 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bless%7D)，代表当前出现次数小于 k 的字符的数量。注意到：每次移动滑动窗口的边界时，只会让某个字符的出现次数加一或者减一。对于移动右边界 l 的情况而言：
+我们可以维护一个计数器 $\textit{less}$，代表当前出现次数小于 k 的字符的数量。注意到：每次移动滑动窗口的边界时，只会让某个字符的出现次数加一或者减一。对于移动右边界 l 的情况而言：
 
 
 
-当某个字符的出现次数从 0 增加到 1 时，将 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bless%7D)加一；
+当某个字符的出现次数从 0 增加到 1 时，将 $\textit{less}$加一；
 
 
 
-当某个字符的出现次数从 ![image](https://g.yuque.com/gr/latex?k-1) 增加到 ![image](https://g.yuque.com/gr/latex?k) 时，将 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bless%7D) 减一。
+当某个字符的出现次数从 $k-1$ 增加到 $k$ 时，将 $\textit{less}$ 减一。
 
 
 
@@ -207,7 +207,7 @@ public:
 
 
 
-通过维护额外的计数器 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bless%7D)，我们无需遍历 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bcnt%7D) 数组，就能知道每个字符是否都出现了至少 ![image](https://g.yuque.com/gr/latex?k) 次，同时可以在每次循环时，在常数时间内更新计数器的取值。读者可以自行思考 ![image](https://g.yuque.com/gr/latex?k%3D1) 时的处理逻辑。
+通过维护额外的计数器 $\textit{less}$，我们无需遍历 $\textit{cnt}$ 数组，就能知道每个字符是否都出现了至少 $k$ 次，同时可以在每次循环时，在常数时间内更新计数器的取值。读者可以自行思考 $k=1$ 时的处理逻辑。
 
 
 
@@ -254,6 +254,6 @@ class Solution {
 ## 复杂度分析
 
 
-+ 时间复杂度：![image](https://g.yuque.com/gr/latex?O(N%20%5Ccdot%20%7C%5CSigma%7C%20%2B%20%7C%5CSigma%7C%5E2))，其中 N 为字符串的长度，![image](https://g.yuque.com/gr/latex?%5CSigma)为字符集，本题中字符串仅包含小写字母，因此![image](https://cdn.nlark.com/yuque/__latex/187d4c3dd00b5ef2e46ba47218d8445f.svg)。我们需要遍历所有可能的 ![image](https://g.yuque.com/gr/latex?t)t，共![image](https://cdn.nlark.com/yuque/__latex/50c7da7f7b5a3542c3df51a471e7782a.svg)种可能性；内层循环中滑动窗口的复杂度为 ![image](https://g.yuque.com/gr/latex?O(N))，且初始时需要 ![image](https://g.yuque.com/gr/latex?O(%7C%5CSigma%7C))的时间初始化 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bcnt%7D) 数组。
-+ 空间复杂度：![image](https://g.yuque.com/gr/latex?O(%7C%5CSigma%7C))。
++ 时间复杂度：$O(N \cdot |\Sigma| + |\Sigma|^2)$，其中 N 为字符串的长度，$\Sigma$为字符集，本题中字符串仅包含小写字母，因此![image](https://images.spumn.eu.cc/blog/142e6db46c928c0d.svg)。我们需要遍历所有可能的 $t$t，共![image](https://images.spumn.eu.cc/blog/feba0148b6023917.svg)种可能性；内层循环中滑动窗口的复杂度为 $O(N)$，且初始时需要 $O(|\Sigma|)$的时间初始化 $\textit{cnt}$ 数组。
++ 空间复杂度：$O(|\Sigma|)$。
 

@@ -14,15 +14,15 @@ description: "[Lucas's theorem](https://en.wikipedia.org/wiki/Lucas%27s_theorem)
 
 
 
-![](https://bkimg.cdn.bcebos.com/formula/a784fd83c19921085f6e12dff816ef1d.svg) 其中p为[素数](https://baike.baidu.com/item/%E7%B4%A0%E6%95%B0/115069)的值。
+![](https://images.spumn.eu.cc/blog/a280c8f18c3e4fbf.svg) 其中p为[素数](https://baike.baidu.com/item/%E7%B4%A0%E6%95%B0/115069)的值。
 
 
 
-在编程时你只要继续对![](https://bkimg.cdn.bcebos.com/formula/82487f6edd8cbc15d79019296d825bdf.svg)调用Lucas定理即可。代码可以递归的去完成这个过程，其中递归终点为t = 0 ；
+在编程时你只要继续对![](https://images.spumn.eu.cc/blog/a40e09f3ce635e4c.svg)调用Lucas定理即可。代码可以递归的去完成这个过程，其中递归终点为t = 0 ；
 
 
 
-时间![image](https://cdn.nlark.com/yuque/__latex/66c7f74d85ddd6092d98ad50c198ec3f.svg)
+时间![image](https://images.spumn.eu.cc/blog/3f2470222dcf4ac9.svg)
 
 
 
@@ -33,31 +33,31 @@ Lucas定理证明：
 
 
 
-首先你需要这个算式:![](https://bkimg.cdn.bcebos.com/formula/6fbc158c882526c6d29b9a88b1530e38.svg),其中f > 0&& f < p，然后
+首先你需要这个算式:![](https://images.spumn.eu.cc/blog/7c9a818034bd216e.svg),其中f > 0&& f < p，然后
 
 
 
-![image](https://cdn.nlark.com/yuque/__latex/286f7bddeffb8a9daa5a6e92a1d233ee.svg)
+![image](https://images.spumn.eu.cc/blog/ba3dfe3caa1d0cf6.svg)
 
 
 
-![](https://bkimg.cdn.bcebos.com/formula/9063d0ceb5845e349f44c8d96de90c4e.svg)![image](https://cdn.nlark.com/yuque/__latex/886c45c5dd6c93039aa2c64a8d8d78dd.svg)
+![](https://images.spumn.eu.cc/blog/8c404d4cc53cdead.svg)![image](https://images.spumn.eu.cc/blog/94c23506d7466181.svg)
 
 
 
-所以得![image](https://cdn.nlark.com/yuque/__latex/085025f20596e780e148f26691545060.svg)![](https://bkimg.cdn.bcebos.com/formula/9063d0ceb5845e349f44c8d96de90c4e.svg)**(mod p)**
+所以得![image](https://images.spumn.eu.cc/blog/59b5d75610f85be8.svg)![](https://images.spumn.eu.cc/blog/8c404d4cc53cdead.svg)**(mod p)**
 
 
 
-我们求左边![image](https://cdn.nlark.com/yuque/__latex/085025f20596e780e148f26691545060.svg) 中的![](https://bkimg.cdn.bcebos.com/formula/4325a76844ca800dc382f529b8c4ab2d.svg)的系数为：![](https://bkimg.cdn.bcebos.com/formula/862453a90e1b69b9d230aa0b7f57164a.svg)
+我们求左边![image](https://images.spumn.eu.cc/blog/59b5d75610f85be8.svg) 中的![](https://images.spumn.eu.cc/blog/0f0d3d6f77a4f235.svg)的系数为：![](https://images.spumn.eu.cc/blog/edccbdd27616db8c.svg)
 
 
 
-求右边公式中的![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639020025566-b2e694c8-efd0-42fe-b424-9ed86eeff581.svg)的系数：通过观察你会发现当且仅当i = t , j = r ,能够得到![](https://bkimg.cdn.bcebos.com/formula/4325a76844ca800dc382f529b8c4ab2d.svg)的系数，即
+求右边公式中的![](https://images.spumn.eu.cc/blog/0f0d3d6f77a4f235.svg)的系数：通过观察你会发现当且仅当i = t , j = r ,能够得到![](https://images.spumn.eu.cc/blog/0f0d3d6f77a4f235.svg)的系数，即
 
 
 
-![](https://bkimg.cdn.bcebos.com/formula/e744c4a7d4cd33bfae78d5457b66ffc0.svg)
+![](https://images.spumn.eu.cc/blog/a15695514a7132bc.svg)
 
 
 
@@ -65,7 +65,7 @@ Lucas定理证明：
 
 
 
-![](https://bkimg.cdn.bcebos.com/formula/a784fd83c19921085f6e12dff816ef1d.svg)
+![](https://images.spumn.eu.cc/blog/a280c8f18c3e4fbf.svg)
 
 
 
@@ -79,7 +79,7 @@ Lucas定理证明：
 ## 对偶公式
 
 
-![image](https://cdn.nlark.com/yuque/__latex/eeecbb01c426e7e605cf3bb7df942a8e.svg)
+![image](https://images.spumn.eu.cc/blog/f96858397610a366.svg)
 
 
 
@@ -90,15 +90,15 @@ Lucas定理证明：
 ## 递推公式
 
 
-![image](https://cdn.nlark.com/yuque/__latex/2af7e2b1db6d571d4b9c9c8232f90f8f.svg)
+![image](https://images.spumn.eu.cc/blog/68bfe892ab2b1bcc.svg)
 
 
 
-![image](https://cdn.nlark.com/yuque/__latex/3fb1f851f9751a595aa98c0b2440d822.svg)
+![image](https://images.spumn.eu.cc/blog/8962f30ae5c14425.svg)
 
 
 
-可理解为：含特定元素的组合有![image](https://cdn.nlark.com/yuque/__latex/f816fb728e55b147cf21e700125e973d.svg)，不含特定元素的排列为![image](https://cdn.nlark.com/yuque/__latex/b10deb3e6e98b307564e2cfcc2478d72.svg)。还不懂？看下面。
+可理解为：含特定元素的组合有![image](https://images.spumn.eu.cc/blog/bc0761744a20f257.svg)，不含特定元素的排列为![image](https://images.spumn.eu.cc/blog/6e70270c692955c5.svg)。还不懂？看下面。
 
 
 
@@ -106,7 +106,7 @@ Lucas定理证明：
 
 
 
-从1，2，3，4，5（n=5）中取出2（m=2）个元素的组合（![image](https://cdn.nlark.com/yuque/__latex/81709d40aff3464dfd4697371ad16af2.svg)）：
+从1，2，3，4，5（n=5）中取出2（m=2）个元素的组合（![image](https://images.spumn.eu.cc/blog/a2c98f7f40287bf5.svg)）：
 
 
 
@@ -129,14 +129,14 @@ Lucas定理证明：
 
 
 
-而总方案数等于上面两种情况方案数之和，即![image](https://cdn.nlark.com/yuque/__latex/2af7e2b1db6d571d4b9c9c8232f90f8f.svg)。
+而总方案数等于上面两种情况方案数之和，即![image](https://images.spumn.eu.cc/blog/68bfe892ab2b1bcc.svg)。
 
 
 
 ## 组合数求和公式
 
 
-![image](https://cdn.nlark.com/yuque/__latex/cc38d0caec16e4bc2efccb0b3ae7ef73.svg)
+![image](https://images.spumn.eu.cc/blog/22981070f5d4997a.svg)
 
 
 
@@ -158,7 +158,7 @@ Lucas定理证明：
 
 
 
-根据乘法原理，一共![image](https://cdn.nlark.com/yuque/__latex/7f37a2704245861ed84021a8dcca9c11.svg)种组合。
+根据乘法原理，一共![image](https://images.spumn.eu.cc/blog/2077ce6ef4ba5b90.svg)种组合。
 
 ## 
 ## 小组合数代码实现
@@ -421,7 +421,7 @@ int main(int argc, const char * argv[]) {
 
 用现代数学的语言来说明的话，中国剩余定理给出了以下的一元[线性同余方程](https://baike.baidu.com/item/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B/5544515)组：
 
-![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639070155959-7e0bc7ec-e936-42c1-8462-f9863ff8f724.svg)
+![](https://images.spumn.eu.cc/blog/971da998578b294c.svg)
 
 有解的判定条件，并用[构造法](https://baike.baidu.com/item/%E6%9E%84%E9%80%A0%E6%B3%95)给出了在有解情况下解的具体形式。
 
@@ -431,23 +431,23 @@ int main(int argc, const char * argv[]) {
 
 
 
-设![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639070155788-6408e050-6d61-4cf5-9766-0a85d452b96c.svg)是整数m_1,m_2, ... ,m_n的乘积，并设![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639070155812-ab894e13-3bab-4381-9308-0a513b87fea3.svg)是除了![image](https://cdn.nlark.com/yuque/__latex/342e772474b691ac87dac30aeef596c0.svg)以外的_n_- 1个整数的乘积。
+设![](https://images.spumn.eu.cc/blog/0c17ba59f19e21c2.svg)是整数m_1,m_2, ... ,m_n的乘积，并设![](https://images.spumn.eu.cc/blog/75e8d9f0983de336.svg)是除了![image](https://images.spumn.eu.cc/blog/c7a7916c505fa3a5.svg)以外的_n_- 1个整数的乘积。
 
 
 
-设![image](https://cdn.nlark.com/yuque/__latex/592f30d03093f80ce5b43afdf7a487ff.svg)为![image](https://cdn.nlark.com/yuque/__latex/cf02c22fc164faf4976cae168d7d73bd.svg)模![image](https://cdn.nlark.com/yuque/__latex/342e772474b691ac87dac30aeef596c0.svg)的数论倒数(![image](https://cdn.nlark.com/yuque/__latex/f406db9a09c0430f7e54c1a3bb217c3e.svg)**为**![image](https://cdn.nlark.com/yuque/__latex/cf02c22fc164faf4976cae168d7d73bd.svg)**模**![image](https://cdn.nlark.com/yuque/__latex/342e772474b691ac87dac30aeef596c0.svg)**意义下的逆元**)
+设![image](https://images.spumn.eu.cc/blog/c5c3e070c14b9f7e.svg)为![image](https://images.spumn.eu.cc/blog/af76887517b303b9.svg)模![image](https://images.spumn.eu.cc/blog/c7a7916c505fa3a5.svg)的数论倒数(![image](https://images.spumn.eu.cc/blog/5fbe2067df0ed785.svg)**为**![image](https://images.spumn.eu.cc/blog/af76887517b303b9.svg)**模**![image](https://images.spumn.eu.cc/blog/c7a7916c505fa3a5.svg)**意义下的逆元**)
 
-![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639070156189-1d02b809-823c-4f72-adf6-4c9064dde0e4.svg)
+![](https://images.spumn.eu.cc/blog/32900f871d71a0e5.svg)
 
 
 
 方程组(S)的通解形式为
 
-![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639070156308-01469754-a7ca-4119-aa0c-b9824be30a3e.svg)
+![](https://images.spumn.eu.cc/blog/bcdd0ec32a532e51.svg)
 
 在模M的意义下，方程组(S)只有一个解：
 
-![](https://cdn.nlark.com/yuque/0/2021/svg/22382307/1639070156573-2438c6b3-7056-4590-9070-82a3661d7796.svg)
+![](https://images.spumn.eu.cc/blog/366dad646b685bf5.svg)
 
 补充：求逆元的方法：
 
@@ -455,11 +455,11 @@ int main(int argc, const char * argv[]) {
 
 ①费马小定理
 
-![](https://cdn.nlark.com/yuque/0/2021/png/22382307/1639070488932-4ca3884b-7a15-42e3-909d-827469f37d24.png)
+![](https://images.spumn.eu.cc/blog/7147c9079b49b544.png)
 
 ②扩展欧几里得
 
-![](https://cdn.nlark.com/yuque/0/2021/png/22382307/1639070497387-7ff973d5-4b72-48c4-87d1-62f743c48673.png)
+![](https://images.spumn.eu.cc/blog/f5c2c7d29ad99a25.png)
 
 ## 代码
 
@@ -510,26 +510,26 @@ ll china(vector<ll> a,vector<ll> b,int n)//a[]为除数,即模mi，b[]为余数
 
 
 
-如何计算![image](https://g.yuque.com/gr/latex?C(n%2Cm)%5C%25p%5Et)(t>=2,p为素数)。 计算![image](https://g.yuque.com/gr/latex?C(n%2Cm)%5C%25p%5Et)。
+如何计算$C(n,m)\%p^t$(t>=2,p为素数)。 计算$C(n,m)\%p^t$。
 
 
 
-我们知道，C(n,m)=n!/m!/(n-m)!，若我们可以计算出![image](https://g.yuque.com/gr/latex?n!%5C%25p%5Et)，我们就能计算出![image](https://g.yuque.com/gr/latex?m!%25p%5Et%E4%BB%A5%E5%8F%8A(n-m)!%5C%25p%5Et)。我们不妨设![image](https://g.yuque.com/gr/latex?x%3Dn!%25p%5Et%2Cy%3Dm!%5C%25p%5Et%2Cz%3D(n-m)!%0A%25p%5Et%2C)那么答案就是![image](https://g.yuque.com/gr/latex?x*reverse(y%2Cp%5Et)*reverse(z%2Cp%5Et))(reverse(a,b)计算a对b的乘法逆元)。
+我们知道，C(n,m)=n!/m!/(n-m)!，若我们可以计算出$n!\%p^t$，我们就能计算出$m!%p^t以及(n-m)!\%p^t$。我们不妨设$x=n!%p^t,y=m!\%p^t,z=(n-m)! %p^t,$那么答案就是$x*reverse(y,p^t)*reverse(z,p^t)$(reverse(a,b)计算a对b的乘法逆元)。
 
 
 
-那么下面问题就转化成如何计算![image](https://g.yuque.com/gr/latex?n!%5C%25p%5Et)。比如![image](https://g.yuque.com/gr/latex?p%3D3%2Ct%3D2%2Cn%3D19),  
-![image](https://cdn.nlark.com/yuque/__latex/a1a3f60b154430c1a50f44ee7686fc18.svg)
+那么下面问题就转化成如何计算$n!\%p^t$。比如$p=3,t=2,n=19$,  
+![image](https://images.spumn.eu.cc/blog/0efcad7b91daaeac.svg)
 
-![image](https://cdn.nlark.com/yuque/__latex/bcb8c6238b157c5bbe7f973474ef133d.svg)
+![image](https://images.spumn.eu.cc/blog/a6cce705b1347839.svg)
 
-![image](https://cdn.nlark.com/yuque/__latex/48cfd2996ee78577065d3658099063a9.svg)
+![image](https://images.spumn.eu.cc/blog/34cd6bfb333bf53d.svg)
 
 然后发现后面的是(n/p)!，于是递归即可。
 
 
 
-前半部分是以p^t为周期的![image](https://g.yuque.com/gr/latex?%5B1*2*4*5*7*8%5D%3D%5B10*11*13*14*16*17%5D(%5Cmod%209))。下面是孤立的19，可以知道孤立出来的长度不超过 ![image](https://g.yuque.com/gr/latex?p%5Et),于是暴力即可。那么最后剩下的![image](https://g.yuque.com/gr/latex?3%5E6)啊这些数怎么办呢？我们只要计算出![image](https://g.yuque.com/gr/latex?n!%2Cm!%2C(n-m)!)里含有多少个p(不妨设a,b,c)，那么a-b-c就是C(n,m)中p的个数，直接算一下就行。 至此整个计算C(n,m)%p(p为任意数)的问题完美解决。
+前半部分是以p^t为周期的$[1*2*4*5*7*8]=[10*11*13*14*16*17](\mod 9)$。下面是孤立的19，可以知道孤立出来的长度不超过 $p^t$,于是暴力即可。那么最后剩下的$3^6$啊这些数怎么办呢？我们只要计算出$n!,m!,(n-m)!$里含有多少个p(不妨设a,b,c)，那么a-b-c就是C(n,m)中p的个数，直接算一下就行。 至此整个计算C(n,m)%p(p为任意数)的问题完美解决。
 
 
 

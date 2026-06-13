@@ -13,7 +13,7 @@ description: "大部分教材和分享中都会将 B+树的插入和删除操作
 
 我们依旧以之前介绍查找操作时使用的图对插入操作进行说明，需要注意的是，B+树的阶数 `M = 3` ，且  `⌈M/2⌉ = 2（取上限）` 、`⌊M/2⌋ = 1（取下限）` ：
 
-![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704989234465-9bce2076-a993-4def-9459-801eee389321.png)
+![](https://images.spumn.eu.cc/blog/6c6e08c65defa8a4.png)
 
 B+树中做插入关键字的操作，有以下 3 种情况：
 
@@ -21,25 +21,25 @@ B+树中做插入关键字的操作，有以下 3 种情况：
 
 比如插入关键字 `12` ，插入关键字所在的结点的 `[10，15]` 包含两个关键字，小于 `M` ，则直接插入关键字 `12` 。
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1704989266383-9c0ac19a-1389-4c58-beb8-839e377fd3aa.gif)
+![](https://images.spumn.eu.cc/blog/982422593674a41a.gif)
 
 2. 若被插入关键字所在的结点，其含有关键字数目等于阶数 M，则需要将该结点分裂为两个结点，一个结点包含 `⌊M/2⌋` ，另一个结点包含 `⌈M/2⌉` 。同时，**将**`**⌈M/2⌉**`**的关键字**上移至其双亲结点。（具体怎么分裂要保证插入的数在`⌊M/2⌋`那一边）假设其双亲结点中包含的关键字个数小于 M，则插入操作完成。
 
 插入关键字 `95` ，插入关键字所在结点 `[85、91、97]` 包含 3 个关键字，等于阶数 `M` ，则将  `[85、91、97]` 分裂为两个结点 `[85、91]` 和结点 `[97]` , 关键字 `95` 插入到结点 `[95、97]` 中，并将关键字 `91` 上移至其双亲结点中，发现其双亲结点 `[72、97]` 中包含的关键字的个数 2 小于阶数 `M` ，插入操作完成。
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1704989286668-3d66e802-a56a-40d8-a924-8493fdf885c2.gif)
+![](https://images.spumn.eu.cc/blog/e65d61215f7a7f29.gif)
 
 3. 在第 2 情况中，如果上移操作导致其双亲结点中关键字个数大于 M，则应继续分裂其双亲结点。
 
 插入关键字 `40` ，按照第 2 种情况将结点分裂，并将关键字 `37` 上移到父结点，发现父结点 `[15、37、44、59]` 包含的关键字的个数大于 `M` ，所以将结点 `[15、37、44、59]` 分裂为两个结点 `[15、37]` 和结点 `[44、59]` ，并将关键字 `37` 上移到父结点中 `[37、59、97]` . 父结点包含关键字个数没有超过 `M` ，插入结束。
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1705027227393-a32df3a5-5c04-49ec-bb2a-0498ad20b272.gif)
+![](https://images.spumn.eu.cc/blog/dfaca51c26181a6b.gif)
 
 4. 若插入的关键字比当前结点中的最大值还大，破坏了B+树中从根结点到当前结点的所有索引值，此时需要**及时修正后****，再做其他操作**。
 
 插入关键字 `100`，由于其值比最大值 `97` 还大，插入之后，从根结点到该结点经过的所有结点中的所有值都要由 `97` 改为 `100`。改完之后再做分裂操作。
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1705027593351-80451b43-a8b5-43c0-a8ac-fc3df8c836c2.gif)
+![](https://images.spumn.eu.cc/blog/1e44a8279a90d55f.gif)
 
 # B+树的删除操作
 “对于 B+的删除操作而言，与 B-树类似”，我想你笑了，那我们接着看，哈哈！
@@ -50,35 +50,35 @@ B+树中做插入关键字的操作，有以下 3 种情况：
 
 删除关键字 `91`，包含关键字 `91` 的结点 `[85、91、97]` 中关键字的个数 3 大于 `⌈M/2⌉ = 2` ，做删除操作不会破坏 B+树的特性，直接删除。
 
-![](https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXpCREdVClw7wd6mhFjbAP1P8L9hejyPtM5JVvkqGDZcOI8vGWBqmibtA/640?wx_fmt=gif&wxfrom=5&wx_lazy=1)
+![](https://images.spumn.eu.cc/blog/21be6bcb72c9eb59.gif)
 
 2. 当删除某结点中最大或者最小的关键字，就会涉及到更改其双亲结点一直到根结点中所有索引值的更改。
 
 以删除整颗 B+树中最大的关键字 `97` 为例，查找并删除关键字 `97` ， 然后向上回溯，将所有关键字 `97` 替换为次最大的关键字 `91` :
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1704989383442-115bded5-0ec2-4ddc-8de1-59951f9925e9.gif)
+![](https://images.spumn.eu.cc/blog/5de05afd4766e345.gif)
 
 3. 当删除该关键字，导致当前结点中关键字个数小于 `⌈M/2⌉`，若其兄弟结点中含有多余的关键字，可以从兄弟结点中借关键字完成删除操作。
 
 当删除某个关键字之后，结点中关键字个数小于 `⌈M/2⌉` ，则不符合 B+树的特性，则需要按照 3 和 4 两种情况分别处理。以删除关键字  `51` 为例，由于其兄弟结点 `[21、37、44]` 中含有 3 个关键字，所以可以选择借一个关键字 `44`，同时将双亲结点中的索引值 `44` 修改 `37` ，删除过程如下图所示：
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1704989399743-27762825-ab2f-4f1c-b62c-380b1baeee75.gif)
+![](https://images.spumn.eu.cc/blog/98441566c6a68001.gif)
 
 4. 第 3 种情况中，如果其兄弟结点没有多余的关键字，则需要同其兄弟结点进行**合并**。
 
 为了说明这种情况，我们在第 3 种情况最终得到的 B+树之上进行删除操作。第 3 种情况删除关键字 `51` 之后得到如下所示 B+树：
 
-![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704989416751-65c70ffe-6236-4f3f-beff-0eef7900be10.png)
+![](https://images.spumn.eu.cc/blog/d57dd1b42a82be9f.png)
 
 我们以删除上面这个 B+树中的关键字 `59` 说明第 4 种情况，首先查找到关键 `59` 所在结点 `[44、59]` ，发现该结点的兄弟结点 `[21、37]` 包含的关键字的个数 2 等于  `⌈M/2⌉`， 所以删除关键字 `59` ，并将结点 `[21、37]` 和 `[44]` 进行合并 `[21、37、44]` ，然后向上回溯，将所有关键字 `59` 替换为次最大的关键字 `44` :
 
-![](https://mmbiz.qpic.cn/mmbiz_gif/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXicFDURuZ38Beicy7UnpVfOs77LtDdXQ4G0rggCLteAVAdic1DY2eIcpug/640?wx_fmt=gif&wxfrom=5&wx_lazy=1)
+![](https://images.spumn.eu.cc/blog/35ef1e9bf1126763.gif)
 
 5. 当进行合并时，可能会产生因合并使其双亲结点破坏 B+树的结构，需要依照以上规律处理其双亲结点。
 
 删除关键字 `63`，当删除关键字后，该结点中只剩关键字 `72`，且其兄弟结点 `[85、91]` 中只有 2 个关键字，所以将 `[72]` 和 `[85、91]` 进行合并，向上回溯，删除结点 `[72、91]` 当中的关键字 `72` ，此时结点中只有关键 `91` ，不满足 B+树中结点关键字个数要求，但其兄弟结点 `[15、44、59]` 中包含的 3 个关键字，所以从其兄弟结点当中借一个关键字 `59` , 再对其兄弟结点的父结点中的关键字进行调整，将关键字 `59` 替换为 `44` .
 
-![](https://cdn.nlark.com/yuque/0/2024/gif/22382307/1704989439586-dc821656-f46d-4ce7-9870-11883c08fb2f.gif)
+![](https://images.spumn.eu.cc/blog/313f92b08d04a560.gif)
 
 总之，在 B+树中做删除关键字的操作，采取如下的步骤：
 
@@ -87,49 +87,49 @@ B+树中做插入关键字的操作，有以下 3 种情况：
 3. 在删除关键字后，如果导致其结点中关键字个数不足，有两种方法：一种是向兄弟结点去借，另外一种是同兄弟结点合并（情况 3、4 和 5）。（注意这两种方式有时需要更改其父结点中的索引值。）
 
 # B+树复杂度分析
-B+树 是 B-树的一个升级版本，在存储结构上的变化，由于磁盘页的大小限制，只能读取少量的B-树结点到内存中（因为B-树结点就带有数据，占用更多空间，所以说是 **少量**）；而B+树就不一样了。因为非叶子结点不带数据，能够一次性读取更多结点进去处理，所以对于同样的数据量， B+树更加 "矮胖"， 性能更好。但是两者在查找、插入和删除等操作的时间复杂度的量级是一致的，均为![image](https://cdn.nlark.com/yuque/__latex/1b0fce2bd1f5925667628ba7a81a4635.svg) 。
+B+树 是 B-树的一个升级版本，在存储结构上的变化，由于磁盘页的大小限制，只能读取少量的B-树结点到内存中（因为B-树结点就带有数据，占用更多空间，所以说是 **少量**）；而B+树就不一样了。因为非叶子结点不带数据，能够一次性读取更多结点进去处理，所以对于同样的数据量， B+树更加 "矮胖"， 性能更好。但是两者在查找、插入和删除等操作的时间复杂度的量级是一致的，均为![image](https://images.spumn.eu.cc/blog/d5fd8447869e9629.svg) 。
 
 这个量级是如何得来的呢？我们一起来看看 1970 年计算机的先驱们是如何计算的。
 
-首先假定![image](https://cdn.nlark.com/yuque/__latex/81d83d37372514093a0c55094f046179.svg)的整数（事实上就是树高）， 是一个自然数（也就是B-树当中提到的最小度数，这里不懂的可以回头看看之前的文章 [图解：什么是B树（心中有 B树，做人要谦虚）？](https://mp.weixin.qq.com/s?__biz=MzA4NDE4MzY2MA==&mid=2647522005&idx=1&sn=659962d777276bbd16a581ddc884c69d&scene=21#wechat_redirect) ).
+首先假定![image](https://images.spumn.eu.cc/blog/5c43ed5d0e24bd80.svg)的整数（事实上就是树高）， 是一个自然数（也就是B-树当中提到的最小度数，这里不懂的可以回头看看之前的文章 [图解：什么是B树（心中有 B树，做人要谦虚）？](https://mp.weixin.qq.com/s?__biz=MzA4NDE4MzY2MA==&mid=2647522005&idx=1&sn=659962d777276bbd16a581ddc884c69d&scene=21#wechat_redirect) ).
 
-一颗最小度为![image](https://cdn.nlark.com/yuque/__latex/df976ff7fcf17d60490267d18a1e3996.svg)，高度为![image](https://cdn.nlark.com/yuque/__latex/67df0f404d0960fadcc99f6258733f22.svg)的 B-树![image](https://cdn.nlark.com/yuque/__latex/1553dae3cc5c15cddb4f5b5a367b0aba.svg)，或为空树，或者满足下面三个特性：
+一颗最小度为![image](https://images.spumn.eu.cc/blog/87d2618f85a9489b.svg)，高度为![image](https://images.spumn.eu.cc/blog/06beba9e96e5239f.svg)的 B-树![image](https://images.spumn.eu.cc/blog/78fa45cdbc9c5009.svg)，或为空树，或者满足下面三个特性：
 
-1. 从根结点到任意一个叶子结点有着相同的长度![image](https://cdn.nlark.com/yuque/__latex/67df0f404d0960fadcc99f6258733f22.svg) , 也称为树的高度。
-2. 除根结点和叶子节点外，每一个内部结点至少有![image](https://cdn.nlark.com/yuque/__latex/753ea3f27103908ed7df5166c7e44c9d.svg)个孩子结点。根结点要么为叶子，要么至少包含两个孩子。
-3. 每个结点至多有![image](https://cdn.nlark.com/yuque/__latex/d731e0f75ee7534299310f7686f87057.svg)个孩子结点。
+1. 从根结点到任意一个叶子结点有着相同的长度![image](https://images.spumn.eu.cc/blog/06beba9e96e5239f.svg) , 也称为树的高度。
+2. 除根结点和叶子节点外，每一个内部结点至少有![image](https://images.spumn.eu.cc/blog/7c033af1f5c7e19c.svg)个孩子结点。根结点要么为叶子，要么至少包含两个孩子。
+3. 每个结点至多有![image](https://images.spumn.eu.cc/blog/1af5be550574e4cc.svg)个孩子结点。
 
-设![image](https://cdn.nlark.com/yuque/__latex/32ffe6a546bdc55dc0a2d71bb0929934.svg)和![image](https://cdn.nlark.com/yuque/__latex/4f8aeccd01372346c2cd3e7d1a0dec59.svg)分别表示 B-树中可以最少包含与最多包含的结点数目，则：
+设![image](https://images.spumn.eu.cc/blog/cc6364695c2dbf16.svg)和![image](https://images.spumn.eu.cc/blog/5577118eaec5c738.svg)分别表示 B-树中可以最少包含与最多包含的结点数目，则：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IX1tM6Vn90XibkCibysztcLqRA8EXQPDL78nOOt48xQ2oSaNDZjA0DZVww/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/3a5cbebf139fb241.png)
 
 
 
-其中![image](https://cdn.nlark.com/yuque/__latex/4453378936c9ed8d774c6747191ed8a6.svg)，当![image](https://cdn.nlark.com/yuque/__latex/f24072c0058b0d81a9af443d8c75ca51.svg)依然成立 ![image](https://cdn.nlark.com/yuque/__latex/32ffe6a546bdc55dc0a2d71bb0929934.svg)至少包含一个结点，即根结点，之后每一层所包含的结点数目则为![image](https://cdn.nlark.com/yuque/__latex/bc42eac9d866809099e3c608b6c6bcef.svg) ，其中![image](https://cdn.nlark.com/yuque/__latex/753ea3f27103908ed7df5166c7e44c9d.svg)表示每一个内部结点最少拥有的孩子结点数。类似的：
+其中![image](https://images.spumn.eu.cc/blog/a64939895d55084a.svg)，当![image](https://images.spumn.eu.cc/blog/1c98395214bf9d9d.svg)依然成立 ![image](https://images.spumn.eu.cc/blog/cc6364695c2dbf16.svg)至少包含一个结点，即根结点，之后每一层所包含的结点数目则为![image](https://images.spumn.eu.cc/blog/e65731f2b0460125.svg) ，其中![image](https://images.spumn.eu.cc/blog/7c033af1f5c7e19c.svg)表示每一个内部结点最少拥有的孩子结点数。类似的：
 
-![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704989455901-380e1d77-ce22-475d-888c-d43adad6e34e.png)
+![](https://images.spumn.eu.cc/blog/5bd3d391459d6eaa.png)
 
 则对于一颗 B-树所能包含的结点数目的上下限为：
 
 
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IX3GV0QUicJ9ibAOPmoYazQ9AFQ7UgzRyQ7BFuNNcm17ZJ9vnicAPveApWQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/60a3af9e4b99c6ab.png)
 
-则对于一颗 B-树所能包含的关键字的最大数目和最小数目分别为![image](https://cdn.nlark.com/yuque/__latex/fbbd05d874d2f707829bdd8b3717752d.svg)和![image](https://cdn.nlark.com/yuque/__latex/50b92dc6e81633b7827cfd3a2a218cdd.svg):
+则对于一颗 B-树所能包含的关键字的最大数目和最小数目分别为![image](https://images.spumn.eu.cc/blog/a836d866581bad51.svg)和![image](https://images.spumn.eu.cc/blog/adfaa742028c8760.svg):
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSRs2Cr9CS8sBA74A6QF1IXdb6TdeicXfvnWdJLaibYB7dOXN7Mp9IdjOR0hqw1XwKjd8ibCDfefTnjQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/fdd6e3f2036b30b6.png)
 
 则可以得到 B-树高度的一个上下限：
 
-![](https://cdn.nlark.com/yuque/0/2024/png/22382307/1704989466213-3f902e3f-3641-4922-9f43-5aa962563163.png)
+![](https://images.spumn.eu.cc/blog/55015f2e8327739e.png)
 
 这也就是我们所期待的对数级别的时间复杂度。对于上面的这个过程不清楚的可以跳过看下面。
 
 
 
-对于一颗结束为![image](https://cdn.nlark.com/yuque/__latex/4760e2f007e23d820825ba241c47ce3b.svg)的B-树而言，每一个结点最多可以存储 ![image](https://cdn.nlark.com/yuque/__latex/4760e2f007e23d820825ba241c47ce3b.svg)个关键字，假设总共有 ![image](https://cdn.nlark.com/yuque/__latex/459f3c80a50b7be28751b0869ef5386a.svg)个关键字，树的高度为![image](https://cdn.nlark.com/yuque/__latex/67df0f404d0960fadcc99f6258733f22.svg)，且这颗树完全填满，则![image](https://cdn.nlark.com/yuque/__latex/da9e37ae700273f1b92722819aede3b0.svg)，继而得到![image](https://cdn.nlark.com/yuque/__latex/c0b40d239f06af1aa89d988162f3c810.svg)，也就是树的高度为![image](https://cdn.nlark.com/yuque/__latex/ed72ef3c1e25f3ee4a43d3b6d9f69290.svg)，可能有的人又会问，那一个结点中包含![image](https://cdn.nlark.com/yuque/__latex/4760e2f007e23d820825ba241c47ce3b.svg)个关键字，这 ![image](https://cdn.nlark.com/yuque/__latex/4760e2f007e23d820825ba241c47ce3b.svg)个关键字只有进行顺序遍历才能知道接着选择哪一个孩子结点，需要![image](https://cdn.nlark.com/yuque/__latex/647835a0fd65141186ae53da33070f1b.svg)的时间，你说的对也不对，对是因为一个结点内的关键字的遍历确实是需要![image](https://cdn.nlark.com/yuque/__latex/647835a0fd65141186ae53da33070f1b.svg) 的时间复杂度，但是这个遍历是在内存当中进行的，时间一般可以忽略。我们通常更加关注的是磁盘 I/O 的次数，也就是![image](https://cdn.nlark.com/yuque/__latex/ed72ef3c1e25f3ee4a43d3b6d9f69290.svg)，所以 B-树或者 B+树的时间复杂度就是![image](https://cdn.nlark.com/yuque/__latex/08904efbafe635a7b274dcf4f69739d8.svg)。
+对于一颗结束为![image](https://images.spumn.eu.cc/blog/cf15c9a8141aadb9.svg)的B-树而言，每一个结点最多可以存储 ![image](https://images.spumn.eu.cc/blog/cf15c9a8141aadb9.svg)个关键字，假设总共有 ![image](https://images.spumn.eu.cc/blog/97688c3bdaacb42b.svg)个关键字，树的高度为![image](https://images.spumn.eu.cc/blog/06beba9e96e5239f.svg)，且这颗树完全填满，则![image](https://images.spumn.eu.cc/blog/d8b0d709fc8a47ee.svg)，继而得到![image](https://images.spumn.eu.cc/blog/0a30f6fc642be02b.svg)，也就是树的高度为![image](https://images.spumn.eu.cc/blog/f5f2d37f2013cb5b.svg)，可能有的人又会问，那一个结点中包含![image](https://images.spumn.eu.cc/blog/cf15c9a8141aadb9.svg)个关键字，这 ![image](https://images.spumn.eu.cc/blog/cf15c9a8141aadb9.svg)个关键字只有进行顺序遍历才能知道接着选择哪一个孩子结点，需要![image](https://images.spumn.eu.cc/blog/e769992a2372bd73.svg)的时间，你说的对也不对，对是因为一个结点内的关键字的遍历确实是需要![image](https://images.spumn.eu.cc/blog/e769992a2372bd73.svg) 的时间复杂度，但是这个遍历是在内存当中进行的，时间一般可以忽略。我们通常更加关注的是磁盘 I/O 的次数，也就是![image](https://images.spumn.eu.cc/blog/f5f2d37f2013cb5b.svg)，所以 B-树或者 B+树的时间复杂度就是![image](https://images.spumn.eu.cc/blog/f075762f0561a6fa.svg)。
 
 
 
-对于 B+树而言，树的高度一般不超过 4 层，就 MySQL 的 InnoDB 存储引擎而言，一个结点默认的存储空间为 16Kb ( 可以通过这个命令查看`SHOW GLOBAL STATUS like 'Innodb_page_size';` )， MySQL 的 InnoDB 存储引擎的索引一般用 bigint 存储，占用 8 个 byte，一个索引又会关联一个指向孩子结点的指针，这个指针占用 6 个 byte，也就是说结点中的一个关键字大概要用 14 byte 的空间，而一个结点的默认大小为 16kb ，那么一个结点可以存储关键的个数最多为![image](https://cdn.nlark.com/yuque/__latex/a2b268bb27485dfb44ca68d0865a74ca.svg) , 就相当于阶数![image](https://cdn.nlark.com/yuque/__latex/352c9c3ccceca73eabf1e469142001b8.svg)，那么对于一颗高度为 3 的 B+树而言保守估计可以存储![image](https://cdn.nlark.com/yuque/__latex/99763d3ac26ad61bcf4085b7843a3d11.svg)个关键字，也就是两千多万条记录，其中的 16 为假定每一个叶子结点包含的关键字的个数（由于包含 Data 指针，所以叶子结点可以容纳的关键字的个数会少一些），就这样我想你也看到了 B+树的强大了。3层的 B+树就可以存储两千多万的数据，牛逼不？
+对于 B+树而言，树的高度一般不超过 4 层，就 MySQL 的 InnoDB 存储引擎而言，一个结点默认的存储空间为 16Kb ( 可以通过这个命令查看`SHOW GLOBAL STATUS like 'Innodb_page_size';` )， MySQL 的 InnoDB 存储引擎的索引一般用 bigint 存储，占用 8 个 byte，一个索引又会关联一个指向孩子结点的指针，这个指针占用 6 个 byte，也就是说结点中的一个关键字大概要用 14 byte 的空间，而一个结点的默认大小为 16kb ，那么一个结点可以存储关键的个数最多为![image](https://images.spumn.eu.cc/blog/65dfd106b6122feb.svg) , 就相当于阶数![image](https://images.spumn.eu.cc/blog/43c2d44a55dc8904.svg)，那么对于一颗高度为 3 的 B+树而言保守估计可以存储![image](https://images.spumn.eu.cc/blog/fe462b9e42093559.svg)个关键字，也就是两千多万条记录，其中的 16 为假定每一个叶子结点包含的关键字的个数（由于包含 Data 指针，所以叶子结点可以容纳的关键字的个数会少一些），就这样我想你也看到了 B+树的强大了。3层的 B+树就可以存储两千多万的数据，牛逼不？
 

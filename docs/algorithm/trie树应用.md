@@ -102,7 +102,7 @@ Each word must be constructed from letters of sequentially adjacent cells, where
 
 Example 1:
 
-![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1648479843430-e61f3452-42b4-42f3-8749-e6e16a6dc69b.png)
+![](https://images.spumn.eu.cc/blog/00b6b3a13441e339.png)
 
 > **Input**: board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"]
 >
@@ -120,7 +120,7 @@ Example 1:
 
 +  遍历二维网格中的所有单元格。 
 +  深度优先搜索所有从当前正在遍历的单元格出发的、由相邻且不重复的单元格组成的路径。因为题目要求同一个单元格内的字母在一个单词中不能被重复使用；所以我们在深度优先搜索的过程中，每经过一个单元格，**都将该单元格的字母临时修改为特殊字符（例如 #），以避免再次经过该单元格**。 
-+  如果当前路径是 words 中的单词，则将其添加到结果集中。如果当前路径是 words 中任意一个单词的前缀，则继续搜索；反之，如果当前路径不是 words 中任意一个单词的前缀，则剪枝。我们可以将 words 中的所有字符串先添加到前缀树中，而后用 ![image](https://g.yuque.com/gr/latex?O(%7CS%7C))的时间复杂度查询当前路径是否为 words 中任意一个单词的前缀。 
++  如果当前路径是 words 中的单词，则将其添加到结果集中。如果当前路径是 words 中任意一个单词的前缀，则继续搜索；反之，如果当前路径不是 words 中任意一个单词的前缀，则剪枝。我们可以将 words 中的所有字符串先添加到前缀树中，而后用 $O(|S|)$的时间复杂度查询当前路径是否为 words 中任意一个单词的前缀。 
 
 
 

@@ -119,13 +119,13 @@ find_if() 的第三个参数是一个 lambda 表达式的谓词。这个 lambda 
 
 1.`lower_bound(起始地址，结束地址，要查找的数值) `返回大于或**等于**val的第一个元素位置。返回的是数值第一个出现的位置。
 
-![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1664175857552-12b8f914-ab0c-4829-a928-05ed6ac70ca6.png)
+![](https://images.spumn.eu.cc/blog/3133c396310290fb.png)
 
 
 
 2.`upper_bound(起始地址，结束地址，要查找的数值)` 返回大于val的第一个元素位置。返回的是数值最后一个 出现的位置。
 
-![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1664175865547-8654ee76-1d53-4276-b25e-c7ffc7c268aa.png)
+![](https://images.spumn.eu.cc/blog/15ba65994b5b09b0.png)
 
 3.`binary_search(起始地址，结束地址，要查找的数值) ` 返回的是**是否存在**这么一个数，是一个bool值。
 
@@ -221,7 +221,7 @@ int main(){
 
 那么输出结果就变成了6和5
 
-![](https://img-blog.csdnimg.cn/d9eed921093b41a38053f162d812dc7c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBASHVudGVyIERyZWFtZXI=,size_20,color_FFFFFF,t_70,g_se,x_16)
+![](https://images.spumn.eu.cc/blog/3d2d0e27df9d9a50.png)
 
 使用自定义比较器(greater)函数查找到的就是:
 

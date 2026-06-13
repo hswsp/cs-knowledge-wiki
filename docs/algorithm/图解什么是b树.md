@@ -5,15 +5,15 @@ description: "1. 所有的叶子结点都出现在同一层上，并且不带信
 
 # B 树的特性
 1. **所有的叶子结点都出现在同一层上**，并且不带信息(可以看做是外部结点或查找失败的结点，实际上这些结点不存在，指向这些结点的指针为空)。 
-2. 每个结点包含的关键字个数有上界和下界。用一个被称为 B-树的 **最小度数** 的固定整数![image](https://cdn.nlark.com/yuque/__latex/e3fbedbdfad93dcf4fa536081afe1329.svg)来表示这些界 ，其中![image](https://cdn.nlark.com/yuque/__latex/cead1760d9d5723460c4b8d4028f113a.svg)取决于磁盘块的大小：
-    1. 除根结点以外的每个结点必须至少有![image](https://cdn.nlark.com/yuque/__latex/197acf540f0f574a974e00ef740e3da8.svg)个关键字。因此，除了根结点以外的每个内部结点有 t 个孩子。如果树非空，根结点至少有一个关键字。
-    2. 每个结点至多包含![image](https://cdn.nlark.com/yuque/__latex/dc1498b487ee400fe2832eebfa588a44.svg)个关键字。 
-3.  一个包含![image](https://cdn.nlark.com/yuque/__latex/712ecf7894348e92d8779c3ee87eeeb0.svg)个关键字的结点有![image](https://cdn.nlark.com/yuque/__latex/da2688980a39655380530bdef92db8e5.svg)个孩子； 
-4.  一个结点中的所有关键字升序排列，两个关键字![image](https://cdn.nlark.com/yuque/__latex/a9359fcd0eef30525387b50bca39c0fe.svg)和![image](https://cdn.nlark.com/yuque/__latex/0305c36496446a2cd641134a478fcac6.svg)之间的孩子结点的所有关键字 key 在![image](https://cdn.nlark.com/yuque/__latex/7698762f1bb268e2b4835e20f2b23e79.svg)的范围之内。 
+2. 每个结点包含的关键字个数有上界和下界。用一个被称为 B-树的 **最小度数** 的固定整数![image](https://images.spumn.eu.cc/blog/68592e3c32c6a664.svg)来表示这些界 ，其中![image](https://images.spumn.eu.cc/blog/64941f8c89c938f3.svg)取决于磁盘块的大小：
+    1. 除根结点以外的每个结点必须至少有![image](https://images.spumn.eu.cc/blog/43823a5d5ef0661d.svg)个关键字。因此，除了根结点以外的每个内部结点有 t 个孩子。如果树非空，根结点至少有一个关键字。
+    2. 每个结点至多包含![image](https://images.spumn.eu.cc/blog/c71a9859c65f9a9b.svg)个关键字。 
+3.  一个包含![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)个关键字的结点有![image](https://images.spumn.eu.cc/blog/b65250d4e4af8020.svg)个孩子； 
+4.  一个结点中的所有关键字升序排列，两个关键字![image](https://images.spumn.eu.cc/blog/921eec6a755b792b.svg)和![image](https://images.spumn.eu.cc/blog/19eeb786f90ad997.svg)之间的孩子结点的所有关键字 key 在![image](https://images.spumn.eu.cc/blog/4c555c8ce24f6398.svg)的范围之内。 
 5. 与二叉排序树不同， B-树的搜索是从根结点开始，根据结点的孩子树做多路分支选择，而二叉排序树做的是二路分支选择，每一次判断都会进行一次磁盘 I/O操作。 
-6.  与其他平很二叉树类似，B-树查找、插入和删除操作的时间复杂度为![image](https://cdn.nlark.com/yuque/__latex/1b0fce2bd1f5925667628ba7a81a4635.svg)量级。 
+6.  与其他平很二叉树类似，B-树查找、插入和删除操作的时间复杂度为![image](https://images.spumn.eu.cc/blog/d5fd8447869e9629.svg)量级。 
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ4t1QoCBdfJKpiaNncE20YOBEeWg7aWRXaU840Be1AXczV4Z28ibPaLOQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/c2b0209a0b72b051.png)
 
 上图就是一颗典型的 B-树，其中最小度数 ，根结点至少包含一个关键字 `P` ，根结点以外的每个结点至少有 `t - 1 = 1` 个，每个结点最多包含 `2t - 1= 3` 个关键字；包含三个 1 关键字 `P` 的根结点有 `1 + 1 = 2` 个孩子结点，包含 3 个关键字的结点 `(C、G、L)` 包含有 4 个孩子。同一个结点中的所有关键字升序排列，比如结点 `(D、E、F)` 的内部结点就是升序排列，且均位于其父结点中的关键字 `C` 和 `G` 之间。所有的叶结点均为空。
 
@@ -21,29 +21,29 @@ description: "1. 所有的叶子结点都出现在同一层上，并且不带信
 B-树的查找操作与二叉排序树（BST）极为类似，只不多 B-树中的每个结点包含多个关键字。假设待查找的关键字为  `k` ，我们从根结点开始，递归向下进行查找。对每一个访问的非叶子结点，**如果结点包含待查找的关键字 **`**k**`** ，则返回结点指针**；否则，我们递归到该结点的恰当子代（该子代结点中的关键字均在比 `k` 更大的关键字之前）。如果抵达了叶子结点且没有找到 `k` 则返回 `null` .
 
 ## B-树查找操作演示
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ4t1QoCBdfJKpiaNncE20YOBEeWg7aWRXaU840Be1AXczV4Z28ibPaLOQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/c2b0209a0b72b051.png)
 
 我们以查找关键字 `F` 为例进行说明。
 
 第一步：访问根结点 `P` ，发现关键字 `F` 小于 `P` ，则查找结点 `P` 的左孩子。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ3wzLLEq4vGxY98Mm7Myj36HCp0icOpibckicv3c9nkfmNWNCgCQiaO5wzA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/1b9e0e11032f0163.png)
 
 第二步：访问结点 `P` 的左子结点 `[C、G、L]` ，对于一个结点中包含多个关键字时，顺序进行访问，首先与关键字 `C` 进行比较，发现比 `C` 大；然后与关键字 `G` 进行比较，发现比 `G` 小，则说明待查找关键字 `F` 位于关键字 `C` 和关键字 `G` 之间的子代中。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZFibLQ1gMOouu12eZwOQHYhYWLic7IIyPU08o3cib1IfXHfMj08wXVH0lA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/040397254a9f84cf.png)
 
 第三步：访问关键字 `C` 和关键字 `G` 之间的子代，该子代结点包含三个关键字 `[D、E、F]` ，进行顺序遍历，比较关键字 `D` 和 `F` ，`F` 比 `D` 大
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZSsdkpRAjyQZRjogX4McZSiaj8icZriack9EE0wdu6lTkwuhgs23tjUAWA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/ed6a8bbf25b1c81e.png)
 
 顺序访问关键字 `E` ，`F` 比 `E` 大：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZfWHIAibGicfABOFEAjeibghD7cEYwsFI8H5vQMcAd8NxGAZX90fZU3RzA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/fc9b3b6d27359307.png)
 
 顺序访问关键字 `F` ，发现与待查找关键字相同，查找成功。则返回结点  `[D、E、F]` 的指针。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZlibyxeaV4uahFJUgic5ICcgka8v1jfAQJbYYjfYStuO5J7J0yPtGxCLA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/e66be56c9a4f86df.png)
 
 在此处我们顺带一起看一下 B-树中结点的一个定义：
 
@@ -126,11 +126,11 @@ BTreeNode *BTreeNode::search(int k)
 # B-树的中序遍历
 B-树的中序遍历与二叉树的中序遍历也很相似，我们从最左边的孩子结点开始，递归地打印最左边的孩子结点，然后对剩余的孩子和关键字重复相同的过程。最后，递归打印最右边的孩子.
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ4t1QoCBdfJKpiaNncE20YOBEeWg7aWRXaU840Be1AXczV4Z28ibPaLOQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/c2b0209a0b72b051.png)
 
 对于这个图的中序遍历结果为：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZlUmJQ32Vz9s8bxNu9ibttuT5tRGYkRPuroRQBkTYoSvibWEGEibpV4NKQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/2822af8f13efe8d8.png)
 
 **一定要注意，本应该是26个字母，但是这里缺少了字母  **`**I**`** **  ，之后我们看插入操作时可以将其插入。
 
@@ -163,7 +163,7 @@ void BTreeNode::traverse()
 
 我们可以使用一个称为 `splitChild()` 的操作实现，即拆分一个结点的孩子。下图中， `x` 的孩子结点 `y` 被拆分成了两个结点 `y` 和 `z` 。拆分操作将一个关键`I` 上移，并以上移的关键 `I` 对结点 `y` 进行拆分，拆分成包含关键字 `[G、H]` 的结点 `y` 和包含关键字 `[J、K]` 的结点 `z` . 这一过程又称之为 B-树的**生长**，区别于 BST 的向下生长。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZzYt3NQeD92EECqkFic07mm7cs0iaYVHQl9f9HN1bh5sFdOib2pk4fxSFQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/7b833b879ddc5eb3.png)
 
 综上，B-树在插入一个新的关键字 `k` 时，我们从根结点一直访问到叶子结点，在遍历一个结点之前，首先检查这个结点是否已经满了，即包含了 `2t - 1` 个关键字，如果结点已满，则将其拆分并创建新的空间。插入操作的伪代码描述如下：
 
@@ -179,23 +179,23 @@ void BTreeNode::traverse()
 事实上 B-树的插入操作是一种**主动插入算法**，因为在插入新的关键字之前，**我们会将所有已满的结点进行拆分**，提前拆分的好处就是，我们不必进行回溯，遍历结点两次。如果我们不事先拆分一个已满的结点，而仅仅在插入新的关键字时才拆分它，那么最终可能需要再次从根结点出发遍历所有结点，比如在我们到达叶子结点时，将叶结点进行拆分，并将其中的一个关键字上移导致父结点分裂（因为上移导致父结点超出可存储的关键字的个数），父结点的分裂后，新的关键字继续上移，将可能导致新的父结点分裂，从而出现大量的回溯操作。但是 B-树这种主动插入算法中，就不会发生级联效应。当然，**这种主动插入的缺点也很明显，我们可能进行很多不必要的拆分操作。**
 
 ## 插入操作案例
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ4t1QoCBdfJKpiaNncE20YOBEeWg7aWRXaU840Be1AXczV4Z28ibPaLOQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/c2b0209a0b72b051.png)
 
 我们以在上图中插入关键字 `I` 为例进行说明。其中最小度 `t = 2` ，一个结点最多可存储 `2t - 1 = 3` 个结点。
 
 第一步：访问根结点，发现插入关键字 `I` 小于 `P` , 但根结点未满，不分裂，直接访问其第一个孩子结点。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ3wzLLEq4vGxY98Mm7Myj36HCp0icOpibckicv3c9nkfmNWNCgCQiaO5wzA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/1b9e0e11032f0163.png)
 
 第二步：访问结点 `P` 的第一个孩子结点 `[C、G、L]` ，发现第一个孩子结点已满，将第一个孩子结点分裂为两个：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZicuRPbzvyBPiblUMJ1rAwVhJLgvkwCF80ortyN0pL8JnVWJ1DdDCQhfw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/a41e21ee81a77238.png)
 
-第三步：将结点  `I` 插入到结点 `L` 的第一个左孩子当中，发现 `L` 的第一个左孩子 `[H、J、K]` 已满，则将其分裂为两个。![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZbk4rukVb2w6jfctvpuxxEnCxrwsBxrrp8od99fcT33WVPsDs6OjEmQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+第三步：将结点  `I` 插入到结点 `L` 的第一个左孩子当中，发现 `L` 的第一个左孩子 `[H、J、K]` 已满，则将其分裂为两个。![](https://images.spumn.eu.cc/blog/193fa3ee950df926.png)
 
 第四步：将结点 `I` 插入到结点 `J` 的第一个孩子当中，发现 `L` 的第一个孩子结点 `[H]` 未满且为叶子结点，则将 `I` 直接插入。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZKmP9Vl1TBNTfM6d60A9h99rsNwVVQPibKpAmOktpOH8wFEUxwzCo4Fw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/f727c89df8d715cf.png)
 
 ## 插入操作代码实现：
 关于 B-树插入操作的实现稍微复杂一些，里面涉及到每一个结点内部指针的移动，同时涉及到父结点中相应指针的移动，不过对照着图和代码中的注释，我相信你可以看懂。
@@ -339,62 +339,62 @@ B-树的删除操作相比于插入操作更为复杂，如果仅仅只是删除
 
 **初始的 B-树 如图所示，其中最小度 **`**t = 3**`** 每一个结点最多可包含 5 个关键字，至少包含 2个关键字（根结点除外）。**
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ4t1QoCBdfJKpiaNncE20YOBEeWg7aWRXaU840Be1AXczV4Z28ibPaLOQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/c2b0209a0b72b051.png)
 
 ## 1. 待删除的关键字 k 在结点 x 中，且 x 是叶子结点，删除关键字k
 删除 B-树中的关键字 `F`
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZY94ib2FQOpjmXBBFLAWD9kHWfIBCMhFUaeZAyv1pp57PnK8hWs4kE8w/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/99f49aa71ba9ab6d.png)
 
 ## 2. 待删除的关键字 k 在结点 x 中，且 x 是内部结点，分一下三种情况
-#### 情况一：如果位于结点 x 中的关键字 k 之前的第一个孩子结点 y 至少有 t 个关键字，则在孩子结点 y 中找到 k 的前驱结点![image](https://cdn.nlark.com/yuque/__latex/30e59e524230712e9f2c2a4a20400c9b.svg)，递归地删除关键字![image](https://cdn.nlark.com/yuque/__latex/30e59e524230712e9f2c2a4a20400c9b.svg)，并将结点 x 中的关键字 k 替换为![image](https://cdn.nlark.com/yuque/__latex/30e59e524230712e9f2c2a4a20400c9b.svg).
+#### 情况一：如果位于结点 x 中的关键字 k 之前的第一个孩子结点 y 至少有 t 个关键字，则在孩子结点 y 中找到 k 的前驱结点![image](https://images.spumn.eu.cc/blog/4d4e2add45a462a0.svg)，递归地删除关键字![image](https://images.spumn.eu.cc/blog/4d4e2add45a462a0.svg)，并将结点 x 中的关键字 k 替换为![image](https://images.spumn.eu.cc/blog/4d4e2add45a462a0.svg).
 删除 B-树中的关键字 `G` ，`G` 的前一个孩子结点 `y` 为 `[D、E、F]` ，包含 3个关键字，满足情况一，关键字 `G` 的直接前驱为关键 `F` ，删除 `F` ，然后将 `G` 替换为 `F` .
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZHFQQV0S0ia2XnpWXYXXPz4QIw3tiaKHa97wg7BRQNlibibtcF5U4bK9guw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/732e041c336c2249.png)
 
-#### 情况二：y 所包含的关键字少于 t 个关键字，则检查结点 x 中关键字 k 的后一个孩子结点 z 包含的关键字的个数，如果  z 包含的关键字的个数至少为  t 个，则在 z 中找到关键字 k 的直接后继![image](https://cdn.nlark.com/yuque/__latex/30e59e524230712e9f2c2a4a20400c9b.svg),然后删除![image](https://cdn.nlark.com/yuque/__latex/30e59e524230712e9f2c2a4a20400c9b.svg)，并将关键 k 替换为![image](https://cdn.nlark.com/yuque/__latex/30e59e524230712e9f2c2a4a20400c9b.svg).
+#### 情况二：y 所包含的关键字少于 t 个关键字，则检查结点 x 中关键字 k 的后一个孩子结点 z 包含的关键字的个数，如果  z 包含的关键字的个数至少为  t 个，则在 z 中找到关键字 k 的直接后继![image](https://images.spumn.eu.cc/blog/4d4e2add45a462a0.svg),然后删除![image](https://images.spumn.eu.cc/blog/4d4e2add45a462a0.svg)，并将关键 k 替换为![image](https://images.spumn.eu.cc/blog/4d4e2add45a462a0.svg).
 删除 B-树中的关键字 `C` ,  `y` 中包含的关键字的个数为 2 个，小于 `t = 3` ,结点 `[C、G、L]` 中的 关键字 `C` 的后一个孩子 z 为  `[D、E、F]` 包含 3 个关键字，关键字 `C` 的直接后继为 `D` ，删除 `D` ，然后将 `C` 替换为 `D` .
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZV2vDmpDkrBTDictDZatIoqcEvibMVqEkyWP6y2tiaNUQGJoToh1hXqJsA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/6cd181fee174f170.png)
 
 #### 情况三：如果 y 和 z 都只包含 t -1 个关键字，合并关键字 k 和所有 z 中的关键字到 结点 y 中，结点 x 将失去关键字 k 和孩子结点 z，y 此时包含 2t -1 个关键字，释放结点 z 的空间并递归地从结点 y 中删除关键字 k.
 为了说明这种情况，我们将用下图进行说明。
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZFESqtY2svopbUwChgR0IicMicjtT745k8tR7Xib0CQkC9b3pO2gnicdFRw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/8dd7e36d2771f0c1.png)
 
 删除关键字 `C` ,  结点 y 包含 2 个关键字 ，结点 z 包含 2 个关键字，均等于 `t - 1 = 2` 个， 合并关键字 `C` 和结点 z 中的所有关键字到结点 `y` 当中：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZciadxu2mdIY0Cn3pibcfcIQOx0fZich1GLadwW5ceKicoOmvLAm2O6PibUA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/ad279e45380346be.png)
 
 此时结点 y 为叶子结点，直接删除关键字 `C`
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZuIHNgicLQwgYA1qzBPOFYyscd3niaviaibUaQ0H8Ey8IlHehGs9sUbpoiag/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/f71c23ceb175bdac.png)
 
 ## 3. 如果关键字 k 不在当前在内部结点 x 中，则确定必包含 k 的子树的根结点 `x.c(i)` （如果 k 确实在 B-树中）。如果 `x.c(i)` 只有 t - 1 个关键字，必须执行下面两种情况进行处理：（看到这里一头雾水）
 首先我们得确认什么是当前内部结点 x ，什么是 `x.c(i)` ,如下图所示， P 现在不是根结点，而是完整 B-树的一个子树的根结点：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZmfY750CDYxk6aX9Gia35WS4V20V2kMJo5fZQmdbKNzzWE3GCYrurrqQ/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/efd8b93cbc36c7c5.png)
 
 #### 情况二：如果 `x.c(i)` 及 `x.c(i)` 的所有相邻兄弟都只包含 t - 1 个关键字，则将 `x.c(i)` 与 一个兄弟合并，即将 x 的一个关键字移动至新合并的结点，使之成为该结点的中间关键字，将合并后的结点作为新的 x 结点 .（依旧一头雾水）
 不要惊奇，为什么情况二放前面，而情况一放后面，原因是这样有助于你的理解。
 
 情况二上面的图标明了相应的 x 及 `x.c(i)` ，我们以删除关键字 `D` 为例，此时当前内部结点 `x` 不包含关键字 `D` , 确定是第三种情况，我们可以确认关键 `D` 一定在结点 x 的第一个孩子结点所在的子树中，结点 x 的第一个孩子结点所在子树的跟结点为 `x.c(i) 即 [C、L]` . 其中 `结点 [C、L]` 及其相邻的兄弟结点 `[T、W]` 都只包含 2 个结点（即 `t - 1`) ，则将  `[G、L]` 与 `[T、W]` 合并，并将结点 x 当中仅有的关键字 `P` 合并到新结点中；然后将合并后的结点作为新的 x 结点，递归删除关键字 `D` ，发现`D` 此时在叶子结点 y 中，直接删除，就是 **1.** 的情况。（此时清晰了很多）
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZDrzSwHuLia7Lz0jGgia4ExsZ81auSthtJH7ApE9RAQYJTYribHkmUU6kA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/a564f0258bdb8b50.png)
 
 #### 情况一：`x.c(i)` 仅包含 t - 1 个关键字且 `x.c(i)` 的一个兄弟结点包含至少 t  个关键字，则将 x 的某一个关键字下移到 `x.c(i)` 中，将 `x.c(i)` 的相邻的左兄弟或右兄弟结点中的一个关键字上移到 x 当中，将该兄弟结点中相应的孩子指针移到 `x.c(i)` 中，使得 `x.c(i)` 增加一个额外的关键字。（一头雾水）
 为了去掉 “一头雾水“，我们在上面情况二删除后的结果上继续进行说明：
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZ1MLgDlfkAX9fichMRZlTzVDcadDFV9ngASNb7kZicACR9iaOp1qnqXibQA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/f7156ae1085d65a3.png)
 
 我们以删除结点 `[A、B]` 中的结点 `B` 为例，上图中 `x.c(i)` 包含 2 个关键字，即 t - 1 个关键字， `x.c(i)` 的一个兄弟结点 `[H、J、K]` 包含 3 个关键字（满足至少 t 个关键字的要求），则将兄弟结点 `[H、J、K]` 中的关键字 `H` 向上移动到 `x` 中， 将 x 中的关键字 `C` 下移到 `x.c(i)` 中；删除关键字 `B` .
 
-![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngSKIHKxiaWgko0I3nUtUWPOZYZibLQk0Gl4G24QuKSjhsdeWQOoFXfJGzNfaEmLUXOa2SUug12OMwZA/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/61a6372cc28c5cc5.png)
 
 到这里，B-树的所有主要操作就结束了，关于 B-树查找、遍历、插入和删除的完整工程代码我就再不放在文中了，需要的朋友后台回复 「 **B-tree**」就可以获得。
 
 # 二叉树与B-树的比较
-B-树是一颗中序遍历结果有序的多路平衡树。不同于二叉树，B-树中的结点可以有多个孩子结点，二叉树只能有两个孩子结点。B-树的高度为![image](https://cdn.nlark.com/yuque/__latex/ecc577c2e23387e9c875af8f90599da3.svg)（其中 M 是B-树的阶，也就是**一个结点可以最多包含关键字的个数**，N 为结点个数）。每一次更新高度自动调整。B-树中的结点内的关键字按照从左到右升序排列。B-树中插入一个结点或者关键字相比于二叉树也更加复杂。
+B-树是一颗中序遍历结果有序的多路平衡树。不同于二叉树，B-树中的结点可以有多个孩子结点，二叉树只能有两个孩子结点。B-树的高度为![image](https://images.spumn.eu.cc/blog/80b5f48767acf142.svg)（其中 M 是B-树的阶，也就是**一个结点可以最多包含关键字的个数**，N 为结点个数）。每一次更新高度自动调整。B-树中的结点内的关键字按照从左到右升序排列。B-树中插入一个结点或者关键字相比于二叉树也更加复杂。
 
 二叉树是一颗典型的普通树。与 B-树不同，二叉树中的结点最多可以有两个孩子结点。二叉树最顶端的根结点仅包含一个左子树和右子树。与 B-树相同，中序遍历结果有序，但是二叉树的前序遍历结果和后序遍历结果同样可以有序，二叉树中结点的插入和删除操作简单。
 

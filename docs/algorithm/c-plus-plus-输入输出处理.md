@@ -1,9 +1,9 @@
 ---
 title: "ASCII码"
-description: "![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1666753557528-a4dc3060-5fdf-4a5b-a34d-8115a6d11560.png)"
+description: "![](https://images.spumn.eu.cc/blog/c2c637b52f22dfc3.png)"
 ---
 
-![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1666753557528-a4dc3060-5fdf-4a5b-a34d-8115a6d11560.png)
+![](https://images.spumn.eu.cc/blog/c2c637b52f22dfc3.png)
 
 # ASCII码
 

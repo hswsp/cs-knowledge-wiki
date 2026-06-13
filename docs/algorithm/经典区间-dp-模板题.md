@@ -47,7 +47,7 @@ description: "这是 LeetCode 上的「516. 最长回文子序列」，难度为
 
 提示：
 
-+ ![image](https://g.yuque.com/gr/latex?1%20%5Cle%20s.length%20%5Cle%201000)
++ $1 \le s.length \le 1000$
 + `s` 仅由小写英文字母组成
 
 
@@ -67,48 +67,48 @@ description: "这是 LeetCode 上的「516. 最长回文子序列」，难度为
 
 
 
-+ **从图论意义出发就是，任何一个长度为 **![image](https://g.yuque.com/gr/latex?len)** 的回文串，****必然由「长度为**![image](https://g.yuque.com/gr/latex?len-1)** 」****（比如**![image](https://cdn.nlark.com/yuque/__latex/ebd187e0d41573487a8dca3bdc576fd6.svg)**->**![image](https://cdn.nlark.com/yuque/__latex/b1099681b3cc31078636c042365dd89a.svg)**）****或「长度为**![image](https://g.yuque.com/gr/latex?len-2)** 」（两边插入）的回文串转移而来。**
++ **从图论意义出发就是，任何一个长度为 **$len$** 的回文串，****必然由「长度为**$len-1$** 」****（比如**![image](https://images.spumn.eu.cc/blog/68885e5f81c04343.svg)**->**![image](https://images.spumn.eu.cc/blog/10e9805ea0eb6e53.svg)**）****或「长度为**$len-2$** 」（两边插入）的回文串转移而来。**
 + **两个具有****公共回文部分****的回文串之间存在拓扑序（存在由「长度较小」回文串指向「长度较大」回文串的有向边）。**
 
 
 
 通常区间 DP 问题都是，常见的基本流程为：
 
-1. 从小到大枚举区间大小![image](https://g.yuque.com/gr/latex?len)
-2. 枚举区间左端点 ，同时根据区间大小![image](https://g.yuque.com/gr/latex?len) 和左端点计算出区间右端点![image](https://g.yuque.com/gr/latex?r%20%3D%20l%2Blen-1)
-3. 通过状态转移方程求![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D) 的值
+1. 从小到大枚举区间大小$len$
+2. 枚举区间左端点 ，同时根据区间大小$len$ 和左端点计算出区间右端点$r = l+len-1$
+3. 通过状态转移方程求$f[l][r]$ 的值
 
 
 
-因此，我们 **定义**![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D)** 为考虑区间**![image](https://g.yuque.com/gr/latex?%5Bl%2Cr%5D)** 的最长回文子序列长度为多少。**
+因此，我们 **定义**$f[l][r]$** 为考虑区间**$[l,r]$** 的最长回文子序列长度为多少。**
 
 
 
-不失一般性的考虑![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D) 该如何转移。
+不失一般性的考虑$f[l][r]$ 该如何转移。
 
 
 
-由于我们的状态定义 **没有限制** 回文串中必须要选![image](https://g.yuque.com/gr/latex?s%5Bl%5D) 或者![image](https://g.yuque.com/gr/latex?s%5Br%5D) 。
+由于我们的状态定义 **没有限制** 回文串中必须要选$s[l]$ 或者$s[r]$ 。
 
 
 
-我们对边界字符![image](https://g.yuque.com/gr/latex?s%5Bl%5D) 和 ![image](https://g.yuque.com/gr/latex?s%5Br%5D)分情况讨论，最终的 ![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D) 应该在如下几种方案中取 ![image](https://g.yuque.com/gr/latex?max)：
+我们对边界字符$s[l]$ 和 $s[r]$分情况讨论，最终的 $f[l][r]$ 应该在如下几种方案中取 $max$：
 
-+  形成的回文串一定不包含![image](https://g.yuque.com/gr/latex?s%5Bl%5D)  和![image](https://g.yuque.com/gr/latex?s%5Br%5D)  ，即完全不考虑![image](https://g.yuque.com/gr/latex?s%5Bl%5D)和![image](https://g.yuque.com/gr/latex?s%5Br%5D) ：
++  形成的回文串一定不包含$s[l]$  和$s[r]$  ，即完全不考虑$s[l]$和$s[r]$ ：
 
- ![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D%20%3D%20f%5Bl%2B1%5D%5Br-1%5D%0A) 
+ $f[l][r] = f[l+1][r-1]$ 
 
-+  形成的回文串**可能**包含![image](https://g.yuque.com/gr/latex?s%5Bl%5D) ，但**一定不**包含![image](https://g.yuque.com/gr/latex?s%5Br%5D) ：
++  形成的回文串**可能**包含$s[l]$ ，但**一定不**包含$s[r]$ ：
 
- ![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D%20%3D%20f%5Bl%5D%5Br-1%5D%0A) 
+ $f[l][r] = f[l][r-1]$ 
 
-+  形成的回文串**可能**包含![image](https://g.yuque.com/gr/latex?s%5Br%5D) ，但**一定不**包含![image](https://g.yuque.com/gr/latex?s%5Bl%5D) ：
++  形成的回文串**可能**包含$s[r]$ ，但**一定不**包含$s[l]$ ：
 
- ![image](https://g.yuque.com/gr/latex?f%5Bl%5D%5Br%5D%20%3D%20f%5Bl%2B1%5D%5Br%5D%0A) 
+ $f[l][r] = f[l+1][r]$ 
 
-+  形成的回文串可能包含![image](https://g.yuque.com/gr/latex?s%5Bl%5D) ，也可能包含![image](https://g.yuque.com/gr/latex?s%5Br%5D) ，根据![image](https://g.yuque.com/gr/latex?s%5Bl%5D)和 ![image](https://g.yuque.com/gr/latex?s%5Br%5D)是否相等： 
++  形成的回文串可能包含$s[l]$ ，也可能包含$s[r]$ ，根据$s[l]$和 $s[r]$是否相等： 
 
-![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1668478740561-8d495429-d34b-4beb-8df0-6cd4262851a0.png)
+![](https://images.spumn.eu.cc/blog/fd62c063dda8f349.png)
 
 
 
@@ -150,7 +150,7 @@ class Solution {
 
 
 
-我们也可以不枚举区间大小![image](https://g.yuque.com/gr/latex?len)，而是枚举每一个固定的左边界![image](https://cdn.nlark.com/yuque/__latex/6945e109777fe3fd777e8254f0ec0f0c.svg)对应的所有右边界![image](https://cdn.nlark.com/yuque/__latex/72cb3a229067770aeb6caa625a65a1a1.svg), c++代码如下:
+我们也可以不枚举区间大小$len$，而是枚举每一个固定的左边界![image](https://images.spumn.eu.cc/blog/72530804a0d24627.svg)对应的所有右边界![image](https://images.spumn.eu.cc/blog/1d6a047e4813ca61.svg), c++代码如下:
 
 ```cpp
  int longestPalindromeSubseq(string s) {
@@ -177,6 +177,6 @@ class Solution {
 
 
 
-+ 时间复杂度：![image](https://g.yuque.com/gr/latex?O(n%5E2))
-+ 空间复杂度：![image](https://g.yuque.com/gr/latex?O(n%5E2))
++ 时间复杂度：$O(n^2)$
++ 空间复杂度：$O(n^2)$
 

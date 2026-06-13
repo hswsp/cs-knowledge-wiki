@@ -47,7 +47,7 @@ description: "和Dijkstra算法一样，弗洛伊德(Floyd)算法也是一种用
 # **Floyd算法图解**
 
 
-![](https://github.com/wangkuiwu/datastructs_and_algorithm/blob/master/pictures/graph/floyd/01.jpg?raw=true)
+![](https://images.spumn.eu.cc/blog/24614bd460c20819.jpg)
 
 
 
@@ -55,7 +55,7 @@ description: "和Dijkstra算法一样，弗洛伊德(Floyd)算法也是一种用
 
 
 
-![](https://github.com/wangkuiwu/datastructs_and_algorithm/blob/master/pictures/graph/floyd/02.jpg?raw=true)
+![](https://images.spumn.eu.cc/blog/7ddc2f9948022a33.jpg)
 
 
 

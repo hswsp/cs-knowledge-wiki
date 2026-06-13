@@ -22,7 +22,7 @@ From each cell, you can either move in four directions: left, right, up, or down
 
 
 
-![](https://assets.leetcode.com/uploads/2021/01/05/grid1.jpg)
+![](https://images.spumn.eu.cc/blog/e2667bd2f8174033.jpg)
 
 
 
@@ -38,7 +38,7 @@ Explanation: The longest increasing path is [1, 2, 6, 9].
 
 
 
-![](https://assets.leetcode.com/uploads/2021/01/27/tmp-grid.jpg)
+![](https://images.spumn.eu.cc/blog/1b79488bbaa431e3.jpg)
 
 
 
@@ -91,11 +91,11 @@ Output: 1
 
 
 
-朴素深度优先搜索的时间复杂度过高的原因是进行了大量的重复计算，同一个单元格会被访问多次，每次访问都要重新计算。由于同一个单元格对应的最长递增路径的长度是固定不变的，因此可以使用记忆化的方法进行优化。用矩阵 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bmemo%7D)作为缓存矩阵，**已经计算过的单元格最长路径的结果存储到缓存矩阵中**。
+朴素深度优先搜索的时间复杂度过高的原因是进行了大量的重复计算，同一个单元格会被访问多次，每次访问都要重新计算。由于同一个单元格对应的最长递增路径的长度是固定不变的，因此可以使用记忆化的方法进行优化。用矩阵 $\textit{memo}$作为缓存矩阵，**已经计算过的单元格最长路径的结果存储到缓存矩阵中**。
 
 
 
-使用记忆化深度优先搜索，当访问到一个单元格 `(i,j)` 时，如果 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bmemo%7D%5Bi%5D%5Bj%5D%20%5Cneq%200)，说明该单元格的结果已经计算过，则直接从缓存中读取结果，如果 ![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bmemo%7D%5Bi%5D%5Bj%5D%3D0)，说明该单元格的结果尚未被计算过，则进行搜索，并将计算得到的结果存入缓存中。
+使用记忆化深度优先搜索，当访问到一个单元格 `(i,j)` 时，如果 $\textit{memo}[i][j] \neq 0$，说明该单元格的结果已经计算过，则直接从缓存中读取结果，如果 $\textit{memo}[i][j]=0$，说明该单元格的结果尚未被计算过，则进行搜索，并将计算得到的结果存入缓存中。
 
 
 
@@ -153,8 +153,8 @@ public:
 ## 复杂度分析
 
 
-+  时间复杂度：![image](https://g.yuque.com/gr/latex?O(mn))，其中 m 和 n 分别是矩阵的行数和列数。深度优先搜索的时间复杂度是 ![image](https://g.yuque.com/gr/latex?O(V%2BE))，其中 V 是节点数，E 是边数。在矩阵中，![image](https://g.yuque.com/gr/latex?O(V)%3DO(mn))，![image](https://g.yuque.com/gr/latex?O(E)%5Capprox%20O(4mn)%20%3D%20O(mn))。 
-+  空间复杂度：![image](https://g.yuque.com/gr/latex?O(mn))，其中 m 和 n 分别是矩阵的行数和列数。空间复杂度主要取决于缓存和递归调用深度，缓存的空间复杂度是 ![image](https://g.yuque.com/gr/latex?O(mn))，递归调用深度不会超过 ![image](https://g.yuque.com/gr/latex?mn)。 
++  时间复杂度：$O(mn)$，其中 m 和 n 分别是矩阵的行数和列数。深度优先搜索的时间复杂度是 $O(V+E)$，其中 V 是节点数，E 是边数。在矩阵中，$O(V)=O(mn)$，$O(E)\approx O(4mn) = O(mn)$。 
++  空间复杂度：$O(mn)$，其中 m 和 n 分别是矩阵的行数和列数。空间复杂度主要取决于缓存和递归调用深度，缓存的空间复杂度是 $O(mn)$，递归调用深度不会超过 $mn$。 
 
 
 
@@ -165,15 +165,15 @@ public:
 
 
 
-根据方法一的分析，动态规划的状态定义和状态转移方程都很容易得到。方法一中使用的**缓存矩阵 **![image](https://g.yuque.com/gr/latex?%5Ctextit%7Bmemo%7D)**即为状态值**，状态转移方程如下：
+根据方法一的分析，动态规划的状态定义和状态转移方程都很容易得到。方法一中使用的**缓存矩阵 **$\textit{memo}$**即为状态值**，状态转移方程如下：
 
 
 
-![image](https://g.yuque.com/gr/latex?memo%5Bi%5D%5Bj%5D%3Dmax%7Bmemo%5Bx%5D%5By%5D%7D%2B1%0A)
+$memo[i][j]=max{memo[x][y]}+1$
 
 
 
-其中 ![image](https://g.yuque.com/gr/latex?(x%2Cy)) 与 ![image](https://g.yuque.com/gr/latex?(i%2Cj)) 在矩阵中相邻，并且 ![image](https://g.yuque.com/gr/latex?matrix%5Bx%5D%5By%5D%3Ematrix%5Bi%5D%5Bj%5D)
+其中 $(x,y)$ 与 $(i,j)$ 在矩阵中相邻，并且 $matrix[x][y]>matrix[i][j]$
 
 
 
@@ -254,8 +254,8 @@ public:
 ## 复杂度分析
 
 
-+  时间复杂度：![image](https://g.yuque.com/gr/latex?O(mn))，其中 m 和 n 分别是矩阵的行数和列数。拓扑排序的时间复杂度是 ![image](https://g.yuque.com/gr/latex?O(V%2BE))，其中 V 是节点数，E 是边数。在矩阵中，![image](https://g.yuque.com/gr/latex?O(V)%3DO(mn))，![image](https://g.yuque.com/gr/latex?O(E)%5Capprox%20O(4mn)%20%3D%20O(mn))。 
-+  空间复杂度：![image](https://g.yuque.com/gr/latex?O(mn))，其中 m 和 n 分别是矩阵的行数和列数。空间复杂度主要取决于队列，队列中的元素个数不会超过 ![image](https://g.yuque.com/gr/latex?mn)。 
++  时间复杂度：$O(mn)$，其中 m 和 n 分别是矩阵的行数和列数。拓扑排序的时间复杂度是 $O(V+E)$，其中 V 是节点数，E 是边数。在矩阵中，$O(V)=O(mn)$，$O(E)\approx O(4mn) = O(mn)$。 
++  空间复杂度：$O(mn)$，其中 m 和 n 分别是矩阵的行数和列数。空间复杂度主要取决于队列，队列中的元素个数不会超过 $mn$。 
 
 
 

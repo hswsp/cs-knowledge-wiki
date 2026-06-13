@@ -3,7 +3,7 @@ title: "bfs-dfs"
 description: "_插入封面图片，点击图片，设置图片大小_"
 ---
 
-#### ![](https://cdn.nlark.com/yuque/0/2019/png/215718/1567507815646-d739438a-8ffd-4107-9d87-130e2104446a.png)
+#### ![](https://images.spumn.eu.cc/blog/cddb405251bf88fb.png)
 _插入封面图片，点击图片，设置图片大小_
 
 #### 关于本书

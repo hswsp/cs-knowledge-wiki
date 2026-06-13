@@ -38,7 +38,7 @@ Kruskal 算法其实很容易理解和记忆，其关键是要熟悉并查集算
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaNWKNGa0ZXvabH4VUSeOMmWEWlqFA1ROCpT2lMmthmDoKtwiaoAmVZnw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/ff3a265c5052548a.webp)
 
 
 
@@ -184,7 +184,7 @@ edges = [[0,1], [0,2], [0,3], [1,4]]
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaVSXwtNeK0Aj4rpjngUYORz9oONA0ibN37eb1ibzNNn61I5JhTyK87Z9Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/2d4b94d9e1b962b9.png)
 
 
 
@@ -203,7 +203,7 @@ edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaZpRUy0LCjzPFicr7iaJjz0pzMYvVAVia3hbN2MqUiazJHoEOBVKeiah0LHw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/f5765dcb72ab79a5.webp)
 
 
 
@@ -215,7 +215,7 @@ edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViajZsicqEDpdmELzpljbfaMibu7sdbaEdzw62gVSf6BUDnZbrDuMlfKmYQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/00ec36529ebe78b0.png)
 
 
 
@@ -223,7 +223,7 @@ edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaVZm8jGJQMmMZANjksG3mB1QzuS7HWic6b8Iwt2CZwWlAAOULqdWoUfg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/bcf87b5011568837.webp)
 
 
 
@@ -309,7 +309,7 @@ class UF {
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaJR5ux8oibricEckxYKDCicLviaNwpbpXU27psp8mx358L1ibjCO0QCbo1Ng/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/cb46dda4de87fada.png)
 
 
 
@@ -358,7 +358,7 @@ class UF {
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaW32uyFQm8LMpnia5cEGQfhwicWu4A7e8zv0xF27iavbvAr3pialxmpcGPA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/e6c4ad8a16f970c2.png)
 
 
 
@@ -376,7 +376,7 @@ points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
 
 
 
-![](https://mmbiz.qpic.cn/sz_mmbiz_png/gibkIz0MVqdHMiaIZgKPc3aZYW2WIfQUViaszakldCBW1jDZ8em46leiaEcQZoYPdgCTDYDe4I6lMP1J7GmREHxBZg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![](https://images.spumn.eu.cc/blog/e887a221ed1f7241.png)
 
 
 

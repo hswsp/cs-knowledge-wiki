@@ -209,7 +209,7 @@ p.s.当然没有这么绝对的说……因题而异的说……
 
 
 
-![](https://5b0988e595225.cdn.sohucs.com/images/20181106/7a2ad91e0761427a81308da7876519fc.png)
+![](https://images.spumn.eu.cc/blog/4de621a69b3283e0.png)
 
 
 
@@ -315,7 +315,7 @@ Constraints:
 
 
 
-![image](https://g.yuque.com/gr/latex?0%20%3C%3D%20n%20%3C%3D%20109)
+$0 <= n <= 109$
 
 
 
@@ -383,7 +383,7 @@ Constraints:
 
 
 
-因此定义 `A[i]` 表示 ![image](https://g.yuque.com/gr/latex?0%20%5Csim%2010%5E%7Bi%20%2B%201%7D%20-%201)所有 ![image](https://g.yuque.com/gr/latex?i%20%2B%201) 位数里 1 的总数。
+因此定义 `A[i]` 表示 $0 \sim 10^{i + 1} - 1$所有 $i + 1$ 位数里 1 的总数。
 
 
 
@@ -401,12 +401,12 @@ Constraints:
 
 
 
-![image](https://g.yuque.com/gr/latex?A%5Bi%5D%20%3D%2010*A%5Bi-1%5D%20%2B%2010%5Ei)
+$A[i] = 10*A[i-1] + 10^i$
 
 
 
 +  这里 `A[i−1]`前面的 10指的是最高位是 0、1、…… 、9 的时候，**剩下的数位**对结果的贡献，所以是乘以 10。 
-+  后面 ![image](https://g.yuque.com/gr/latex?10%5Ei)指的是，最高位是 1 的时候，对结果集的贡献。例如 `A[3]`，即 0 ~ 9999 里所有的 4 位数对 1 的贡献，1 开头的数一共有 1000 个，它们分别是 1000、10001、…… 、1999，一共![image](https://g.yuque.com/gr/latex?10%5E3)个数字。 
++  后面 $10^i$指的是，最高位是 1 的时候，对结果集的贡献。例如 `A[3]`，即 0 ~ 9999 里所有的 4 位数对 1 的贡献，1 开头的数一共有 1000 个，它们分别是 1000、10001、…… 、1999，一共$10^3$个数字。 
 
 
 
@@ -437,7 +437,7 @@ Constraints:
 
 
 
-因此 从**右向左遍历时每一位 i**（这里 i 从 0 开始），根据看到的数值进行分类讨论，假设当前遍历到的数是 ![image](https://g.yuque.com/gr/latex?d%20(0%20%5Cle%20d%20%5Cle%209))。
+因此 从**右向左遍历时每一位 i**（这里 i 从 0 开始），根据看到的数值进行分类讨论，假设当前遍历到的数是 $d (0 \le d \le 9)$。
 
 
 
@@ -453,7 +453,7 @@ Constraints:
 
 +  如果 d > 1 ，此时分 3 种情况： 
     -  情况 1：最高位不是 1，对当前状态值的贡献是 `dp[i - 1]`； 
-    -  情况 2：最高位是 1，对当前状态值的贡献是 ![image](https://g.yuque.com/gr/latex?10%5Ei)； 
+    -  情况 2：最高位是 1，对当前状态值的贡献是 $10^i$； 
     -  情况 3：「整块」里对当前状态值的贡献，是 `d * A[i - 1]`。  
 例如 465，情况 1 是 0~65 里对结果的贡献，情况 2 是 100~199 里对结果的贡献（只数出了最高位的 1 的个数），而 0~99 、 100~199（最高位的 1 在「情况 2」已经算过）、 200~299、 300~399 对结果的贡献就是 `4 * A[3]` 。 
 
@@ -525,11 +525,11 @@ public class Solution {
 ## 复杂度分析
 
 
-时间复杂度：![image](https://g.yuque.com/gr/latex?O(%5Clog%20n))，取决于 n 的位数；
+时间复杂度：$O(\log n)$，取决于 n 的位数；
 
 
 
-空间复杂度：![image](https://g.yuque.com/gr/latex?O(%5Clog%20n))。
+空间复杂度：$O(\log n)$。
 
 
 
@@ -552,7 +552,7 @@ public class Solution {
 
 
 
-假设有 `n = abcde`，即 `m = 5`，假设我们需要统计第 3 位中 1 出现的次数，**即可统计满足**![image](https://cdn.nlark.com/yuque/__latex/3784e229fa4c6d7618ba7fce6cb26cc1.svg)** 形式，同时满足 **![image](https://g.yuque.com/gr/latex?1%20%3C%3D%20--1--%20%3C%3D%20abcde)**要求的数有多少个**，我们称 ![image](https://g.yuque.com/gr/latex?1%20%3C%3D%20--1--%20%3C%3D%20abcde) 关系为「大小要求」。
+假设有 `n = abcde`，即 `m = 5`，假设我们需要统计第 3 位中 1 出现的次数，**即可统计满足**![image](https://images.spumn.eu.cc/blog/aac76a788ef3684f.svg)** 形式，同时满足 **$1 <= --1-- <= abcde$**要求的数有多少个**，我们称 $1 <= --1-- <= abcde$ 关系为「大小要求」。
 
 
 
@@ -560,11 +560,11 @@ public class Solution {
 
 
 
-+  当 c 前面的部分 ![image](https://g.yuque.com/gr/latex?%3C%20ab)，即范围为 ![image](https://g.yuque.com/gr/latex?%5B0%2C%20ab))，此时必然满足「大小要求」，因此**后面的部分可以任意取**，即范围为![image](https://cdn.nlark.com/yuque/__latex/87bdba60d4518800ca8219ee576f42ea.svg)。根据「乘法原理」，可得知此时数量为 ![image](https://g.yuque.com/gr/latex?ab%20*%20100)； 
-+  当 c 前面的部分 ![image](https://g.yuque.com/gr/latex?%3D%20ab)，这时候「大小关系」主要取决于 c： 
++  当 c 前面的部分 $< ab$，即范围为 $[0, ab$)，此时必然满足「大小要求」，因此**后面的部分可以任意取**，即范围为![image](https://images.spumn.eu.cc/blog/261c4481591a7f1a.svg)。根据「乘法原理」，可得知此时数量为 $ab * 100$； 
++  当 c 前面的部分 $= ab$，这时候「大小关系」主要取决于 c： 
     - 当 c = 0，必然不满足「大小要求」，数量为 0；
-    - 当 c = 1，此时「大小关系」取决于后部分，后面的取值范围为 ![image](https://g.yuque.com/gr/latex?%5B0%2C%20de%5D)，数量为 ![image](https://g.yuque.com/gr/latex?1%20*%20(de%20%2B%201))；
-    - 当 c > 1，必然满足「大小关系」，后面的部分可以任意取，即范围为![image](https://cdn.nlark.com/yuque/__latex/87bdba60d4518800ca8219ee576f42ea.svg)，数量为 ![image](https://g.yuque.com/gr/latex?1%20*%20100)；
+    - 当 c = 1，此时「大小关系」取决于后部分，后面的取值范围为 $[0, de]$，数量为 $1 * (de + 1)$；
+    - 当 c > 1，必然满足「大小关系」，后面的部分可以任意取，即范围为![image](https://images.spumn.eu.cc/blog/261c4481591a7f1a.svg)，数量为 $1 * 100$；
 +  当 c 前面的部分 > ab，必然不满足「大小要求」，数量为 0。 
 
 
@@ -794,7 +794,7 @@ int main()
 ## [HDU 4734](http://acm.hdu.edu.cn/showproblem.php?pid=4734) 相减。
 
 
-题目给了个f(x)的定义：![image](https://cdn.nlark.com/yuque/__latex/2bade398eaaf20e082c587e37c288367.svg)，![image](https://cdn.nlark.com/yuque/__latex/693a3b974c23e87e8c941211cd45cfb8.svg)是十进制数位，然后给出a,b求区间[0,b]内满足f(i)<=f(a)的i的个数。
+题目给了个f(x)的定义：![image](https://images.spumn.eu.cc/blog/18c9a34bd32078ed.svg)，![image](https://images.spumn.eu.cc/blog/a5edb1a5c8148d38.svg)是十进制数位，然后给出a,b求区间[0,b]内满足f(i)<=f(a)的i的个数。
 
 
 

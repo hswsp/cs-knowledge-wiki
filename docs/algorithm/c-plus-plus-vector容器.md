@@ -151,7 +151,7 @@ int main(){
 
 
 结果如下：  
-![](https://cdn.nlark.com/yuque/0/2022/png/22382307/1655428452977-c2a2e222-6f21-47b4-9d40-37a6d313ca4b.png)
+![](https://images.spumn.eu.cc/blog/645f646d3023058f.png)
 
 
 

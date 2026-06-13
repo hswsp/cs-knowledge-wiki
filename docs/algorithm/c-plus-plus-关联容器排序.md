@@ -41,7 +41,7 @@ int main() {
 
 运行结果：
 
-![](http://img0.tuicool.com/myyE7v.jpg!web)
+> ![image] (原图链接已失效)
 
 
 

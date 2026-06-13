@@ -31,7 +31,7 @@ MultiPop(S,k)   //将栈的前k个元素弹出
 
 + 设栈为空栈，那么一系列操作，操作总数为n，分别执行`PUSH(S,x), POP(S), MultiPop(S,k)`操作，所以栈中最大元素数量为n。
 + 对于操作`MultiPop(S,k)`，最坏情况是$O ( n ) $，因为容器最多含有n个元素。
-+ 可以得出，对任意的栈的`MultiPop(S,k)`操作，最差时间复杂度都是![image](https://g.yuque.com/gr/latex?O%20(%20n%20))，那么要进行n个`MultiPop(S,k)`的操作，时间复杂度自然是![image](https://g.yuque.com/gr/latex?O(n%5E2))
++ 可以得出，对任意的栈的`MultiPop(S,k)`操作，最差时间复杂度都是$O ( n )$，那么要进行n个`MultiPop(S,k)`的操作，时间复杂度自然是$O(n^2)$
 
 
 
@@ -43,14 +43,14 @@ MultiPop(S,k)   //将栈的前k个元素弹出
 
 
 + 我们的`POP(S)`操作和`MultiPop(S,k)`操作只能在非空的栈上操作（也可以在空栈操作，最多返回null，但是这没意义）。也就是说，`POP(S)`能执行多少次，在于`PUSH(S,x)`了多少次。`PUSH(S,x)`了n次，那么`POP(S)`就只能操作n次。同理适用于`MultiPop(S,k)`
-+ 对于任意的n，任意顺序的上述三种操作最多消耗`O(n)`时间。像一半操作`PUSH`一半操作`POP`。那么整体来说每个操作所以需时间为![image](https://g.yuque.com/gr/latex?O(n)%2Fn%3DO(1))
++ 对于任意的n，任意顺序的上述三种操作最多消耗`O(n)`时间。像一半操作`PUSH`一半操作`POP`。那么整体来说每个操作所以需时间为$O(n)/n=O(1)$
 
 
 
 # 问题引入
 
 
-我们知道HashTable的查找时间复杂度是![image](https://g.yuque.com/gr/latex?O(1))，最差情况是![image](https://g.yuque.com/gr/latex?O(n))，这里我们认为一个HashTable是一个能够良好的解决冲突的，那么时间复杂度就是常数级别。这里就有一个问题：**如何确定HashTable的最优大小？**
+我们知道HashTable的查找时间复杂度是$O(1)$，最差情况是$O(n)$，这里我们认为一个HashTable是一个能够良好的解决冲突的，那么时间复杂度就是常数级别。这里就有一个问题：**如何确定HashTable的最优大小？**
 
 
 
@@ -101,15 +101,15 @@ for key in hashtable:
 
 
 
-那么上述操作用的时间复杂度是多少？很好分析，原表内每个元素都拿出来放进新表，达到复制效果。因此时间复杂度是![image](https://g.yuque.com/gr/latex?O(n))。
+那么上述操作用的时间复杂度是多少？很好分析，原表内每个元素都拿出来放进新表，达到复制效果。因此时间复杂度是$O(n)$。
 
 
 
-但是问题又来了，上述的操作只发生在**表满**的情况下，也就是插入时发现插不进去，溢出了，才会触发扩容操作。假设每一次插入都溢出，那么每次插入所需要的时间就是![image](https://g.yuque.com/gr/latex?O(n))，插入n个数需要的时间就是：![image](https://g.yuque.com/gr/latex?n%C2%B7O(n)%20%3D%20O(n%5E2)%EF%BC%8C)但是我们的实际经验告诉我们，每一次插入都溢出的情况不存在。
+但是问题又来了，上述的操作只发生在**表满**的情况下，也就是插入时发现插不进去，溢出了，才会触发扩容操作。假设每一次插入都溢出，那么每次插入所需要的时间就是$O(n)$，插入n个数需要的时间就是：$n·O(n) = O(n^2)，$但是我们的实际经验告诉我们，每一次插入都溢出的情况不存在。
 
 
 
-所以我们**传统的分析方法只能告诉我们最差情况下的时间复杂度**，这个时间复杂度并不精准，它的上界太大了，且在许多情况下不能很好的反映出一个算法的优劣，比如我们说快速排序的时间复杂度是![image](https://g.yuque.com/gr/latex?O(n%5Clog%20n))，这里也可以说是![image](https://g.yuque.com/gr/latex?O(n%5E%7B10086%7D))，因为大O定义法就是这么定义的：上界不超过。但是我们能说快排比冒泡还慢么？显然不能。因此我们引入了摊还分析法，也叫平摊分析(Amortized Analysis)来解决上述问题。
+所以我们**传统的分析方法只能告诉我们最差情况下的时间复杂度**，这个时间复杂度并不精准，它的上界太大了，且在许多情况下不能很好的反映出一个算法的优劣，比如我们说快速排序的时间复杂度是$O(n\log n)$，这里也可以说是$O(n^{10086})$，因为大O定义法就是这么定义的：上界不超过。但是我们能说快排比冒泡还慢么？显然不能。因此我们引入了摊还分析法，也叫平摊分析(Amortized Analysis)来解决上述问题。
 
 
 
@@ -120,15 +120,15 @@ for key in hashtable:
 ## 动态表的摊还分析
 
 
-我们假设一个变量![image](https://g.yuque.com/gr/latex?c_i)，表示第`i`个插入到动态表的元素的时间复杂度。那么通过对`i`的归类，可以引出如下公式：
+我们假设一个变量$c_i$，表示第`i`个插入到动态表的元素的时间复杂度。那么通过对`i`的归类，可以引出如下公式：
 
 
 
-![image](https://g.yuque.com/gr/latex?%5Cbegin%7Bequation%7D%0Ac_%7Bi%7D%3D%5Cleft%5C%7B%0A%5Cbegin%7Baligned%7D%0An%20%26%20%2C%20%26%20i%3D2%5En%20%26%20and%20%26%20n%3D1%2C2%2C3...%20%5C%5C%0A1%20%26%20%2C%20%26%20i%5Cneq%202%5En%20%26%20and%20%26%20n%3D1%2C2%2C3...%0A%5Cend%7Baligned%7D%0A%5Cright.%0A%5Cend%7Bequation%7D%0A)
+$\begin{equation} c_{i}=\left\{ \begin{aligned} n & , & i=2^n & and & n=1,2,3... \\ 1 & , & i\neq 2^n & and & n=1,2,3... \end{aligned} \right. \end{equation}$
 
 
 
-换句话说，当`i`是2的n次方，那么这一步插入需要先扩容，时间复杂度为![image](https://g.yuque.com/gr/latex?O(n))；否则时间复杂度就是![image](https://g.yuque.com/gr/latex?O(1))
+换句话说，当`i`是2的n次方，那么这一步插入需要先扩容，时间复杂度为$O(n)$；否则时间复杂度就是$O(1)$
 
 
 
@@ -137,7 +137,7 @@ for key in hashtable:
 | i | 1 | 2 | 3 | 4 | 5 |
 | --- | --- | --- | --- | --- | --- |
 | size | 1 | 2 | 4 | 4 | 8 |
-| ![image](https://g.yuque.com/gr/latex?c_i) | 1 | 2 | 3 | 1 | 5 |
+| $c_i$ | 1 | 2 | 3 | 1 | 5 |
 | component | 1+0 | 1+1 | 1+2 | 1+0 | 1+4 |
 
 
@@ -147,7 +147,7 @@ for key in hashtable:
 
 
 
-![image](https://g.yuque.com/gr/latex?resize%20%3D%20%5Csum_%7Bj%3D1%7D%5E%7Blog(n%E2%88%921)%7D2%5Ej%2Cj%E2%88%88N%2B%0A)
+$resize = \sum_{j=1}^{log(n−1)}2^j,j∈N+$
 
 
 
@@ -155,15 +155,15 @@ for key in hashtable:
 
 
 
-![image](https://g.yuque.com/gr/latex?resize%3D2%5E1%2B2%5E2%2B...%2B2%5E%7Blog_2(n%E2%88%921)%7D%0A%3D2%E2%88%97%20%5Cfrac%7B1%E2%88%922%5E%7Blog_2(n%E2%88%921)%7D%7D%7B1%E2%88%922%7D%0A%3D2%E2%88%97(2%5E%7Blog_2(n%E2%88%921)%7D%E2%88%921)%0A%3D2n%E2%88%922%0A)
+$resize=2^1+2^2+...+2^{log_2(n−1)} =2∗ \frac{1−2^{log_2(n−1)}}{1−2} =2∗(2^{log_2(n−1)}−1) =2n−2$
 
 
 
-然后加上必须有的每次插入的时间复杂度：![image](https://g.yuque.com/gr/latex?O(n))，总体的时间复杂度也就是![image](https://g.yuque.com/gr/latex?O(3n)%20%3D%20O(n))
+然后加上必须有的每次插入的时间复杂度：$O(n)$，总体的时间复杂度也就是$O(3n) = O(n)$
 
 
 
-注意这是插入n个数据，那么对于每一次插入数据，时间复杂度是![image](https://g.yuque.com/gr/latex?O(1)).
+注意这是插入n个数据，那么对于每一次插入数据，时间复杂度是$O(1)$.
 
 
 
@@ -202,7 +202,7 @@ INCREMENT(A)
 
 
 
-考虑到最差情况，每次都循环到最高位，修改最高位的值，循环n次，那么时间复杂度就应该是![image](https://g.yuque.com/gr/latex?O(n*k))。但是我们知道，这种情况是不存在的。到达最高位后会溢出，达到最高位之前也不用每一步都找到最高位。所以这种时间复杂度的上界并不准确。
+考虑到最差情况，每次都循环到最高位，修改最高位的值，循环n次，那么时间复杂度就应该是$O(n*k)$。但是我们知道，这种情况是不存在的。到达最高位后会溢出，达到最高位之前也不用每一步都找到最高位。所以这种时间复杂度的上界并不准确。
 
 
 
@@ -214,15 +214,15 @@ INCREMENT(A)
 
 
 
-`A[0]`在每次调用的时候都会变化，`A[1]`每两次调用变化一次，`A[2]`每四次调用变化一次，则`A[i]`每![image](https://g.yuque.com/gr/latex?2%5Ei)调用变化一次。
+`A[0]`在每次调用的时候都会变化，`A[1]`每两次调用变化一次，`A[2]`每四次调用变化一次，则`A[i]`每$2^i$调用变化一次。
 
 
 
-所以调用n次函数，总的需要执行的变化为![image](https://cdn.nlark.com/yuque/__latex/323e0a6194d61372c594045118842ad5.svg)，这就是一个等比数列求和的问题，过程略，结果为：![image](https://cdn.nlark.com/yuque/__latex/4426e2db86c68dad6e343b8f51c944cf.svg)，忽略低数量级，得到![image](https://cdn.nlark.com/yuque/__latex/7f11e464ead02ccc37132d069002eae3.svg)。
+所以调用n次函数，总的需要执行的变化为![image](https://images.spumn.eu.cc/blog/3677ba1439b37522.svg)，这就是一个等比数列求和的问题，过程略，结果为：![image](https://images.spumn.eu.cc/blog/ca6380bdb5d77f8e.svg)，忽略低数量级，得到![image](https://images.spumn.eu.cc/blog/5fc5f967f3c05869.svg)。
 
 
 
-也就是说，n次调用的时间复杂度为![image](https://g.yuque.com/gr/latex?O(n))，每次调用的时间复杂度为![image](https://cdn.nlark.com/yuque/__latex/a2006f1ac61cb1902beacb3e29fff089.svg). 
+也就是说，n次调用的时间复杂度为$O(n)$，每次调用的时间复杂度为![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg). 
 
 
 
@@ -239,7 +239,7 @@ INCREMENT(A)
 
 核心思想如下：
 
-+  为每个操作附上一个虚拟的“摊还代价”：![image](https://cdn.nlark.com/yuque/__latex/642b5cd6897c7b23d86ec8efc5f881f6.svg)，比如某个操作需要1元钱的代价 
++  为每个操作附上一个虚拟的“摊还代价”：![image](https://images.spumn.eu.cc/blog/40aee9f655ac4362.svg)，比如某个操作需要1元钱的代价 
 +  为每一个操作付费，这个费用是实际费用，不是摊还费用。但是我们需要使用摊还费用给实际费用付费。 
 +  多出来的费用存进银行，不够的费用从银行取。 
 +  银行存款总是非负数（你不能像罗永浩一样欠钱，或者说老罗欠钱后就被限制消费了，同样银行里不能欠钱） 
@@ -258,16 +258,16 @@ INCREMENT(A)
 
 | i | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ![image](https://g.yuque.com/gr/latex?c_i) | – | – | – | – | x | x | x | x |
+| $c_i$ | – | – | – | – | x | x | x | x |
 
 
 
 
-我们现在需要让5，6，7，8步的x弥补上复制表所需要的费用，也就是说，复制每个元素用1元钱，复制8个元素需要8元钱。![image](https://cdn.nlark.com/yuque/__latex/ed087a97ffd4c42a711e532459f802ff.svg)，所以 ![image](https://cdn.nlark.com/yuque/__latex/9139dd0603e7b5f7102cc7f057e1ca64.svg)。
+我们现在需要让5，6，7，8步的x弥补上复制表所需要的费用，也就是说，复制每个元素用1元钱，复制8个元素需要8元钱。![image](https://images.spumn.eu.cc/blog/3537eef6e8f3564d.svg)，所以 ![image](https://images.spumn.eu.cc/blog/e7da849acbac9f6b.svg)。
 
 
 
-在这个例子中，我们赋予的每个操作的摊还代价就是3。插入n个元素的摊还代价就是![image](https://g.yuque.com/gr/latex?O(3n))。
+在这个例子中，我们赋予的每个操作的摊还代价就是3。插入n个元素的摊还代价就是$O(3n)$。
 
 
 
@@ -287,7 +287,7 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-所以一系列n的`PUSH`+`POP`操作的摊还代价是![image](https://g.yuque.com/gr/latex?O(2n))，也就是![image](https://g.yuque.com/gr/latex?O(n))。当然，最严谨的方法还是数学推导：假设`POP`代价为1，`PUSH`的实际代价为1，摊还代价为x，![image](https://cdn.nlark.com/yuque/__latex/365cc16efeed1ae2217f7a7ed504ec29.svg)，所以 ![image](https://cdn.nlark.com/yuque/__latex/aa40ae248fdf571b86d0d63b5293f1d0.svg)。
+所以一系列n的`PUSH`+`POP`操作的摊还代价是$O(2n)$，也就是$O(n)$。当然，最严谨的方法还是数学推导：假设`POP`代价为1，`PUSH`的实际代价为1，摊还代价为x，![image](https://images.spumn.eu.cc/blog/b6fc13d705cb1358.svg)，所以 ![image](https://images.spumn.eu.cc/blog/65a1df5356510f74.svg)。
 
 
 
@@ -298,11 +298,11 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-能量守恒定律的公式可以表达为![image](https://g.yuque.com/gr/latex?E%20%3D%20E_%7B%E6%9C%AB%7D-E_%7B%E5%88%9D%7D)
+能量守恒定律的公式可以表达为$E = E_{末}-E_{初}$
 
 
 
-用在摊还分析上，可以表达为：![image](https://cdn.nlark.com/yuque/__latex/b42fee3c3f10f49bfea2803027ee12d9.svg)所以总摊还为：![image](https://cdn.nlark.com/yuque/__latex/caac28f48bdfd7a04cc407c14e833b5b.svg)就是我们要求的摊还结果，![image](https://cdn.nlark.com/yuque/__latex/5a588caa87d9720e031126640e5a86f2.svg)是第i步操作的实际代价，![image](https://cdn.nlark.com/yuque/__latex/e6ffe23db54e47eb152fa39c7efd3f24.svg)指的是从第i-1步到第i步所需要的能量变化。用物理理解一下，设想一个过山车，![image](https://cdn.nlark.com/yuque/__latex/ce5e726adf4ba4a39c4c100afb4b9077.svg)是总能量，![image](https://cdn.nlark.com/yuque/__latex/bd02651a694daa01c4e54cc8eff69b8d.svg)是当前的动能，![image](https://cdn.nlark.com/yuque/__latex/17ccd42ccfad7d4c97500e80b7f52a70.svg)是改变了的重力势能。整体忽略能量损耗。那么动能的改变量就是势能的改变量。当然能量是连续的，我们这里将能量看做离散的。
+用在摊还分析上，可以表达为：![image](https://images.spumn.eu.cc/blog/5fa9aceb8174d547.svg)所以总摊还为：![image](https://images.spumn.eu.cc/blog/e8738a640727c58d.svg)就是我们要求的摊还结果，![image](https://images.spumn.eu.cc/blog/752b6191c4d641a9.svg)是第i步操作的实际代价，![image](https://images.spumn.eu.cc/blog/6e779c8df0dc295d.svg)指的是从第i-1步到第i步所需要的能量变化。用物理理解一下，设想一个过山车，![image](https://images.spumn.eu.cc/blog/6df0198f9ca78837.svg)是总能量，![image](https://images.spumn.eu.cc/blog/9a8c4974ccc2ad86.svg)是当前的动能，![image](https://images.spumn.eu.cc/blog/d69e35acbac99abe.svg)是改变了的重力势能。整体忽略能量损耗。那么动能的改变量就是势能的改变量。当然能量是连续的，我们这里将能量看做离散的。
 
 
 
@@ -310,21 +310,21 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-![image](https://g.yuque.com/gr/latex?c%5Ei%3Dc_i%2B%CE%A6(D_i)%E2%88%92%CE%A6(D_%7Bi%E2%88%921%7D)%0A)
+$c^i=c_i+Φ(D_i)−Φ(D_{i−1})$
 
 
 
-后面的![image](https://g.yuque.com/gr/latex?%5CPhi)指的是势能的改变量，![image](https://g.yuque.com/gr/latex?c_i)指的是实际代价，![image](https://cdn.nlark.com/yuque/__latex/4a7431e7888fae49294db0882fa39dfe.svg)同样是摊还代价。
+后面的$\Phi$指的是势能的改变量，$c_i$指的是实际代价，![image](https://images.spumn.eu.cc/blog/ae72c14388298e81.svg)同样是摊还代价。
 
 
 
-现在令![image](https://g.yuque.com/gr/latex?%5CDelta%20%5CPhi_i%20%3D%20%5CPhi(D_i)%20-%20%5CPhi(D_%7Bi-1%7D))，意思是势能的改变量。那么会有这个改变量和0比较的情况：
+现在令$\Delta \Phi_i = \Phi(D_i) - \Phi(D_{i-1})$，意思是势能的改变量。那么会有这个改变量和0比较的情况：
 
 
 
-+ ![image](https://g.yuque.com/gr/latex?%5CDelta%20%5CPhi_i%3E0)：说明摊还代价高于真实代价。类比过山车，摊还代价![image](https://cdn.nlark.com/yuque/__latex/4a7431e7888fae49294db0882fa39dfe.svg)就像此时刻的总能量，真实代价类似此时刻的动能。势能增加了，是动能转换的，但是总能量不变。这个式子在物理层面就说得通了。
-+ ![image](https://g.yuque.com/gr/latex?%5CDelta%20%5CPhi_i%20%3D%200)：当前时刻总能量和总动能是一样的，因为势能没有变化
-+ ![image](https://g.yuque.com/gr/latex?%5CDelta%20%5CPhi_i%20%3C%200)：总能量反而小于总的动能，是因为势能变小了，而动能没变，但是呢，由于离散看待能量，势能变小和动能增加是两个动作，也就是说总能量还未加上增加的动能。此时总能量小于动能。
++ $\Delta \Phi_i>0$：说明摊还代价高于真实代价。类比过山车，摊还代价![image](https://images.spumn.eu.cc/blog/ae72c14388298e81.svg)就像此时刻的总能量，真实代价类似此时刻的动能。势能增加了，是动能转换的，但是总能量不变。这个式子在物理层面就说得通了。
++ $\Delta \Phi_i = 0$：当前时刻总能量和总动能是一样的，因为势能没有变化
++ $\Delta \Phi_i < 0$：总能量反而小于总的动能，是因为势能变小了，而动能没变，但是呢，由于离散看待能量，势能变小和动能增加是两个动作，也就是说总能量还未加上增加的动能。此时总能量小于动能。
 
 
 
@@ -332,11 +332,11 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-![image](https://g.yuque.com/gr/latex?%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Chat%7Bc_i%7D%20%3D%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dc_i%20%2B%20%5CPhi(D_n)%20-%20%5CPhi(D_0)%0A)
+$\sum_{i=1}^{n}\hat{c_i} = \sum_{i=1}^{n}c_i + \Phi(D_n) - \Phi(D_0)$
 
 
 
-这就更像一个标准的物理公式了，势能的增加量等于动能的减少量，或者动能的增加量等于动能的减少量。但是有一个标准，那就是一定要让![image](https://g.yuque.com/gr/latex?%5CPhi(D_n)%20-%20%5CPhi(D_0)%5Cge%200)，哪怕![image](https://g.yuque.com/gr/latex?%5CPhi(D_i)%20-%20%5CPhi(D_%7Bi-1%7D))可能小于0.
+这就更像一个标准的物理公式了，势能的增加量等于动能的减少量，或者动能的增加量等于动能的减少量。但是有一个标准，那就是一定要让$\Phi(D_n) - \Phi(D_0)\ge 0$，哪怕$\Phi(D_i) - \Phi(D_{i-1})$可能小于0.
 
 
 
@@ -344,8 +344,8 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-+ 第一步：观察![image](https://g.yuque.com/gr/latex?%5CPhi(D_0))，初始时表的势能为0，因为表是空的，没有插入任何数据。
-+ 第二步：观察![image](https://cdn.nlark.com/yuque/__latex/35c240a5c2297d42e09dfecac9055936.svg)，我们一直没有说，为什么是![image](https://cdn.nlark.com/yuque/__latex/42ceaf62546e7ddeb58f4efde17519dd.svg)而不是其他字母？是因为![image](https://cdn.nlark.com/yuque/__latex/558270b7f0a90c3c286b860273d106a0.svg)代表Data Structure，一个数据结构的势能。每一次扩充，让结构的 势能为0,；在两次扩充之间，每次操作积攒势能。到了扩充的时候，每次扩充前积攒的势能正好为扩充使用掉。设第n次插入数据，那么有![image](https://cdn.nlark.com/yuque/__latex/8a36c147ec7c904b0fc027aeb34a1b82.svg)次扩充。每两次扩充会多出![image](https://g.yuque.com/gr/latex?2%5E%7Bi-1%7D)个格子，而需要![image](https://g.yuque.com/gr/latex?2%5E%7Bi-2%7D)个格子的填充来为自己增加势能，所以每填一次格子，势能增加2，每扩充1个格子，势能减少1。现在增加了n nn个数据，也就是填了![image](https://cdn.nlark.com/yuque/__latex/df378375e7693bdcf9535661c023c02e.svg)个格子，增加的势能理应是![image](https://cdn.nlark.com/yuque/__latex/eaff5315ab6489f3fc8e82b43da635fc.svg)，扩充了![image](https://g.yuque.com/gr/latex?2%5Ei)个格子，所以![image](https://g.yuque.com/gr/latex?%5CPhi(D_i)%20%3D%202n-2%5E%7B%5Clceil%5Clog_2%20n%5Crceil%7D)
++ 第一步：观察$\Phi(D_0)$，初始时表的势能为0，因为表是空的，没有插入任何数据。
++ 第二步：观察![image](https://images.spumn.eu.cc/blog/2f98bb0c426460a9.svg)，我们一直没有说，为什么是![image](https://images.spumn.eu.cc/blog/e2fdac8eb6818b1e.svg)而不是其他字母？是因为![image](https://images.spumn.eu.cc/blog/6f4bdb8cd6d8b915.svg)代表Data Structure，一个数据结构的势能。每一次扩充，让结构的 势能为0,；在两次扩充之间，每次操作积攒势能。到了扩充的时候，每次扩充前积攒的势能正好为扩充使用掉。设第n次插入数据，那么有![image](https://images.spumn.eu.cc/blog/7b70310129746fc5.svg)次扩充。每两次扩充会多出$2^{i-1}$个格子，而需要$2^{i-2}$个格子的填充来为自己增加势能，所以每填一次格子，势能增加2，每扩充1个格子，势能减少1。现在增加了n nn个数据，也就是填了![image](https://images.spumn.eu.cc/blog/32fec39f5c045617.svg)个格子，增加的势能理应是![image](https://images.spumn.eu.cc/blog/01413b73e9194543.svg)，扩充了$2^i$个格子，所以$\Phi(D_i) = 2n-2^{\lceil\log_2 n\rceil}$
 + 第三步：观察实际代价，在之前（聚合法）我们已经给出
-+ 第四步：求摊还代价：![image](https://g.yuque.com/gr/latex?%5Csum%20%5Chat%20c_i%20%3D%20(2n-2)%20%2B%202n-2%5E%7B%5Clceil%5Clog_2%20n%5Crceil%7D%20-%200)，或者改算分步骤摊还代价：![image](https://g.yuque.com/gr/latex?%5Chat%20c_n%20%3D%20c_n%20%2B%202n-2%5E%7B%5Clceil%5Clog_2%20n%5Crceil%7D%20-%20(2(n-1)-2%5E%7B%5Clceil%5Clog_2%20n-1%5Crceil%7D))
++ 第四步：求摊还代价：$\sum \hat c_i = (2n-2) + 2n-2^{\lceil\log_2 n\rceil} - 0$，或者改算分步骤摊还代价：$\hat c_n = c_n + 2n-2^{\lceil\log_2 n\rceil} - (2(n-1)-2^{\lceil\log_2 n-1\rceil})$
 

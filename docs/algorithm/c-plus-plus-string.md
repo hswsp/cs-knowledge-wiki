@@ -302,7 +302,7 @@ string& replace (const_iterator i1, const_iterator i2, initializer_list<char> il
 
 
 
-其中的泛型算法replace把队列中与给定值相等的所有值替换为另一个值，整个队列都被扫描，即此算法的各个版本都在线性时间内执行----其复杂度为![image](https://g.yuque.com/gr/latex?O(n))。即replace的执行要遍历由区间`[frist，last)`限定的整个队列，以把 `old_value` 替换成 `new_value`
+其中的泛型算法replace把队列中与给定值相等的所有值替换为另一个值，整个队列都被扫描，即此算法的各个版本都在线性时间内执行----其复杂度为$O(n)$。即replace的执行要遍历由区间`[frist，last)`限定的整个队列，以把 `old_value` 替换成 `new_value`
 
 
 

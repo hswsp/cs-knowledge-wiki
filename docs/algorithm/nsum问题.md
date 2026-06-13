@@ -110,7 +110,7 @@ vector<vector<int>> twoSumTarget(vector<int>& nums, int target) {
 
 
 
-![](https://cdn.nlark.com/yuque/0/2021/png/22382307/1629043279211-6fe93a78-c16d-4683-97fa-ade5ebc2c874.png)
+![](https://images.spumn.eu.cc/blog/bdce7a67abdbafa2.png)
 
 
 
@@ -180,7 +180,7 @@ vector<vector<int>> twoSumTarget(vector<int>& nums, int target) {
 
 
 
-![](https://cdn.nlark.com/yuque/0/2021/png/22382307/1629043296416-bee17ef1-98d9-45cd-9ede-b3f6da1a0ab4.png)
+![](https://images.spumn.eu.cc/blog/54149a31718222f2.png)
 
 
 
@@ -281,7 +281,7 @@ vector<vector<int>> threeSumTarget(vector<int>& nums, int target) {
 
 
 
-![](https://cdn.nlark.com/yuque/0/2021/png/22382307/1629043328106-8bf863fb-30b5-4837-9900-12e8d6094bc3.png)
+![](https://images.spumn.eu.cc/blog/505f040344b084d1.png)
 
 
 

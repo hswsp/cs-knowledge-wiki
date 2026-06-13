@@ -14,7 +14,7 @@ description: "在信息学竞赛中，我们经常会碰到一些跟区间有关
 
 
 线段树(interval tree)是一种二叉树形结构，属于平衡树的一种。它将线段区间组织成树形的结构，并用每个节点来表示一条线段。一棵[1,10)的线段树的结构如图1.1所示：  
-![](https://img-blog.csdn.net/20150224212919379)
+![](https://images.spumn.eu.cc/blog/05109422a8699d7f.jpg)
 
 
 
@@ -142,11 +142,11 @@ void Insert(int left,int right,int num){
 
 
 
-![](https://img-blog.csdn.net/20150225131556037)
+![](https://images.spumn.eu.cc/blog/cc3acf0e040e9bff.jpg)
 
 
 
-![](https://img-blog.csdn.net/20150225131715441)
+![](https://images.spumn.eu.cc/blog/63e69aaf99c635a1.jpg)
 
 
 

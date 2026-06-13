@@ -296,8 +296,8 @@ class Solution:
         return True
 ```
 
-+ 时间复杂度：![image](https://cdn.nlark.com/yuque/__latex/a2006f1ac61cb1902beacb3e29fff089.svg)
-+ 空间复杂度：![image](https://cdn.nlark.com/yuque/__latex/a2006f1ac61cb1902beacb3e29fff089.svg)
++ 时间复杂度：![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg)
++ 空间复杂度：![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg)
 
 **优先掌握区间 DP 的思路**，因为面试官可能会追问“如果堆数可以是奇数怎么办”。
 
@@ -464,11 +464,11 @@ pub fn zero_sum_game(nums: &[i32]) -> i32 {
 
 | **概念** | **博弈论 DP (如石子游戏)** | **强化学习 (Policy Iteration)** | **对应关系** |
 | :--- | :--- | :--- | :--- |
-| **状态 (State)** | 当前局面 (如石子数 `n`或区间 `[i, j]`) | 环境状态 ![image](https://cdn.nlark.com/yuque/__latex/e24a254996c6d6d65ed16befdaac934d.svg) | 完全对应 |
-| **动作 (Action)** | 玩家可选的决策 (如取 1/2/3 颗石子) | 智能体的动作 ![image](https://cdn.nlark.com/yuque/__latex/c61a8b387e1cb6c40608f4ae65d6f6a6.svg) | 完全对应 |
-| **价值函数 (Value)** | `dp[state]`(净胜分或必胜性) | ![image](https://cdn.nlark.com/yuque/__latex/b7d05bf01ed1a03238e04aa4583e0d95.svg)或 ![image](https://cdn.nlark.com/yuque/__latex/a79893863d53b17c1ac300e65bc9f40e.svg) | **核心等价** |
-| **策略 (Policy)** | 玩家的决策规则 (如“取中间石子”) | ![image](https://cdn.nlark.com/yuque/__latex/640191f253f668d69fadcbf0b825339a.svg) | 都是找最优策略 |
-| **更新规则** | `dp[i] = max( gain - dp[i+1] )` | ![image](https://cdn.nlark.com/yuque/__latex/9313c1f8411be2585c247fd1df4cdebd.svg) | **Bellman 方程的不同形式** |
+| **状态 (State)** | 当前局面 (如石子数 `n`或区间 `[i, j]`) | 环境状态 ![image](https://images.spumn.eu.cc/blog/9152e4745a66c39e.svg) | 完全对应 |
+| **动作 (Action)** | 玩家可选的决策 (如取 1/2/3 颗石子) | 智能体的动作 ![image](https://images.spumn.eu.cc/blog/19a37c707bca2a7a.svg) | 完全对应 |
+| **价值函数 (Value)** | `dp[state]`(净胜分或必胜性) | ![image](https://images.spumn.eu.cc/blog/1696427194c0c685.svg)或 ![image](https://images.spumn.eu.cc/blog/a5ee101a67d137ba.svg) | **核心等价** |
+| **策略 (Policy)** | 玩家的决策规则 (如“取中间石子”) | ![image](https://images.spumn.eu.cc/blog/cdb8b5b3a0fd4b93.svg) | 都是找最优策略 |
+| **更新规则** | `dp[i] = max( gain - dp[i+1] )` | ![image](https://images.spumn.eu.cc/blog/e494295bac2a7ab8.svg) | **Bellman 方程的不同形式** |
 
 
 ### 特殊性与通用性 
@@ -494,8 +494,8 @@ dp[i][j] = max(
 
 这正是**两人零和博弈下的 Bellman 最优方程**。其中：
 
-+ `nums[i]`对应**即时奖励**![image](https://cdn.nlark.com/yuque/__latex/1fbc5f29bb99c679a3aaa25b5094e9a7.svg)
-+ `- dp[i+1][j]`对应**折扣后的下一状态价值**![image](https://cdn.nlark.com/yuque/__latex/d414604f6d8d3e19a3979e46adfeedf0.svg)，只不过在零和博弈中，对手的收益是你的损失，所以是负号。
++ `nums[i]`对应**即时奖励**![image](https://images.spumn.eu.cc/blog/9605b25c37b0bb01.svg)
++ `- dp[i+1][j]`对应**折扣后的下一状态价值**![image](https://images.spumn.eu.cc/blog/26934b7a3a3ca229.svg)，只不过在零和博弈中，对手的收益是你的损失，所以是负号。
 
 ### 算法过程：隐式的 Policy Iteration 
 当你写博弈 DP 时，你其实在手动执行 Policy Iteration：
