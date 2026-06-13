@@ -10,31 +10,6 @@ description: "- [算法学习资源](算法学习资源)"
 ## 目录
 
 - [算法学习资源](算法学习资源)
-### Fundamentals
-
-  - [C++输入输出处理](c-plus-plus-输入输出处理)
-  - [C++11常用新特性（一）](c-plus-plus-11常用新特性一)
-  - [C++11常用新特性（二）](c-plus-plus-11常用新特性二)
-  - [C++ 正则表达式](c-plus-plus-正则表达式)
-- **C++ 顺序容器**
-
-    - [C++ string](c-plus-plus-string)
-    - [C++ vector容器](c-plus-plus-vector容器)
-- **C++ 关联容器**
-
-    - [C++ pair](c-plus-plus-pair)
-    - [C++ set](c-plus-plus-set)
-    - [C++ map](c-plus-plus-map)
-    - [C++ 关联容器排序](c-plus-plus-关联容器排序)
-  - [C++ 容器适配器](c-plus-plus-容器适配器)
-  - [C++ algorithm函数简介](c-plus-plus-algorithm函数简介)
-  - [C++ 查找与排序](c-plus-plus-查找与排序)
-### Mathmatics
-
-### Information Theory
-
-  - [有限域算术: 从 AES 到 Reed-Solomon](有限域算术-从-aes-到-reed-solomon)
-  - [RS码原理及柯西优化](rs码原理及柯西优化)
 ### Analysis Techniques
 
   - [Amortized Analysis](amortized-analysis)
@@ -162,6 +137,7 @@ description: "- [算法学习资源](算法学习资源)"
   - [股票买卖问题](股票买卖问题)
   - [丑数问题:针对下标的DP](丑数问题针对下标的dp)
   - [剪绳子问题](剪绳子问题)
+  - [数位dp](数位dp)
 ### Greedy Algorithm
 
   - [贪心算法详解](贪心算法详解)

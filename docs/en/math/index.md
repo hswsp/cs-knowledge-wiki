@@ -1,6 +1,6 @@
 # Mathematics
 
-> Higher math, linear algebra, probability, and discrete math for CS.
+> Higher math, linear algebra, probability, discrete math, and information theory.
 
 ## Chapters
 
@@ -9,6 +9,7 @@
 - Probability & Statistics
 - Discrete Mathematics
 - Number Theory
+- Information Theory
 
 ---
 

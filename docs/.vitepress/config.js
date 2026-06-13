@@ -58,36 +58,16 @@ export default defineConfig({
               { text: '均匀分布、正态分布生成器', link: '/math/均匀分布正态分布生成器' },
               { text: '洗牌算法详解', link: '/math/洗牌算法详解' },
               { text: '小数表示法(定点法、浮点法)', link: '/math/小数表示法定点法浮点法' },
-              { text: '数位dp', link: '/math/数位dp' },
+            ] },
+            { text: 'Information Theory', collapsed: true, items: [
+              { text: '有限域算术: 从 AES 到 Reed-Solomon', link: '/math/有限域算术-从-aes-到-reed-solomon' },
+              { text: 'RS码原理及柯西优化', link: '/math/rs码原理及柯西优化' },
             ] },
           ],
           '/algorithm/': [
             { text: '算法', items: [
               { text: '概览', link: '/algorithm/' },
               { text: '算法学习资源', link: '/algorithm/算法学习资源' },
-              { text: 'Fundamentals', collapsed: true, items: [
-                { text: 'C++输入输出处理', link: '/algorithm/c-plus-plus-输入输出处理' },
-                { text: 'C++11常用新特性（一）', link: '/algorithm/c-plus-plus-11常用新特性一' },
-                { text: 'C++11常用新特性（二）', link: '/algorithm/c-plus-plus-11常用新特性二' },
-                { text: 'C++ 正则表达式', link: '/algorithm/c-plus-plus-正则表达式' },
-                { text: 'C++ 顺序容器', collapsed: true, items: [
-                  { text: 'C++ string', link: '/algorithm/c-plus-plus-string' },
-                  { text: 'C++ vector容器', link: '/algorithm/c-plus-plus-vector容器' },
-                ] },
-                { text: 'C++ 关联容器', collapsed: true, items: [
-                  { text: 'C++ pair', link: '/algorithm/c-plus-plus-pair' },
-                  { text: 'C++ set', link: '/algorithm/c-plus-plus-set' },
-                  { text: 'C++ map', link: '/algorithm/c-plus-plus-map' },
-                  { text: 'C++ 关联容器排序', link: '/algorithm/c-plus-plus-关联容器排序' },
-                ] },
-                { text: 'C++ 容器适配器', link: '/algorithm/c-plus-plus-容器适配器' },
-                { text: 'C++ algorithm函数简介', link: '/algorithm/c-plus-plus-algorithm函数简介' },
-                { text: 'C++ 查找与排序', link: '/algorithm/c-plus-plus-查找与排序' },
-              ] },
-              { text: 'Information Theory', collapsed: true, items: [
-                { text: '有限域算术: 从 AES 到 Reed-Solomon', link: '/algorithm/有限域算术-从-aes-到-reed-solomon' },
-                { text: 'RS码原理及柯西优化', link: '/algorithm/rs码原理及柯西优化' },
-              ] },
               { text: 'Analysis Techniques', collapsed: true, items: [
                 { text: 'Amortized Analysis', link: '/algorithm/amortized-analysis' },
                 { text: '递归算法的时间复杂度', link: '/algorithm/递归算法的时间复杂度' },
@@ -250,6 +230,7 @@ export default defineConfig({
                 { text: '股票买卖问题', link: '/algorithm/股票买卖问题' },
                 { text: '丑数问题:针对下标的DP', link: '/algorithm/丑数问题针对下标的dp' },
                 { text: '剪绳子问题', link: '/algorithm/剪绳子问题' },
+                { text: '数位dp', link: '/algorithm/数位dp' },
               ] },
               { text: 'Greedy Algorithm', collapsed: true, items: [
                 { text: '贪心算法详解', link: '/algorithm/贪心算法详解' },
@@ -302,13 +283,25 @@ export default defineConfig({
           ],
           '/cpp/': [
             { text: 'C++', items: [{ text: '概览', link: '/cpp/' }] },
-            {
-              text: '构建',
-              collapsed: false,
-              items: [
-                { text: 'CMake 简单入门', link: '/cpp/build/cmake-link' },
-              ],
-            },
+            { text: 'Fundamentals', collapsed: false, items: [
+              { text: 'C++输入输出处理', link: '/cpp/c-plus-plus-输入输出处理' },
+              { text: 'C++11常用新特性（一）', link: '/cpp/c-plus-plus-11常用新特性一' },
+              { text: 'C++11常用新特性（二）', link: '/cpp/c-plus-plus-11常用新特性二' },
+              { text: 'C++ 正则表达式', link: '/cpp/c-plus-plus-正则表达式' },
+              { text: 'C++ 顺序容器', collapsed: true, items: [
+                { text: 'C++ string', link: '/cpp/c-plus-plus-string' },
+                { text: 'C++ vector容器', link: '/cpp/c-plus-plus-vector容器' },
+              ] },
+              { text: 'C++ 关联容器', collapsed: true, items: [
+                { text: 'C++ pair', link: '/cpp/c-plus-plus-pair' },
+                { text: 'C++ set', link: '/cpp/c-plus-plus-set' },
+                { text: 'C++ map', link: '/cpp/c-plus-plus-map' },
+                { text: 'C++ 关联容器排序', link: '/cpp/c-plus-plus-关联容器排序' },
+              ] },
+              { text: 'C++ 容器适配器', link: '/cpp/c-plus-plus-容器适配器' },
+              { text: 'C++ algorithm函数简介', link: '/cpp/c-plus-plus-algorithm函数简介' },
+              { text: 'C++ 查找与排序', link: '/cpp/c-plus-plus-查找与排序' },
+            ] },
           ],
           '/system-design/': [
             { text: '系统设计', items: [{ text: '概览', link: '/system-design/' }] },
@@ -782,36 +775,16 @@ export default defineConfig({
               { text: '均匀分布、正态分布生成器', link: '/en/math/均匀分布正态分布生成器' },
               { text: '洗牌算法详解', link: '/en/math/洗牌算法详解' },
               { text: '小数表示法(定点法、浮点法)', link: '/en/math/小数表示法定点法浮点法' },
-              { text: '数位dp', link: '/en/math/数位dp' },
+            ] },
+            { text: 'Information Theory', collapsed: true, items: [
+              { text: '有限域算术: 从 AES 到 Reed-Solomon', link: '/en/math/有限域算术-从-aes-到-reed-solomon' },
+              { text: 'RS码原理及柯西优化', link: '/en/math/rs码原理及柯西优化' },
             ] },
           ],
           '/en/algorithm/': [
             { text: 'Algorithms', items: [
               { text: 'Overview', link: '/en/algorithm/' },
               { text: '算法学习资源', link: '/en/algorithm/算法学习资源' },
-              { text: 'Fundamentals', collapsed: true, items: [
-                { text: 'C++输入输出处理', link: '/en/algorithm/c-plus-plus-输入输出处理' },
-                { text: 'C++11常用新特性（一）', link: '/en/algorithm/c-plus-plus-11常用新特性一' },
-                { text: 'C++11常用新特性（二）', link: '/en/algorithm/c-plus-plus-11常用新特性二' },
-                { text: 'C++ 正则表达式', link: '/en/algorithm/c-plus-plus-正则表达式' },
-                { text: 'C++ 顺序容器', collapsed: true, items: [
-                  { text: 'C++ string', link: '/en/algorithm/c-plus-plus-string' },
-                  { text: 'C++ vector容器', link: '/en/algorithm/c-plus-plus-vector容器' },
-                ] },
-                { text: 'C++ 关联容器', collapsed: true, items: [
-                  { text: 'C++ pair', link: '/en/algorithm/c-plus-plus-pair' },
-                  { text: 'C++ set', link: '/en/algorithm/c-plus-plus-set' },
-                  { text: 'C++ map', link: '/en/algorithm/c-plus-plus-map' },
-                  { text: 'C++ 关联容器排序', link: '/en/algorithm/c-plus-plus-关联容器排序' },
-                ] },
-                { text: 'C++ 容器适配器', link: '/en/algorithm/c-plus-plus-容器适配器' },
-                { text: 'C++ algorithm函数简介', link: '/en/algorithm/c-plus-plus-algorithm函数简介' },
-                { text: 'C++ 查找与排序', link: '/en/algorithm/c-plus-plus-查找与排序' },
-              ] },
-              { text: 'Information Theory', collapsed: true, items: [
-                { text: '有限域算术: 从 AES 到 Reed-Solomon', link: '/en/algorithm/有限域算术-从-aes-到-reed-solomon' },
-                { text: 'RS码原理及柯西优化', link: '/en/algorithm/rs码原理及柯西优化' },
-              ] },
               { text: 'Analysis Techniques', collapsed: true, items: [
                 { text: 'Amortized Analysis', link: '/en/algorithm/amortized-analysis' },
                 { text: '递归算法的时间复杂度', link: '/en/algorithm/递归算法的时间复杂度' },
@@ -974,6 +947,7 @@ export default defineConfig({
                 { text: '股票买卖问题', link: '/en/algorithm/股票买卖问题' },
                 { text: '丑数问题:针对下标的DP', link: '/en/algorithm/丑数问题针对下标的dp' },
                 { text: '剪绳子问题', link: '/en/algorithm/剪绳子问题' },
+                { text: '数位dp', link: '/en/algorithm/数位dp' },
               ] },
               { text: 'Greedy Algorithm', collapsed: true, items: [
                 { text: '贪心算法详解', link: '/en/algorithm/贪心算法详解' },
@@ -996,6 +970,25 @@ export default defineConfig({
           ],
           '/en/cpp/': [
             { text: 'C++', items: [{ text: 'Overview', link: '/en/cpp/' }] },
+            { text: 'Fundamentals', collapsed: false, items: [
+              { text: 'C++输入输出处理', link: '/en/cpp/c-plus-plus-输入输出处理' },
+              { text: 'C++11常用新特性（一）', link: '/en/cpp/c-plus-plus-11常用新特性一' },
+              { text: 'C++11常用新特性（二）', link: '/en/cpp/c-plus-plus-11常用新特性二' },
+              { text: 'C++ 正则表达式', link: '/en/cpp/c-plus-plus-正则表达式' },
+              { text: 'C++ 顺序容器', collapsed: true, items: [
+                { text: 'C++ string', link: '/en/cpp/c-plus-plus-string' },
+                { text: 'C++ vector容器', link: '/en/cpp/c-plus-plus-vector容器' },
+              ] },
+              { text: 'C++ 关联容器', collapsed: true, items: [
+                { text: 'C++ pair', link: '/en/cpp/c-plus-plus-pair' },
+                { text: 'C++ set', link: '/en/cpp/c-plus-plus-set' },
+                { text: 'C++ map', link: '/en/cpp/c-plus-plus-map' },
+                { text: 'C++ 关联容器排序', link: '/en/cpp/c-plus-plus-关联容器排序' },
+              ] },
+              { text: 'C++ 容器适配器', link: '/en/cpp/c-plus-plus-容器适配器' },
+              { text: 'C++ algorithm函数简介', link: '/en/cpp/c-plus-plus-algorithm函数简介' },
+              { text: 'C++ 查找与排序', link: '/en/cpp/c-plus-plus-查找与排序' },
+            ] },
           ],
           '/en/system-design/': [
             { text: 'System Design', items: [{ text: 'Overview', link: '/en/system-design/' }] },
