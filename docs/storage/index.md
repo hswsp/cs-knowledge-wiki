@@ -20,17 +20,12 @@
 
 - [存储硬件技术名词概览](./hardware/技术名词概览)
 
-## CMU 15-445
+## Intro to Database System
 
-- 完整的英文课程章节笔记 (01–26)
-- [中文笔记](./cmu15-445/cmu15445-bi-ji/cmu15445-bi-ji-cun-chu-pian)（存储、索引、执行、优化）
-- [项目实验 (CMU-DB)](./cmu15-445/cmu-db/project-c-primer)（PROJECT #0 – #4）
+- [进入 Intro to Database System](./cmu15-445/)
 
-## LSM Tree
+## LSM-Tree in a Week
 
-- [LSM 树设计原理](./lsm-tree/01-lsm-tree-design-principles)
-- [LevelDB 索引建立](./lsm-tree/02-lsm-tree-leveldb-index)
-- [KV 分离实现](./lsm-tree/03-lsm-kv-separation)
-- [Mini-LSM 课程（28 章）](./lsm-tree/04-mini-lsm-intro) — 从零实现 LSM-Tree 存储引擎
+- [进入 LSM-Tree in a Week](./lsm-tree/)
 
 > 分布式一致性（Paxos / Raft）请见 [系统设计 → 分布式共识](../system-design/#分布式共识)

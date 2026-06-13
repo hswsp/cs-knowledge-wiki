@@ -4,7 +4,7 @@ TL;DR, 时隔一年多，总算填完了 Mini-LSM 系列教程的坑。在这个
 
 整个教程有三周的内容，每周六个主线任务章节和一个轻松的支线任务章节，一共 21 个章节，全部 open source + 附赠官方实现。第一周，搭建 LSM-Tree 存储引擎的框架，完成所有的内存和盘上结构，实现 get/put/delete/scan 接口。第二周，深入理解 LSM-Tree 的 Compaction 算法，实现 RocksDB 的 Leveled + Universal Compaction，并将 LSM 树的状态持久化/恢复，完成一个完整的存储引擎设计。第三周，给存储引擎加入 MVCC 支持，完成 Transaction API，并实现 Serializable Snapshot Isolation。
 
-![图片](https://cdn.nlark.com/yuque/0/2024/webp/22382307/1706752105352-1191bf53-1378-4c70-82c0-93857a3099da.webp)
+![图片](https://images.spumn.eu.cc/blog/lsm-tree-01-001892c053e27204.webp)
 
 Mini-LSM 世界地图
 

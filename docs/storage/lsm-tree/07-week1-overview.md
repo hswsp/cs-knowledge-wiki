@@ -1,6 +1,6 @@
 # Week 1 Overview: Mini-LSM
 
-![图片](https://skyzh.github.io/mini-lsm/lsm-tutorial/week1-overview.svg)
+![图片](https://images.spumn.eu.cc/blog/lsm-tree-09-1c9ac8e5f1d3b229.svg)
 
 In the first week of the tutorial, you will build necessary storage formats for the storage engine, the read path and the write path of the system, and have a working implementation of an LSM-based key-value store. There are 7 chapters (days) for this part.
 

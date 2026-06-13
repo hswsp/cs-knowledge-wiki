@@ -2,7 +2,7 @@
 
 ## Tutorial Structure
 
-![图片](https://skyzh.github.io/mini-lsm/lsm-tutorial/00-full-overview.svg)
+![图片](https://images.spumn.eu.cc/blog/lsm-tree-06-e498f7d597f662e7.svg)
 
 We have 3 parts (weeks) for this tutorial. In the first week, we will focus on the storage structure and the storage format of an LSM storage engine. In the second week, we will dive into compactions in depth and implement persistence support for the storage engine. In the third week, we will implement multi-version concurrency control.
 
@@ -37,7 +37,7 @@ In this tutorial, we assume the LSM tree is using leveled compaction algorithm, 
 
 ### Write Path
 
-![图片](https://skyzh.github.io/mini-lsm/lsm-tutorial/00-lsm-write-flow.svg)
+![图片](https://images.spumn.eu.cc/blog/lsm-tree-08-420d62c1b728a519.svg)
 
 The write path of LSM contains 4 steps:
 
@@ -48,7 +48,7 @@ The write path of LSM contains 4 steps:
 
 ### Read Path
 
-![图片](https://skyzh.github.io/mini-lsm/lsm-tutorial/00-lsm-read-flow.svg)
+![图片](https://images.spumn.eu.cc/blog/lsm-tree-07-ac65b1a0e89ae999.svg)
 
 When we want to read a key,
 
