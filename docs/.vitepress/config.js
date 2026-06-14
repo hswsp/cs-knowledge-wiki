@@ -67,6 +67,8 @@ export default defineConfig({
       { text: '卡特兰数', link: '/math/卡特兰数' },
       { text: '四平方和定理', link: '/math/四平方和定理' },
       { text: '单纯形算法求解线性规划', link: '/math/单纯形算法求解线性规划' },
+      { text: '有限域算术——从 AES 到 Reed-Solomon', link: '/math/有限域算术-从-aes-到-reed-solomon' },
+      { text: 'RS 码原理及柯西优化', link: '/math/rs码原理及柯西优化' },
     ],
   },
 ],
@@ -76,7 +78,6 @@ export default defineConfig({
               text: 'Galois 理论',
               collapsed: false,
               items: [
-                { text: '目录', link: '/math/abstract-algebra/galois-theory/' },
                 { text: '第一节 对称函数', link: '/math/abstract-algebra/galois-theory/01-对称函数' },
                 { text: '第二节 判别式', link: '/math/abstract-algebra/galois-theory/02-判别式' },
                 { text: '第三节 分裂域', link: '/math/abstract-algebra/galois-theory/03-分裂域' },
@@ -389,13 +390,37 @@ export default defineConfig({
           '/java/': [
             { text: 'Java', items: [
                 { text: '概览', link: '/java/' },
+            ] },
+            {
+              text: 'Java 基础',
+              collapsed: false,
+              items: [
                 { text: 'Java SPI 机制', link: '/java/basics/java-spi' },
                 { text: 'Json 与 JavaBean 匹配', link: '/java/basics/json-javabean' },
+              ],
+            },
+            {
+              text: 'JVM',
+              collapsed: false,
+              items: [
                 { text: '阅读 Java 字节码', link: '/java/jvm/java-bytecode' },
                 { text: 'JVM CPU 飙高排查', link: '/java/jvm/troubleshoot-high-cpu' },
+              ],
+            },
+            {
+              text: '并发编程',
+              collapsed: false,
+              items: [
                 { text: 'ThreadGroup', link: '/java/concurrent/thread-group' },
+              ],
+            },
+            {
+              text: 'Spring',
+              collapsed: false,
+              items: [
                 { text: 'Spring Cloud 简介', link: '/java/spring/spring-cloud-intro' },
-            ] },
+              ],
+            },
           ],'/cpp/': [
             { text: 'C++', items: [
                 { text: '概览', link: '/cpp/' },
@@ -450,8 +475,14 @@ export default defineConfig({
           '/rust/': [
             { text: 'Rust', items: [
               { text: '概览', link: '/rust/' },
-              { text: 'Rust 编程实战', link: '/rust/rust-programming-practice/' },
             ] },
+            {
+              text: 'Rust 编程实战 →',
+              collapsed: false,
+              items: [
+                { text: '进入Rust编程实战专题', link: '/rust/rust-programming-practice/' },
+              ],
+            },
           ],
           '/rust/rust-programming-practice/': [
             { text: 'Rust 编程实战', items: [
