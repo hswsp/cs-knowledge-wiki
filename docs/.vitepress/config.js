@@ -71,7 +71,26 @@ export default defineConfig({
   },
 ],
           '/math/abstract-algebra/': [
-            { text: '抽象代数 I', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: '← 返回数学', link: '/math/' }] },
+            { text: '抽象代数 I', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: 'Galois 理论', link: '/math/abstract-algebra/galois-theory/' }, { text: '← 返回数学', link: '/math/' }] },
+            {
+              text: 'Galois 理论',
+              collapsed: false,
+              items: [
+                { text: '目录', link: '/math/abstract-algebra/galois-theory/' },
+                { text: '第一节 对称函数', link: '/math/abstract-algebra/galois-theory/01-对称函数' },
+                { text: '第二节 判别式', link: '/math/abstract-algebra/galois-theory/02-判别式' },
+                { text: '第三节 分裂域', link: '/math/abstract-algebra/galois-theory/03-分裂域' },
+                { text: '第四节 域扩张的同构', link: '/math/abstract-algebra/galois-theory/04-域扩张的同构' },
+                { text: '第五节 固定域', link: '/math/abstract-algebra/galois-theory/05-固定域' },
+                { text: '第六节 伽罗瓦扩张', link: '/math/abstract-algebra/galois-theory/06-伽罗瓦扩张' },
+                { text: '第七节 主要定理', link: '/math/abstract-algebra/galois-theory/07-伽罗瓦基本定理' },
+                { text: '第八节 三次方程', link: '/math/abstract-algebra/galois-theory/08-三次方程' },
+                { text: '第九节 四次方程', link: '/math/abstract-algebra/galois-theory/09-四次方程' },
+                { text: '第十节 单位根', link: '/math/abstract-algebra/galois-theory/10-单位根' },
+                { text: '第十一节 库默尔扩张', link: '/math/abstract-algebra/galois-theory/11-库默尔扩张' },
+                { text: '第十二节 五次方程', link: '/math/abstract-algebra/galois-theory/12-五次方程' },
+              ],
+            },
           ],
           '/algorithm/': [
   { text: '算法', items: [
