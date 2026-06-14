@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import securitySidebar from './securitySidebar.js'
 
 // Shared social links / theme bits
 const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
@@ -1104,8 +1105,20 @@ export default defineConfig({
           ],'/信息安全/': [
             { text: '信息安全', items: [
                 { text: '概览', link: '/信息安全/' },
+                { text: '安全攻防技能30讲', link: '/信息安全/security-attack-defense/' },
             ] },
-          ],},
+            {
+              text: '安全攻防技能30讲 →',
+              collapsed: false,
+              items: [
+                { text: '进入安全攻防技能30讲', link: '/信息安全/security-attack-defense/' },
+              ],
+            },
+          ],
+          '/信息安全/security-attack-defense/': [
+            { text: '安全攻防技能30讲', items: [{ text: '概览', link: '/信息安全/security-attack-defense/' }, { text: '← 返回信息安全', link: '/信息安全/' }] },
+            ...securitySidebar,
+          ],}, 
         outline: { label: '本页目录', level: [2, 3] },
         docFooter: { prev: '上一篇', next: '下一篇' },
         lastUpdatedText: '最后更新',
