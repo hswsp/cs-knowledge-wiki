@@ -202,7 +202,7 @@ classC {...}; //此泛化版本的 T 可以是任何类型
 template <typename T>
 ```
 
-classC<T*> {...}; //特化版本，仅仅适⽤于 T 为“原⽣指针”的情况，是泛化版本的限制版
+classC&lt;T&gt; {...}; //特化版本，仅仅适⽤于 T 为“原⽣指针”的情况，是泛化版本的限制版
 
 **所谓特化，就是特殊情况特殊处理，第⼀个类为泛化版本，T可以是任意类型，第⼆个类为**特化版本，是第⼀个类的特殊情况，只针对原⽣指针。
 
@@ -302,7 +302,7 @@ func(p); // 这时函数⾥对 tmp 的赋值都将是不允许的
 template<typename T>
 ```
 
-structiterator_traits<const T*> { //特化const指针typedef T value_type; //得到T⽽不是const T
+structiterator_traits&lt;const T&gt; { //特化const指针typedef T value_type; //得到T⽽不是const T
 
 ```cpp
 }
@@ -353,7 +353,7 @@ typedef T value_type;
 };
 ```
 
-// ⾸先询问 iterator_traits<I>::value_type,如果传递的 I 为指针,则进⼊特化版本,iterator_traits 直接回答;如果传递进来的 I 为 class type,就去询问
+// ⾸先询问 iterator_traits&lt;I&gt;::value_type,如果传递的 I 为指针,则进⼊特化版本,iterator_traits 直接回答;如果传递进来的 I 为 class type,就去询问
 
 ```cpp
 T::value_type.

@@ -51,7 +51,7 @@ p2 = p1; //auto_ptr 不会报错.
 unique_ptr<string> p3 (new string (auto));//#4
 ```
 
-unique_ptr<string> p4；//#5p4 = p3;//此时会报错编译器认为 p4=p3 ⾮法，避免了 p3 不再指向有效数据的问题。
+unique_ptr&lt;string&gt; p4；//#5p4 = p3;//此时会报错编译器认为 p4=p3 ⾮法，避免了 p3 不再指向有效数据的问题。
 
 因此，unique_ptr ⽐ auto_ptr 更安全。
 
