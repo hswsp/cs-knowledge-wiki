@@ -34,8 +34,8 @@ The time it takes for the whole packet to be received after the first bit is rec
 
 [公式]
 
-&gt; link rate: 链路传输速率
-&gt;
+> link rate: 链路传输速率
+>
 
 **Total time to send a packet across a link: **[公式]
 
@@ -119,8 +119,8 @@ The second packet leaves S after the first packet leaves S, and then it arrives 
 
 ![image.png](./assets/image 8-20231123113517-1820qz2.png)
 
-&gt; 即到达时刻只要在first package 到达时刻之后 [公式]的 serialization delay.
-&gt;
+> 即到达时刻只要在first package 到达时刻之后 [公式]的 serialization delay.
+>
 
 Note that you should not need to calculate this when you do the problem, since the second packet arrives at A way before the first packet leaves A, and you should be able to guess that looking at the rate difference between L1 and L2.
 

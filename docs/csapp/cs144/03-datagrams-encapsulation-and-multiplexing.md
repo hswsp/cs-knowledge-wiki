@@ -214,8 +214,8 @@ int main()
 // NOLINTEND(*-casting)
 ```
 
-&gt; 用`\x`加十六进制数
-&gt;
+> 用`\x`加十六进制数
+>
 
 We write something in the **Internet datagram** format, and the networks get it to its destination (with “best effort”).
 

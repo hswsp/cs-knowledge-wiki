@@ -135,8 +135,8 @@ part per million(ppm)：百万分之分数。比百分数更精确。
 
 弹性缓冲器能够补偿时钟偏差, 解决了不同时钟域下的数据传输问题。结合PCIe 2.0协议, 采用常半满方式对弹性缓冲器进行了设计。
 
-&gt; 转载自 [http://blog.chinaaet.com/justlxy/p/5100057990](http://blog.chinaaet.com/justlxy/p/5100057990)
-&gt;
+> 转载自 [http://blog.chinaaet.com/justlxy/p/5100057990](http://blog.chinaaet.com/justlxy/p/5100057990)
+>
 
 前面在介绍PCIe物理层逻辑子层的文章中，有提到过弹性缓存（Elastic Buffer，又称为CTC Buffer或者Synchronization Buffer）。其本质上是一种FIFO，主要用于解决跨时钟域问题。当然，PCIe的弹性缓存还用于补偿时钟误差（Compensate for the clock differences）。实际上，除了PCIe，弹性缓存还广泛应用于其它的高速串行接口——USB、InfiniBand、Fibre Channel、Gigabit Ethernet等基于SerDes的应用。
 

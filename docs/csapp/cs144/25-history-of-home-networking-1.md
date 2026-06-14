@@ -33,8 +33,8 @@ SLIP(Serial Line Internet Protocol) tags a length on each IP datagrams so that g
 
 SLIP was later replaced by PPP(Point to Point Protocol)
 
-&gt; [SLIP](http://file.beiwaionline.com/CourseContent/ggk/jsjwhjc/computer/internet/doc/9-2-2.htm)是串行线路协议（Serial Line IP）的英文缩写。PPP是点对点协议（Point to Point Protocol）的英文缩写。
-&gt;
+> [SLIP](http://file.beiwaionline.com/CourseContent/ggk/jsjwhjc/computer/internet/doc/9-2-2.htm)是串行线路协议（Serial Line IP）的英文缩写。PPP是点对点协议（Point to Point Protocol）的英文缩写。
+>
 
 Given level 1, if we abstract modems/computers on the path between a PC and the destination it want to talk to, it becomes this:
 

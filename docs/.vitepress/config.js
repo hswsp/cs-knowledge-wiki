@@ -1116,7 +1116,6 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: '01 课程导论', link: '/csapp/cs144/01-course-intro' },
-                { text: '02 Lab Checkpoint 0：网络热身', link: '/csapp/cs144/02-lab-checkpoint-0-networking-warmup' },
                 { text: '03 数据报、封装与多路复用', link: '/csapp/cs144/03-datagrams-encapsulation-and-multiplexing' },
                 { text: '04 服务抽象、协议栈与可靠性', link: '/csapp/cs144/04-service-abstractions-stacks-and-reliability' },
                 { text: '05 物理层抽象', link: '/csapp/cs144/05-physical-layer-abstraction' },
@@ -1143,6 +1142,7 @@ export default defineConfig({
                 { text: '26 家庭网络史 2', link: '/csapp/cs144/26-history-of-home-networking-2' },
                 { text: '27 家庭网络史 3', link: '/csapp/cs144/27-history-of-home-networking-3' },
                 { text: '28 家庭网络史 4', link: '/csapp/cs144/28-history-of-home-networking-4' },
+                { text: '02 Lab Checkpoint 0：网络热身', link: '/csapp/cs144/02-lab-checkpoint-0-networking-warmup' },
               ],
             },
           ],'/security/': [
