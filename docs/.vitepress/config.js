@@ -51,53 +51,10 @@ export default defineConfig({
     { text: '概览', link: '/math/' },
   ] },
   {
-    text: '抽象代数 I',
+    text: '抽象代数 I →',
     collapsed: false,
     items: [
-      { text: '概览', link: '/math/abstract-algebra/' },
-      {
-        text: '第 1 章 群论 I',
-        collapsed: true,
-        items: [
-          { text: '1.1 幺半群', link: '/math/abstract-algebra/ch01-group-theory/1.1-幺半群' },
-          { text: '1.2 群', link: '/math/abstract-algebra/ch01-group-theory/1.2-群' },
-          { text: '1.3 有限群', link: '/math/abstract-algebra/ch01-group-theory/1.3-有限群' },
-          { text: '1.4 正规子群', link: '/math/abstract-algebra/ch01-group-theory/1.4-正规子群' },
-          { text: '1.5 群作用', link: '/math/abstract-algebra/ch01-group-theory/1.5-群作用' },
-          { text: '1.6 群论与数论', link: '/math/abstract-algebra/ch01-group-theory/1.6-群论与数论' },
-        ],
-      },
-      {
-        text: '第 2 章 环论 I',
-        collapsed: true,
-        items: [
-          { text: '2.1 环', link: '/math/abstract-algebra/ch02-ring-theory/2.1-环' },
-          { text: '2.2 环同态', link: '/math/abstract-algebra/ch02-ring-theory/2.2-环同态' },
-          { text: '2.3 理想', link: '/math/abstract-algebra/ch02-ring-theory/2.3-理想' },
-          { text: '2.4 素理想与极大理想', link: '/math/abstract-algebra/ch02-ring-theory/2.4-素理想与极大理想' },
-          { text: '2.5 环的局部化', link: '/math/abstract-algebra/ch02-ring-theory/2.5-环的局部化' },
-          { text: '2.6 主理想整环与唯一分解整环', link: '/math/abstract-algebra/ch02-ring-theory/2.6-主理想整环与唯一分解整环' },
-          { text: '2.7 欧几里得整环', link: '/math/abstract-algebra/ch02-ring-theory/2.7-欧几里得整环' },
-        ],
-      },
-      {
-        text: '第 3 章 多项式理论',
-        collapsed: true,
-        items: [
-          { text: '3.1 多项式环', link: '/math/abstract-algebra/ch03-polynomial-theory/3.1-多项式环' },
-          { text: '3.2 多项式环的结构', link: '/math/abstract-algebra/ch03-polynomial-theory/3.2-多项式环的结构' },
-          { text: '3.3 不可约多项式', link: '/math/abstract-algebra/ch03-polynomial-theory/3.3-不可约多项式' },
-        ],
-      },
-      {
-        text: '第 4 章 域论',
-        collapsed: true,
-        items: [
-          { text: '4.1 域', link: '/math/abstract-algebra/ch04-field-theory/4.1-域' },
-          { text: '4.2 域扩张', link: '/math/abstract-algebra/ch04-field-theory/4.2-域扩张' },
-          { text: '4.3 有限域与分裂域', link: '/math/abstract-algebra/ch04-field-theory/4.3-有限域与分裂域' },
-        ],
-      },
+      { text: '进入抽象代数专题', link: '/math/abstract-algebra/' },
     ],
   },
   {
@@ -113,6 +70,52 @@ export default defineConfig({
     ],
   },
 ],
+          '/math/abstract-algebra/': [
+            { text: '抽象代数 I', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: '← 返回数学', link: '/math/' }] },
+            {
+              text: '第 1 章 群论 I',
+              collapsed: true,
+              items: [
+                { text: '1.1 幺半群', link: '/math/abstract-algebra/ch01-group-theory/1.1-幺半群' },
+                { text: '1.2 群', link: '/math/abstract-algebra/ch01-group-theory/1.2-群' },
+                { text: '1.3 有限群', link: '/math/abstract-algebra/ch01-group-theory/1.3-有限群' },
+                { text: '1.4 正规子群', link: '/math/abstract-algebra/ch01-group-theory/1.4-正规子群' },
+                { text: '1.5 群作用', link: '/math/abstract-algebra/ch01-group-theory/1.5-群作用' },
+                { text: '1.6 群论与数论', link: '/math/abstract-algebra/ch01-group-theory/1.6-群论与数论' },
+              ],
+            },
+            {
+              text: '第 2 章 环论 I',
+              collapsed: true,
+              items: [
+                { text: '2.1 环', link: '/math/abstract-algebra/ch02-ring-theory/2.1-环' },
+                { text: '2.2 环同态', link: '/math/abstract-algebra/ch02-ring-theory/2.2-环同态' },
+                { text: '2.3 理想', link: '/math/abstract-algebra/ch02-ring-theory/2.3-理想' },
+                { text: '2.4 素理想与极大理想', link: '/math/abstract-algebra/ch02-ring-theory/2.4-素理想与极大理想' },
+                { text: '2.5 环的局部化', link: '/math/abstract-algebra/ch02-ring-theory/2.5-环的局部化' },
+                { text: '2.6 主理想整环与唯一分解整环', link: '/math/abstract-algebra/ch02-ring-theory/2.6-主理想整环与唯一分解整环' },
+                { text: '2.7 欧几里得整环', link: '/math/abstract-algebra/ch02-ring-theory/2.7-欧几里得整环' },
+              ],
+            },
+            {
+              text: '第 3 章 多项式理论',
+              collapsed: true,
+              items: [
+                { text: '3.1 多项式环', link: '/math/abstract-algebra/ch03-polynomial-theory/3.1-多项式环' },
+                { text: '3.2 多项式环的结构', link: '/math/abstract-algebra/ch03-polynomial-theory/3.2-多项式环的结构' },
+                { text: '3.3 不可约多项式', link: '/math/abstract-algebra/ch03-polynomial-theory/3.3-不可约多项式' },
+              ],
+            },
+            {
+              text: '第 4 章 域论',
+              collapsed: true,
+              items: [
+                { text: '4.1 域', link: '/math/abstract-algebra/ch04-field-theory/4.1-域' },
+                { text: '4.2 域扩张', link: '/math/abstract-algebra/ch04-field-theory/4.2-域扩张' },
+                { text: '4.3 有限域与分裂域', link: '/math/abstract-algebra/ch04-field-theory/4.3-有限域与分裂域' },
+              ],
+            },
+          ],
           '/algorithm/': [
   { text: '算法', items: [
     { text: '概览', link: '/algorithm/' },
