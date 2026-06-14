@@ -10,6 +10,7 @@ description: "- [代数基础](代数基础)"
 ## Linear Algebra
 
 - [矩阵四大子空间](矩阵四大空间)
+- [矩阵分解详解](矩阵分解详解)
 
 ## Algebra
 
