@@ -441,6 +441,13 @@ export default defineConfig({
                 { text: '概览', link: '/cpp/' },
             ] },
             {
+              text: '现代计算机图形学入门 →',
+              collapsed: false,
+              items: [
+                { text: '进入现代计算机图形学入门', link: '/cpp/computer-graphics/' },
+              ],
+            },
+            {
               text: '基础语法',
               collapsed: true,
               items: [
@@ -484,6 +491,85 @@ export default defineConfig({
                 { text: '2 万字 10 图带你⼿撕 STL 关联', link: '/cpp/2 万字 10 图带你⼿撕 STL 关联' },
                 { text: '万字⻓⽂+ STL 算法总结', link: '/cpp/万字⻓⽂+ STL 算法总结' },
                 { text: 'Google ⾯试准备完全指南 && C++代码规范：', link: '/cpp/Google ⾯试准备完全指南 && C++代码规范：' },
+              ],
+            },
+          ],
+          '/cpp/computer-graphics/': [
+            { text: '现代计算机图形学入门', items: [{ text: '概览', link: '/cpp/computer-graphics/' }, { text: '← 返回 C++', link: '/cpp/' }] },
+            {
+              text: '基础',
+              collapsed: true,
+              items: [
+                { text: '02 | 计算机图形学概述', link: '/cpp/computer-graphics/02 计算机图形学概述' },
+              ],
+            },
+            {
+              text: '线性代数与变换',
+              collapsed: true,
+              items: [
+                { text: '03 | 向量与线性代数', link: '/cpp/computer-graphics/03 向量与线性代数' },
+                { text: '04 | 变换（二维与三维）', link: '/cpp/computer-graphics/04 变换（二维与三维）' },
+                { text: '05 | 变换（模型、视图、投影）', link: '/cpp/computer-graphics/05 变换（模型、视图、投影）' },
+              ],
+            },
+            {
+              text: '光栅化',
+              collapsed: true,
+              items: [
+                { text: '06 | 光栅化（三角形的离散化）', link: '/cpp/computer-graphics/06 光栅化（三角形的离散化）' },
+                { text: '07 | 光栅化（深度测试与抗锯齿）', link: '/cpp/computer-graphics/07 光栅化（深度测试与抗锯齿）' },
+              ],
+            },
+            {
+              text: '着色',
+              collapsed: true,
+              items: [
+                { text: '08 | 着色（光照与基本着色模型）', link: '/cpp/computer-graphics/08 着色（光照与基本着色模型）' },
+                { text: '09 | 着色（着色频率、图形管线、纹理映射）', link: '/cpp/computer-graphics/09 着色（着色频率、图形管线、纹理映射）' },
+                { text: '10 | 着色（插值、高级纹理映射）', link: '/cpp/computer-graphics/10 着色（插值、高级纹理映射）' },
+              ],
+            },
+            {
+              text: '几何',
+              collapsed: true,
+              items: [
+                { text: '11 | 几何（基本表示方法）', link: '/cpp/computer-graphics/11 几何（基本表示方法）' },
+                { text: '12 | 几何（曲线与曲面）', link: '/cpp/computer-graphics/12 几何（曲线与曲面）' },
+                { text: '13 | 几何（网格处理）、阴影图', link: '/cpp/computer-graphics/13 几何（网格处理）、阴影图' },
+              ],
+            },
+            {
+              text: '光线追踪',
+              collapsed: true,
+              items: [
+                { text: '14 | 光线追踪（基本原理）', link: '/cpp/computer-graphics/14 光线追踪（基本原理）' },
+                { text: '15 | 光线追踪（加速结构）', link: '/cpp/computer-graphics/15 光线追踪（加速结构）' },
+                { text: '16 | 光线追踪（辐射度量学、渲染方程与全局光照）', link: '/cpp/computer-graphics/16 光线追踪（辐射度量学、渲染方程与全局光照）' },
+                { text: '17 | 光线追踪（蒙特卡洛积分与路径追踪）', link: '/cpp/computer-graphics/17 光线追踪（蒙特卡洛积分与路径追踪）' },
+              ],
+            },
+            {
+              text: '材质与外观',
+              collapsed: true,
+              items: [
+                { text: '18 | 材质与外观', link: '/cpp/computer-graphics/18 材质与外观' },
+                { text: '19 | 高级光线传播与复杂外观建模', link: '/cpp/computer-graphics/19 高级光线传播与复杂外观建模' },
+              ],
+            },
+            {
+              text: '相机、光场与颜色',
+              collapsed: true,
+              items: [
+                { text: '20 | 相机与透镜', link: '/cpp/computer-graphics/20 相机与透镜' },
+                { text: '21 | 光场、颜色与感知', link: '/cpp/computer-graphics/21 光场、颜色与感知' },
+              ],
+            },
+            {
+              text: '动画与模拟',
+              collapsed: true,
+              items: [
+                { text: '22 | 动画与模拟（基本概念、质点弹簧系统、运动学）', link: '/cpp/computer-graphics/22 动画与模拟（基本概念、质点弹簧系统、运动学）' },
+                { text: '23 | 动画与模拟（求解常微分方程，刚体与流体）', link: '/cpp/computer-graphics/23 动画与模拟（求解常微分方程，刚体与流体）' },
               ],
             },
           ],
