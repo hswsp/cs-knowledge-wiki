@@ -2,9 +2,8 @@
 
 C++代码规范：
 
-**⾯试准备完全指南参考链接**
+**⾯试准备完全指南参考链接**https://wizardforcel.gitbooks.io/gainlo-interview-guide/content/cggip.html
 
-https://wizardforcel.gitbooks.io/gainlo-interview-guide/content/cggip.html
 
 **Google C++ ⻛格**
 
