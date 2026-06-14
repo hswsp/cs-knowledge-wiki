@@ -2,7 +2,7 @@
 
 # 引言
 
-![etcd/raft 职责示意图](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/120f1fa9464b8f4b.svg)
+![etcd/raft 职责示意图](https://images.spumn.eu.cc/distributed-consensus/120f1fa9464b8f4b.svg)
 
 etcd/raft将Raft算法的实现分为了3个模块：Raft状态机、存储模块、传输模块。
 

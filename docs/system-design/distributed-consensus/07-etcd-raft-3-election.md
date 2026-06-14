@@ -10,7 +10,7 @@
 
 ## Pre-Vote
 
-![网络分区示意图](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/98f6313b9894a7ed.svg)
+![网络分区示意图](https://images.spumn.eu.cc/distributed-consensus/98f6313b9894a7ed.svg)
 
 当Raft集群的网络发生分区时，在节点数无法达到quorum的分区中，节点的term会不断增大。如果网络分区恢复，达不到quorum的分区中的节点的term值会远大于能够达到quorum的分区中的节点的term，导致不必要的选举。
 
@@ -18,7 +18,7 @@ Pre-Vote机制引入了"预投票"：当节点election timeout超时后，它们
 
 ## Check Quorum
 
-![stale read 示意图](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/cc2ff99cf5c9b5f8.svg)
+![stale read 示意图](https://images.spumn.eu.cc/distributed-consensus/cc2ff99cf5c9b5f8.svg)
 
 在Raft算法中，保证线性一致性读取的最简单的方式，就是将读请求同样当做一条Raft提议，通过与其它日志相同的方式执行，因此这种方式也叫作Log Read。显然，Log Read的性能很差。
 
@@ -26,9 +26,9 @@ Pre-Vote机制引入了"预投票"：当节点election timeout超时后，它们
 
 ## Leader Lease
 
-![不完全分区示意图](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/337458f04e5dc3ce.svg)
+![不完全分区示意图](https://images.spumn.eu.cc/distributed-consensus/337458f04e5dc3ce.svg)
 
-![Leader Lease without Check Quorum](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/6400d650851fa5ab.svg)
+![Leader Lease without Check Quorum](https://images.spumn.eu.cc/distributed-consensus/6400d650851fa5ab.svg)
 
 分布式系统中的网络环境十分复杂，有时可能出现网络不完全分区的情况。Leader Lease机制对投票引入了一条新的约束：当节点在election timeout超时前，如果收到了leader的消息，那么它不会为其它发起投票或预投票请求的节点投票。
 
@@ -36,9 +36,9 @@ Leader Lease需要依赖Check Quorum机制才能正常工作。
 
 ## 引入的新问题与解决方案
 
-![Check Quorum / Leader Lease 问题场景](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/b4742e7d975f2d6f.svg)
+![Check Quorum / Leader Lease 问题场景](https://images.spumn.eu.cc/distributed-consensus/b4742e7d975f2d6f.svg)
 
-![Pre-Vote 问题场景](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/a0d0f9965343e055.svg)
+![Pre-Vote 问题场景](https://images.spumn.eu.cc/distributed-consensus/a0d0f9965343e055.svg)
 
 引入Pre-Vote和Check Quorum会为Raft算法引入一些新的问题。当一个节点收到了term比自己低的消息时，原本的逻辑是直接忽略该消息。然而，开启了这些机制后，在如下的场景中会出现问题：
 

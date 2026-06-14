@@ -6,15 +6,15 @@
 
 # 成员变更算法
 
-![配置变更多主问题](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/638df266c7d6c1a2.png)
+![配置变更多主问题](https://images.spumn.eu.cc/distributed-consensus/638df266c7d6c1a2.png)
 
 《CONSENSUS: BRIDGING THEORY AND PRACTICE》的Chapter 4介绍了两种成员变更算法，一种是一次操作一个节点的简单算法，另一种是联合共识（joint consensus）算法。两种算法都是为了避免由于节点切换配置时间不同导致的同一term出现不只一个leader的问题。
 
-![简单成员变更算法](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/547b352dff7efca7.png)
+![简单成员变更算法](https://images.spumn.eu.cc/distributed-consensus/547b352dff7efca7.png)
 
 简单成员变更算法限制每次只能增加或移除一个节点。这样可以保证新配置与旧配置的quorum至少有一个相同的节点，因为一个节点在同一term仅能给一个节点投票，所以这能避免多主问题。
 
-![联合共识算法](https://pub-d5563ccdabef16dad3d61d1a290c6067.r2.dev/distributed-consensus/6a54c6ad8412c952.png)
+![联合共识算法](https://images.spumn.eu.cc/distributed-consensus/6a54c6ad8412c952.png)
 
 联合共识算法可以一次变更多个成员，但是需要在进入新配置前先进入一个"联合配置（joint configuration）"，在联合配置的quorum分别需要新配置和旧配置的majority（大多数）节点，以避免多主问题。当联合配置成功提交后，集群可以开始进入新配置。
 
