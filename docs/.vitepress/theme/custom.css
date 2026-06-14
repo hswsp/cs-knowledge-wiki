@@ -34,3 +34,17 @@
   transform: translateY(-4px);
   box-shadow: 0 10px 30px -10px var(--vp-c-brand-soft);
 }
+
+/* PDF viewer */
+.pdf-container {
+  max-width: 100%;
+  overflow: auto;
+}
+.pdf-container canvas {
+  max-width: 100%;
+  height: auto !important;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
