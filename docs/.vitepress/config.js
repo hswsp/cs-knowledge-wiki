@@ -64,6 +64,7 @@ export default defineConfig({
     collapsed: false,
     items: [
       { text: '矩阵四大子空间', link: '/math/矩阵四大空间' },
+      { text: '矩阵分解详解', link: '/math/矩阵分解详解' },
     ],
   },
   {
