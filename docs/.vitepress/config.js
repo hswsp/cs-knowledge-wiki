@@ -69,6 +69,12 @@ export default defineConfig({
       { text: '卡特兰数', link: '/math/卡特兰数' },
       { text: '四平方和定理', link: '/math/四平方和定理' },
       { text: '单纯形算法求解线性规划', link: '/math/单纯形算法求解线性规划' },
+    ],
+  },
+  {
+    text: 'Information Theory',
+    collapsed: false,
+    items: [
       { text: '有限域算术——从 AES 到 Reed-Solomon', link: '/math/有限域算术-从-aes-到-reed-solomon' },
       { text: 'RS 码原理及柯西优化', link: '/math/rs码原理及柯西优化' },
     ],
