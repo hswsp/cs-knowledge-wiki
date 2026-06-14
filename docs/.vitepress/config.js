@@ -42,7 +42,8 @@ export default defineConfig({
           { text: '存储', link: '/storage/' },
           { text: '系统设计', link: '/system-design/' },
           { text: '工具', link: '/tools/' },
-          { text: 'OS', link: '/os/' },
+          { text: '计算机系统', link: '/计算机系统/' },
+          { text: '信息安全', link: '/信息安全/' },
           { text: '关于', link: '/about/' },
         ],
         sidebar: {
@@ -1095,10 +1096,14 @@ export default defineConfig({
                 { text: 'GitHub Pages + Hexo', link: '/tools/blog/hexo-tutorial' },
                 { text: 'Hexo + Kaze + Gitee', link: '/tools/blog/hexo-kaze-gitee' },
             ] },
-          ],'/os/': [
+          ],'/计算机系统/': [
             { text: '操作系统', items: [
-                { text: '概览', link: '/os/' },
-                { text: 'Linux PV/LV/VG', link: '/os/linux/linux-lvm' },
+                { text: '概览', link: '/计算机系统/' },
+                { text: 'Linux PV/LV/VG', link: '/计算机系统/linux/linux-lvm' },
+            ] },
+          ],'/信息安全/': [
+            { text: '信息安全', items: [
+                { text: '概览', link: '/信息安全/' },
             ] },
           ],},
         outline: { label: '本页目录', level: [2, 3] },

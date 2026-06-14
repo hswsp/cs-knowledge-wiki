@@ -4,7 +4,7 @@ layout: home
 hero:
   name: CS 知识库
   text: 个人计算机科学的全栈笔记
-  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 存储 · 系统设计 · 工具 · OS 
+  tagline: 数学 · 算法 · 机器学习 · Java · C++ · 存储 · 系统设计 · 工具 · 计算机系统 · 信息安全 
   image:
     src: /logo.svg
     alt: CS Knowledge Wiki
@@ -50,9 +50,13 @@ features:
     details: Git、CMake、Lucene、Hexo 等日常开发工具
     link: /tools/
   - icon: 🐧
-    title: 操作系统
+    title: 计算机系统
     details: Linux、内存、文件系统、进程调度
-    link: /os/
+    link: /计算机系统/
+  - icon: 🔒
+    title: 信息安全
+    details: 加密、认证、安全协议、漏洞分析
+    link: /信息安全/
   - icon: 👤
     title: 关于我
     details: 了解作者，欢迎交流
