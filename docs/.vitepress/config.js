@@ -16,7 +16,7 @@ export default defineConfig({
 
   vite: {
     ssr: {
-      external: ['vue-pdf-embed'],
+      external: ['pdfjs-dist'],
     },
   },
 
