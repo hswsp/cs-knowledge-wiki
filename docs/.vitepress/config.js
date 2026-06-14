@@ -60,6 +60,13 @@ export default defineConfig({
     ],
   },
   {
+    text: 'Linear Algebra',
+    collapsed: false,
+    items: [
+      { text: '矩阵四大子空间', link: '/math/矩阵四大空间' },
+    ],
+  },
+  {
     text: 'Algebra',
     collapsed: false,
     items: [
