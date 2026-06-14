@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF.js Viewer</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --toolbar-bg: #f6f6f7;
+      --toolbar-border: #dcdfe6;
+      --text: #213547;
+      --canvas-bg: #8f8f8f;
+      --button-bg: #ffffff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --toolbar-bg: #1f1f22;
+        --toolbar-border: #3c3f44;
+        --text: #dfdfd6;
+        --canvas-bg: #2f3033;
+        --button-bg: #2b2b2f;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    #toolbar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--toolbar-bg);
+      border-bottom: 1px solid var(--toolbar-border);
+    }
+
+    button,
+    input,
+    select {
+      height: 32px;
+      color: inherit;
+      background: var(--button-bg);
+      border: 1px solid var(--toolbar-border);
+      border-radius: 6px;
+      font: inherit;
+    }
+
+    button {
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    input {
+      width: 64px;
+      padding: 0 8px;
+      text-align: center;
+    }
+
+    select {
+      padding: 0 8px;
+    }
+
+    #viewerContainer {
+      height: calc(100vh - 48px);
+      overflow: auto;
+      background: var(--canvas-bg);
+      padding: 24px 12px;
+      text-align: center;
+    }
+
+    #pdfCanvas {
+      display: inline-block;
+      max-width: 100%;
+      background: white;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    #status {
+      margin-left: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    #error {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 20px;
+      background: var(--toolbar-bg);
+      border: 1px solid var(--toolbar-border);
+      border-radius: 8px;
+      text-align: left;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <button id="prevPage" type="button">上一页</button>
+    <input id="pageNumber" type="number" min="1" value="1" aria-label="页码">
+    <span>/ <span id="pageCount">?</span></span>
+    <button id="nextPage" type="button">下一页</button>
+    <select id="zoom" aria-label="缩放">
+      <option value="page-width" selected>适合宽度</option>
+      <option value="0.75">75%</option>
+      <option value="1">100%</option>
+      <option value="1.25">125%</option>
+      <option value="1.5">150%</option>
+      <option value="2">200%</option>
+    </select>
+    <a id="openPdf" target="_blank" rel="noopener">打开原 PDF</a>
+    <span id="status">加载中...</span>
+  </div>
+
+  <div id="viewerContainer">
+    <canvas id="pdfCanvas"></canvas>
+  </div>
+
+  <script src="/pdfjs/build/pdf.min.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const file = params.get('file') || '/abstract-algebra-2.pdf';
+    const pdfUrl = new URL(file, window.location.href);
+
+    if (pdfUrl.origin !== window.location.origin) {
+      throw new Error('Only same-origin PDF files are allowed.');
+    }
+
+    const canvas = document.getElementById('pdfCanvas');
+    const context = canvas.getContext('2d');
+    const container = document.getElementById('viewerContainer');
+    const pageNumber = document.getElementById('pageNumber');
+    const pageCount = document.getElementById('pageCount');
+    const prevPage = document.getElementById('prevPage');
+    const nextPage = document.getElementById('nextPage');
+    const zoom = document.getElementById('zoom');
+    const status = document.getElementById('status');
+    const openPdf = document.getElementById('openPdf');
+
+    openPdf.href = pdfUrl.href;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/build/pdf.worker.min.js';
+
+    let pdfDoc = null;
+    let currentPage = 1;
+    let rendering = false;
+    let pendingPage = null;
+
+    function setStatus(message) {
+      status.textContent = message;
+    }
+
+    function showError(error) {
+      container.innerHTML = `
+        <div id="error">
+          <strong>PDF.js 渲染失败。</strong>
+          <p>${String(error && error.message ? error.message : error)}</p>
+          <p>你仍然可以 <a href="${pdfUrl.href}" target="_blank" rel="noopener">打开原 PDF</a> 查看。</p>
+        </div>
+      `;
+      setStatus('加载失败');
+    }
+
+    async function renderPage(num) {
+      rendering = true;
+      setStatus('渲染中...');
+
+      try {
+        const page = await pdfDoc.getPage(num);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const zoomValue = zoom.value;
+        const scale = zoomValue === 'page-width'
+          ? Math.max((container.clientWidth - 32) / baseViewport.width, 0.25)
+          : Number(zoomValue);
+        const viewport = page.getViewport({ scale });
+        const outputScale = window.devicePixelRatio || 1;
+
+        canvas.width = Math.floor(viewport.width * outputScale);
+        canvas.height = Math.floor(viewport.height * outputScale);
+        canvas.style.width = `${Math.floor(viewport.width)}px`;
+        canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+        const transform = outputScale !== 1
+          ? [outputScale, 0, 0, outputScale, 0, 0]
+          : null;
+
+        await page.render({
+          canvasContext: context,
+          transform,
+          viewport,
+        }).promise;
+
+        currentPage = num;
+        pageNumber.value = num;
+        prevPage.disabled = num <= 1;
+        nextPage.disabled = num >= pdfDoc.numPages;
+        setStatus('完成');
+      } catch (error) {
+        showError(error);
+      } finally {
+        rendering = false;
+        if (pendingPage !== null) {
+          const next = pendingPage;
+          pendingPage = null;
+          renderPage(next);
+        }
+      }
+    }
+
+    function queueRenderPage(num) {
+      const safePage = Math.min(Math.max(num, 1), pdfDoc.numPages);
+      if (rendering) {
+        pendingPage = safePage;
+      } else {
+        renderPage(safePage);
+      }
+    }
+
+    prevPage.addEventListener('click', () => queueRenderPage(currentPage - 1));
+    nextPage.addEventListener('click', () => queueRenderPage(currentPage + 1));
+    pageNumber.addEventListener('change', () => queueRenderPage(Number(pageNumber.value) || 1));
+    zoom.addEventListener('change', () => queueRenderPage(currentPage));
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      if (!pdfDoc || zoom.value !== 'page-width') return;
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => queueRenderPage(currentPage), 150);
+    });
+
+    pdfjsLib.getDocument({
+      url: pdfUrl.href,
+      cMapUrl: '/pdfjs/cmaps/',
+      cMapPacked: true,
+      standardFontDataUrl: '/pdfjs/standard_fonts/',
+    }).promise.then((pdf) => {
+      pdfDoc = pdf;
+      pageCount.textContent = pdf.numPages;
+      pageNumber.max = pdf.numPages;
+      renderPage(1);
+    }).catch(showError);
+  </script>
+</body>
+</html>

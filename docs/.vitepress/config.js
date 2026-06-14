@@ -14,12 +14,6 @@ export default defineConfig({
     math: true,
   },
 
-  vite: {
-    ssr: {
-      external: ['pdfjs-dist'],
-    },
-  },
-
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
   ],
