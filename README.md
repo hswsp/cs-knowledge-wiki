@@ -11,6 +11,7 @@
 - 机器学习（Machine Learning）
 - Java
 - C++
+- Rust
 - 数据库（Database）
 - 系统设计（System Design）
 
@@ -56,6 +57,7 @@ docs/
 ├── algorithm/             # 中文 - 算法
 ├── java/                  # 中文 - Java
 ├── cpp/                   # 中文 - C++
+├── rust/                  # 中文 - Rust
 ├── database/              # 中文 - 数据库
 ├── system-design/         # 中文 - 系统设计
 ├── ml/                    # 中文 - 机器学习
