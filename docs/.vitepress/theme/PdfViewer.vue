@@ -1,13 +1,13 @@
-import { h } from 'vue'
+<template>
+  <div class="pdf-container">
+    <VuePdfEmbed :source="src" />
+  </div>
+</template>
+
+<script setup>
 import VuePdfEmbed from 'vue-pdf-embed'
 
-export default {
-  props: {
-    src: { type: String, required: true },
-  },
-  setup(props) {
-    return () => h('div', { class: 'pdf-container' }, [
-      h(VuePdfEmbed, { source: props.src }),
-    ])
-  },
-}
+defineProps({
+  src: { type: String, required: true },
+})
+</script>
