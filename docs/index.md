@@ -52,11 +52,11 @@ features:
   - icon: 🐧
     title: 计算机系统
     details: Linux、内存、文件系统、进程调度
-    link: /计算机系统/
+    link: /csapp/
   - icon: 🔒
     title: 信息安全
     details: 加密、认证、安全协议、漏洞分析
-    link: /信息安全/
+    link: /security/
   - icon: 👤
     title: 关于我
     details: 了解作者，欢迎交流
