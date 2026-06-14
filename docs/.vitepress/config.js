@@ -1098,10 +1098,53 @@ export default defineConfig({
                 { text: 'Hexo + Kaze + Gitee', link: '/tools/blog/hexo-kaze-gitee' },
             ] },
           ],'/计算机系统/': [
-            { text: '操作系统', items: [
+            { text: '计算机系统', items: [
                 { text: '概览', link: '/计算机系统/' },
                 { text: 'Linux PV/LV/VG', link: '/计算机系统/linux/linux-lvm' },
             ] },
+            {
+              text: 'CS 144 →',
+              collapsed: false,
+              items: [
+                { text: '进入 CS 144 专题', link: '/计算机系统/cs144/' },
+              ],
+            },
+          ],'/计算机系统/cs144/': [
+            { text: 'CS 144', items: [{ text: '概览', link: '/计算机系统/cs144/' }, { text: '← 返回计算机系统', link: '/计算机系统/' }] },
+            {
+              text: '课程笔记',
+              collapsed: false,
+              items: [
+                { text: '01 课程导论', link: '/计算机系统/cs144/01-course-intro' },
+                { text: '02 Lab Checkpoint 0：网络热身', link: '/计算机系统/cs144/02-lab-checkpoint-0-networking-warmup' },
+                { text: '03 数据报、封装与多路复用', link: '/计算机系统/cs144/03-datagrams-encapsulation-and-multiplexing' },
+                { text: '04 服务抽象、协议栈与可靠性', link: '/计算机系统/cs144/04-service-abstractions-stacks-and-reliability' },
+                { text: '05 物理层抽象', link: '/计算机系统/cs144/05-physical-layer-abstraction' },
+                { text: '06 链路层 / 物理层', link: '/计算机系统/cs144/06-the-link-layer-aka-physical-layer' },
+                { text: '07 网络栈不同层的命名', link: '/计算机系统/cs144/07-naming-at-different-layers-of-the-network-stack' },
+                { text: '08 分组交换', link: '/计算机系统/cs144/08-packet-switching' },
+                { text: '09 分组交换 2', link: '/计算机系统/cs144/09-packet-switching-2' },
+                { text: '10 路由基础', link: '/计算机系统/cs144/10-routing-basics' },
+                { text: '11 Bellman-Ford 与 Dijkstra', link: '/计算机系统/cs144/11-bellman-ford-and-dijkstra' },
+                { text: '12 互联网如何工作（简版）', link: '/计算机系统/cs144/12-how-the-internet-works-in-brief' },
+                { text: '13 互联网如何工作', link: '/计算机系统/cs144/13-how-the-internet-works' },
+                { text: '14 BGP 与真实世界的互联网', link: '/计算机系统/cs144/14-bgp-and-how-the-internet-works-in-the-real-world' },
+                { text: '15 TCP', link: '/计算机系统/cs144/15-tcp' },
+                { text: '16 TCP part 2', link: '/计算机系统/cs144/16-tcp-part-2' },
+                { text: '17 TCP part 3', link: '/计算机系统/cs144/17-tcp-part-3' },
+                { text: '18 幂等性与 TCP', link: '/计算机系统/cs144/18-idempotence-and-tcp' },
+                { text: '19 为什么需要拥塞控制', link: '/计算机系统/cs144/19-why-congestion-control' },
+                { text: '20 什么是拥塞控制', link: '/计算机系统/cs144/20-what-congestion-control' },
+                { text: '21 拥塞控制如何工作', link: '/计算机系统/cs144/21-how-congestion-control' },
+                { text: '22 互联网视频传输', link: '/计算机系统/cs144/22-video-over-internet' },
+                { text: '23 TLS', link: '/计算机系统/cs144/23-tls' },
+                { text: '24 计算机安全坏态度指南', link: '/计算机系统/cs144/24-the-bad-attitude-guide-to-computer-security' },
+                { text: '25 家庭网络史 1', link: '/计算机系统/cs144/25-history-of-home-networking-1' },
+                { text: '26 家庭网络史 2', link: '/计算机系统/cs144/26-history-of-home-networking-2' },
+                { text: '27 家庭网络史 3', link: '/计算机系统/cs144/27-history-of-home-networking-3' },
+                { text: '28 家庭网络史 4', link: '/计算机系统/cs144/28-history-of-home-networking-4' },
+              ],
+            },
           ],'/信息安全/': [
             { text: '信息安全', items: [
                 { text: '概览', link: '/信息安全/' },
