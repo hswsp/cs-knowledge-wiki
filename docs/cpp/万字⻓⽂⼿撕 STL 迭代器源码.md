@@ -202,7 +202,7 @@ classC {...}; //此泛化版本的 T 可以是任何类型
 template <typename T>
 ```
 
-classC&lt;T&gt; {...}; //特化版本，仅仅适⽤于 T 为“原⽣指针”的情况，是泛化版本的限制版
+classC`<T>` {...}; //特化版本，仅仅适⽤于 T 为“原⽣指针”的情况，是泛化版本的限制版
 
 **所谓特化，就是特殊情况特殊处理，第⼀个类为泛化版本，T可以是任意类型，第⼆个类为**特化版本，是第⼀个类的特殊情况，只针对原⽣指针。
 
@@ -236,7 +236,7 @@ structiterator_traits { //类型萃取机typedeftypename Iterator::value_type va
 
 加⼊萃取机前后的变化：
 
-template<typename Iterator> //萃取前
+template`<typename Iterator>` //萃取前
 
 ```cpp
 typename Iterator::value_type  func(Iterator iter) {
@@ -244,7 +244,7 @@ return *iter;
 }
 ```
 
-//通过 iterator_traits 作⽤后的版本template<typename Iterator> //萃取后
+//通过 iterator_traits 作⽤后的版本template`<typename Iterator>` //萃取后
 
 ```cpp
 typename iterator_traits<Iterator>::value_type  func(Iterator iter) {
@@ -278,7 +278,7 @@ typedef T value_type;
 
 通过偏特化添加⼀层中间转换的 traits 模板 class，能实现对原⽣指针和迭代器的⽀持，有的读者可能会继续追问：对于指向常数对象的指针⼜该怎么处理呢？⽐如下⾯的例⼦：
 
-iterator_traits<constint*>::value_type // 获得的 value_type 是 constint，⽽不是 intconst 变量只能初始化，⽽不能赋值（这两个概念必须区分清楚）。这将带来下⾯的问题：
+iterator_traits`<constint*>`::value_type // 获得的 value_type 是 constint，⽽不是 intconst 变量只能初始化，⽽不能赋值（这两个概念必须区分清楚）。这将带来下⾯的问题：
 
 ```cpp
 template<typename Iterator>
@@ -302,7 +302,7 @@ func(p); // 这时函数⾥对 tmp 的赋值都将是不允许的
 template<typename T>
 ```
 
-structiterator_traits&lt;const T&gt; { //特化const指针typedef T value_type; //得到T⽽不是const T
+structiterator_traits`<const T>` { //特化const指针typedef T value_type; //得到T⽽不是const T
 
 ```cpp
 }
@@ -353,7 +353,7 @@ typedef T value_type;
 };
 ```
 
-// ⾸先询问 iterator_traits&lt;I&gt;::value_type,如果传递的 I 为指针,则进⼊特化版本,iterator_traits 直接回答;如果传递进来的 I 为 class type,就去询问
+// ⾸先询问 iterator_traits`<I>`::value_type,如果传递的 I 为指针,则进⼊特化版本,iterator_traits 直接回答;如果传递进来的 I 为 class type,就去询问
 
 ```cpp
 T::value_type.
