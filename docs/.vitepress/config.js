@@ -8,11 +8,16 @@ export default defineConfig({
   description: 'A personal computer science knowledge base — math, algorithms, Java, C++, storage.',
   cleanUrls: true,
   lastUpdated: true,
-  // 迁移自旧 Hexo 博客的文章里包含一些 localhost 占位与外部锚点，先放行死链检查
   ignoreDeadLinks: true,
 
   markdown: {
     math: true,
+  },
+
+  vite: {
+    ssr: {
+      external: ['vue-pdf-embed'],
+    },
   },
 
   head: [

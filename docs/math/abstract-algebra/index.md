@@ -4,6 +4,7 @@ description: "抽象代数 I —— 基本的代数结构"
 ---
 
 <script setup>
+import { ClientOnly } from 'vitepress'
 </script>
 
 # 抽象代数 I —— 基本的代数结构
@@ -12,4 +13,6 @@ description: "抽象代数 I —— 基本的代数结构"
 
 本部分涵盖群论、环论、多项式理论和域论的基础知识，是抽象代数的入门核心内容。
 
-<PdfViewer src="/abstract-algebra-2.pdf" />
+<ClientOnly>
+  <PdfViewer src="/abstract-algebra-2.pdf" />
+</ClientOnly>
