@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import securitySidebar from './securitySidebar.js'
+import practicalCryptographySidebar from './practicalCryptographySidebar.js'
 
 // Shared social links / theme bits
 const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
@@ -53,7 +54,7 @@ export default defineConfig({
     { text: '概览', link: '/math/' },
   ] },
   {
-    text: '抽象代数 I →',
+    text: '抽象代数 →',
     collapsed: false,
     items: [
       { text: '进入抽象代数专题', link: '/math/abstract-algebra/' },
@@ -89,7 +90,7 @@ export default defineConfig({
   },
 ],
           '/math/abstract-algebra/': [
-            { text: '抽象代数 I', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: 'Galois 理论', link: '/math/abstract-algebra/galois-theory/' }, { text: '← 返回数学', link: '/math/' }] },
+            { text: '抽象代数', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: 'Galois 理论', link: '/math/abstract-algebra/galois-theory/' }, { text: '← 返回数学', link: '/math/' }] },
             {
               text: 'Galois 理论',
               collapsed: false,
@@ -1249,6 +1250,7 @@ export default defineConfig({
             { text: '信息安全', items: [
                 { text: '概览', link: '/security/' },
                 { text: '安全攻防技能30讲', link: '/security/security-attack-defense/' },
+                { text: 'Practical Cryptography for Developers', link: '/security/practical-cryptography-for-developers/' },
             ] },
             {
               text: '安全攻防技能30讲 →',
@@ -1257,10 +1259,21 @@ export default defineConfig({
                 { text: '进入安全攻防技能30讲', link: '/security/security-attack-defense/' },
               ],
             },
+            {
+              text: 'Practical Cryptography for Developers →',
+              collapsed: false,
+              items: [
+                { text: '进入 Practical Cryptography for Developers', link: '/security/practical-cryptography-for-developers/' },
+              ],
+            },
           ],
           '/security/security-attack-defense/': [
             { text: '安全攻防技能30讲', items: [{ text: '概览', link: '/security/security-attack-defense/' }, { text: '← 返回信息安全', link: '/security/' }] },
             ...securitySidebar,
+          ],
+          '/security/practical-cryptography-for-developers/': [
+            { text: 'Practical Cryptography for Developers', items: [{ text: '概览', link: '/security/practical-cryptography-for-developers/' }, { text: '← 返回信息安全', link: '/security/' }] },
+            ...practicalCryptographySidebar,
           ],}, 
         outline: { label: '本页目录', level: [2, 3] },
         docFooter: { prev: '上一篇', next: '下一篇' },
