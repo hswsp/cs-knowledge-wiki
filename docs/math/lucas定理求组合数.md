@@ -14,15 +14,15 @@ description: "[Lucas's theorem](https://en.wikipedia.org/wiki/Lucas%27s_theorem)
 
 
 
-![](https://images.spumn.eu.cc/blog/a280c8f18c3e4fbf.svg) 其中p为[素数](https://baike.baidu.com/item/%E7%B4%A0%E6%95%B0/115069)的值。
+$\binom{n}{m}\equiv \binom{s}{t}\binom{q}{r}\pmod{p}$ 其中p为[素数](https://baike.baidu.com/item/%E7%B4%A0%E6%95%B0/115069)的值。
 
 
 
-在编程时你只要继续对![](https://images.spumn.eu.cc/blog/a40e09f3ce635e4c.svg)调用Lucas定理即可。代码可以递归的去完成这个过程，其中递归终点为t = 0 ；
+在编程时你只要继续对$\binom{s}{t}$调用Lucas定理即可。代码可以递归的去完成这个过程，其中递归终点为t = 0 ；
 
 
 
-时间![image](https://images.spumn.eu.cc/blog/3f2470222dcf4ac9.svg)
+时间复杂度 $O(p\log_p n)$
 
 
 
@@ -33,31 +33,45 @@ Lucas定理证明：
 
 
 
-首先你需要这个算式:![](https://images.spumn.eu.cc/blog/7c9a818034bd216e.svg),其中f > 0&& f < p，然后
+首先你需要这个算式:$(1+x)^p\equiv 1+x^p\pmod{p}$,其中f > 0&& f < p，然后
 
 
 
-![image](https://images.spumn.eu.cc/blog/ba3dfe3caa1d0cf6.svg)
+
+$$
+(1+x)^{n}\equiv (1+x)^{sp+q}\equiv ((1+x)^{p})^{s}\cdot (1+x)^{q}\equiv (1+x^{p})^{s}\cdot (1+x)^{q}\pmod{p}
+$$
 
 
 
-![](https://images.spumn.eu.cc/blog/8c404d4cc53cdead.svg)![image](https://images.spumn.eu.cc/blog/94c23506d7466181.svg)
+
+$$
+\sum_{i=0}^{s}\binom{s}{i}x^{ip}\sum_{j=0}^{q}\binom{q}{j}x^j\pmod{p}
+$$
 
 
 
-所以得![image](https://images.spumn.eu.cc/blog/59b5d75610f85be8.svg)![](https://images.spumn.eu.cc/blog/8c404d4cc53cdead.svg)**(mod p)**
+所以得
+
+$$
+(1+x)^{sp+q}\equiv \sum_{i=0}^{s}\binom{s}{i}x^{ip}\sum_{j=0}^{q}\binom{q}{j}x^j\pmod{p}
+$$
 
 
 
-我们求左边![image](https://images.spumn.eu.cc/blog/59b5d75610f85be8.svg) 中的![](https://images.spumn.eu.cc/blog/0f0d3d6f77a4f235.svg)的系数为：![](https://images.spumn.eu.cc/blog/edccbdd27616db8c.svg)
+我们求左边$(1+x)^{sp+q}$ 中的$x^{tp+r}$的系数为：$\binom{sp+q}{tp+r}$
 
 
 
-求右边公式中的![](https://images.spumn.eu.cc/blog/0f0d3d6f77a4f235.svg)的系数：通过观察你会发现当且仅当i = t , j = r ,能够得到![](https://images.spumn.eu.cc/blog/0f0d3d6f77a4f235.svg)的系数，即
+求右边公式中的$x^{tp+r}$的系数：通过观察你会发现当且仅当i = t , j = r ,能够得到$x^{tp+r}$的系数，即
 
 
 
-![](https://images.spumn.eu.cc/blog/a15695514a7132bc.svg)
+
+$$
+\binom{s}{t}\binom{q}{r}
+$$
+
 
 
 
@@ -65,7 +79,11 @@ Lucas定理证明：
 
 
 
-![](https://images.spumn.eu.cc/blog/a280c8f18c3e4fbf.svg)
+
+$$
+\binom{n}{m}\equiv \binom{s}{t}\binom{q}{r}\pmod{p}
+$$
+
 
 
 
@@ -79,7 +97,11 @@ Lucas定理证明：
 ## 对偶公式
 
 
-![image](https://images.spumn.eu.cc/blog/f96858397610a366.svg)
+
+$$
+\binom{n}{m}=\binom{n}{n-m}
+$$
+
 
 
 
@@ -90,15 +112,23 @@ Lucas定理证明：
 ## 递推公式
 
 
-![image](https://images.spumn.eu.cc/blog/68bfe892ab2b1bcc.svg)
+
+$$
+\binom{n}{m}=\binom{n-1}{m-1}+\binom{n-1}{m}
+$$
 
 
 
-![image](https://images.spumn.eu.cc/blog/8962f30ae5c14425.svg)
+
+
+$$
+\binom{n}{m}=1\quad(n=0\text{ 或 }m=0\text{ 或 }m=n)
+$$
 
 
 
-可理解为：含特定元素的组合有![image](https://images.spumn.eu.cc/blog/bc0761744a20f257.svg)，不含特定元素的排列为![image](https://images.spumn.eu.cc/blog/6e70270c692955c5.svg)。还不懂？看下面。
+
+可理解为：含特定元素的组合有$\binom{n-1}{m-1}$，不含特定元素的排列为$\binom{n-1}{m}$。还不懂？看下面。
 
 
 
@@ -106,7 +136,7 @@ Lucas定理证明：
 
 
 
-从1，2，3，4，5（n=5）中取出2（m=2）个元素的组合（![image](https://images.spumn.eu.cc/blog/a2c98f7f40287bf5.svg)）：
+从1，2，3，4，5（n=5）中取出2（m=2）个元素的组合（$\binom{n}{m}$）：
 
 
 
@@ -129,14 +159,18 @@ Lucas定理证明：
 
 
 
-而总方案数等于上面两种情况方案数之和，即![image](https://images.spumn.eu.cc/blog/68bfe892ab2b1bcc.svg)。
+而总方案数等于上面两种情况方案数之和，即$\binom{n}{m}=\binom{n-1}{m-1}+\binom{n-1}{m}$。
 
 
 
 ## 组合数求和公式
 
 
-![image](https://images.spumn.eu.cc/blog/22981070f5d4997a.svg)
+
+$$
+\sum_{i=0}^{n}\binom{n}{i}=2^n
+$$
+
 
 
 
@@ -158,7 +192,7 @@ Lucas定理证明：
 
 
 
-根据乘法原理，一共![image](https://images.spumn.eu.cc/blog/2077ce6ef4ba5b90.svg)种组合。
+根据乘法原理，一共$2\times 2\times 2\cdots \times 2=2^{n}$种组合。
 
 ## 
 ## 小组合数代码实现
@@ -421,7 +455,11 @@ int main(int argc, const char * argv[]) {
 
 用现代数学的语言来说明的话，中国剩余定理给出了以下的一元[线性同余方程](https://baike.baidu.com/item/%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E6%96%B9%E7%A8%8B/5544515)组：
 
-![](https://images.spumn.eu.cc/blog/971da998578b294c.svg)
+
+$$
+\begin{cases}x\equiv a_1\pmod{m_1}\\x\equiv a_2\pmod{m_2}\\\cdots\\x\equiv a_n\pmod{m_n}\end{cases}
+$$
+
 
 有解的判定条件，并用[构造法](https://baike.baidu.com/item/%E6%9E%84%E9%80%A0%E6%B3%95)给出了在有解情况下解的具体形式。
 
@@ -431,23 +469,35 @@ int main(int argc, const char * argv[]) {
 
 
 
-设![](https://images.spumn.eu.cc/blog/0c17ba59f19e21c2.svg)是整数m_1,m_2, ... ,m_n的乘积，并设![](https://images.spumn.eu.cc/blog/75e8d9f0983de336.svg)是除了![image](https://images.spumn.eu.cc/blog/c7a7916c505fa3a5.svg)以外的_n_- 1个整数的乘积。
+设$M=m_1m_2\cdots m_n$是整数m_1,m_2, ... ,m_n的乘积，并设$M_i=\frac{M}{m_i}$是除了$m_{i}$以外的_n_- 1个整数的乘积。
 
 
 
-设![image](https://images.spumn.eu.cc/blog/c5c3e070c14b9f7e.svg)为![image](https://images.spumn.eu.cc/blog/af76887517b303b9.svg)模![image](https://images.spumn.eu.cc/blog/c7a7916c505fa3a5.svg)的数论倒数(![image](https://images.spumn.eu.cc/blog/5fbe2067df0ed785.svg)**为**![image](https://images.spumn.eu.cc/blog/af76887517b303b9.svg)**模**![image](https://images.spumn.eu.cc/blog/c7a7916c505fa3a5.svg)**意义下的逆元**)
+设$t_{i}=M_{i}^{-1}$为$M_{i}$模$m_{i}$的数论倒数($t_{i}$**为**$M_{i}$**模**$m_{i}$**意义下的逆元**)
 
-![](https://images.spumn.eu.cc/blog/32900f871d71a0e5.svg)
+
+$$
+t_iM_i\equiv 1\pmod{m_i}
+$$
+
 
 
 
 方程组(S)的通解形式为
 
-![](https://images.spumn.eu.cc/blog/bcdd0ec32a532e51.svg)
+
+$$
+x=a_1t_1M_1+a_2t_2M_2+\cdots+a_nt_nM_n+kM,\quad k\in\mathbb{Z}
+$$
+
 
 在模M的意义下，方程组(S)只有一个解：
 
-![](https://images.spumn.eu.cc/blog/366dad646b685bf5.svg)
+
+$$
+x\equiv \sum_{i=1}^{n}a_it_iM_i\pmod{M}
+$$
+
 
 补充：求逆元的方法：
 
@@ -519,11 +569,23 @@ ll china(vector<ll> a,vector<ll> b,int n)//a[]为除数,即模mi，b[]为余数
 
 
 那么下面问题就转化成如何计算$n!\%p^t$。比如$p=3,t=2,n=19$,  
-![image](https://images.spumn.eu.cc/blog/0efcad7b91daaeac.svg)
 
-![image](https://images.spumn.eu.cc/blog/a6cce705b1347839.svg)
+$$
+n!=1*2*3*4*5*6*7*8*\cdots \cdots *19
+$$
 
-![image](https://images.spumn.eu.cc/blog/34cd6bfb333bf53d.svg)
+
+
+$$
+=[1*2*4*5*7*8*\cdots 16*17*19](3*6*9*12*15*18)
+$$
+
+
+
+$$
+=[1*2*4*5*7*8*\cdots *16*17*19]*3^{6}(1*2*3*4*5*6)
+$$
+
 
 然后发现后面的是(n/p)!，于是递归即可。
 
