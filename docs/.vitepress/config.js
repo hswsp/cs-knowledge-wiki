@@ -1060,6 +1060,13 @@ export default defineConfig({
     ],
   },
   {
+    text: 'Vector Databases in Modern AI Applications →',
+    collapsed: false,
+    items: [
+      { text: '进入 Vector Databases in Modern AI Applications', link: '/storage/vector-database/' },
+    ],
+  },
+  {
     text: 'LSM-Tree in a Week →',
     collapsed: false,
     items: [
@@ -1125,6 +1132,31 @@ export default defineConfig({
                 { text: 'PROJECT #2 - EXTENDIBLE HASH INDEX', link: '/storage/cmu15-445/cmu-db/project-extendible-hash-index' },
                 { text: 'PROJECT #3 - QUERY EXECUTION', link: '/storage/cmu15-445/cmu-db/project-query-execution' },
                 { text: 'PROJECT #4 - CONCURRENCY CONTROL', link: '/storage/cmu15-445/cmu-db/project-concurrency-control' },
+              ],
+            },
+          ],
+          '/storage/vector-database/': [
+            { text: 'Vector Databases in Modern AI Applications', items: [
+              { text: '概览', link: '/storage/vector-database/' },
+              { text: '← 返回存储', link: '/storage/' },
+            ] },
+            {
+              text: 'Vector Databases in Modern AI Applications',
+              collapsed: false,
+              items: [
+                { text: '01 - Course Info', link: '/storage/vector-database/01-course-info' },
+                { text: '02 - Intro-What is a Vector DB', link: '/storage/vector-database/02-intro-what-is-a-vector-db' },
+                { text: '03 - Querying', link: '/storage/vector-database/03-querying' },
+                { text: '04 - No Random Access 算法详解', link: '/storage/vector-database/04-no-random-access' },
+                { text: '05 - Basic Indexing', link: '/storage/vector-database/05-basic-indexing' },
+                { text: '06 - Advanced indexing', link: '/storage/vector-database/06-advanced-indexing' },
+                { text: '07 - Segmenting', link: '/storage/vector-database/07-segmenting' },
+                { text: '08 - Architecture', link: '/storage/vector-database/08-architecture' },
+                { text: '09 - Lance Format vs Parquet 列式格式', link: '/storage/vector-database/09-lance-format-vs-parquet' },
+                { text: '10 - Lance 存储引擎架构解析', link: '/storage/vector-database/10-lance-storage-engine-architecture' },
+                { text: '11 - LanceDB 开源向量数据库实现解读', link: '/storage/vector-database/11-lancedb-implementation' },
+                { text: '12 - LanceDB 索引原理与实现解读', link: '/storage/vector-database/12-lancedb-indexing' },
+                { text: '13 - Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路', link: '/storage/vector-database/13-lance-distributed-fts-indexing' },
               ],
             },
           ],

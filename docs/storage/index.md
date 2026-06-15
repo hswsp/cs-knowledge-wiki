@@ -24,6 +24,10 @@
 
 - [进入 Intro to Database System](./cmu15-445/)
 
+## Vector Databases in Modern AI Applications
+
+- [进入 Vector Databases in Modern AI Applications](./vector-database/)
+
 ## LSM-Tree in a Week
 
 - [进入 LSM-Tree in a Week](./lsm-tree/)
