@@ -64,6 +64,8 @@ export default defineConfig({
     text: 'Linear Algebra',
     collapsed: false,
     items: [
+      { text: '向量空间', link: '/math/向量空间' },
+      { text: '直和', link: '/math/直和' },
       { text: '矩阵四大子空间', link: '/math/矩阵四大空间' },
       { text: '矩阵分解详解', link: '/math/矩阵分解详解' },
     ],
