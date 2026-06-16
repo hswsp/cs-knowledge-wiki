@@ -70,6 +70,7 @@ export default defineConfig({
         text: '矩阵四大子空间',
         link: '/math/矩阵四大子空间/',
         items: [
+          { text: '矩阵四大子空间', link: '/math/矩阵四大子空间/矩阵四大空间' },
           { text: 'SVD 与伪逆', link: '/math/矩阵四大子空间/svd-与伪逆' },
         ],
       },
