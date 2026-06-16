@@ -135,7 +135,7 @@ $$
 对于任意两个位置有，
 
 $$
-pos1 → sin(ω · pos1) \\ pos2 → sin(ω · pos2)
+pos1 \to sin(ω · pos1) \\ pos2 \to sin(ω · pos2)
 $$
 
 利用三角函数公式，
@@ -162,7 +162,7 @@ $$
 self.register_buffer("pe", pe)
 ```
 
-这一句代码表示**不参与梯度更新，固定编码。**
+这一句代码表示**不参与梯度更新，固定编码**。
 
 ### forward 过程
 

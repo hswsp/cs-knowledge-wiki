@@ -4,7 +4,7 @@
 
 在完成[Embedding层](https://zhida.zhihu.com/search?content_id=272581169&content_type=Article&match_order=1&q=Embedding%E5%B1%82&zhida_source=entity)的coding后，我们便开始学习Transformer最核心的设计——Multi-Head Attention，多头注意力。在前面的章节中，我们已经把输入表示为 $(B,L,D)$ 的张量。接下来要解决的问题是**如何让每个token感知整个序列的信息**。这也是Transformer架构与传统的[CNN](https://zhida.zhihu.com/search?content_id=272581169&content_type=Article&match_order=1&q=CNN&zhida_source=entity)类模型主要的不同之处。传统的[RNN](https://zhida.zhihu.com/search?content_id=272581169&content_type=Article&match_order=1&q=RNN&zhida_source=entity)只能一步一步传递信息,传递信息慢，无法并行，并且很难捕捉长距离关系。而CNN感受野有限，一般用来处理图片信息。Attention让每个位置“直接看到”所有位置。
 
-在这个模块中，我们接受的**参数**有 $d_{model}$ ,用以表示模型架构的维度； $n_{head}$ ，用以表示Multi-Head的头数； $dropout$ ,用以控制丢弃率。**输入**有四个张量，分别是 $Q,K,V,mask$ ,前三者形状分别为 $(B,Lq,D),(B,Lk,D),(B,Lv,D)$ ,后者 $mask$ 在不同的情况下形状不一样，主要有 $(B, 1, Lq, Lk) ，(1, 1, Lq, Lk)$ 两种形状。**输出**为一个张量，记为 $x$ ，形状为 $(B,Lq,D)$
+在这个模块中，我们接受的**参数**有 $d_{model}$，用以表示模型架构的维度；$n_{head}$，用以表示 Multi-Head 的头数；$dropout$，用以控制丢弃率。**输入**有四个张量，分别是 $Q,K,V,mask$，前三者形状分别为 $(B,Lq,D),(B,Lk,D),(B,Lv,D)$，后者 $mask$ 在不同的情况下形状不一样，主要有 $(B, 1, Lq, Lk)$、$(1, 1, Lq, Lk)$ 两种形状。**输出**为一个张量，记为 $x$，形状为 $(B,Lq,D)$
 
 ## MultiHeadAttention的数据流
 
@@ -29,7 +29,11 @@ Multi-Head Attention Pipeline
 这里的数据流理解还是有一定难度的，需要在coding的时候反复理解。值得一说的是，图中的mask只给了一种形状情况。关于mask的形状使用，会在后续的模块组装中做具体说明。下面总结一下整个过程中的torch.Tensor的shape变化。
 
 $$
-Q, K, V: (B, L, D) \\ → split heads: (B, H, L, Hd) \\ → attention score: (B, H, Lq, Lk) \\ → head output: (B, H, Lq, Hd) \\ → concat: (B, Lq, D) \\
+Q, K, V: (B, L, D) \\
+\to \text{split heads}: (B, H, L, Hd) \\
+\to \text{attention score}: (B, H, Lq, Lk) \\
+\to \text{head output}: (B, H, Lq, Hd) \\
+\to \text{concat}: (B, Lq, D)
 $$
 
 ## MultiHeadAttention
@@ -64,7 +68,7 @@ class MultiHeadAttention(nn.Module):
 整个Multi-Head Attention模块可以用公式表示
 
 $$
-MultiHead(Q,K,V) = Concat(head_1,...,head_n)W_o \\ where head_i = Attention(QW_i^{Q},KW_i^K,VW_i^V)
+MultiHead(Q,K,V) = Concat(head_1,\cdots,head_n)W_o \\ where head_i = Attention(QW_i^{Q},KW_i^K,VW_i^V)
 $$
 
 ### 模块组件设计
@@ -83,7 +87,7 @@ $$
 
 这似乎意味着应该先拆分 head，再分别进行线性变换。然而在工程实现中（如本项目），通常采用另一种写法：先通过一个大的线性层映射到 `d_model` 维度，再 reshape 成多个 head。
 
-这两种实现方式在数学上是等价的。因为一个大的投影矩阵 $W_q ∈ ℝ^{D×D}$ 可以看作是多个小矩阵 $[W_1, W_2, ..., W_H]$ 的拼接，其中每个 $W_i ∈ ℝ^{D×(D/H)}$ 。一次矩阵乘法的结果可以自然拆分为多个 head 的结果。因此，先线性再拆分，本质上是对论文中“每个 head 单独线性变换”的高效并行实现，二者是完全等价的。
+这两种实现方式在数学上是等价的。因为一个大的投影矩阵 $W_q \in \mathbb{R}^{D \times D}$ 可以看作是多个小矩阵 $[W_1, W_2, \cdots, W_H]$ 的拼接，其中每个 $W_i \in \mathbb{R}^{D \times (D/H)}$ 。一次矩阵乘法的结果可以自然拆分为多个 head 的结果。因此，先线性再拆分，本质上是对论文中“每个 head 单独线性变换”的高效并行实现，二者是完全等价的。
 
 因此我们直接定义了四个投影层 $W_q,W_k,W_v.W_o$ ，仅对张量的最后一个维度(`dim=-1`)进行操作，故输入输出维度为`(d_model,d_model)`。 此外，为了防止过拟合，还需要设置`dropout`。为了保证多头能够对 $d_{model}$ 空间进行完整拆分，参数 $d_{model},n_{head}$ 的设置必须要能够整除，每一个头所处理的子空间维度是
 
@@ -144,7 +148,7 @@ $$
 先进行**线性投影**，让每个头在不同子空间计算注意力。 $W_q,W_k,W_v$ 是可学习参数，提升模型的表达能力，把原始embedding映射到更适合相似度计算的空间。形状变化
 
 $$
-(B, L, D) → (B, L, D)
+(B, L, D) \to (B, L, D)
 $$
 
 然后**拆分多头**，
@@ -156,7 +160,7 @@ q = q.view(batch_size, q_size, self.n_head, self.head_dim).transpose(1, 2)
 shape变化
 
 $$
-(B, L, D)  → (B, L, H, Hd)  → (B, H, L, Hd)
+(B, L, D)  \to (B, L, H, Hd)  \to (B, H, L, Hd)
 $$
 
 如何没有前面的线性变换，则会在原始的Embedding上进行拆分，这会限制模型的表达能力，导致后续训练过程中模型学习能力降低。![image](https://pic4.zhimg.com/v2-59206a06c508e2055a5fbcd36b40b1c3_r.jpg)
@@ -172,7 +176,7 @@ score = torch.matmul(q, k.transpose(-2, -1))
 shape变化
 
 $$
-(B, H, Lq, Hd) × (B, H, Hd, Lk) → (B, H, Lq, Lk)
+(B, H, Lq, Hd) \times (B, H, Hd, Lk) \to (B, H, Lq, Lk)
 $$
 
 表示第 i 个 token 对所有 token 的注意力权重。此外，还需要加入mask机制，用以屏蔽 padding或者在Decoder中屏蔽未来信息。对于mask张量的设计，会放在后续的transformer组装中讲解。对于需要被掩码的位置，将其Attention设置为`-inf`，后续计算Attention分数时， $softmax(-inf) = 0$ ，从而实现屏蔽的作用。然后**softmax操作计算出Attention分数，并进行加权求和**
@@ -185,12 +189,12 @@ attn = torch.matmul(score, v)
 shape变化：
 
 $$
-(B, H, Lq, Lk) × (B, H, Lv, Hd) → (B, H, Lq, Hd)
+(B, H, Lq, Lk) \times (B, H, Lv, Hd) \to (B, H, Lq, Hd)
 $$
 
 注意到，`Lk`和`Lv`必须相等，否则此处会出现错误。 这样算出来的atten,每个 token 汇聚所有 token 的信息。值得一提的是，我们计算出的`attn`，仅仅是对`V`的线性变化，模型的表达能力是有限的。所以在拼接`attn`后，我们需要再过`FFN`的非线性变换，以增强模型的表达能力。
 
-接着**拼接多头，**把多个 head 的信息合并回来
+接着**拼接多头**，把多个 head 的信息合并回来
 
 ```
 out = attn.transpose(1, 2).contiguous().view(batch_size, q_size, self.d_model)
@@ -199,7 +203,7 @@ out = attn.transpose(1, 2).contiguous().view(batch_size, q_size, self.d_model)
 shape变化：
 
 $$
-(B, H, L, Hd) → (B, L, H, Hd) → (B, L, D)
+(B, H, L, Hd) \to (B, L, H, Hd) \to (B, L, D)
 $$
 
 最后，**输出映射**。经过线性投影 $W_o$ ，将不同头的信息进行融合. $W_o$ 是可学习参数，在模型训练中能够学习融合方式。

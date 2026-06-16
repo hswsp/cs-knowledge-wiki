@@ -5,7 +5,7 @@
 在前几篇文章中，我们已经分别实现了 Transformer 的核心组件，Embedding，Multi-Head Attention，[LayerNorm](https://zhida.zhihu.com/search?content_id=272594728&content_type=Article&match_order=1&q=LayerNorm&zhida_source=entity)，但这些只是零件。通过本篇文章，我们将把这些零件真正组装成Encoder，也就是论文 Attention Is All You Need 中的这一部分
 
 $$
-Input → Embedding → N × EncoderLayer → Output
+Input \to Embedding \to N \times EncoderLayer \to Output
 $$
 
 本部分我们需要先实现PositionwiseFFN，这是一个非线性层，用以增强模型表达能力；然后再把Multi-Head Attention、LayerNorm、FFN组装为EncoderLayer；最后通过堆叠EncoderLayer，实现Encoder。具体的输入输出形状参数等分析，会在对应的类实现下具体讲解。
@@ -25,7 +25,7 @@ Transformer架构
 ### Encoder 的完整流程
 
 $$
-tokens (B, L)     \rightarrow Embedding (B, L, D)     \rightarrow EncoderLayer × N     \rightarrow (B, L, D)
+tokens (B, L)     \rightarrow Embedding (B, L, D)     \rightarrow EncoderLayer \times N     \rightarrow (B, L, D)
 $$
 
 ### EncoderLayer 内部结构
@@ -84,7 +84,7 @@ $$
 (B, L, D)\rightarrow^{Linear} \rightarrow  (B, L, H) \rightarrow^{ReLU} \rightarrow^{Dropout}\rightarrow^{Linear}\rightarrow (B, L, D)
 $$
 
-**为什么要升维再降维？**FFN在embedding维的变换是`d_model → hidden → d_model`,也就是先进行升维,再降维.hidden通常比d_model大,一般设置为 $4 \times d_{model}$ .这样做是为了**拓展特征空间,提升表达能力;并在中间引入非线性.**
+**为什么要升维再降维？** FFN 在 embedding 维的变换是 `d_model -> hidden -> d_model`，也就是先进行升维，再降维。hidden 通常比 d_model 大，一般设置为 $4 \times d_{model}$。这样做是为了**拓展特征空间，提升表达能力，并在中间引入非线性**。
 
 ## EncoderLayer
 
@@ -134,7 +134,7 @@ class EncoderLayer(nn.Module):
 MHA和ffn都是用到了dropout,防止过拟合.二者结构分别为
 
 $$
-x → MHA → Dropout → Add \& Norm  \\ x → FFN → Dropout → Add \& Norm
+x \to MHA \to Dropout \to Add \& Norm  \\ x \to FFN \to Dropout \to Add \& Norm
 $$
 
 使用残差连接,防止深层网络退化,使得梯度更稳定,更容易训练.这部分代码的书写,就是按照Transformer架构图,将之前的模块进行组装.注意,原论文中使用的是Post-Norm.

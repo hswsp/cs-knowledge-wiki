@@ -19,7 +19,7 @@ Transformer架构
 Decoder的第一步和Encoder极其相似，需要经过Embedding，
 
 $$
-(B, L) → (B, L, D)
+(B, L) \to (B, L, D)
 $$
 
 将毫无意义的token_id转化为有一定意义的词向量。
@@ -27,7 +27,7 @@ $$
 Decoder第二步是多层DecoderLayer堆叠，这和Encoder也很类似，
 
 $$
-(B, L, D) → (B, L, D)
+(B, L, D) \to (B, L, D)
 $$
 
 区别在于DecoderLayer内部有三个组件，并且有两个不同的输入。每一层Decoder都包含Masked self-Attention, Cross-Attention,以及FFN。

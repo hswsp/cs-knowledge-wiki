@@ -54,7 +54,7 @@ $$
 LayerNorm(x) = \gamma \cdot \frac{x-\mu}{\sqrt{\sigma^2+\epsilon}} + \beta
 $$
 
-其中， $\gamma,\beta$ 是可学习参数，前者是缩放因子，后者是平移因子。纯标准化会**限制表达能力，增加可学习参数，**模型可以恢复最优分布。 $\mu$ 表示均值， $\sigma^2$ 是有偏方差，也成为全局方差。 $\epsilon$ 是极小常数，防止方差为0时除以0发生错误，一般设置为 $10^{-5}$ 。
+其中， $\gamma,\beta$ 是可学习参数，前者是缩放因子，后者是平移因子。纯标准化会**限制表达能力**。增加可学习参数后，模型可以恢复最优分布。 $\mu$ 表示均值， $\sigma^2$ 是有偏方差，也成为全局方差。 $\epsilon$ 是极小常数，防止方差为0时除以0发生错误，一般设置为 $10^{-5}$ 。
 
 > 在数理统计中，求一个样本 $x$ 的方差使用的公式是 $var(x) = \frac{1}{N}\Sigma_{i=1}^{N}(x_i-\mu)^2$ ,当使用该样本估计整体方差时，需要使用到方差的无偏估计量 $var(x)=\frac{1}{N-1}\Sigma_{i=1}^{N}(x_i-\mu)^2$ .显然该处使用的是样本真实方差，也就是全局方差，不需要使用总体推断。
 
@@ -88,13 +88,13 @@ class LayerNorm(nn.Module):
 值得一提的是，在Transformer原论文中，LayerNorm是放在最后执行的。也就是
 
 $$
-x → Attention → Add → LayerNorm
+x \to Attention \to Add \to LayerNorm
 $$
 
 这种方式一般称为**Post-LN.** 但目前主流的模型中，一般使用**Pre-LN**
 
 $$
-x → LayerNorm → Attention → Add
+x \to LayerNorm \to Attention \to Add
 $$
 
 这样设计训练会更加稳定。
