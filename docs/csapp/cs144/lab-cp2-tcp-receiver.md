@@ -145,7 +145,7 @@ uint64_t unwrap(Wrap32 seqno, Wrap32 isn, uint64_t checkpoint) {
 + 双重保险：时间戳（PAWS）解决报文延迟问题，窗口约束确保 $ A_{\text{old}} $ 无法落入有效范围。
 + 性能与可靠性：PAWS默认开启，时间戳同步精度达毫秒级，结合动态窗口滑动，彻底消除历史seqno干扰。
 
-## <font style="color:rgb(25, 27, 31);">TCP 头部时间戳选项（TCP Timestamps Option，TSopt）</font>
+## TCP 头部时间戳选项（TCP Timestamps Option，TSopt）
 这个选项在 TCP 头部的位置如下所示。
 
 ![](https://images.spumn.eu.cc/cs-knowledge-wiki/csapp/cs144/labs/a547e96d91f9-v2-5671eb12bf15da2f12d44bdf2d5c48c6_1440w.jpg)
