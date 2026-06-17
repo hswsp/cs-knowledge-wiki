@@ -36,7 +36,6 @@
 25. [家庭网络史 2（History of home networking 2）](./26-history-of-home-networking-2)
 26. [家庭网络史 3（History of Home Networking 3）](./27-history-of-home-networking-3)
 27. [家庭网络史 4（History of Home Networking 4）](./28-history-of-home-networking-4)
-28. [Lab Checkpoint 0：网络热身（Lab Checkpoint 0: networking warmup）](./02-lab-checkpoint-0-networking-warmup)
 
 ## Labs
 
@@ -53,4 +52,13 @@ Because the labs were designed to use Linux-specific interfaces, we cannot suppo
 
 ### Labs Checkpoint
 
-Lab Checkpoint 0: networking warmup
+- [Lab Introduction](./lab-introduction)
+- [Linux Devkit](./lab-linux-devkit)
+- [Checkpoint 0: Networking Warmup](./lab-cp0-networking-warmup)
+- [Checkpoint 1: Stitching substrings into a byte stream](./lab-cp1-byte-stream)
+- [Checkpoint 2: The TCP receiver](./lab-cp2-tcp-receiver)
+- [Checkpoint 3: the TCP sender](./lab-cp3-tcp-sender)
+- [Checkpoint 4: measuring the real world](./lab-cp4-measuring-real-world)
+- [Checkpoint 5: down the stack (the network interface)](./lab-cp5-network-interface)
+- [Checkpoint 6: building an IP router](./lab-cp6-ip-router)
+- [Checkpoint 7: putting it all together](./lab-cp7-putting-it-all-together)

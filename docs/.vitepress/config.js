@@ -1291,7 +1291,22 @@ export default defineConfig({
                 { text: '26 家庭网络史 2', link: '/csapp/cs144/26-history-of-home-networking-2' },
                 { text: '27 家庭网络史 3', link: '/csapp/cs144/27-history-of-home-networking-3' },
                 { text: '28 家庭网络史 4', link: '/csapp/cs144/28-history-of-home-networking-4' },
-                { text: '02 Lab Checkpoint 0：网络热身', link: '/csapp/cs144/02-lab-checkpoint-0-networking-warmup' },
+              ],
+            },
+            {
+              text: 'Lab 实验',
+              collapsed: false,
+              items: [
+                { text: 'Lab Introduction', link: '/csapp/cs144/lab-introduction' },
+                { text: 'Linux Devkit', link: '/csapp/cs144/lab-linux-devkit' },
+                { text: 'Checkpoint 0: Networking Warmup', link: '/csapp/cs144/lab-cp0-networking-warmup' },
+                { text: 'Checkpoint 1: Stitching substrings into a byte stream', link: '/csapp/cs144/lab-cp1-byte-stream' },
+                { text: 'Checkpoint 2: The TCP receiver', link: '/csapp/cs144/lab-cp2-tcp-receiver' },
+                { text: 'Checkpoint 3: the TCP sender', link: '/csapp/cs144/lab-cp3-tcp-sender' },
+                { text: 'Checkpoint 4: measuring the real world', link: '/csapp/cs144/lab-cp4-measuring-real-world' },
+                { text: 'Checkpoint 5: down the stack (the network interface)', link: '/csapp/cs144/lab-cp5-network-interface' },
+                { text: 'Checkpoint 6: building an IP router', link: '/csapp/cs144/lab-cp6-ip-router' },
+                { text: 'Checkpoint 7: putting it all together', link: '/csapp/cs144/lab-cp7-putting-it-all-together' },
               ],
             },
           ],'/security/': [
