@@ -1252,6 +1252,61 @@ export default defineConfig({
               ],
             },
             {
+              text: 'Outline',
+              collapsed: true,
+              items: [
+                { text: 'TCP/IP 网络模型', link: '/csapp/network/outline/tcp-ip-model' },
+                { text: '键入网址到网页显示，期间发生了什么？', link: '/csapp/network/outline/url-to-page' },
+                { text: 'Linux 系统是如何收发网络包的？', link: '/csapp/network/outline/linux-packet-rxtx' },
+              ],
+            },
+            {
+              text: 'HTTP 篇',
+              collapsed: true,
+              items: [
+                { text: 'HTTP 总结', link: '/csapp/network/http/http-overview' },
+                { text: 'HTTP/1.1 如何优化？', link: '/csapp/network/http/http1-1-optimization' },
+                { text: 'HTTPS RSA 握手解析', link: '/csapp/network/http/https-rsa-handshake' },
+                { text: 'HTTPS ECDHE 握手解析', link: '/csapp/network/http/https-ecdhe-handshake' },
+                { text: 'HTTPS 如何优化？', link: '/csapp/network/http/https-optimization' },
+                { text: 'HTTP/2 详解', link: '/csapp/network/http/http2' },
+                { text: 'HTTP/3 强势来袭', link: '/csapp/network/http/http3' },
+                { text: 'RPC 与 HTTP 协议', link: '/csapp/network/http/rpc-vs-http' },
+              ],
+            },
+            {
+              text: 'TCP 篇',
+              collapsed: true,
+              items: [
+                { text: 'TCP 总结', link: '/csapp/network/tcp/tcp-overview' },
+                { text: 'TCP 实战抓包分析', link: '/csapp/network/tcp/tcp-packet-capture' },
+                { text: '如何理解 TCP 面向字节流协议？', link: '/csapp/network/tcp/tcp-byte-stream' },
+                { text: 'TCP 可靠性保证', link: '/csapp/network/tcp/tcp-reliability' },
+                { text: 'TCP 协议丢包的场景', link: '/csapp/network/tcp/tcp-packet-loss' },
+                { text: 'TCP 是如何避免历史报文的？', link: '/csapp/network/tcp/tcp-historical-segment' },
+                { text: 'TCP 协议有什么缺陷？', link: '/csapp/network/tcp/tcp-flaws' },
+                { text: '如何优化 TCP？', link: '/csapp/network/tcp/tcp-optimization' },
+                { text: '原来墙，是这么把我 TCP 连接干掉的！', link: '/csapp/network/tcp/tcp-firewall' },
+              ],
+            },
+            {
+              text: 'UDP 篇',
+              collapsed: true,
+              items: [
+                { text: 'QUIC 协议详解', link: '/csapp/network/udp/quic-detail' },
+                { text: '如何基于 UDP 协议实现可靠传输？', link: '/csapp/network/udp/udp-reliable-transport' },
+                { text: '基于 UDP 的传输协议——QUIC', link: '/csapp/network/udp/quic-overview' },
+              ],
+            },
+            {
+              text: 'IP 篇',
+              collapsed: true,
+              items: [
+                { text: 'IP 基础知识全家桶', link: '/csapp/network/ip/ip-essentials' },
+                { text: 'ping 的工作原理', link: '/csapp/network/ip/ping' },
+              ],
+            },
+            {
               text: 'CS 144 →',
               collapsed: false,
               items: [
