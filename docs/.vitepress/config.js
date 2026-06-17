@@ -1245,6 +1245,13 @@ export default defineConfig({
                 { text: 'Linux PV/LV/VG', link: '/csapp/linux/linux-lvm' },
             ] },
             {
+              text: '计算机网络',
+              collapsed: false,
+              items: [
+                { text: '网络拥塞指数退避算法详解', link: '/csapp/network/exponential-backoff' },
+              ],
+            },
+            {
               text: 'CS 144 →',
               collapsed: false,
               items: [

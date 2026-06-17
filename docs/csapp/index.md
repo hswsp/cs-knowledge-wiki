@@ -5,6 +5,7 @@
 ## 计算机网络
 
 - [CS 144: Introduction to Computer Networking](./cs144/)
+- [网络拥塞指数退避算法详解](./network/exponential-backoff)
 
 ## Linux
 
