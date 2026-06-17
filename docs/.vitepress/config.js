@@ -67,11 +67,11 @@ export default defineConfig({
       { text: '向量空间', link: '/math/向量空间' },
       { text: '直和', link: '/math/直和' },
       {
-        text: '矩阵四大子空间',
-        link: '/math/矩阵四大子空间/',
+        text: '线性代数基本定理',
+        link: '/math/线性代数基本定理/',
         items: [
-          { text: '矩阵四大子空间', link: '/math/矩阵四大子空间/矩阵四大空间' },
-          { text: 'SVD 与伪逆', link: '/math/矩阵四大子空间/svd-与伪逆' },
+          { text: '矩阵四大子空间', link: '/math/线性代数基本定理/矩阵四大空间' },
+          { text: 'SVD 与伪逆', link: '/math/线性代数基本定理/svd-与伪逆' },
         ],
       },
       { text: '矩阵分解详解', link: '/math/矩阵分解详解' },
