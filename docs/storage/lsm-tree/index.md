@@ -5,9 +5,8 @@
 ## LSM Tree 基础
 
 - [01 - LSM 树设计原理](./01-lsm-tree-design-principles)
-- [02 - LevelDB 的索引建立](./02-lsm-tree-leveldb-index)
-- [03 - KV 分离的实现](./03-lsm-kv-separation)
-- [04 - Mini-LSM 课程介绍](./04-mini-lsm-intro)
+- [02 - KV 分离的实现](./03-lsm-kv-separation)
+- [03 - Mini-LSM 课程介绍](./04-mini-lsm-intro)
 
 ## Week 1: Mini-LSM
 

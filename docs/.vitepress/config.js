@@ -1192,9 +1192,8 @@ export default defineConfig({
               collapsed: true,
               items: [
                 { text: '01 - LSM 树设计原理', link: '/storage/lsm-tree/01-lsm-tree-design-principles' },
-                { text: '02 - LevelDB 的索引建立', link: '/storage/lsm-tree/02-lsm-tree-leveldb-index' },
-                { text: '03 - KV 分离的实现', link: '/storage/lsm-tree/03-lsm-kv-separation' },
-                { text: '04 - Mini-LSM 课程介绍', link: '/storage/lsm-tree/04-mini-lsm-intro' },
+                { text: '02 - KV 分离的实现', link: '/storage/lsm-tree/03-lsm-kv-separation' },
+                { text: '03 - Mini-LSM 课程介绍', link: '/storage/lsm-tree/04-mini-lsm-intro' },
               ],
             },
             {
