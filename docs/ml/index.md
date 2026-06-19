@@ -6,6 +6,10 @@
 
 - [进入 Learn Claude Code](./learn-claude-code/)
 
+## AI Infra 入门到前沿
+
+- [进入 AI Infra 入门到前沿](./ai-infra/)：覆盖 AI 基础设施、LLM 训练与推理、PD 分离、KV Cache、Mooncake、AI Serving 与核心算法等内容。
+
 ## AI 基础理论
 
 - [概览](./foundations/)

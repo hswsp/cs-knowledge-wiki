@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import securitySidebar from './securitySidebar.js'
 import practicalCryptographySidebar from './practicalCryptographySidebar.js'
+import aiInfraSidebar from './aiInfraSidebar.js'
 
 // Shared social links / theme bits
 const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
@@ -310,6 +311,13 @@ export default defineConfig({
               ],
             },
             {
+              text: 'AI Infra 入门 →',
+              collapsed: false,
+              items: [
+                { text: '进入 AI Infra 入门到前沿', link: '/ml/ai-infra/' },
+              ],
+            },
+            {
               text: 'AI 基础理论',
               collapsed: true,
               items: [
@@ -339,6 +347,13 @@ export default defineConfig({
                 { text: '“预训练+微调”范式', link: '/ml/transformer/pretrain-finetune' },
               ],
             },
+          ],
+          '/ml/ai-infra/': [
+            { text: 'AI Infra 入门到前沿', items: [
+              { text: '概览', link: '/ml/ai-infra/' },
+              { text: '← 返回机器学习', link: '/ml/' },
+            ] },
+            ...aiInfraSidebar,
           ],
           '/ml/learn-claude-code/': [
             { text: 'Learn Claude Code', items: [
