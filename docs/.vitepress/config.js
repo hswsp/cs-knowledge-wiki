@@ -76,6 +76,7 @@ export default defineConfig({
         ],
       },
       { text: '矩阵分解详解', link: '/math/矩阵分解详解' },
+      { text: '线性代数与傅里叶级数', link: '/math/线性代数与傅里叶级数' },
     ],
   },
   {
