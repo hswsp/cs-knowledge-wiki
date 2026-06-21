@@ -218,11 +218,11 @@ INCREMENT(A)
 
 
 
-所以调用n次函数，总的需要执行的变化为![image](https://images.spumn.eu.cc/blog/3677ba1439b37522.svg)，这就是一个等比数列求和的问题，过程略，结果为：![image](https://images.spumn.eu.cc/blog/ca6380bdb5d77f8e.svg)，忽略低数量级，得到![image](https://images.spumn.eu.cc/blog/5fc5f967f3c05869.svg)。
+所以调用n次函数，总的需要执行的变化为$n+n/2+n/4+...+n/2^n$，这就是一个等比数列求和的问题，过程略，结果为：$n\frac{1-\frac{1}{2^n}}{1-\frac{1}{2}}=n(2-\frac{1}{2^{n-1}})$，忽略低数量级，得到$O(2n)$。
 
 
 
-也就是说，n次调用的时间复杂度为$O(n)$，每次调用的时间复杂度为![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg). 
+也就是说，n次调用的时间复杂度为$O(n)$，每次调用的时间复杂度为$O(1)$. 
 
 
 
@@ -239,7 +239,7 @@ INCREMENT(A)
 
 核心思想如下：
 
-+  为每个操作附上一个虚拟的“摊还代价”：![image](https://images.spumn.eu.cc/blog/40aee9f655ac4362.svg)，比如某个操作需要1元钱的代价 
++  为每个操作附上一个虚拟的“摊还代价”：$c_{\hat{i}}$，比如某个操作需要1元钱的代价 
 +  为每一个操作付费，这个费用是实际费用，不是摊还费用。但是我们需要使用摊还费用给实际费用付费。 
 +  多出来的费用存进银行，不够的费用从银行取。 
 +  银行存款总是非负数（你不能像罗永浩一样欠钱，或者说老罗欠钱后就被限制消费了，同样银行里不能欠钱） 
@@ -263,7 +263,7 @@ INCREMENT(A)
 
 
 
-我们现在需要让5，6，7，8步的x弥补上复制表所需要的费用，也就是说，复制每个元素用1元钱，复制8个元素需要8元钱。![image](https://images.spumn.eu.cc/blog/3537eef6e8f3564d.svg)，所以 ![image](https://images.spumn.eu.cc/blog/e7da849acbac9f6b.svg)。
+我们现在需要让5，6，7，8步的x弥补上复制表所需要的费用，也就是说，复制每个元素用1元钱，复制8个元素需要8元钱。$(x-1)+(x-1)+(x-1)+(x-1)\ge 8$，所以 $x\ge 3$。
 
 
 
@@ -287,7 +287,7 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-所以一系列n的`PUSH`+`POP`操作的摊还代价是$O(2n)$，也就是$O(n)$。当然，最严谨的方法还是数学推导：假设`POP`代价为1，`PUSH`的实际代价为1，摊还代价为x，![image](https://images.spumn.eu.cc/blog/b6fc13d705cb1358.svg)，所以 ![image](https://images.spumn.eu.cc/blog/65a1df5356510f74.svg)。
+所以一系列n的`PUSH`+`POP`操作的摊还代价是$O(2n)$，也就是$O(n)$。当然，最严谨的方法还是数学推导：假设`POP`代价为1，`PUSH`的实际代价为1，摊还代价为x，$x-1\ge 1$，所以 $x\ge 2$。
 
 
 
@@ -302,7 +302,7 @@ MultiPop(S,k)   //实际代价为k
 
 
 
-用在摊还分析上，可以表达为：![image](https://images.spumn.eu.cc/blog/5fa9aceb8174d547.svg)所以总摊还为：![image](https://images.spumn.eu.cc/blog/e8738a640727c58d.svg)就是我们要求的摊还结果，![image](https://images.spumn.eu.cc/blog/752b6191c4d641a9.svg)是第i步操作的实际代价，![image](https://images.spumn.eu.cc/blog/6e779c8df0dc295d.svg)指的是从第i-1步到第i步所需要的能量变化。用物理理解一下，设想一个过山车，![image](https://images.spumn.eu.cc/blog/6df0198f9ca78837.svg)是总能量，![image](https://images.spumn.eu.cc/blog/9a8c4974ccc2ad86.svg)是当前的动能，![image](https://images.spumn.eu.cc/blog/d69e35acbac99abe.svg)是改变了的重力势能。整体忽略能量损耗。那么动能的改变量就是势能的改变量。当然能量是连续的，我们这里将能量看做离散的。
+用在摊还分析上，可以表达为：$C_i=C^'_i+f(i)-f(i-1)$所以总摊还为：$C_i(\text{总摊还})=C^'_i(\text{总实际})+f(i)-f(0)$就是我们要求的摊还结果，$C^'_i$是第i步操作的实际代价，$f(i)-f(i-1)$指的是从第i-1步到第i步所需要的能量变化。用物理理解一下，设想一个过山车，$C_i(\text{总摊还})$是总能量，$C_i(\text{总实际})$是当前的动能，$f(i)-f(0)$是改变了的重力势能。整体忽略能量损耗。那么动能的改变量就是势能的改变量。当然能量是连续的，我们这里将能量看做离散的。
 
 
 
@@ -314,7 +314,7 @@ $c^i=c_i+Φ(D_i)−Φ(D_{i−1})$
 
 
 
-后面的$\Phi$指的是势能的改变量，$c_i$指的是实际代价，![image](https://images.spumn.eu.cc/blog/ae72c14388298e81.svg)同样是摊还代价。
+后面的$\Phi$指的是势能的改变量，$c_i$指的是实际代价，$\hat{c}_i$同样是摊还代价。
 
 
 
@@ -322,7 +322,7 @@ $c^i=c_i+Φ(D_i)−Φ(D_{i−1})$
 
 
 
-+ $\Delta \Phi_i>0$：说明摊还代价高于真实代价。类比过山车，摊还代价![image](https://images.spumn.eu.cc/blog/ae72c14388298e81.svg)就像此时刻的总能量，真实代价类似此时刻的动能。势能增加了，是动能转换的，但是总能量不变。这个式子在物理层面就说得通了。
++ $\Delta \Phi_i>0$：说明摊还代价高于真实代价。类比过山车，摊还代价$\hat{c}_i$就像此时刻的总能量，真实代价类似此时刻的动能。势能增加了，是动能转换的，但是总能量不变。这个式子在物理层面就说得通了。
 + $\Delta \Phi_i = 0$：当前时刻总能量和总动能是一样的，因为势能没有变化
 + $\Delta \Phi_i < 0$：总能量反而小于总的动能，是因为势能变小了，而动能没变，但是呢，由于离散看待能量，势能变小和动能增加是两个动作，也就是说总能量还未加上增加的动能。此时总能量小于动能。
 
@@ -345,7 +345,7 @@ $\sum_{i=1}^{n}\hat{c_i} = \sum_{i=1}^{n}c_i + \Phi(D_n) - \Phi(D_0)$
 
 
 + 第一步：观察$\Phi(D_0)$，初始时表的势能为0，因为表是空的，没有插入任何数据。
-+ 第二步：观察![image](https://images.spumn.eu.cc/blog/2f98bb0c426460a9.svg)，我们一直没有说，为什么是![image](https://images.spumn.eu.cc/blog/e2fdac8eb6818b1e.svg)而不是其他字母？是因为![image](https://images.spumn.eu.cc/blog/6f4bdb8cd6d8b915.svg)代表Data Structure，一个数据结构的势能。每一次扩充，让结构的 势能为0,；在两次扩充之间，每次操作积攒势能。到了扩充的时候，每次扩充前积攒的势能正好为扩充使用掉。设第n次插入数据，那么有![image](https://images.spumn.eu.cc/blog/7b70310129746fc5.svg)次扩充。每两次扩充会多出$2^{i-1}$个格子，而需要$2^{i-2}$个格子的填充来为自己增加势能，所以每填一次格子，势能增加2，每扩充1个格子，势能减少1。现在增加了n nn个数据，也就是填了![image](https://images.spumn.eu.cc/blog/32fec39f5c045617.svg)个格子，增加的势能理应是![image](https://images.spumn.eu.cc/blog/01413b73e9194543.svg)，扩充了$2^i$个格子，所以$\Phi(D_i) = 2n-2^{\lceil\log_2 n\rceil}$
++ 第二步：观察$\Phi (D_n)$，我们一直没有说，为什么是$D_n$而不是其他字母？是因为$D$代表Data Structure，一个数据结构的势能。每一次扩充，让结构的 势能为0,；在两次扩充之间，每次操作积攒势能。到了扩充的时候，每次扩充前积攒的势能正好为扩充使用掉。设第n次插入数据，那么有$i=\lceil log_2n\rceil$次扩充。每两次扩充会多出$2^{i-1}$个格子，而需要$2^{i-2}$个格子的填充来为自己增加势能，所以每填一次格子，势能增加2，每扩充1个格子，势能减少1。现在增加了n nn个数据，也就是填了$n$个格子，增加的势能理应是$2n$，扩充了$2^i$个格子，所以$\Phi(D_i) = 2n-2^{\lceil\log_2 n\rceil}$
 + 第三步：观察实际代价，在之前（聚合法）我们已经给出
 + 第四步：求摊还代价：$\sum \hat c_i = (2n-2) + 2n-2^{\lceil\log_2 n\rceil} - 0$，或者改算分步骤摊还代价：$\hat c_n = c_n + 2n-2^{\lceil\log_2 n\rceil} - (2(n-1)-2^{\lceil\log_2 n-1\rceil})$
 

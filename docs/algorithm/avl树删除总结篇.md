@@ -34,11 +34,11 @@ description: "![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngTvfibCBuYUBBcicU7xVJ
 ![](https://images.spumn.eu.cc/blog/bf35d0ec5b8049a3.png)
 
 # 平衡二叉树的删除操作
-与平衡二叉树的插入操作类似，我们以删除一个结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)为例进行说明平衡二叉树删除操作的具体算法步骤。
+与平衡二叉树的插入操作类似，我们以删除一个结点$w$为例进行说明平衡二叉树删除操作的具体算法步骤。
 
-1.  对结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)执行标准的二叉排序树的删除操作； 
-2.  从结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)开始，向上回溯，找到第一个不平衡的结点（即平衡因子不是 -1，0或1的结点）![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)； ![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)为结点![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)的高度最高的孩子结点； ![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)是结点![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)的高度最高的孩子结点（ **这里一定注意和平衡二叉树插入操作区分开来，y****不再是从w回溯到z的路径上****z的孩子，x也不再是z的孙子这样的描述，一定要注意奥！！！** ）。 
-3.  然后对以![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)为根结点的子树进行平衡操作，其中 **x、y、z** 可以的位置有四种情况，BST删除操作之后的平衡操作也就处理以下四种情况： 
+1.  对结点$w$执行标准的二叉排序树的删除操作； 
+2.  从结点$w$开始，向上回溯，找到第一个不平衡的结点（即平衡因子不是 -1，0或1的结点）$z$； $y$为结点$z$的高度最高的孩子结点； $x$是结点$y$的高度最高的孩子结点（ **这里一定注意和平衡二叉树插入操作区分开来，y****不再是从w回溯到z的路径上****z的孩子，x也不再是z的孙子这样的描述，一定要注意奥！！！** ）。 
+3.  然后对以$z$为根结点的子树进行平衡操作，其中 **x、y、z** 可以的位置有四种情况，BST删除操作之后的平衡操作也就处理以下四种情况： 
     - **y** 是 **z** 的左孩子，**x** 是 **y** 的左孩子 （Left Left ，**LL** )；
     - **y** 是 **z** 的左孩子，**x** 是 **y** 的右孩子 （Left Right ，**LR** )；
     - **y** 是 **z** 的右孩子，**x** 是 **y** 的右孩子 （Right Right ，**RR** )；
@@ -125,7 +125,7 @@ description: "![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngTvfibCBuYUBBcicU7xVJ
 很遗憾，平衡二叉树为了保持平衡，动态进行插入和删除操作的代价也会增加。因此出现了后来的红黑树，过两天景禹自会抽时间讲解。
 
 ## 时间复杂度分析
-左旋和右旋操作仅需要改变几个指针，时间复杂度为![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg) ，更新结点的深度以及获得平衡因子仅需要常数时间，所以平衡二叉树AVL的删除操作的时间复杂度与二叉排序树BST的删除操作一样，均为![image](https://images.spumn.eu.cc/blog/a9be2dd5c0bd4d49.svg)，其中 ![image](https://images.spumn.eu.cc/blog/06beba9e96e5239f.svg) 为树的高度。由于AVL 树是平衡的，所以高度![image](https://images.spumn.eu.cc/blog/f27f1303629b8923.svg)，因此，AVL 删除操作的时间复杂度为![image](https://images.spumn.eu.cc/blog/d5fd8447869e9629.svg) .
+左旋和右旋操作仅需要改变几个指针，时间复杂度为$O(1)$ ，更新结点的深度以及获得平衡因子仅需要常数时间，所以平衡二叉树AVL的删除操作的时间复杂度与二叉排序树BST的删除操作一样，均为$O(h)$，其中 $h$ 为树的高度。由于AVL 树是平衡的，所以高度$h=log(n)$，因此，AVL 删除操作的时间复杂度为$O(logn)$ .
 
 # 平衡二叉树的删除操作实现
 关于左旋与右旋操作，以及平衡因子的计算与之前讲的文章 [图解：什么是AVL树？](https://mp.weixin.qq.com/s?__biz=MzA4NDE4MzY2MA==&mid=2647521381&idx=1&sn=796ac1eda0eaefadfb57a1b9742bcec0&scene=21#wechat_redirect) 中的实现是一致的，我们直接看AVL删除操作的实现代码：
@@ -271,14 +271,14 @@ struct Node {
 
 其实归结到最本质，整个过程就是利用了二叉排序树中，结点的右子树的值大于结点，左子树的值小于结点这样的特性。
 
-**那么该如何计算每一个结点的 **`**desc**`** 域呢？**
+**那么该如何计算每一个结点的**`desc`**域呢？**
 
 1. 插入：每当插入一个新的结点，则给新插入结点的所有父结点的 `desc` 加 **1** 。当然相应的旋转操作也需要进行处理，稍后用图进行说明。
 2. 删除操作：当删除一个结点，则将删除结点的所有祖先结点的 `desc` 减 **1** 。同样不论左旋还是右旋都需要进行处理。
 
 还是以之前的左旋和右旋图说明 `desc` 值的相应变化：
 
-**左旋的情况下（**![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)**为当前节点，**![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)**为孩子节点，**![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)**为新的右孩子）：**
+**左旋的情况下（**$x$**为当前节点，**$y$**为孩子节点，**$T_2$**为新的右孩子）：**
 
 ```cpp
 int val = (T2 != NULL) ? T2->desc : -1; 
@@ -286,9 +286,9 @@ x->desc = x->desc - (y->desc + 1) + (val + 1);
 y->desc = y->desc - (val + 1) + (x->desc + 1);
 ```
 
-当![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)不为空时，用一个临时变量 `val` 保存![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)的 `desc` 的值，否则将 `val` 赋值为 -1 。左旋操作后， **x** 的 `desc` 的值将等于其原来的值减去其原来的右孩子结点 **y** 的 `desc` ，再加上左旋之后其右孩子![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)的 `desc + 1` ，即 `val + 1` 。
+当$T_2$不为空时，用一个临时变量 `val` 保存$T_2$的 `desc` 的值，否则将 `val` 赋值为 -1 。左旋操作后， **x** 的 `desc` 的值将等于其原来的值减去其原来的右孩子结点 **y** 的 `desc` ，再加上左旋之后其右孩子$T_2$的 `desc + 1` ，即 `val + 1` 。
 
-**右旋的情况下（**`**x->right = y**`**）：**
+**右旋的情况下（**`x->right = y`**）：**
 
 ```cpp
 int val = (T2 != NULL) ? T2->desc : -1; 
@@ -296,7 +296,7 @@ y->desc = y->desc - (x->desc + 1) + (val + 1);
 x->desc = x->desc - (val + 1) + (y->desc + 1);
 ```
 
-与左旋类似，当![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)不为空时，用一个临时变量 `val` 保存  的 `desc` 的值，否则将 `val` 赋值为 -1 。右旋操作之后，**y** 的值变为其之前的 `desc` 减去 **x** 的 `desc+1` ，再加上![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)的 `desc + 1` ，即 `val+1` 。而 **x** 的 `desc` 则变为其原来的 `desc` 的值减去 `val+1` ，然后再加上旋转后的 `y->desc + 1` 。
+与左旋类似，当$T_2$不为空时，用一个临时变量 `val` 保存  的 `desc` 的值，否则将 `val` 赋值为 -1 。右旋操作之后，**y** 的值变为其之前的 `desc` 减去 **x** 的 `desc+1` ，再加上$T_2$的 `desc + 1` ，即 `val+1` 。而 **x** 的 `desc` 则变为其原来的 `desc` 的值减去 `val+1` ，然后再加上旋转后的 `y->desc + 1` 。
 
 有了上面的基础，我们可以一起先来看一下这道题目的左旋和右旋操作。
 

@@ -296,8 +296,8 @@ class Solution:
         return True
 ```
 
-+ 时间复杂度：![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg)
-+ 空间复杂度：![image](https://images.spumn.eu.cc/blog/c46388a0ff1512b0.svg)
++ 时间复杂度：$O(1)$
++ 空间复杂度：$O(1)$
 
 **优先掌握区间 DP 的思路**，因为面试官可能会追问“如果堆数可以是奇数怎么办”。
 
@@ -464,11 +464,11 @@ pub fn zero_sum_game(nums: &[i32]) -> i32 {
 
 | **概念** | **博弈论 DP (如石子游戏)** | **强化学习 (Policy Iteration)** | **对应关系** |
 | :--- | :--- | :--- | :--- |
-| **状态 (State)** | 当前局面 (如石子数 `n`或区间 `[i, j]`) | 环境状态 ![image](https://images.spumn.eu.cc/blog/9152e4745a66c39e.svg) | 完全对应 |
-| **动作 (Action)** | 玩家可选的决策 (如取 1/2/3 颗石子) | 智能体的动作 ![image](https://images.spumn.eu.cc/blog/19a37c707bca2a7a.svg) | 完全对应 |
-| **价值函数 (Value)** | `dp[state]`(净胜分或必胜性) | ![image](https://images.spumn.eu.cc/blog/1696427194c0c685.svg)或 ![image](https://images.spumn.eu.cc/blog/a5ee101a67d137ba.svg) | **核心等价** |
-| **策略 (Policy)** | 玩家的决策规则 (如“取中间石子”) | ![image](https://images.spumn.eu.cc/blog/cdb8b5b3a0fd4b93.svg) | 都是找最优策略 |
-| **更新规则** | `dp[i] = max( gain - dp[i+1] )` | ![image](https://images.spumn.eu.cc/blog/e494295bac2a7ab8.svg) | **Bellman 方程的不同形式** |
+| **状态 (State)** | 当前局面 (如石子数 `n`或区间 `[i, j]`) | 环境状态 $s_t$ | 完全对应 |
+| **动作 (Action)** | 玩家可选的决策 (如取 1/2/3 颗石子) | 智能体的动作 $a_t$ | 完全对应 |
+| **价值函数 (Value)** | `dp[state]`(净胜分或必胜性) | $V^{\pi}(s)$或 $Q^{\pi}(s,a)$ | **核心等价** |
+| **策略 (Policy)** | 玩家的决策规则 (如“取中间石子”) | $\pi (a\mid s)$ | 都是找最优策略 |
+| **更新规则** | `dp[i] = max( gain - dp[i+1] )` | $V(s)\leftarrow max_a[R(s,a)+\gamma V(s')]$ | **Bellman 方程的不同形式** |
 
 
 ### 特殊性与通用性 
@@ -494,8 +494,8 @@ dp[i][j] = max(
 
 这正是**两人零和博弈下的 Bellman 最优方程**。其中：
 
-+ `nums[i]`对应**即时奖励**![image](https://images.spumn.eu.cc/blog/9605b25c37b0bb01.svg)
-+ `- dp[i+1][j]`对应**折扣后的下一状态价值**![image](https://images.spumn.eu.cc/blog/26934b7a3a3ca229.svg)，只不过在零和博弈中，对手的收益是你的损失，所以是负号。
++ `nums[i]`对应**即时奖励**$R(s,a)$
++ `- dp[i+1][j]`对应**折扣后的下一状态价值**$\gamma V(s')$，只不过在零和博弈中，对手的收益是你的损失，所以是负号。
 
 ### 算法过程：隐式的 Policy Iteration 
 当你写博弈 DP 时，你其实在手动执行 Policy Iteration：

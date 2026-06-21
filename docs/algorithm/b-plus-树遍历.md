@@ -248,7 +248,7 @@ int main() {
 
 
 
-在C++中，可以使用`std::lower_bound`来替代二分查找的过程。`**std::lower_bound**`**返回一个迭代器，指向在有序范围内第一个不小于某个值的元素。**
+在C++中，可以使用`std::lower_bound`来替代二分查找的过程。`std::lower_bound`**返回一个迭代器，指向在有序范围内第一个不小于某个值的元素。**
 
 以下是修改后的代码，使用`std::lower_bound`替代`binarySearch`：
 

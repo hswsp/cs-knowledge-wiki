@@ -43,16 +43,16 @@ description: "![](https://images.spumn.eu.cc/blog/f43198e933eb519f.png)"
 
 ![](https://images.spumn.eu.cc/blog/bf35d0ec5b8049a3.png)
 
-![image](https://images.spumn.eu.cc/blog/555b07c87399dcf2.svg)、![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg) 和 ![image](https://images.spumn.eu.cc/blog/832283831412a8e5.svg)分别表示![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)或![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)的子树。**右旋操作** 将![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)的右子树![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)作为![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)的左子树，然后将![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)作为![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)的右子树。这样做的原因何在？还记得平衡二叉树的特性是，对于树中的每一个结点，其左子树中的结点均比结点的值小，右子树中结点的值均比结点的值大，那么对于上图 **左侧** 的树而言，![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)的右子树![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)的值一定比![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)的值大且一定比根结点![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)的值小，所以将![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)的右子树![image](https://images.spumn.eu.cc/blog/252336af4be886bd.svg)的值作为根结点![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)的值并不会破坏二叉排序树的特性，此外![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)的值大于其左孩子![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)的值，将![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)作为根结点时，![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)作为右孩子也不会破坏二叉树特性，而所谓右旋，是因为结点变化有一个向右的动作。**左旋操作则是右旋操作的逆过程** 。但不论如何，上面两颗树的中序遍历结果，![image](https://images.spumn.eu.cc/blog/aaac1add4f044911.svg)，一定是一致的，也就是任何时候都满足 **二叉排序树** 的特性。
+$T_1$、$T_2$ 和 $T_3$分别表示$x$或$y$的子树。**右旋操作** 将$x$的右子树$T_2$作为$y$的左子树，然后将$y$作为$x$的右子树。这样做的原因何在？还记得平衡二叉树的特性是，对于树中的每一个结点，其左子树中的结点均比结点的值小，右子树中结点的值均比结点的值大，那么对于上图 **左侧** 的树而言，$x$的右子树$T_2$的值一定比$x$的值大且一定比根结点$y$的值小，所以将$x$的右子树$T_2$的值作为根结点$y$的值并不会破坏二叉排序树的特性，此外$y$的值大于其左孩子$x$的值，将$x$作为根结点时，$y$作为右孩子也不会破坏二叉树特性，而所谓右旋，是因为结点变化有一个向右的动作。**左旋操作则是右旋操作的逆过程** 。但不论如何，上面两颗树的中序遍历结果，$T_1<x<T_2<y<T_3$，一定是一致的，也就是任何时候都满足 **二叉排序树** 的特性。
 
 # 平衡二叉树的插入操作
 对平衡二叉树的插入操作而言，其本质上比二叉排序树（BST）的插入操作多了一个平衡操作，解决了二叉排序树插入操作可能出现的斜树，不平衡问题。
 
-我们以插入一个结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)为例进行说明平衡二叉树插入操作的具体算法步骤。
+我们以插入一个结点$w$为例进行说明平衡二叉树插入操作的具体算法步骤。
 
-1. 对结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)执行标准的二叉排序树的插入操作；
-2. 从结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)开始，向上回溯，找到第一个不平衡的结点（即平衡因子不是 -1，0或1的结点）![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)；![image](https://images.spumn.eu.cc/blog/1e64447dc9155dd9.svg)为从结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)到结点![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)的路径上，![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)的孩子结点（**这里强调****路径****,所以一定要注意奥** ）；![image](https://images.spumn.eu.cc/blog/91f4eba77097809c.svg)是从结点![image](https://images.spumn.eu.cc/blog/bff96fc7c9942605.svg)到结点![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)的路径上，![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)的孙子结点 。
-3. 然后对以![image](https://images.spumn.eu.cc/blog/b2e2dd65a3591021.svg)为根结点的子树进行平衡操作，其中 **x、y、z** 可以的位置有一种情况，平衡操作也就处理以下四种情况：
+1. 对结点$w$执行标准的二叉排序树的插入操作；
+2. 从结点$w$开始，向上回溯，找到第一个不平衡的结点（即平衡因子不是 -1，0或1的结点）$z$；$y$为从结点$w$到结点$z$的路径上，$z$的孩子结点（**这里强调****路径****,所以一定要注意奥** ）；$x$是从结点$w$到结点$z$的路径上，$z$的孙子结点 。
+3. 然后对以$z$为根结点的子树进行平衡操作，其中 **x、y、z** 可以的位置有一种情况，平衡操作也就处理以下四种情况：
     - **y** 是 **z** 的左孩子，**x** 是 **y** 的左孩子 （Left Left ，**LL** )；
     - **y** 是 **z** 的左孩子，**x** 是 **y** 的右孩子 （Left Right ，**LR** )；
     - **y** 是 **z** 的右孩子，**x** 是 **y** 的右孩子 （Right Right ，**RR** )；
@@ -206,7 +206,7 @@ description: "![](https://images.spumn.eu.cc/blog/f43198e933eb519f.png)"
 ![](https://images.spumn.eu.cc/blog/da87f4d1945dcb50.png)
 
 ## 时间复杂度分析 
-因为 AVL 树上的结点的左右子树的深度之差都不超过 1，也就是取值只能是 **-1，0，1** ，则 AVL 树的深度和![image](https://images.spumn.eu.cc/blog/32085a4d8e5183c9.svg)是同数量级的（其中 n 为结点个数）。因此平衡二叉树的平均查找长度和![image](https://images.spumn.eu.cc/blog/32085a4d8e5183c9.svg)也是同数量级的，二叉排序树的插入和查找的时间复杂度即为![image](https://images.spumn.eu.cc/blog/d5fd8447869e9629.svg)量级。
+因为 AVL 树上的结点的左右子树的深度之差都不超过 1，也就是取值只能是 **-1，0，1** ，则 AVL 树的深度和$logn$是同数量级的（其中 n 为结点个数）。因此平衡二叉树的平均查找长度和$logn$也是同数量级的，二叉排序树的插入和查找的时间复杂度即为$O(logn)$量级。
 
 ![](https://images.spumn.eu.cc/blog/b9e84d301dd0b6bf.png)
 
@@ -362,10 +362,10 @@ struct Node* insert(struct Node* node, int key)
 ## 题目解析
 考虑一颗二叉树是否高度平衡，我们需要检查下面的这些条件：
 
-一颗空树必然是高度平衡的。一颗非空的树![image](https://images.spumn.eu.cc/blog/78fa45cdbc9c5009.svg)是高度平衡的，当且仅当满足下面三个条件（递归定义）：
+一颗空树必然是高度平衡的。一颗非空的树$T$是高度平衡的，当且仅当满足下面三个条件（递归定义）：
 
-1. 树![image](https://images.spumn.eu.cc/blog/78fa45cdbc9c5009.svg)的左子树是平衡的；
-2. 树![image](https://images.spumn.eu.cc/blog/78fa45cdbc9c5009.svg)的右子树是平衡的；
+1. 树$T$的左子树是平衡的；
+2. 树$T$的右子树是平衡的；
 3. 左右子树的高度之差不超过1；
 
 ![](https://images.spumn.eu.cc/blog/4d8801e69668b6fe.png)

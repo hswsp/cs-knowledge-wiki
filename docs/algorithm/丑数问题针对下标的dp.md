@@ -46,7 +46,7 @@ Explanation: 1 has no prime factors, therefore all of its prime factors are limi
 
 
 
-每次取出堆顶元素 x，则 x 是堆中最小的丑数，由于 ![image](https://images.spumn.eu.cc/blog/88b69e261cae1a5b.svg)也是丑数，因此将 $2x, 3x, 5x$加入堆。
+每次取出堆顶元素 x，则 x 是堆中最小的丑数，由于 $2x,3x,5x$也是丑数，因此将 $2x, 3x, 5x$加入堆。
 
 
 
@@ -120,7 +120,7 @@ public:
 
 因此，对于 i>1，在计算 $\textit{dp}[i]$时，$\textit{dp}[p_2] \times 2,\textit{dp}[p_3] \times 3,\textit{dp}[p_5] \times 5$都大于 $\textit{dp}[i-1]$，$\textit{dp}[p_2-1] \times 2$,$\textit{dp}[p_3-1] \times 3$,$\textit{dp}[p_5-1] \times 5$都小于或等于 $\textit{dp}[i-1]$。
 
-令 $\textit{dp}[i]=\min(\textit{dp}[p_2] \times 2, \textit{dp}[p_3] \times 3, \textit{dp}[p_5] \times 5)$，则 $\textit{dp}[i]>\textit{dp}[i-1]$ 且 ![image](https://images.spumn.eu.cc/blog/6a2a36a8ca179ddf.svg)是大于![image](https://images.spumn.eu.cc/blog/8626bb53fd7986a8.svg)的最小的丑数。
+令 $\textit{dp}[i]=\min(\textit{dp}[p_2] \times 2, \textit{dp}[p_3] \times 3, \textit{dp}[p_5] \times 5)$，则 $\textit{dp}[i]>\textit{dp}[i-1]$ 且 $dp[i]$是大于$dp[i-1]$的最小的丑数。
 
 
 
