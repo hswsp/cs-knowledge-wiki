@@ -379,7 +379,7 @@ List<String> findRepeatedDnaSequences(String s) {
 
 
 
-# Rabin-Karp 算法
+## Rabin-Karp 算法
 
 
 有了上面由浅入深的铺垫，你理解 Rabin-Karp 算法就非常容易了，因为上面这道题目的本质就是一个字符串匹配的问题。

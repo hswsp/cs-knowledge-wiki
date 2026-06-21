@@ -13,7 +13,7 @@ description: "和Dijkstra算法一样，弗洛伊德(Floyd)算法也是一种用
 
 
 
-# 基本思想
+## 基本思想
 
 
 通过Floyd计算图G=(V,E)中各个顶点的最短路径时，需要引入一个矩阵S，矩阵S中的元素`a[i][j]`表示顶点i(第i个顶点)到顶点j(第j个顶点)的距离。
@@ -44,7 +44,7 @@ description: "和Dijkstra算法一样，弗洛伊德(Floyd)算法也是一种用
 
 
 
-# **Floyd算法图解**
+## **Floyd算法图解**
 
 
 ![](https://images.spumn.eu.cc/blog/24614bd460c20819.jpg)
@@ -87,7 +87,7 @@ description: "和Dijkstra算法一样，弗洛伊德(Floyd)算法也是一种用
 
 
 
-# **Floyd算法的代码说明**
+## **Floyd算法的代码说明**
 
 
 以"邻接矩阵"为例对弗洛伊德算法进行说明，对于"邻接表"实现的图在后面会给出相应的源码。
@@ -204,7 +204,7 @@ int main()
 
 
 
-# 最大距离说明
+## 最大距离说明
 
 
 标准 Dijkstra 算法是计算最短路径的，但你有想过为什么 Dijkstra 算法不允许存在负权重边么？

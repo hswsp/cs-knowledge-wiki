@@ -173,7 +173,7 @@ vector<vector<int>> twoSumTarget(vector<int>& nums, int target) {
 
 
 
-# 二、3Sum 问题
+## 二、3Sum 问题
 
 
 这是力扣第 15 题「三数之和」：
@@ -274,7 +274,7 @@ vector<vector<int>> threeSumTarget(vector<int>& nums, int target) {
 
 
 
-# 三、4Sum 问题
+## 三、4Sum 问题
 
 
 这是力扣第 18 题「四数之和」：
@@ -340,7 +340,7 @@ vector<vector<int>>
 
 
 
-# 四、100Sum 问题？
+## 四、100Sum 问题？
 
 
 在 LeetCode 上，`4Sum` 就到头了，**但是回想刚才写**`3Sum`**和**`4Sum`**的过程，实际上是遵循相同的模式的**。我相信你只要稍微修改一下 `4Sum` 的函数就可以复用并解决 `5Sum` 问题，然后解决 `6Sum` 问题……
