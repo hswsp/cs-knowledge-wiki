@@ -331,6 +331,7 @@ export default defineConfig({
                 { text: '扩散模型 (Diffusion Models)', link: '/ml/foundations/diffusion-models' },
                 { text: '从规则到表示学习', link: '/ml/foundations/representation-learning' },
                 { text: '信息检索基础', link: '/ml/foundations/information-retrieval' },
+                { text: '从 KV Cache 到 AI 内存系统：大模型推理架构的演进', link: '/ml/从 KV Cache 到 AI 内存系统：大模型推理架构的演进' },
               ],
             },
             {
