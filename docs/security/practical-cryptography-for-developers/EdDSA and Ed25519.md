@@ -10,7 +10,7 @@ source: https://www.yuque.com/yangguangfanxing/zuyi8o/hfglaguv1exubq58
 
 The **EdDSA** signature algorithm and its variants **Ed25519** and **Ed448** are technically described in the [RFC 8032](https://tools.ietf.org/html/rfc8032).
 
-# EdDSA Key Generation
+## EdDSA Key Generation
 
 **Ed25519** and **Ed448** use small **private keys** (32 or 57 bytes respectively), small **public keys** (32 or 57 bytes) and **small signatures** (64 or 114 bytes) with **high security level** at the same time (128-bit or 224-bit respectively).
 
@@ -25,7 +25,7 @@ The **private key** is generated from a **random integer**, known as ***seed*** 
 
 The public key `pubKey` is a point on the elliptic curve, calculated by the EC point multiplication: `pubKey = privKey * G` (the private key, multiplied by the generator point **G** for the curve). The public key is encoded as **compressed** EC point: the **y**-coordinate, combined with the lowest bit (the parity) of the **x**-coordinate. For **Ed25519** the public key is 32 bytes. For **Ed448** the public key is 57 bytes.
 
-# EdDSA Sign
+## EdDSA Sign
 
 The **EdDSA signing** algorithm ([RFC 8032](https://tools.ietf.org/html/rfc8032#page-13)) takes as input a text message `msg` + the signer's EdDSA **private key** `privKey` and produces as output a pair of integers `{R, s}`. EdDSA signing works as follows (with minor simplifications):
 
@@ -40,7 +40,7 @@ The **EdDSA signing** algorithm ([RFC 8032](https://tools.ietf.org/html/rfc8032#
 
 The produced **digital signature** is 64 bytes (32 + 32 bytes) for **Ed25519** and 114 bytes (57 + 57 bytes) for **Ed448**. It holds a compressed point ***R*** + the integer ***s*** (confirming that the signer knows the `msg` and the `privKey`).
 
-# EdDSA Verify Signature
+## EdDSA Verify Signature
 
 The **EdDSA signature verification** algorithm ([RFC 8032](https://tools.ietf.org/html/rfc8032#page-13)) takes as input a text message `msg` + the signer's EdDSA **public** `keypubKey` + the EdDSA signature `{R, s}` and produces as output a boolean value (valid or invalid signature). EdDSA verification works as follows (with minor simplifications):
 
@@ -51,7 +51,7 @@ The **EdDSA signature verification** algorithm ([RFC 8032](https://tools.ietf.or
 3.  Calculate ***P2*** = ***R*** + ***h*** \* ***pubKey***
 4.  Return ***P1*** == ***P2***
 
-# How Does it Work?
+## How Does it Work?
 
 During the verification the point ***P1*** is calculated as: ***P1*** = ***s*** \* **G**.
 
@@ -65,15 +65,15 @@ During the signing `s = (r + h * privKey) mod q`. Now replace ***s*** in the abo
 
 The above is exactly the other point ***P2***. If these points ***P1*** and ***P2*** are the same EC point, this proves that the point ***P1***, calculated by the private key matches the point ***P2***, created by its corresponding public key.
 
-# ECDSA vs EdDSA
+## ECDSA vs EdDSA
 
 If we compare the signing and verification for EdDSA, we shall find that **EdDSA is simpler than ECDSA**, easier to understand and to implement. Both signature algorithms have **similar security strength** for curves with similar key lengths. For the most popular curves (liked `edwards25519` and `edwards448`) the **EdDSA algorithm is slightly faster than ECDSA**, but this highly depends on the curves used and on the certain implementation. Unlike ECDSA **the EdDSA signatures do not provide a way to recover the signer's public key from the signature and the message**. Generally, it is considered that EdDSA is recommended for most modern apps.
 
-# EdDSA: Sign / Verify - Examples
+## EdDSA: Sign / Verify - Examples
 
 After we explained in the previous section how the **EdDSA signatures** work, now it is time to demonstrate them with code examples. First, we shall demonstrated how to use `Ed25519` signatures.
 
-## Ed25519 Signatures - Example
+### Ed25519 Signatures - Example
 
 We shall use the Python library `ed25519`, which is based on the Bernstein's original optimized highly optimized C implementation of the `Ed25519` signature algorithm (EdDSA over the Curve25519 in Edwards form):
 
@@ -134,7 +134,7 @@ The output from the above sample code is as expected:
 Invalid signature!
 ```
 
-## Ed448 Signatures - Example
+### Ed448 Signatures - Example
 
 Now, let's demonstrate how to use the **Ed448 signature** (EdDSA over the Curve448-Goldilocks curve in Edwards form).
 

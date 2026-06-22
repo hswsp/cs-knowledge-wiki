@@ -154,7 +154,7 @@ bool isnum(string s){
 
 ****
 
-# find函数
+## find函数
 
 
 c++中string类中的find函数用于寻找字符串中是否包含子串，如果包含，那么函数返回第一个找到的子串的位置，如果不包含，返回-1. 
@@ -196,7 +196,7 @@ int main()
 ```
 
 ## 
-# 分割字符串
+## 分割字符串
 
 
 `find_first_not_of()`函数:
@@ -265,7 +265,7 @@ for(++spos;spos!=end;++spos){
 
 
 
-# 字符串替换
+## 字符串替换
 
 
 C++的string库提供了专门的函数方法来实现字符串的替换：`string.replace()`

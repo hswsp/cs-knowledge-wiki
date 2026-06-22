@@ -18,7 +18,7 @@ For example, the 256-bit elliptic curve `secp256k1` has:
 -   Order `n = 115792089237316195423570985008687907852837564279074904382605163141518161494337 `(prime number)
 -   Generator point `G {x = 55066263022277343669578718895168534326250603453777594175500187360389116729240, y = 32670510020758816978083085130507043184471273380659243275938904335757337482424}`
 
-# Key Generation
+## Key Generation
 
 The **ECDSA key-pair** consists of:
 
@@ -29,7 +29,7 @@ The **private key** is generated as a **random integer** in the range \[0...***n
 
 The public key EC point `{x, y}` can be **compressed** to just one of the coordinates + 1 bit (parity). For the `secp256k1` curve, the private key is 256-bit integer (32 bytes) and the compressed public key is 257-bit integer (\~ 33 bytes).
 
-# ECDSA Sign
+## ECDSA Sign
 
 The ECDSA signing algorithm ([RFC 6979](https://tools.ietf.org/html/rfc6979#section-3.2)) takes as input a message `msg` + a private key `privKey` and produces as output a **signature**, which consists of pair of integers `{r, s}`. The **ECDSA signing** algorithm is based on the [ElGamal signature scheme](https://en.wikipedia.org/wiki/ElGamal_signature_scheme) and works as follows (with minor simplifications):
 
@@ -49,7 +49,7 @@ The calculated **signature** `{r, s}` is a pair of integers, each in the range .
 
 **ECDSA signatures** are **2 times longer** than the signer's **private key** for the curve used during the signing process. For example, for 256-bit elliptic curves (like `secp256k1`) the ECDSA signature is 512 bits (64 bytes) and for 521-bit curves (like `secp521r1`) the signature is 1042 bits.
 
-# ECDSA Verify Signature
+## ECDSA Verify Signature
 
 The algorithm to **verify a ECDSA signature** takes as input the signed message `msg` + the signature `{r, s}` produced from the signing algorithm + the public key `pubKey`, corresponding to the signer's private key. The output is boolean value: `valid` or `invalid` signature. The **ECDSA signature verify** algorithm works as follows (with minor simplifications):
 
@@ -61,14 +61,14 @@ The algorithm to **verify a ECDSA signature** takes as input the signed message 
 
 The general idea of the signature verification is to **recover the point** ***R'*** using the public key and check whether it is same point ***R***, generated randomly during the signing process.
 
-# How Does it Work?
+## How Does it Work?
 
 The **ECDSA signature** `{r, s}` has the following simple explanation:
 
 -   The signing `signing` encodes a random point ***R*** (represented by its x-coordinate only) through elliptic-curve transformations using the private key `privKey` and the message hash `h` into a number `s`, which is the **proof** that the message signer knows the private key `privKey`. The signature `{r, s}` cannot reveal the private key due to the difficulty of the **ECDLP problem**.
 -   The **signature verification** decodes the proof number `s` from the signature back to its original point ***R***, using the public key `pubKey` and the message hash `h` and compares the x-coordinate of the recovered ***R*** with the ***r*** value from the signature.
 
-# The Math behind the ECDSA Sign / Verify
+## The Math behind the ECDSA Sign / Verify
 
 Read this section **only if you like math**. Most developer may skip it.
 
@@ -104,7 +104,7 @@ The final step is to **compare** the **point** ***R'*** (decoded by the `pubKey`
 
 It is expected that `r' == r` if the signature is **valid** and `r' ≠ r` if the signature or the message or the public key is incorrect.
 
-# ECDSA: Public Key Recovery from Signature
+## ECDSA: Public Key Recovery from Signature
 
 It is important to know that the **ECDSA signature scheme** allows the **public key to be recovered** from the signed **message** together with the **signature**. The recovery process is based on some **mathematical computations** (described in the [SECG: SEC 1](http://www.secg.org/sec1-v2.pdf) standard) and returns 0, 1 or 2 possible EC points that are valid **public keys**, corresponding to the signature. To avoid this ambiguity, some ECDSA implementations add one additional bit `v` to the signature during the signing process and it takes the form `{r, s, v}`. From this extended ECDSA signature `{r, s, v}` + the signed `message`, the signer's public key can be restored with confidence.
 
@@ -112,7 +112,7 @@ The **public key recovery from the ECDSA signature** is very useful in bandwidth
 
 Public key recovery is possible for signatures, based on the **ElGamal signature scheme** (such as DSA and ECDSA).
 
-# ECDSA: Sign / Verify - Examples
+## ECDSA: Sign / Verify - Examples
 
 After we explained in details how the **ECDSA signature** algorithm works, now let's demonstrate it in practice with **code examples**.
 
@@ -122,7 +122,7 @@ In this example, we shall use the `pycoin` Python package, which implements the 
 pip install pycoin
 ```
 
-## ECDSA Sign / Verify using the secp256k1 Curve and SHA3-256
+### ECDSA Sign / Verify using the secp256k1 Curve and SHA3-256
 
 First, define the functions for **hashing**, ECDSA **signing** and ECDSA **signature verification**:
 
@@ -193,7 +193,7 @@ Signature (tampered msg) valid? False
 
 As it is visible from the above output, the random generated **secp256k1 private key** is **64 hex digits** (256 bits). After signing, the obtained signature {***r***, ***s***} consists of 2 \* 256-bit integers. The **public key**, obtained by multiplying the private key by the curve generator point, consists of 2 \* 256 bits (uncompressed). The produced ECDSA digital signature verifies correctly after signing. If the message is tampered, the signature fails to verify.
 
-## Public Key Recovery from the ECDSA Signature
+### Public Key Recovery from the ECDSA Signature
 
 As we already know, in ECDSA it is possible to **recover the public key from signature**. Let's demonstrate this by adding the following code at the end of the previous example:
 
@@ -236,7 +236,7 @@ Recovered public key from signature: (0x10b5d9028ec828a0f9111e36f046afa5a0c67735
 
 It is obvious that the **recovered possible public keys** are 2: one is equal to the public key, matching the signer's private key, and the other is not (it matches the math behind the public key recovery, but is not the correct one). To avoid this ambiguity, **the signature can be extended** to hold `{r, s, v}`, where `v` holds the parity of the ***y*** coordinate of the random point **R** from the ECDSA signing algorithm. This coordinate is lost, because the ECDSA signature takes just the **x** coordinate or **R**.
 
-## Public Key Recovery from Extended ECDSA Signature
+### Public Key Recovery from Extended ECDSA Signature
 
 To **recover with confidence the public key** from ECDSA signature + message, we need a library that generates **extended ECDSA signatures** `{r, s, v}` and supports internally the public key recovery. Let's play with the `eth_keys` Python library:
 

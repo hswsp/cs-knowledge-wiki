@@ -119,8 +119,8 @@ int main()
 }
 ```
 
-# 排序函数
-## C++ is_sorted()函数
+## 排序函数
+### C++ is_sorted()函数
 
 
 is_sorted() 函数有 2 种语法格式，分别是：

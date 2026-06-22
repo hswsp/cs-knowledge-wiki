@@ -6,14 +6,14 @@
 可以看到，容器占据了数据结构的半壁江山。提到容器，很可能你首先会想到的就是数组、列表这些可以遍历的容器，但其实**只要把某种特定的数据封装在某个数据结构中**，这个数据结构就是一个容器。比如 `Option`，它是一个包裹了 `T` 存在或不存在的容器，而`Cow` 是一个封装了内部数据 `B` 或被借用或拥有所有权的容器。
 对于容器的两小类，到目前为止，像 `Cow` 这样，为特定目的而产生的容器我们已经介绍了不少，包括 `Box`、`Rc`、`Arc`、`RefCell`、还没讲到的 `Option` 和 `Result` 等。
 今天我们来详细讲讲另一类，集合容器。
-# 集合容器
+## 集合容器
 集合容器，顾名思义，就是把一系列拥有相同类型的数据放在一起，统一处理，比如：
 - 我们熟悉的字符串 `String`、数组 `[T; n]`、列表 `Vec`和哈希表 `HashMap`等；
 - 虽然到处在使用，但还并不熟悉的切片 slice；
 - 在其他语言中使用过，但在 Rust 中还没有用过的循环缓冲区 `VecDeque`、双向列表 `LinkedList` 等。
 这些集合容器有很多共性，比如可以被遍历、可以进行 map-reduce 操作、可以从一种类型转换成另一种类型等等。
 我们会选取两类典型的集合容器：切片和哈希表，深入解读，理解了这两类容器，其它的集合容器设计思路都差不多，并不难学习。今天先介绍切片以及和切片相关的容器，下一讲我们学习哈希表。
-# 切片究竟是什么？
+## 切片究竟是什么？
 在 Rust 里，切片是描述一组属于同一类型、长度不确定的、在内存中连续存放的数据结构，用 `[T] `来表述。因为长度不确定，所以切片是个 DST（Dynamically Sized Type）。
 切片一般只出现在数据结构的定义中，不能直接访问，在使用中主要用以下形式：
 - `&[T]`：表示一个只读的切片引用。
@@ -28,7 +28,7 @@
 ![图片](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/%e9%99%88%e5%a4%a9%20%c2%b7%20Rust%20%e7%bc%96%e7%a8%8b%e7%ac%ac%e4%b8%80%e8%af%be/assets/91b4f63c619bf35cf2e5fc22c6d486b7.jpg)
 在使用的时候，支持切片的具体数据类型，你可以根据需要，**解引用转换成切片类型**。比如 Vec 和 `[T; n]` 会转化成为 `&[T]`，这是因为 Vec 实现了 Deref trait，而 array 内建了到 `&[T]` 的解引用。我们可以写一段代码验证这一行为（[代码](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=984d9ee43c82f3774798f16c9176761e)）：
 这也就意味着，通过解引用，这几个和切片有关的数据结构都会获得切片的所有能力，包括：`binary_search`、`chunks`、`concat`、`contains`、`start_with`、`end_with`、`group_by`、`iter`、`join`、`sort`、`split`、`swap` 等一系列丰富的功能，感兴趣的同学可以看[切片的文档](https://doc.rust-lang.org/std/primitive.slice.html)。
-# 切片和迭代器 Iterator
+## 切片和迭代器 Iterator
 迭代器可以说是切片的孪生兄弟。**切片是集合数据的视图，而迭代器定义了对集合数据的各种各样的访问操作**。
 通过切片的 [iter() 方法](https://doc.rust-lang.org/std/primitive.slice.html#method.iter)，我们可以生成一个迭代器，对切片进行迭代。
 在[第12讲]Rust类型推导已经见过了 `iterator` trait（用 `collect` 方法把过滤出来的数据形成新列表）。`iterator` trait 有大量的方法，但绝大多数情况下，我们只需要定义它的关联类型 `Item` 和 `next()` 方法。
@@ -50,7 +50,7 @@
 介绍完是什么，按惯例我们就要上代码实际使用一下了。不过迭代器是非常重要的一个功能，基本上每种语言都有对迭代器的完整支持，所以只要你之前用过，对此应该并不陌生，大部分的方法，你一看就能明白是在做什么。所以这里就不再额外展示，等你遇到具体需求时，可以翻 [Iterator 的文档](https://doc.rust-lang.org/std/iter/trait.Iterator.html)查阅。
 如果标准库中的功能还不能满足你的需求，你可以看看 [itertools](https://docs.rs/itertools/0.10.1/itertools/trait.Itertools.html)，它是和 Python 下 itertools 同名且功能类似的工具，提供了大量额外的 adapter。可以看一个简单的例子（[代码](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=b32253334d886a5ccd263f9870fb8a3d)）：
 在实际开发中，我们可能从一组 Future 中汇聚出一组结果，里面有成功执行的结果，也有失败的错误信息。如果想对成功的结果进一步做 filter/map，那么标准库就无法帮忙了，就需要用 itertools 里的 `filter_map_ok()`。
-# 特殊的切片：&str
+## 特殊的切片：&str
 好，学完了普通的切片 `&[T]`，我们来看一种特殊的切片：`&str`。之前讲过，**String 是一个特殊的 **`**Vec**`，所以在 String 上做切片，也是一个特殊的结构 `&str`。
 对于 `String`、`&String`、`&str`，很多人也经常分不清它们的区别，我们在之前的一篇加餐中简单聊了这个问题，在上一讲智能指针中，也对比过`String`和`&str`。对于`&String` 和 `&str`，如果你理解了上文中 `&Vec` 和 `&[T]` 的区别，那么它们也是一样的：
 ![图片](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/%e9%99%88%e5%a4%a9%20%c2%b7%20Rust%20%e7%bc%96%e7%a8%8b%e7%ac%ac%e4%b8%80%e8%af%be/assets/ea816d6fbdd1d14b00bb6ea6c7ef3a0a.jpg)
@@ -59,7 +59,7 @@
 可以看到，字符列表可以通过迭代器转换成 `String`，String 也可以通过 `chars()` 函数转换成字符列表，如果不转换，二者不能比较。
 下图我把数组、列表、字符串以及它们的切片放在一起比较，可以帮你更好地理解它们的区别：
 ![图片](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/%e9%99%88%e5%a4%a9%20%c2%b7%20Rust%20%e7%bc%96%e7%a8%8b%e7%ac%ac%e4%b8%80%e8%af%be/assets/e05210d20yy4d20bf54e670e958a7a93.jpg)
-# 切片的引用和堆上的切片，它们是一回事么？
+## 切片的引用和堆上的切片，它们是一回事么？
 开头我们讲过，切片主要有三种使用方式：切片的只读引用 `&[T]`、切片的可变引用 `&mut [T]` 以及 `Box<[T]>`。刚才已经详细学习了只读切片 `&[T]`，也和其他各种数据结构进行了对比帮助理解，可变切片 `&mut [T]` 和它类似，不必介绍。
 现在我们来看看 `Box<[T]>`。
 `Box<[T]>` 是一个比较有意思的存在，它和 Vec 有一点点差别：Vec 有额外的 capacity，可以增长；**而 **`**Box<[T]>**`** 一旦生成就固定下来，没有 capacity，也无法增长**。
@@ -69,18 +69,18 @@
 运行代码可以看到，Vec 可以通过 `into_boxed_slice()` 转换成 `Box<[T]>`，`Box<[T]>` 也可以通过 `into_vec()` 转换回 Vec。
 这两个转换都是很轻量的转换，只是变换一下结构，不涉及数据的拷贝。区别是，当 Vec 转换成 `Box<[T]>` 时，没有使用到的容量就会被丢弃，所以整体占用的内存可能会降低。而且`Box<[T]>` 有一个很好的特性是，不像 `Box<[T;n]>` 那样在编译时就要确定大小，它可以在运行期生成，以后大小不会再改变。
 所以，**当我们需要在堆上创建固定大小的集合数据，且不希望自动增长，那么，可以先创建 Vec，再转换成 **`**Box<[T]>**`。tokio 在提供 broadcast channel 时，就使用了 `Box<[T]>` 这个特性，你感兴趣的话，可以自己看看[源码](https://github.com/tokio-rs/tokio/blob/master/tokio/src/sync/broadcast.rs#L447)。
-# 小结
+## 小结
 我们讨论了切片以及和切片相关的主要数据类型。切片是一个很重要的数据类型，你可以着重理解它存在的意义，以及使用方式。
 今天学完相信你也看到了，围绕着切片有很多数据结构，而**切片将它们抽象成相同的访问方式，实现了在不同数据结构之上的同一抽象**，这种方法很值得我们学习。此外，当我们构建自己的数据结构时，如果它内部也有连续排列的等长的数据结构，可以考虑 AsRef 或者 Deref 到切片。
 下图描述了切片和数组 `[T;n]`、列表 `Vec`、切片引用 `&[T] `/`&mut [T]`，以及在堆上分配的切片 `Box<[T]>` 之间的关系。建议你花些时间理解这张图，也可以用相同的方式去总结学到的其他有关联的数据结构。
 ![图片](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/%e9%99%88%e5%a4%a9%20%c2%b7%20Rust%20%e7%bc%96%e7%a8%8b%e7%ac%ac%e4%b8%80%e8%af%be/assets/62c55a1733d7b674a9e815c45d4a6f91.jpg)
 下一讲我们继续学习哈希表……
-# 思考题
+## 思考题
 - 在讲 &str 时，里面的 `print_slice1` 函数，如果写成这样可不可以？你可以尝试一下，然后说明理由。
 类似 itertools，你可以试着开发一个新的 Iterator trait IteratorExt，为其提供 window_count 函数，使其可以做下图中的动作（[来源](https://rxjs.dev/api/operators/windowCount)）：
 ![图片](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/%e9%99%88%e5%a4%a9%20%c2%b7%20Rust%20%e7%bc%96%e7%a8%8b%e7%ac%ac%e4%b8%80%e8%af%be/assets/f30947af9dff50521ccd4ddae42f0d5b.png)
 感谢你的阅读，如果你觉得有收获，也欢迎你分享给你身边的朋友，邀他一起讨论。你已经完成了Rust学习的第16次打卡啦，我们下节课见。
-# 参考资料：Rust 的 Iterator 究竟有多快？
+## 参考资料：Rust 的 Iterator 究竟有多快？
 当使用 Iterator 提供的这种函数式编程风格的时候，我们往往会担心性能。虽然我告诉你 Rust 大量使用 inline 来优化，但你可能还心存疑惑。
 下面的代码和截图来自一个 Youtube 视频：[Sharing code between iOS & Android with Rust](https://youtu.be/-hGbMp0sBvM?t=913)，演讲者通过在使用 Iterator 处理一个很大的图片，比较 Rust/Swift/Kotlin native/C 这几种语言的性能。你也可以看到在处理迭代器时， Rust 代码和 Kotlin 或者 Swift 代码非常类似。
 

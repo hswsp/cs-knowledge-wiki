@@ -34,17 +34,17 @@ Google QUIC 为 Chrome 提供了许多性能优势，其他公司也开始为该
 
 
 
-# QUIC 特点
+## QUIC 特点
 
 
-## 无队头阻塞
+### 无队头阻塞
 
 
 QUIC 连接上的多个 Stream 之间并没有依赖，都是独立的，也不会有底层协议限制，某个流发生丢包了，只会影响该流，其他流不受影响。而什么是对头阻塞，可以参阅《[TCP对头阻塞](https://link.zhihu.com/?target=https%3A//hungryturbo.com/HTTP3-explained/quic/%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81QUIC.html%23tcp%E9%98%9F%E5%A4%B4%E9%98%BB%E5%A1%9E)》
 
 
 
-## 灵活性、安全性和减少延迟
+### 灵活性、安全性和减少延迟
 
 
 QUIC 引入了许多其他重要功能：
@@ -62,7 +62,7 @@ QUIC 引入了许多其他重要功能：
 
 
 
-## 适用性和可管理性
+### 适用性和可管理性
 
 
 加密传输协议对工程师选择传输协议和网络运营商监视活动都有影响。
@@ -77,7 +77,7 @@ QUIC 引入了许多其他重要功能：
 
 
 
-## 浏览器支持
+### 浏览器支持
 
 
 六年前，谷歌将 QUIC 引入 IETF 以开始标准流程，IETF 的贡献者表示有兴趣从他们的实验协议开始开发一种新的传输，就有了专有版本通常称为“Google QUIC”或“gQUIC”。
@@ -96,7 +96,7 @@ IETF 在 2016 年成立了一个 QUIC 工作组，采用 Google 的特定于 Web
 
 
 
-# QUIC 实现
+## QUIC 实现
 
 
 在实现新的 QUIC 支持的同时，需要使用一个新的顶级内置 `quic`模块来公开 API，不过需要[自行编译](https://link.zhihu.com/?target=https%3A//github.com/nodejs/quic.git)，为避免对自身开发环境的影响，建议使用Docker ，如有兴趣可以查看项目 [docker-nodejs](https://link.zhihu.com/?target=https%3A//github.com/QuintionTang/docker-nodejs/tree/quic) 里面有完整的代码及Docker 运行方式。

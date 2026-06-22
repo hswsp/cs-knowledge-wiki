@@ -62,7 +62,7 @@ date: 2022-09-16
 
 回到图3，不可能出现的原因在于，S1 作为原 leader 已经第一个保存了新配置的日志，而 S2 尚未被同步这条日志，根据上一篇《安全性》我们讲到的**选主限制**，**S1 不可能将选票投给 S2**，因此 S2 不可能成为 leader。
 
-# 两阶段切换集群成员配置(Joint consensus)
+## 两阶段切换集群成员配置(Joint consensus)
 
 最开始 `Raft` 使用 `joint consensus` 实现成员变更，`raft extended` 中也只提到了这种方式，这种方式支持一次变更多个成员，但是复杂一些。
 
@@ -120,7 +120,7 @@ date: 2022-09-16
 
 关于集群成员变更另一篇更详细的论文还给出了其它方法，简单来说就是论证**一次只变更一个节点的**的正确性，并给出解决可用性问题的优化方案。感兴趣的同学可以参考：[《Consensus: Bridging Theory and Practice》](https://github.com/ongardie/dissertation)。
 
-# **单节点变更（single-server changes）**
+## **单节点变更（single-server changes）**
 
 该算法**每次只允许增加或移除一个节点**，只有当上一轮成员变更结束，才能开始下一轮，复杂的成员变更转换为多次单个成员变更。 增加或删除一个节点时，新旧配置中构成 `majority` 的部分必有重叠，不会有单独一部分做出决定，保证了 `safety`: ![image](https://images.spumn.eu.cc/blog/71c254658a55c80c.png)
 
@@ -138,7 +138,7 @@ date: 2022-09-16
 
 使用 `etcd/raft` 的方式需要注意: 从2个节点中移除一个时，若有一个节点挂了，则整个集群不可用，但是一般至少使用3副本。
 
-## etcd/raft 实现
+### etcd/raft 实现
 
 调用 `Node.ProposeConfChange()` 来发起成员变更，因为也需要通过 `log replication` 来提交，所以复用了 `pb.Entry`，需要进行 `marshal`:
 
@@ -192,7 +192,7 @@ for i, e := range m.Entries {
 - 调用 `raft` 的接口增加或删除节点：`etcd/raft` 的实现很简单，就是操作 `raft.prs`(`NodeId` 到 `Progress` 的映射)；
 - 返回最新的集群结构。 用户根据 `config change` 的类型，决定是关闭节点，还是新建连接。
 
-## 启动
+### 启动
 
 在启动一个新的集群时，`raft.StartNode()` 中需要传入集群的 `peer list`，然后使用 `config change` 的方式添加节点，使用这种方式把启动时的成员配置和成员变更统一起来，简化了实现：
 
@@ -229,7 +229,7 @@ func StartNode(c *Config, peers []Peer) Node {
 n := raft.StartNode(c, nil)
 ```
 
-## Snapshot
+### Snapshot
 
 `raft` 的集群配置通过 `log replication` 传递，同样也通过 `log` 来恢复，通过一个个应用 `log entry` 能够恢复到一致的集群成员配置。之前提到 `snapshot` 只保存了状态机的状态，为了支持成员变更， `snapshot` 中需要保存该 `snapshot` 对应的集群成员配置：
 
@@ -248,7 +248,7 @@ type ConfState struct {
 }
 ```
 
-# Learner
+## Learner
 
 加入新的节点有可能降低集群的可用性，因为新的节点需要花费很长时间来同步 `log`，可能导致集群无法 `commit` 新的请求，比如原来有 3 个节点的集群，可以容忍 1 个节点出错，然后新加入了一个节点， 若原先的一个节点出错会导致集群不能 `commit` 新的请求，直到节点恢复或新节点追上: ![image](https://images.spumn.eu.cc/blog/8d4902098018d725.png)
 
@@ -323,7 +323,7 @@ func (r *raft) addNodeOrLearnerNode(id uint64, isLearner bool) {
   func (r *raft) quorum() int { return len(r.prs)/2 + 1 }
   ```
 
-# Leadership transfer
+## Leadership transfer
 
 有可能需要移除的节点是 `leader`，按照 `raft thesis` 的做法会比较奇怪，`leader` 需要管理不包含自己的集群，直到提交之后再 `step down`，可以通过 `leadership transfer` 将 `leadership` 转移到其他节点， 然后再移除原先的 `leader`。`leadership transfer` 还有其他的用途，比如 `leader` 所在机器的负载比较高，要转移到低负载机器上；`leader` 要改变机房实现就近等，同时还能降低选举的影响。
 
@@ -339,7 +339,7 @@ func (r *raft) addNodeOrLearnerNode(id uint64, isLearner bool) {
 - `transferee` 有大概率成为下一个 `leader`，若失败，可以重新发起 `leader transfer`。
 - `check quorum` 会使节点忽略 `RequestVote`，需要强制投票。
 
-## etcd/raft 实现
+### etcd/raft 实现
 
 调用 `Node.TransferLeadership()` 发起 `leadership transfer`:
 

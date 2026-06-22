@@ -2,11 +2,11 @@
 
 混合专家模型（**Mixture of Experts, MoE**）通过条件计算实现**模型容量的扩展**，而不显著增加推理成本。DeepSeek-V2/V3、Mixtral等模型都采用了MoE架构，使其成为当前大模型的重要技术路线。
 
-# 7.5.1 Expert Routing
-### 问题背景
+## 7.5.1 Expert Routing
+#### 问题背景
 在 MoE模型中，每个输入 token只激活部分专家（experts），需要一个路由机制来决定token应该由哪些专家处理。
 
-### MoE层结构
+#### MoE层结构
 ![](https://images.spumn.eu.cc/ml/ai-infra/1781792936980-9f2a5541-e903-4e44-b962-1d92a9d6bf8b.svg)
 
 ---
@@ -283,12 +283,12 @@ def compute_router_z_loss(router_logits):
        return z_loss
 ```
 
-# 7.5.2 Expert Parallelism
-### 问题背景
+## 7.5.2 Expert Parallelism
+#### 问题背景
 MoE 模型的专家数量通常很大（如 64 、 128 个），单个 GPU 无法容纳所有专家。 ExpertParallelism（EP）将专家分布到多个GPU上。
 
-## 7.5.2.1 EP并行策略
-### 专家分片
+### 7.5.2.1 EP并行策略
+#### 专家分片
 将 $ E $ 个专家分布到 $ N $ 个GPU上：
 
 $ \text{experts_per_gpu} = \frac{E}{N} $

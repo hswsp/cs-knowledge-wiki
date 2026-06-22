@@ -10,7 +10,7 @@ In this checkpoint, **you won’t necessarily need to do any coding** (assuming 
 
 This checkpoint is done in pairs. You will need to work with a lab partner (another student in the class). Please use the lab sessions to find lab partners, or EdStem if you cannot attend the lab session. If it’s necessary, the same student can serve as “lab partner” more than once.
 
-# Getting started
+## Getting started
 1. Make sure you have committed all your solutions. Please don’t modify any files outside the top level of the **src** directory, or **webget.cc** and **ip_raw.cc**. You may have trouble merging the Checkpoint 7 starter code otherwise.
 2. While inside the repository for the lab assignments, run `git fetch --all` to retrieve the most recent version of the lab assignment.
 3. Download the starter code for Checkpoint 7 by running `git merge origin/check7-startercode` .
@@ -20,7 +20,7 @@ This checkpoint is done in pairs. You will need to work with a lab partner (anot
 7. Open and start editing the **writeups/check7.md** file. This is the template for your lab writeup and will be included in your submission.
 8. Reminder: please make frequent **small commits** in your local Git repository as you work. If you need help to make sure you’re doing this right, please ask a classmate or the teaching staff for help. You can use the `git log` command to see your Git history.
 
-# The Network
+## The Network
 In this lab, you’ll create a real network that combines your network stack with one implemented by another student in the class. You’ll re-do the “1 megabyte challenge” that you did in checkpoint 3, but this time over an entire physical-layer network path (including your router and their router). Each of you will contribute one host (including your reliable **Byte Stream**, your TCP implementation, and your `NetworkInterface`) and one router (including two more of your `NetworkInterfaces`):
 
 ![](https://images.spumn.eu.cc/cs-knowledge-wiki/csapp/cs144/labs/2b9a7ef78184-1751168006282-79055b8d-269c-466b-b54a-c8d9af537c62.png)
@@ -73,7 +73,7 @@ New connection from 192.168.0.50:57005.
 6. **If you don’t see the expected output,** it may be time to turn on “debug mode”. Run the “`endtoend`” program with one additional argument: <font style="color:#D22D8D;">append a “debug” to the end of the command line</font>. This will print out every Ethernet frame being exchanged, and you can see all the ARP and TCP/IP frames. 
 7. Once you have the network working between two windows on your own computer, it’s time to try the same steps with a lab partner (and their own implementation).
 
-# Sending a file
+## Sending a file
 Once it looks like you can have a basic conversation, try sending a file over the network. Again, you can try this yourself, and if all goes well, then try it with a lab partner. Here is how:
 
 To **write** a one-megabyte random file to “/tmp/big.txt”: 
@@ -98,15 +98,15 @@ To compare two files and make sure they’re the same: `sha256sum /tmp/big.txt` 
 
 If the SHA-256 hashes match, you can be almost certain the file was transmitted correctly.
 
-# If you have trouble...
+## If you have trouble...
 Consider building the “sanitizing” (bug-checking) version of the endtoend program. It will find many instances of undefined behavior and use of invalid addresses in your code. (See above for directions.)
 
 Run the entire unit-test suite (including new tests your classmates have contributed this quarter) with `cmake --build build --target test`
 
-# Extra credit
+## Extra credit
 For some (token) extra credit, if everything is working perfectly, we’d encourage you to do something creative and put something interesting in your writeup. Please feel free to modify the endtoend.cc program as you see fit. You could create a more complicated network involving more students at the same time, or do something else we haven’t anticipated. (To be clear: this is not at all required.)
 
-# Submit
+## Submit
 Write a report in **writeups/check7.md**. This file should be a roughly 30-to-70-line document with no more than 80 characters per line to make it easier to read. The report should contain the following sections: 
 
 + Solo portion

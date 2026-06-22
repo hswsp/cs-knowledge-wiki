@@ -30,7 +30,7 @@ We’ve given you unit tests that put your network interface through its paces. 
 
 + 趋势：从模式1到模式3，用户控制权增加，但开发成本显著提高。模式2（TUN设备）是平衡灵活性与复杂性的常见选择。
 
-# Getting started
+## Getting started
 Make sure you have committed all your solutions. Please don’t modify any files outside the top level of the src directory, or **webget.cc**. You may have trouble merging the Checkpoint 5 starter code otherwise.
 
 While inside the repository for the lab assignments, run `git fetch --all` to retrieve the most recent version of the lab assignment.
@@ -46,7 +46,7 @@ Open and start editing the **writeups/check5.md** file. This is the template for
 
 Reminder: please make frequent **small commits** in your local Git repository as you work. If you need help to make sure you’re doing this right, please ask a classmate or the teaching staff for help. You can use the `git log` command to see your Git history.
 
-# Checkpoint 5: The Address Resolution Protocol
+## Checkpoint 5: The Address Resolution Protocol
 Your main task in this lab will be to implement the three main methods of `NetworkInterface` (in the **network_interface.cc** file), maintaining a <font style="color:#601BDE;">mapping from IP addresses to Ethernet addresses</font>. The mapping is a cache, or “soft state”: the `NetworkInterface` keeps it around for efficiency’s sake, but if it has to restart from scratch, the mapping will naturally be regenerated without causing a problem.
 
 1. `void NetworkInterface::send_datagram(const InternetDatagram &dgram, const Address &next hop);`
@@ -70,7 +70,7 @@ This is called as time passes. <font style="color:#D22D8D;">Expire any IP-to-Eth
 
 **You can test your implementation** by running `cmake --build build --target check5` This test does not rely on your TCP implementation
 
-# Q & A
+## Q & A
 + How much code are you expecting? 
 
 Overall, we expect the implementation (in **network_interface.cc**) will require about 100–150 lines of code in total. 
@@ -99,13 +99,13 @@ Again, definitely a “yes” in real life, but don’t worry about that in this
 
 Please check the website ([https://cs144.github.io/lab_faq.html](https://cs144.github.io/lab_faq.html)) and _EdStem_ regularly.
 
-# Development and debugging advice
+## Development and debugging advice
 1. Implement the `**NetworkInterface**`’s public interface (and any private methods or functions you’d like) in the file **network_interface.cc**. You may add any private members you like to the `NetworkInterface` class in **network_interface.hh**. 
 2. You can test your code with `cmake --build build --target check5` . 
 3. Please re-read the section on “using Git” in the Checkpoint 0 document, and remember to keep the code in the Git repository it was distributed in on the main branch. **Make small commits, using good commit messages that identify what changed and why.**
 4. Please work to make your code readable to the CA who will be grading it for style. Use reasonable and clear naming conventions for variables. Use comments to explain complex or subtle pieces of code. Use “defensive programming”—explicitly check preconditions of functions or invariants, and throw an exception if anything is ever wrong. Use modularity in your design—identify common abstractions and behaviors and factor them out when possible. Blocks of repeated code and enormous functions will make it hard to follow your code.
 
-# Submit
+## Submit
 1. In your submission, please only make changes to the **.hh** and **.cc** files in the src directory. Within these files, please feel free to add private members as necessary, but please don’t change the public interface of any of the classes.
 2. Before handing in any assignment, please run these in order:
     1. Make sure you have committed all of your changes to the Git repository. You can run `git status` to make sure there are no outstanding changes. Remember: make small commits as you code.
@@ -119,6 +119,6 @@ Please check the website ([https://cs144.github.io/lab_faq.html](https://cs144.g
 4. Please also fill in the number of hours the assignment took you and any other comments. 
 5. Please let the course staff know ASAP of any problems at a lab session, or by posting a question on Ed. Good luck!
 
-# N.B.
+## N.B.
 1. Please don’t confuse the ultimate destination of the datagram, which is in the datagram’s own header as the destination address, with the next hop. In this lab you’re only going to care about the next hop’s address.
 

@@ -25,7 +25,7 @@ The **ECDH** algorithm (Elliptic Curve Diffie–Hellman Key Exchange) is trivial
 
 In the next section, we shall implement the ECDH algorithm and demonstrate it with code example.
 
-# ECDH Key Exchange - Examples
+## ECDH Key Exchange - Examples
 
 Now let's implement the **ECDH** algorithm (Elliptic Curve Diffie–Hellman Key Exchange) in Python.
 

@@ -10,7 +10,7 @@ To complete this checkpoint, we want you to choose and characterize at least **t
 
 For each path, please measure at least the below statistics:
 
-# Collecting data
+## Collecting data
 Choose a remote host on the Internet to ping (measured by ping from your computer or VM). Some possibilities of faraway paths to get there:
 
 + www.cs.ox.ac.uk (Oxford University CS department webserver, United Kingdom) 
@@ -26,7 +26,7 @@ Run a ping for **at least an hour **to collect data on this Internet path. Use a
 
 Note: A default-sized ping every 0.2 seconds is fine, but please do not flood anybody with traffic faster than this for more than a few seconds.
 
-# Analyzing data
+## Analyzing data
 If you sent five pings per second for an hour, you will have sent approximately 3,600 echo requests (= 5 × 3600), of which we expect the vast majority to have received a reply in the ping output. Using the programming language and graphing tools of your choice, please compute and graph at least the following information:
 
 1. What was the overall delivery rate over the entire interval? In other words: how many echo replies were received, divided by how many echo requests were sent? (Note: <font style="color:#D22D8D;">ping on GNU/Linux doesn’t print any message about echo replies that are </font>**<font style="color:#D22D8D;">not</font>**<font style="color:#D22D8D;"> received</font>. You’ll have to identify missing replies by looking for missing sequence numbers.)

@@ -30,7 +30,7 @@ Enter file in which to save the key (/c/Users/your_user_name/.ssh/id_rsa): /c/Us
 这一步如果默认回车，会生成名为 id_rsa 的文件，你可以输入不同的名字来便于识别文件，比如生成 Gitee 的 ssh key 可以设置为 id_rsa_gitee，设置 Github 的 ssh key 可以设置为 id_rsa_github .
  然后一直回车就可以了
 
-# 在 Gitee 和 Github 添加 public key
+## 在 Gitee 和 Github 添加 public key
 
 找到用户目录下的 .ssh 文件夹，查看并复制创建好的 id_rsa_gitee.pub 或 id_rsa_github.pub 的内容。
 
@@ -43,7 +43,7 @@ cat id_rsa_gitee.pub
 复制文件内容打开 Gitee 和 Github 的网站找到设置，再找到 SSH Keys，添加复制的 public key 。
  id_rsa_gitee.pub的添加给Gitee ，id_rsa_github .pub的添加到Github 。
 
-# 创建配置文件
+## 创建配置文件
 
 在 .ssh 文件夹中创建 config 文件，添加以下内容以区分两个 ssh key：
 
@@ -61,7 +61,7 @@ PreferredAuthentications publickey
 IdentityFile ~/.ssh/id_rsa_github
 ```
 
-# 测试连接是否正常
+## 测试连接是否正常
 
 在命令行输入：
 

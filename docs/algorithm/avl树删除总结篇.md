@@ -70,8 +70,8 @@ description: "![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngTvfibCBuYUBBcicU7xVJ
 
 ![](https://images.spumn.eu.cc/blog/fe2996fff38cef7c.png)
 
-# 举例说明
-## 示例一：
+## 举例说明
+### 示例一：
 我们已删除下图中的结点 **32** 为例进行说明。
 
 ![](https://images.spumn.eu.cc/blog/20c140a2978ebe76.png)
@@ -88,7 +88,7 @@ description: "![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngTvfibCBuYUBBcicU7xVJ
 
 ![](https://images.spumn.eu.cc/blog/40c72a3c177cfad9.png)
 
-## 示例二
+### 示例二
 我们以删除下图中的结点 **80** 为例进行说明。
 
 ![](https://images.spumn.eu.cc/blog/4ba41cd3a5c15746.png)
@@ -117,17 +117,17 @@ description: "![](https://mmbiz.qpic.cn/mmbiz_png/rSmDLkNsngTvfibCBuYUBBcicU7xVJ
 
 ![](https://images.spumn.eu.cc/blog/ba7935f097ac6fb9.png)
 
-# 平衡二叉树的优缺点分析
-## 优点
+## 平衡二叉树的优缺点分析
+### 优点
 平衡二叉树的优点不言而喻，相对于二叉排序树（BST）而言，平衡二叉树避免了二叉排序树可能出现的最极端情况（斜树）问题，其平均查找的时间复杂度为 .
 
-## 缺点
+### 缺点
 很遗憾，平衡二叉树为了保持平衡，动态进行插入和删除操作的代价也会增加。因此出现了后来的红黑树，过两天景禹自会抽时间讲解。
 
-## 时间复杂度分析
+### 时间复杂度分析
 左旋和右旋操作仅需要改变几个指针，时间复杂度为$O(1)$ ，更新结点的深度以及获得平衡因子仅需要常数时间，所以平衡二叉树AVL的删除操作的时间复杂度与二叉排序树BST的删除操作一样，均为$O(h)$，其中 $h$ 为树的高度。由于AVL 树是平衡的，所以高度$h=log(n)$，因此，AVL 删除操作的时间复杂度为$O(logn)$ .
 
-# 平衡二叉树的删除操作实现
+## 平衡二叉树的删除操作实现
 关于左旋与右旋操作，以及平衡因子的计算与之前讲的文章 [图解：什么是AVL树？](https://mp.weixin.qq.com/s?__biz=MzA4NDE4MzY2MA==&mid=2647521381&idx=1&sn=796ac1eda0eaefadfb57a1b9742bcec0&scene=21#wechat_redirect) 中的实现是一致的，我们直接看AVL删除操作的实现代码：
 
 ```cpp
@@ -223,12 +223,12 @@ struct Node* deleteNode(struct Node* root, int key)
 }
 ```
 
-# 实战应用
-## 题目描述
+## 实战应用
+### 题目描述
 > 给定一个值 x ，返回一颗平衡二叉树中比 x 大的结点个数
 >
 
-## 输入输出示例
+### 输入输出示例
 输入一个值 x  = 10 和下面的一颗平衡二叉树：
 
 ![](https://images.spumn.eu.cc/blog/2062441642ea0cb0.png)
@@ -237,7 +237,7 @@ struct Node* deleteNode(struct Node* root, int key)
 
 解释：平衡二叉树中比结点10大有 11，13，14，16 ，共4个结点。
 
-## 题目解析
+### 题目解析
 1.  对于平衡二叉树中的每一个结点维护一个 `desc` 字段，用于保存每一个结点所包含的子孙结点的个数。比如示例中结点 10 的 `desc` 的值就等于 4，结点 **10** 的子孙结点包含 **6、11、5、8** 四个结点。 
 2.  计算大于给定结点的节点数目就可以通过遍历平衡二叉树获得了，具体包含以下三种情况： 
     - **x** 比当前遍历的结点的值大，我们则遍历当前结点的右孩子。

@@ -12,7 +12,7 @@ The asymmetric key cryptosystems provide **key-pair generation** (private + publ
 
 A message **encrypted** by the **public key** is later **decrypted** by the **private key**. A message **signed** by the **private key** is later **verified** by the **public key**. The **public key** is typically shared with everyone, while the **private key** is kept secret. Calculating the private key from its corresponding public key is by design computationally infeasible.
 
-# Public-Key Cryptosystems
+## Public-Key Cryptosystems
 
 Well-known **public-key cryptosystems** are: [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)), [ECC](https://en.wikipedia.org/wiki/Elliptic-curve_cryptography), [ElGamal](https://en.wikipedia.org/wiki/ElGamal_encryption), [DHKE](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange), [ECDH](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman), [DSA](https://en.wikipedia.org/wiki/Digital_Signature_Algorithm), [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm), [EdDSA](https://en.wikipedia.org/wiki/EdDSA), [Schnorr signatures](https://en.wikipedia.org/wiki/Schnorr_signature). Different public key cryptosystems may provide one or more of the following capabilities:
 
@@ -29,7 +29,7 @@ The [elliptic-curve cryptography (ECC) cryptosystem](https://en.wikipedia.org/wi
 
 Most **public-key cryptosystems** (like RSA, ECC, DSA, ECDSA and EdDSA) are **quantum-breakable** (quantum-unsafe), which means that (at least on theory) a powerful enough quantum computer will be able to break their security and compute the private key from given public key in seconds.
 
-# Asymmetric Encryption Schemes
+## Asymmetric Encryption Schemes
 
 **Asymmetric encryption** is more complicated than symmetric encryption, not only because it uses **public** and **private keys**, but because asymmetric encryption can encrypt / decrypt only small messages, which should be mapped to the underlying math of the public-key cryptosystem. Some cryptosystems (like ECC) do not provide directly encryption primitives, so more complex schemes should be used.
 
@@ -49,11 +49,11 @@ This is the corresponding **decryption** process (decrypt an encrypted large doc
 
 Examples of such asymmetric encryption schemes are: [RSA-OAEP](https://en.wikipedia.org/wiki/Optimal_asymmetric_encryption_padding), [RSA-KEM](https://tools.ietf.org/html/rfc5990#appendix-A) and [ECIES-KEM](https://www.w3.org/TR/xmlsec-generic-hybrid/#sec-ecies-kem).
 
-## Integrated Encryption Schemes
+### Integrated Encryption Schemes
 
 [Integrated encryption schemes (IES)](https://en.wikipedia.org/wiki/Integrated_Encryption_Scheme) are modern public key encryption schemes, which combine symmetric ciphers, asymmetric ciphers and key-derivation algorithms to provide secure **public-key based encryption** (PKE). In EIS scheme asymmetric algorithms (like RSA or ECC) are used to encrypt or encapsulate a symmetric key, used later by symmetric ciphers (like AES or ChaCha20) to encrypt the input message. Some IES schemes provide also message authentication. Examples of IES schemes are [DLIES](https://en.wikipedia.org/wiki/Integrated_Encryption_Scheme) (Discrete Logarithm Integrated Encryption Scheme) and [ECIES](https://en.wikipedia.org/wiki/Integrated_Encryption_Scheme) (Elliptic Curve Integrated Encryption Scheme).
 
-## Key Encapsulation Mechanisms (KEMs)
+### Key Encapsulation Mechanisms (KEMs)
 
 A [key encapsulation mechanisms (KEM)](https://en.wikipedia.org/wiki/Key_encapsulation) are asymmetric cryptographic techniques used to encrypt and encapsulate a secret key (called "ephemeral symmetric key"), which is used to encrypt an input message using a symmetric cryptographic cipher. **KEM** encapsulates the ephemeral symmetric encryption key as part of the encrypted message, by encrypting it with the recipient's public key. In cryptography this process is known as "**key encapsulation**".
 
@@ -66,7 +66,7 @@ The output from a KEM-based hybrid encryption scheme consists of **KEM block**, 
 -   **Key encapsulation** (KEM) refers to **public-key encryption of another key** (symmetric or asymmetric). It is used for creating provably secure **hybrid encryption schemes**, e.g. to encrypt an AES secret key by given ECC public key.
 -   **Key wrapping** refers to **symmetric-key encryption of another key** (which can be either a symmetric key or an asymmetric key). It is used to encrypt, integrity-protect and transport cryptographic keys. Key wrapping provides privacy and integrity protection for specialized data such as cryptographic keys, without the use of nonces. For details see [RFC 3394](https://tools.ietf.org/html/rfc3394.html).
 
-# Digital Signatures
+## Digital Signatures
 
 In cryptography **digital signatures** provide message **authentication**, **integrity** and **non-repudiation** for digital documents. Digital signatures work in the public-key cryptosystems and use a public / private key pairs. Message **signing** is performed by the **private key** and message **verification** is performed by the corresponding **public key**.
 
@@ -76,7 +76,7 @@ A **message signature** mathematically guarantees that certain message was signe
 
 Most public-key cryptosystems like **RSA** and **ECC** provide secure digital signature schemes like [DSA](https://en.wikipedia.org/wiki/Digital_Signature_Algorithm), [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) and [EdDSA](https://en.wikipedia.org/wiki/EdDSA). We shall discuss the digital signatures in greater detail later in this section.
 
-# Key Exchange Algorithms
+## Key Exchange Algorithms
 
 In cryptography [key exchange algorithms](https://en.wikipedia.org/wiki/Key_exchange) ([key agreement protocols](https://en.wikipedia.org/wiki/Key-agreement_protocol) / **key negotiation schemes**) allow cryptographic keys to be exchanged between two parties, allowing the use of a cryptographic algorithm, in most cases symmetric encryption cipher. For example, when a laptop connects to the home **WiFi router**, both parties agree on a **session key**, used to symmetrically encrypt the network traffic between them.
 

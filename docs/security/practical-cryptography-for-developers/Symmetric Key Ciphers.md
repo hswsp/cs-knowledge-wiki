@@ -8,7 +8,7 @@ source: https://www.yuque.com/yangguangfanxing/zuyi8o/qgcr2fho4ttyomy2
 
 **Symmetric key ciphers** (like **AES**, **ChaCha20**, **RC6**, **Twofish**, **CAST** and many others) use the same key (or password) to **encrypt** and **decrypt** data. They are often used in combination with other algorithms into a **symmetric encryption schemes** (like **ChaCha20-Poly1305** and **AES-128-GCM** and **AES-256-CTR-HMAC-SHA256**), often with password to **key derivation** algorithms (like **Scrypt** and **Argon2**). Symmetric key ciphers are **quantum-resistant**, which means that powerful quantum computers will not be able to break their security (when big enough key lengths are used). Symmetric ciphers can encrypt data coming as blocks of fixed size (**block ciphers**) or data coming as a sequence of bytes (**stream ciphers**). Block ciphers can be transformed to stream ciphers by certain constructions, known as "**block cipher modes** of operation".
 
-# Symmetric Encryption / Decryption
+## Symmetric Encryption / Decryption
 
 **Symmetric encryption** and decryption uses a **secret key** or passphrase (to derive the key from it). The **secret key** used to encrypt and decrypt the data is usually 128 bits or 256 bits and is called "**encryption key**". Sometimes it is given as hex or base64-encoded integer number or is derived through a **password-to-key derivation scheme**.
 
@@ -16,7 +16,7 @@ When the input data is encrypted, it is transformed to **encrypted ciphertext** 
 
 ![](https://cdn.nlark.com/yuque/0/2023/gif/22382307/1692239364199-24258f7a-7c57-4ff2-b86f-6d796c327fdb.gif)
 
-# Symmetric Encryption Uses a Set of Algorithms
+## Symmetric Encryption Uses a Set of Algorithms
 
 It is important to know as a concept that symmetric-key encryption algorithms usually do not work standalone. They work together with other related crypto algorithms, into a **symmetric encryption scheme** / **symmetric encryption construction**.​
 

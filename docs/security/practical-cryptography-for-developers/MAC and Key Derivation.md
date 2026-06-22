@@ -8,7 +8,7 @@ source: https://www.yuque.com/yangguangfanxing/zuyi8o/ycva6g8oed1beww1
 
 **Message authentication codes** (**MAC**), **HMAC** (hash-based message authentication code) and **KDF** (key derivation functions) play important role in cryptography. Let's explain when we need **MAC**, how to calculate **HMAC** and how it is related to key derivation functions.
 
-# Message Authentication Code (MAC)
+## Message Authentication Code (MAC)
 
 **M**essage **A**uthentication **C**ode (**MAC**) is cryptographic code, calculated by given **key** and given **message**:
 
@@ -36,11 +36,11 @@ Run the above code example: <https://repl.it/@nakov/HMAC-SHA256-in-Python>.
 
 The MAC code is **digital authenticity code**, like a **digital signature**, but with **pre-shared key**. We shall learn more about digital signing and digital signatures later.
 
-# MAC Algorithms
+## MAC Algorithms
 
 Many **algorithms** for calculating message authentication codes (MAC) exist in modern cryptography. The most popular are based on **hashing** algorithms, like [HMAC](https://en.wikipedia.org/wiki/HMAC) (Hash-based MAC, e.g. HMAC-SHA256) and [KMAC](https://www.cryptosys.net/manapi/api_kmac.html) (Keccak-based MAC). Others are based on **symmetric ciphers**, like [CMAC](https://en.wikipedia.org/wiki/One-key_MAC) (Cipher-based MAC), [GMAC](https://en.wikipedia.org/wiki/Galois/Counter_Mode) (<u>Galois MAC)</u> and [Poly1305](https://en.wikipedia.org/wiki/Poly1305) (Bernstein's one-time authenticator). Other MAC algorithms include [UMAC](https://en.wikipedia.org/wiki/UMAC) (based on universal hashing), [VMAC](https://en.wikipedia.org/wiki/VMAC) (high-performance block cipher-based MAC) and [SipHash](https://en.wikipedia.org/wiki/SipHash) (simple, fast, secure MAC).
 
-# When We Need MAC Codes?
+## When We Need MAC Codes?
 
 A sample scenario for using MAC codes is like this:
 
@@ -51,7 +51,7 @@ A sample scenario for using MAC codes is like this:
 
 ![](https://cdn.nlark.com/yuque/0/2023/png/22382307/1691550400851-750d4e5e-50e4-46c7-84c5-a484fd649a39.png)
 
-# Authenticated Encryption: Encrypt / Decrypt Messages using MAC
+## Authenticated Encryption: Encrypt / Decrypt Messages using MAC
 
 Another scenario to use **MAC codes** is for [authenticated encryption](https://en.wikipedia.org/wiki/Authenticated_encryption)**:** when we **encrypt a message** and we want to be sure the **decryption password is correct** and the decrypted message is the same like the original message before encryption.
 
@@ -74,7 +74,7 @@ Some **authenticated encryption algorithms** (such as **AES-GCM** and **ChaCha20
 
 The MAC is stored along with the ciphertext and it **does not reveal** the password or the original message. Storing the MAC code, visible to anyone is safe, and after decryption, we know whether the message is the original one or not (wrong password).
 
-# MAC-Based Pseudo-Random Generator
+## MAC-Based Pseudo-Random Generator
 
 Another application of MAC codes is for **pseudo-random generator** functions. We can start from certain **salt** (constant number or the current date and time or some other randomness) and some **seed** number (last random number generated, e.g. **0**). We can calculate the `next_seed` as follows:
 

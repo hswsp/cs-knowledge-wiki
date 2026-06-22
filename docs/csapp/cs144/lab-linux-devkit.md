@@ -250,7 +250,7 @@ RUN cmake -D CMAKE_C_COMPILER=clang-20 \
 
 ---
 
-# 🚀 运行容器
+## 🚀 运行容器
 构建镜像后，您可以使用以下命令运行容器，并设置环境变量、端口映射和卷挂载：
 
 ```bash
@@ -279,7 +279,7 @@ docker run -it --rm \
 
 也可以直接在 IDEA 中使用容器作为 ToolChains:
 
-## 在 CLion 中配置 Docker 工具链
+### 在 CLion 中配置 Docker 工具链
 1. 打开 CLion，导航至 `Settings`（或 `Preferences`） > `Build, Execution, Deployment` > `Toolchains`。
 2. 点击左上角的 `+` 按钮，选择 `Docker` 类型。
 3. 在弹出的窗口中，点击齿轮图标添加 Docker 服务器：
@@ -296,7 +296,7 @@ docker run -it --rm \
 
 ![](https://images.spumn.eu.cc/cs-knowledge-wiki/csapp/cs144/labs/f2893d644567-1748314270703-f7fa6832-b5f2-43da-a794-13a315d4df94.png)
 
-## 配置 CMake 构建配置
+### 配置 CMake 构建配置
 1. 导航至 `Settings` > `Build, Execution, Deployment` > `CMake`。
 2. 点击左上角的 `+` 按钮，添加新的 CMake 配置。
 3. 在 `Toolchain` 下拉菜单中，选择刚刚配置的 Docker 工具链。
@@ -309,7 +309,7 @@ docker run -it --rm \
 
 ---
 
-# 🧪 验证安装
+## 🧪 验证安装
 进入容器后，您可以运行以下命令验证安装：
 
 ```bash
@@ -335,7 +335,7 @@ root@<container_id>:/# env | grep -i proxy
 
 ---
 
-# 🔄 使用现有容器（可选）
+## 🔄 使用现有容器（可选）
 如果您希望使用已运行的容器而非每次启动新的容器，可以考虑使用 **Remote Host** 工具链：
 
 1. 在 CLion 中，导航至 **Settings/Preferences > Build, Execution, Deployment > Toolchains**。

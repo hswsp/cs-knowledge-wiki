@@ -51,7 +51,7 @@ HMAC('sample message', '12345', 'SHA256') =
 
 Try the above example yourself.
 
-# HMAC Calculation - Examples
+## HMAC Calculation - Examples
 
 In **Python** we can **calculate HMAC** codes as follows (using the hashlib and hmac libraries):
 

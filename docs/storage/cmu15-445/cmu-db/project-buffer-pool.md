@@ -2,7 +2,7 @@
 
 > Do not post your project on a public Github repository.
 
-# Overview
+## Overview
 
 During the semester, you will build a disk-oriented storage manager for the [BusTub](https://github.com/cmu-db/bustub) DBMS. In such a storage manager, the primary storage location of the database is on disk.
 
@@ -23,7 +23,7 @@ This is a single-person project that must be completed individually (i.e. no gro
 
 > Remember to pull latest code from the bustub repository.
 
-# Project Specification
+## Project Specification
 
 For each of the following components, we provide stub classes that contain the API that you must implement. You should **not** modify the signatures for the pre-defined functions in these classes. If you modify the signatures, our grading test code will not work and you will get no credit for the project.
 
@@ -31,7 +31,7 @@ If a class already contains data members, you should **not** remove them. For ex
 
 You may use any built-in [C++17 containers](http://en.cppreference.com/w/cpp/container) in your project unless specified otherwise. It is up to you to decide which ones you want to use. Be warned that these containers are not thread-safe; will need to use latches to protect access to them. You may not use additional third-party libraries (e.g. boost).
 
-## Task #1 - LRU-K Replacement Policy
+### Task #1 - LRU-K Replacement Policy
 
 This component is responsible for tracking page usage in the buffer pool. You will implement a new class called `LRUKReplacer` in `src/include/buffer/lru_k_replacer.h` and its corresponding implementation file in `src/buffer/lru_k_replacer.cpp`. Note that `LRUKReplacer` is a stand-alone class and is not related to any of the other `Replacer` classes. You are expected to implement only the LRU-K replacement policy. You don't have to implement LRU or a clock replacement policy, even if there is a corresponding file for it.
 
@@ -49,7 +49,7 @@ You will need to implement the *LRU-K* policy discussed in this course. You will
 
 The implementation details are up to you. You are allowed to use built-in STL containers. You may assume that you will not run out of memory, but you must make sure that your implementation is thread-safe.
 
-## Task #2 - Disk Scheduler
+### Task #2 - Disk Scheduler
 
 This component is responsible for scheduling read and write operations on the `DiskManager`. You will implement a new class called `DiskScheduler` in `src/include/storage/disk/disk_scheduler.h` and its corresponding implementation file in `src/storage/disk/disk_scheduler.cpp`.
 
@@ -66,11 +66,11 @@ Lastly, one of the fields of a `DiskRequest` is a `std::promise`. If you are unf
 
 Again, the implementation details are up to you, but you must make sure that your implementation is thread-safe.
 
-### Disk Manager
+#### Disk Manager
 
 The Disk Manager class (`src/include/storage/disk/disk_manager.h`) reads and writes the page data from and to the disk. Your disk scheduler will use `DiskManager::ReadPage()` and `DiskManager::WritePage()` when it is processing a read or write request.
 
-## Task #3 - Buffer Pool Manager
+### Task #3 - Buffer Pool Manager
 
 Next, implement the buffer pool manager (`BufferPoolManager`). The `BufferPoolManager` is responsible for fetching database pages from disk with the `DiskScheduler` and storing them in memory. The `BufferPoolManager` can also schedule writes of dirty pages out to disk when it is either explicitly instructed to do so or when it needs to evict a page to make space for a new page.
 
@@ -101,7 +101,7 @@ You do not need to make your buffer pool manager super efficient -- holding the 
 
 Please refer to the header files (`lru_k_replacer.h`, `disk_scheduler.h`, `buffer_pool_manager.h`) for more detailed specs and documentations.
 
-## Leaderboard Task (Optional)
+### Leaderboard Task (Optional)
 
 For this project's leaderboard challenge, we are doing a benchmark on your buffer pool manager with a special storage backend.
 
@@ -140,7 +140,7 @@ scan_qps_large / 1000 + get_qps_large / 1000 + scan_qps_small / 1000 + get_qps_s
 4. All page data should be stored in the buffer pool manager page array. You are not allowed to use extra memory for page data (i.e., implementing a page cache in BusTub). You must properly process all read / write requests and persist data to the disk manager.
 5. You can use our provided lock-free queue implementation in `third_party/readerwriterqueue` and create your own `promise` implementation that is compatible with `std::promise` so as to lower the overhead of inter-thread communication. Note that in this project, all requests must go through the `DiskScheduler`'s background thread.
 
-### Leaderboard Policy
+#### Leaderboard Policy
 
 - Submissions *with leaderboard bonus* are subject to manual review by TAs.
   - By saying "review", it means that TAs will manually look into your code, or if they are unsure whether an optimization is correct or not by looking, they will make simple modification to existing test cases to see if your leaderboard optimization *correctly* handled the specific cases that you want to optimize.
@@ -156,11 +156,11 @@ scan_qps_large / 1000 + get_qps_large / 1000 + scan_qps_small / 1000 + get_qps_s
 - You cannot use late days for leaderboard tests.
 - If you are unsure about whether an optimization is reasonable, you should post on Piazza or visit any TA's office hour.
 
-# Instructions
+## Instructions
 
 See the [Project #0 instructions](https://15445.courses.cs.cmu.edu/fall2023/project0/#instructions) on how to create your private repository and setup your development environment.
 
-## Testing
+### Testing
 
 You can test the individual components of this assigment using our testing framework. We use [GTest](https://github.com/google/googletest) for unit test cases. There are three separate files that contain tests for each component:
 
@@ -179,7 +179,7 @@ You can also run `make check-tests` to run ALL of the test cases. Note that some
 
 **Important:** These tests are only a subset of the all the tests that we will use to evaluate and grade your project. You should write additional test cases on your own to check the complete functionality of your implementation.
 
-## Formatting
+### Formatting
 
 Your code must follow the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html). We use [Clang](https://clang.llvm.org/) to automatically check the quality of your source code. Your project grade will be **zero** if your submission fails any of these checks.
 
@@ -190,7 +190,7 @@ $ make format
 $ make check-clang-tidy-p1
 ```
 
-## Memory Leaks
+### Memory Leaks
 
 For this project, we use [LLVM Address Sanitizer (ASAN) and Leak Sanitizer (LSAN)](https://clang.llvm.org/docs/AddressSanitizer.html) to check for memory errors. To enable ASAN and LSAN, configure CMake in debug mode and run tests as you normally would. If there is memory error, you will see a memory error report. Note that macOS **only supports address sanitizer without leak sanitizer**.
 
@@ -200,7 +200,7 @@ In some cases, address sanitizer might affect the usability of the debugger. In 
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUSTUB_SANITIZER= ..
 ```
 
-## Development Hints
+### Development Hints
 
 You can use `BUSTUB_ASSERT` for assertions in debug mode. Note that the statements within `BUSTUB_ASSERT` will NOT be executed in release mode. If you have something to assert in all cases, use `BUSTUB_ENSURE` instead.
 
@@ -210,7 +210,7 @@ We encourage you to use a graphical debugger to debug your project if you are ha
 
 If you are having compilation problems, running `make clean` does not completely reset the compilation process. You will need to delete your build directory and run `cmake ..` again before you rerun `make`.
 
-# Grading Rubric
+## Grading Rubric
 
 Each project submission will be graded based on the following criteria:
 
@@ -220,11 +220,11 @@ Each project submission will be graded based on the following criteria:
 
 Note that we will use additional test cases to grade your submission that are more complex than the sample test cases that we provide you.
 
-# Late Policy
+## Late Policy
 
 See the [late policy](https://15445.courses.cs.cmu.edu/fall2023/syllabus.html#late-policy) in the syllabus.
 
-# Submission
+## Submission
 
 After completing the assignment, you can submit your implementation to Gradescope:
 
@@ -234,7 +234,7 @@ Running `make submit-p1` in your `build/` directory will generate a `zip` archiv
 
 You can submit your answers as many times as you like and get immediate feedback.
 
-## Notes on Gradescope and Autograder
+### Notes on Gradescope and Autograder
 
 1. If you are timing out on Gradescope, it's likely because you have a deadlock in your code or your code is too slow and does not run in 60 seconds. If your code is too slow it may be because your `LRUKReplacer` is not efficient enough.
 2. The autograder will not work if you are printing too many logs in your submissions.
@@ -243,7 +243,7 @@ You can submit your answers as many times as you like and get immediate feedback
 
  CMU students should use the Gradescope course code announced on Piazza.
 
-# Collaboration Policy
+## Collaboration Policy
 
 - Every student has to work individually on this assignment.
 - Students are allowed to discuss high-level details about the project with others.

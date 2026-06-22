@@ -155,10 +155,10 @@ std::unordered_map<std::string, std::string> umap2(++umap.begin(),umap.end());
 
 通过此方式创建的 umap2 容器，其内部就包含 umap 容器中除第 1 个键值对外的所有其它键值对。
 
-# unordered_map 自定义键值类型
+## unordered_map 自定义键值类型
 
 
-## 方法1：std::function
+### 方法1：std::function
 
 
 方法1就是利用std::function为person_hash()构建函数实例。初始化时，这个函数实例就会被分配那个指向person_hash()的指针（通过构造函数实现），如下所示。
@@ -279,7 +279,7 @@ int main(int argc, char* argv[])
 
 
 
-## 方法2：重载operator()的类
+### 方法2：重载operator()的类
 
 
 方法2就是利用重载operator()的类，将哈希函数打包成可以直接调用的类。此时，虽然我们仍然需要第3个参数，但是我们不需要将函数对象的引用传入构造器里。
@@ -330,7 +330,7 @@ int main(int argc, char* argv[]){
 
 
 
-## 方法3：模板定制
+### 方法3：模板定制
 
 
 unordered_map第3个参数的默认参数是`std::hash<Key>`，实际上就是模板类。那么我们就可以对它进行模板定制，如下所示。
@@ -438,8 +438,8 @@ int main(int argc, char* argv[]){
 }
 ```
 
-## 
-# unordered_map容器的成员方法
+### 
+## unordered_map容器的成员方法
 
 
 unordered_map 既可以看做是关联式容器，更属于自成一脉的无序容器。因此在该容器模板类中，既包含一些在学习关联式容器时常见的成员方法，还有一些属于无序容器特有的成员方法。
@@ -533,7 +533,7 @@ Java教程 http://c.biancheng.net/java/
 
 
 
-## emplace()方法
+### emplace()方法
 
 
 emplace() 方法的用法很简单，其语法格式如下：
@@ -601,7 +601,7 @@ iter ->STL教程 http://c.biancheng.net/stl/
 
 
 
-## emplace_hint()方法
+### emplace_hint()方法
 
 
 emplace_hint() 方法的语法格式如下：
@@ -667,7 +667,7 @@ iter ->STL教程 http://c.biancheng.net/stl/
 > 有关表 2 中其它成员方法的用法，读者可以自行查询 [C++ STL标准库手册](http://www.cplusplus.com/reference/unordered_map/unordered_map/)。
 >
 
-# unordered_map遍历
+## unordered_map遍历
 ```cpp
 //创建 umap 容器
 unordered_map<string, string> umap{

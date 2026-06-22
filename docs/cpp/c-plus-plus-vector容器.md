@@ -166,7 +166,7 @@ vector<vector <int> > ivec(m ,vector<int>(n));
 
 
 
-# vector 容器迭代器输出
+## vector 容器迭代器输出
 常见的输出迭代器是 `ostream_iterator`，方便我们把容器内容“拷贝”到一个输出流。示例如下：
 
 ```cpp
@@ -187,8 +187,8 @@ copy(v2.begin(), v2.end(),
 > 1 2 3 4 5
 >
 
-# vector成员函数
-## vector的重置
+## vector成员函数
+### vector的重置
 **请务必记住先清空vector再resize!!!**
 
 ```cpp
@@ -196,13 +196,13 @@ ivec.clear();
 ivec.resize(N,vector<int>(M,-1));
 ```
 
-## `rbegin()`与`begin()`
+### `rbegin()`与`begin()`
 + `c.begin()` 返回一个迭代器，它指向容器c的第一个元素
 + `c.end()` 返回一个迭代器，它指向容器c的最后一个元素的**下一个**位置
 + `c.rbegin()` 返回一个逆序迭代器，它指向容器c的最后一个元素
 + `c.rend()` 返回一个逆序迭代器，它指向容器c的第一个元素前面的位置
 
-## 插入（insert）
+### 插入（insert）
 
 
 ```cpp
@@ -220,7 +220,7 @@ vector<vector<int> > res;
 res.push_back({1,2});
 ```
 
-## 清除（erase, pop_back）
+### 清除（erase, pop_back）
 
 
 ```cpp
@@ -231,7 +231,7 @@ v.erase(v.begin()+1, v.end());  // 删除第一个元素之后的所有元素（
 //{0}
 ```
 
-# 求和（accumulate）
+## 求和（accumulate）
 
 
 在头文件`<numeric>`中
@@ -249,7 +249,7 @@ vector<int> v;
 int sum = accumulate(v.begin(), v.begin() + n, 0);
 ```
 
-# 求最值（max_element）
+## 求最值（max_element）
 
 
 注意，这里的`max_element`函数与`min_element`函数都是在**左闭右开**的区间查找。
@@ -264,7 +264,7 @@ int position=max_element(v.begin(), v.end())-v.begin();
 
 
 
-# 反转容器（Reverse）
+## 反转容器（Reverse）
 
 
 `reverse()`函数的用法，也是**左闭右开**
@@ -276,4 +276,4 @@ reverse(v.begin(),v.end());//容器v的值变为1,2,3,4,5
 
 
 
-# 
+## 

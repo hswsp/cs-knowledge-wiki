@@ -28,6 +28,6 @@ $2a$12$8Ov4lfmZZbv8O5YKrXXCu.mdH9Dq9r72C5GnhVZbGNsIzTr8dSUfm
 
 When configured properly **Bcrypt** is considered a **secure KDF function** and is widely used in practice. It is considered that **Scrypt is more secure than Bcrypt,** so modern applications should **prefer Scrypt** (or **Argon2**) instead of **Bcrypt**. Still, this recommendation is disputable, but I personally prefer **Argon2**.
 
-# Linux crypt()
+## Linux crypt()
 
 See <https://en.wikipedia.org/wiki/Crypt_(C>)

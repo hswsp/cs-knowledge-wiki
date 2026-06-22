@@ -8,7 +8,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/rwgt2m3mdq4xzww1
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239685248-82354cf6-9055-4e3f-bac7-373fad0d4efc.png)
 
-# Recap
+## Recap
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239685278-688e3d2c-f8be-4496-8a70-0680b128bc51.png)
 
@@ -25,7 +25,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/rwgt2m3mdq4xzww1
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239685311-8b7ced95-4eff-46bf-9dad-aeac7479d005.png)
 
-## RDBMS 与 VDBMS 对比
+### RDBMS 与 VDBMS 对比
 
 不同需求 → 不同设计
 
@@ -45,7 +45,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/rwgt2m3mdq4xzww1
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239685191-1aac898c-f310-42f4-a693-b43165d6aa12.png)
 
-# Querying
+## Querying
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239685415-75e379de-a43f-434a-8dbd-797af9085dbb.png)
 
@@ -64,7 +64,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/rwgt2m3mdq4xzww1
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239686904-b0c6a718-2c75-4409-8aeb-d6f0f612424c.png)
 
-## 距离 / 相似度评分
+### 距离 / 相似度评分
 
 给定向量 ![](https://cdn.nlark.com/yuque/__latex/b6ab13654c57543b5284b8718983024c.svg)，计算表示相似性/距离的数值。
 
@@ -85,7 +85,7 @@ MIPS = Maximum Inner Product Search。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239686679-bf1eaf74-e74f-4ffe-bf90-8d4cf511a817.png)
 
-## 相似度转距离
+### 相似度转距离
 
 将相似度分数 ![](https://cdn.nlark.com/yuque/__latex/56c1b0cb7a48ccf9520b0adb3c8cb2e8.svg) 反转的方法：
 
@@ -102,7 +102,7 @@ MIPS = Maximum Inner Product Search。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239686638-479538da-b4c0-4810-9909-b72198e32556.png)![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687200-5a5b2ef7-ce58-4b00-a688-a94b298a6947.png)
 
-## kNN 查询（核心查询）
+### kNN 查询（核心查询）
 
 找到 ![](https://cdn.nlark.com/yuque/__latex/df976ff7fcf17d60490267d18a1e3996.svg) 个最近邻。
 
@@ -126,7 +126,7 @@ LIMIT 5;
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687240-a9862f77-3318-4720-aebf-1eba14ff585c.png)
 
-## 范围查询（Range Query）
+### 范围查询（Range Query）
 
 返回指定半径 ![](https://cdn.nlark.com/yuque/__latex/cead1760d9d5723460c4b8d4028f113a.svg) 内的所有向量：
 
@@ -143,7 +143,7 @@ WHERE vec <-> '[1,6.4,-2.1]' < 4;
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687308-6122fe5a-6a35-4b17-be93-18ed906e15e4.png)
 
-## 谓词查询（Predicated Queries）
+### 谓词查询（Predicated Queries）
 
 **别名：** 属性过滤、混合查询（Hybrid Queries）
 
@@ -166,7 +166,7 @@ index.query(
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687579-2c839088-69b8-4b9e-a3fc-6502de6d259f.png)
 
-### 核心问题
+#### 核心问题
 
 ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
@@ -176,7 +176,7 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687489-bbbdc880-16f2-42a2-95bb-74e4fc28b38b.png)![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687709-759a5cf4-ffe1-4314-83c1-ec15b446960d.png)
 
-### 三种过滤策略
+#### 三种过滤策略
 
 1. **预过滤 + 全表扫描**
 
@@ -186,7 +186,7 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687743-9ef420f5-fc37-4460-a52c-c7cbd50b759d.png)
 
-### 示例实现
+#### 示例实现
 
 | 方法 | 说明 | 产品 |
 | --- | --- | --- |
@@ -196,7 +196,7 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239687768-e66cb978-1a73-4aa5-9de7-bcc27078fdf8.png)
 
-## 多向量查询（Multi-Vector Queries）
+### 多向量查询（Multi-Vector Queries）
 
 **别名：** 混合搜索、多模态搜索
 
@@ -208,7 +208,7 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239688096-b32754b6-66b8-4e02-b966-44a1c66ed193.png)
 
-### 朴素方法
+#### 朴素方法
 
 1. 执行 ![](https://cdn.nlark.com/yuque/__latex/4760e2f007e23d820825ba241c47ce3b.svg) 次 kNN 搜索 → 得到 ![](https://cdn.nlark.com/yuque/__latex/230e9de640d9344b772e7b7022fb732b.svg) 个向量
 2. 合并分数（最小值、加权平均、最大值、学习组合等）
@@ -218,13 +218,13 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239688347-d36aec6b-fe4b-479d-bd4c-cfe0ce530271.png)
 
-### 经典 top-k 算法的问题
+#### 经典 top-k 算法的问题
 
 需要"获取下一候选"操作 → 大多数向量索引不支持！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239688268-bbddd509-4b09-43c8-bffc-6c7f15847108.png)
 
-### 高级方法
+#### 高级方法
 
 1. **向量融合（Vector Fusion）**
 
@@ -235,7 +235,7 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239688218-971db258-ad0e-40a3-852f-406c5b6a7e42.png)
 
-## 重排序（Reranking）
+### 重排序（Reranking）
 
 许多 VDBMS 提供查询后的重排序步骤。
 
@@ -261,7 +261,7 @@ ANN (Approximate Nearest Neighbors) 索引与属性索引不兼容！
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239688250-4caf648e-8d88-42ea-bb6d-79878f767945.png)
 
-## 精确 kNN 很慢！
+### 精确 kNN 很慢！
 
 **暴力搜索：**
 

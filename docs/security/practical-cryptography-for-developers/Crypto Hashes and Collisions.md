@@ -10,11 +10,11 @@ source: https://www.yuque.com/yangguangfanxing/zuyi8o/pzhssy4kbudfvveb
 
 ![](https://cdn.nlark.com/yuque/0/2023/png/22382307/1691376590829-cbd740de-0537-4bbe-ab74-48ef3798f676.png)
 
-# Hash Collisions
+## Hash Collisions
 
 A **collision** means the same hash value for two different inputs. For simple hash functions it is easy to reach a collision. For example, assume a hash function h(text) sums of all character codes in a text. It will produce the same hash value (collision) for texts holding the same letters in different order, i.e. `h('abc') == h('cab') == h('bca')`. To avoid collisions, cryptographers have designed **collision-resistant** hash functions.
 
-# Cryptographic Hash Functions: No Collisions
+## Cryptographic Hash Functions: No Collisions
 
 **Collisions** in the cryptographic hash functions are **extremely unlikely** to be found, so crypto **hashes** are considered to almost uniquely identify their corresponding input. Moreover, it is extremely hard to find an input message that hashes to given value.
 

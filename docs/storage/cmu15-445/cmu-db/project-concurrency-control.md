@@ -2,7 +2,7 @@
 
 > Do not post your project on a public GitHub repository.
 
-# Overview
+## Overview
 
 In this project, you will add transaction support for BusTub by implementing optimistic multi-version concurrency control (MVOCC). The project consists of four tasks, two optional bonus tasks, and one leaderboard benchmark.
 
@@ -18,7 +18,7 @@ This project must be completed individually (i.e., no groups). Before you start,
 - **Release Date:** Nov 13, 2023
 - **Due Date:** Dec 10, 2023 @ 11:59pm
 
-# Project Specification
+## Project Specification
 
 Like previous projects, we provide classes that define the APIs you must implement. Do not modify the signatures of the predefined functions or remove predefined member variables in these classes unless indicated; if you do, our test code will not work and you will receive no credit for the project. You may add private helper functions and member variables to these classes as needed.
 
@@ -36,11 +36,11 @@ This project has two score boundaries.
 
 You can use late days for the bonus tasks if you still have some left, but late days are not allowed for leaderboard tests.
 
-## Task #1 - Timestamps
+### Task #1 - Timestamps
 
 In BusTub, each transaction will be assigned with two timestamps: read timestamp and commit timestamp. In this task, we will walk through how the timestamps are assigned, and you will need to implement the transaction manager to assign timestamps correctly to transactions.
 
-### 1.1 Timestamp Allocation
+#### 1.1 Timestamp Allocation
 
 When a transaction begins, it will be assigned a read timestamp, which is the commit timestamp of the latest committed transaction. On transaction commit, it will be assigned a monotonically-increasing commit timestamp. The read timestamp determines what data can be read by a transaction, and the commit timestamp determines the serialization order of the transactions.
 
@@ -54,7 +54,7 @@ Commit timestamp is the time that a transaction commits. It is a logical counter
 
 You will need to assign the transactions with the correct read timestamp and commit timestamp in this task. See `TransactionManager::Begin` and `TransactionManager::Commit` for more information. We already provide the starter code for `TransactionManager::Abort`, and you do not need to change anything in `Abort` in order to get full points in Task #1.
 
-### 1.2 Watermark
+#### 1.2 Watermark
 
 Watermark is the lowest read timestamp among all in-progress transactions. The easiest way of computing the watermark is to iterate all transactions in the transaction map and find the minimum of `read_ts` among all on-going transactions. However, this simple strategy is not efficient. In this task, you will need to implement an algorithm of at least `O(log N)` time complexity to compute the watermark of the read timestamp in the system. Please refer to `watermark.h` and `watermark.cpp` for more information. You will also need to call `Watermark::AddTxn` and `Watermark::RemoveTxn` when a transaction starts / commits / aborts.
 
@@ -62,7 +62,7 @@ There are many ways to achieve it: using a heap or using `std::map`. The referen
 
 You should pass all test cases in the `TxnTimestampTest` suite at this point.
 
-## Task #2 - Storage Format and Sequential Scan
+### Task #2 - Storage Format and Sequential Scan
 
 BusTub stores transaction data in three places: table heap, transaction manager, and inside each transaction. The table heap always contains the latest data, the transaction manager “page version info” stores the pointer to the next modification, and inside each transaction, we store the tuples that the transaction modified, in a format called undo log. To retrieve the tuple at a given read timestamp, you will need to (1) fetch all modifications (aka. undo logs) that happen after the given timestamp, and (2) apply the modification (“undo” the undo logs) to the latest version of the tuple to recover a past version of the tuple.
 
@@ -70,7 +70,7 @@ This is similar to the delta table storage model that we covered in the lectures
 
 ![img](https://images.spumn.eu.cc/blog/bafb5b4a7e0712ab.png)
 
-### 2.1 Tuple Reconstruction
+#### 2.1 Tuple Reconstruction
 
 In this task, you will need to implement the tuple reconstruction algorithm. You will need to implement the `ReconstructTuple` function. The function is defined in `execution_common.cpp`. Throughout the project, you will find that some functionalities can be shared by different components in the system, and you can define such functions in `execution_common.cpp`.
 
@@ -86,7 +86,7 @@ Base tuples always contain full data. Undo logs, however, only contain the colum
 
 The undo log contains a partial update. `modified_fields` is a vector of bool that has the same length as the table schema. If one of the fields is set to true, it indicates that the field is updated. The `tuple` field contains the partial tuple. To retrieve a value from the tuple, you will likely need to construct the partial schema of the tuple based on the table schema and the modified fields. The timestamp is the read timestamp that this undo log corresponds to. We also store a link to the next undo log, and if this is the last undo log in the chain, TxnId will be set to INVALID_TXN. Again, you do NOT need to examine the timestamp field and the previous version field in `ReconstructTuple`.
 
-### 2.2 Sequential Scan / Tuple Retrieval
+#### 2.2 Sequential Scan / Tuple Retrieval
 
 In this task, you will need to rewrite your sequential scan executor from [Project #3](https://15445.courses.cs.cmu.edu/fall2023/project3), so as to support retrieving data from the past based on the read timestamp of a transaction.
 
@@ -112,11 +112,11 @@ The example is oversimplified compared with the test cases. You will also need t
 
 Our test cases will manually set up some transactions and the table heap content, so that you do not need to implement insert executors to test your sequential scan implementation. At this point, you should pass all test cases in `TxnScanTest`.
 
-## Task #3 - MVCC Executors
+### Task #3 - MVCC Executors
 
 In this section, you will need to implement data modification executors, including insert executor, delete executor, and update executor. Starting from this task, your implementation will not be compatible with project 3, as we only support schema of fixed-size data types.
 
-### 3.1 Insert Executor
+#### 3.1 Insert Executor
 
 At this point in this project, your insert executor implementation should be nearly the same as in [Project #3](https://15445.courses.cs.cmu.edu/fall2023/project3). You can simply create a new tuple in the table heap. You will need to correctly set the tuple metadata for the tuple. The timestamp in the table heap should be set to the transaction temporary timestamp, as described in [Task 2.2](https://15445.courses.cs.cmu.edu/fall2023/project4/#task2.2). You do not need to modify the version link, and the next version link of this tuple should be `nullopt`, which indicates there are no previous versions for this tuple. You should also add the RID to the write set. The below figure is an illustration of txn9 inserting (D, 3) into the table.
 
@@ -135,7 +135,7 @@ UpdateVersionLink(rid, new_version_link, check_function) {
 
 At this point, all test cases are single-threaded, and therefore you can simply pass a nullptr here as the `check` parameter to skip the check. Starting at [Task 4.2](https://15445.courses.cs.cmu.edu/fall2023/project4/#task4.2), you may need to implement the check logic to detect write-write conflict when there are multiple threads updating a tuple and its metadata / version link concurrently.
 
-### 3.2 Commit
+#### 3.2 Commit
 
 Only one transaction is allowed to enter the `Commit` function at a time, and you should ensure that by using `commit_mutex_` in the transaction manager. In this task, you will need to extend your `Commit` implementation in the transaction manager with the commit logic. You should:
 
@@ -188,7 +188,7 @@ And we provide the reference solution running in your browser at [BusTub Web She
 
 Starting this task, all test cases are written in SQL. As long as your result of SQL query matches the reference output, you will get full points for a test case. We do not check the exact content of your version chain, except that we will check for number of undo logs and number of table heap tuples to ensure you are maintaining the version chain correctly.
 
-### 3.3 Update and Delete Executor
+#### 3.3 Update and Delete Executor
 
 In this task, you will need to implement the logic to generate undo logs, and to update the table heap tuples. The update and delete executor are basically the same (and you can implement the shared part in `execution_common.cpp`), where the update executor puts the new version of a tuple in the table heap, and delete executor sets the `is_delete` flag for a tuple in the table heap.
 
@@ -243,7 +243,7 @@ To put everything together, for update / deletes, you should:
 
 At this point, you should pass the `TxnExecutorTest` except the garbage collection test case.
 
-### Task 3.4 Stop-the-world Garbage Collection
+#### Task 3.4 Stop-the-world Garbage Collection
 
 In the starter code, once we add the transaction into the transaction map, we never remove it, because transactions with a lower read timestamp might need to read the undo logs stored in the previous committed or aborted transactions. In this task, you will need to implement a simple garbage collection strategy that removes unused transactions.
 
@@ -257,7 +257,7 @@ The example above illustrates the case where the watermark timestamp is 3 and we
 
 At this point, you should pass the `TxnExecutorTest`.
 
-## Task #4 - Primary Key Index
+### Task #4 - Primary Key Index
 
 BusTub supports primary key index, which can be created in the following way:
 
@@ -268,11 +268,11 @@ CREATE TABLE t1(v1 int, v2 int, PRIMARY KEY(v1, v2));
 
 When the primary key is specified when a table is created, BusTub will automatically create an index with its `is_primary_key` property set to true. One table will have at most one primary key index. Primary key indexes ensure uniqueness of the primary key. In this task, you will need to handle primary key indexes in your executors. The test cases will not create secondary indexes using `CREATE INDEX`, and therefore you do not need to maintain secondary indexes in this task.
 
-### 4.0 Index Scan
+#### 4.0 Index Scan
 
 You do not need to implement the MVCC index scan executor at this point. This is for [Task 4.2](https://15445.courses.cs.cmu.edu/fall2023/project4/#task4.2) and above. Our test case will use range queries instead of equal queries to avoid the sequential scan to index scan rule being invoked, so that sequential scans will not be converted to index scans when you implement [Task 4.1](https://15445.courses.cs.cmu.edu/fall2023/project4/#task4.1).
 
-### 4.1 Inserts
+#### 4.1 Inserts
 
 You will need to modify your insert executor to correctly handle the primary key index. At the same time, you will also need to think about the case that multiple transactions are inserting the same primary key in multiple threads. Inserting with index can be done with the following steps:
 
@@ -294,7 +294,7 @@ At this point, we will have the first concurrent test case in this project, wher
 
 > At this point, you should have got 80 points. There is only one concurrent test and one hidden test case at the 80-point boundary. You should focus on other important things in your life before coming back for 100 points. The next 20 points might take you the same amount of time as all previous points, as there are more concurrent test cases and hidden test cases.
 
-### 4.2 Index Scan, Deletes and Updates
+#### 4.2 Index Scan, Deletes and Updates
 
 In this task, you will need to add index support for delete and update executor. You will need to first implement the multi-version index scan executor, and then implement updates and deletes support for insert, update, and delete executors.
 
@@ -306,7 +306,7 @@ In this example, tuple (B, 2) has been deleted by txn1. We DO NOT remove the ent
 
 You will also need to think about other race conditions at this point. For example, if multiple transactions are updating the version link at the same time. You should correctly abort some of them and let one of them proceed without losing any data. In the version info page, we have the `in_progress` field that indicates if there is already an ongoing transaction on the tuple. From this task, you will need to use this field to avoid race conditions. Also, you will notice that at the second change in the above example, there will be a small amount of time when the table heap contains a tuple with the same timestamp as the first undo log. Your sequential scan executor should also handle this case correctly after you have implemented updates and deletes.
 
-### 4.3 Primary Key Updates
+#### 4.3 Primary Key Updates
 
 One edge case of update with index is when the primary key gets updated. In this case, the update should be implemented as a delete on the original key and an insert on the new key.
 
@@ -328,7 +328,7 @@ And finally, commit the changes.
 
 > At this point in the project, you should get 100 points on the Gradescope tests. This is a major accomplishment and you may want to take care of other things in your life before coming back for bonus points. The next 20 points will be ridiculously hard to get it correct, because we will no longer guide you through all possible situations as before (think about it on your own), and most test cases are concurrent. You've been warned.
 
-## Bonus Task 1: Abort
+### Bonus Task 1: Abort
 
 **This is optional.** Before this task, transactions that go into the tainted state will cause other transactions to abort on the write-conflicting tuples. In this task, you are required to implement the abort logic, so that we can continue modifying the tuples when any of the transactions aborts. Remember that we detect write-write conflict by checking if there is an ongoing modification to a tuple. When aborting a transaction, we should revert this change, so that other transactions can write to the tuple.
 
@@ -356,7 +356,7 @@ You do not need to revert index modifications. Anything added to the index will 
 
 You should allow multiple threads aborting in parallel. That is, do not take the `commit_mutex` or any other locks throughout the whole function.
 
-## Bonus Task #2 - Serializable Verification
+### Bonus Task #2 - Serializable Verification
 
 **This is optional.** If a transaction runs in serializable isolation level, you will need to verify if it satisfies the serializability when committing the transaction. We use OCC backward validation for serializable verification. Note that the verification method we talked about in the lecture only applies to a static database. In BusTub, you will need to consider newly-inserted and deleted records. To complete the serializable verification, you will need to store the scan filter (aka. scan predicate) in the transaction each time the *sequential scan executor* or the *index scan executor* are called. You will also need to track the write set correctly. With all the information, we can do serializable verification by checking if the scan predicate (read set) intersects with the write set of transactions that starts after the current transaction starts, as follows when we commit a transaction:
 
@@ -389,7 +389,7 @@ For BusTub Netcat shell,
 ./bin/bustub-nc-shell --serializable
 ```
 
-### Leaderboard Benchmark - T-NET, the Terrier NFT Exchange Network
+#### Leaderboard Benchmark - T-NET, the Terrier NFT Exchange Network
 
 In a galaxy far, far away, there is a universe in which [Jack Russell terriers](https://en.wikipedia.org/wiki/Jack_Russell_Terrier) live in a highly-civilized society. We say that the society is highly civilized, except that NFTs (non-fungible tokens) are becoming increasingly popular. One day, the terriers decide to find a database system to track their NFTs, and BusTub is one of their candidate systems.
 
@@ -443,7 +443,7 @@ Implementing a more efficient serializable verification (i.e., [precision lockin
 
 You will be ranked on speed of transfers and space usage of the database system respectively. The speed of transfers is measured by the throughput of the system, and the space usage is measured by the total number of rows in table tuples and undo logs in the system. There will be a background thread collecting number of rows in the system periodically, and the space usage is computed with the maximum number of rows at any time throughout the benchmark. The final leaderboard bonus score will be computed as: `min{speed_rank_bonus+space_rank_bonus, leaderboard_maximum_bonus}`. For each ranking, you will get 15 points for the 1st place, 10 points for 2nd-10th place, and 5 points for 11th-20th place.
 
-### Leaderboard Policy
+#### Leaderboard Policy
 
 - Submissions *with leaderboard bonus* are subject to manual review by TAs.
   - By saying "review", it means that TAs will manually look into your code, or if they are unsure whether an optimization is correct or not by looking, they will make simple modification to existing test cases to see if your leaderboard optimization *correctly* handled the specific cases that you want to optimize.
@@ -460,7 +460,7 @@ You will be ranked on speed of transfers and space usage of the database system 
 - You cannot use late days for leaderboard tests. **For this project, you may use late days for bonus tasks.**
 - If you are unsure about whether an optimization is reasonable, you should post on Piazza or visit any TA's office hour.
 
-# Appendix
+## Appendix
 
 In the appendix, we provide a list of files you will likely need to modify in this project:
 
@@ -485,13 +485,13 @@ And a list of functions / classes that might be helpful in this project:
 - Using C++14 tuple unpacking syntax might be helpful, i.e., `auto [meta, tuple] = iter->GetTuple();`.
 - Using initializer list might be helpful, i.e., `VersionUndoLink{undo_link}` automatically sets the `in_progress` field to be `false`.
 
-# Instructions
+## Instructions
 
 See the [Project #0 instructions](https://15445.courses.cs.cmu.edu/fall2023/project0/#instructions) for how to create your private repository and set up your development environment.
 
 > You must pull the latest changes from the upstream BusTub repository for test files and other supplementary files we provide in this project.
 
-## Memory Leaks
+### Memory Leaks
 
 For this project, we use [LLVM Address Sanitizer (ASAN) and Leak Sanitizer (LSAN)](https://clang.llvm.org/docs/AddressSanitizer.html) to check for memory errors. To enable ASAN and LSAN, configure CMake in debug mode and run tests as you normally would. If there is memory error, you will see a memory error report. Note that macOS **only supports address sanitizer without leak sanitizer**.
 
@@ -501,7 +501,7 @@ In some cases, address sanitizer might affect the usability of the debugger. In 
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUSTUB_SANITIZER= ..
 ```
 
-## Development Hints
+### Development Hints
 
 You can use `BUSTUB_ASSERT` for assertions in debug mode. Note that the statements within `BUSTUB_ASSERT` will NOT be executed in release mode. If you have something to assert in all cases, use `BUSTUB_ENSURE` instead.
 
@@ -511,18 +511,18 @@ If you are having compilation problems, running `make clean` does not completely
 
 > Post all of your questions about this project on Piazza. Do **not** email the TAs directly with questions.
 
-# Grading Rubric
+## Grading Rubric
 
 Each project submission will be graded based on the following criteria:
 
 1. Does the submission successfully execute all of the test cases and produce the correct answer?
 2. Does the submission execute without any memory leaks?
 
-# Late Policy
+## Late Policy
 
 See the [late policy](https://15445.courses.cs.cmu.edu/fall2023/syllabus.html#late-policy) in the syllabus.
 
-# Submission
+## Submission
 
 After completing the assignment, submit your implementation to Gradescope for evaluation.
 
@@ -535,7 +535,7 @@ make format
 make check-clang-tidy-p4
 ```
 
-# Collaboration Policy
+## Collaboration Policy
 
 - Every student has to work individually on this assignment.
 - Students are allowed to discuss high-level details about the project with others.

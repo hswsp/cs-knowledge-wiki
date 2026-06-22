@@ -17,7 +17,7 @@ A **key negotiation** (**key establishment**) scheme is executed every time when
 
 **Authenticated Key Exchange** (AKE) is the exchange of session key in a key exchange protocol which also **authenticates the identities** of the involved parties (e.g. through a password, public key or digital certificate). For example, if you connect to a password-protected WiFi network, an authenticated key agreement protocol is used, in most cases **password-authenticated key agreement** (PAKE). If you connect to a public WiFi network, **anonymous key agreement** is conducted.
 
-# Key Exchange / Key Agreement Algorithms
+## Key Exchange / Key Agreement Algorithms
 
 Many **cryptographic algorithms** exist for key exchange and key establishment. Some use public-key cryptosystems, others use simple key-exchange schemes (like the Diffie–Hellman Key Exchange), some involve server authentication, some involve client authentication, some use passwords, some use digital certificates or other authentication mechanisms.
 

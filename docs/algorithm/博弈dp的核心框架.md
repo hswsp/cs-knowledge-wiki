@@ -130,9 +130,9 @@ fn max_score_game(nums: Vec<i32>) -> i32 {
 
 这个模板覆盖了LeetCode中大部分博弈DP问题，掌握后能解决90%的相关题目。
 
-# 常见博弈DP类型 
-## 类型一：区间博弈DP
-### 预测赢家 LeetCode 486
+## 常见博弈DP类型 
+### 类型一：区间博弈DP
+#### 预测赢家 LeetCode 486
 给你一个整数数组 `nums` 。玩家 1 和玩家 2 基于这个数组设计了一个游戏。
 
 玩家 1 和玩家 2 轮流进行自己的回合，玩家 1 先手。开始时，两个玩家的初始分值都是 `0` 。每一回合，玩家从数组的任意一端取一个数字（即，`nums[0]` 或 `nums[nums.length - 1]`），取到的数字将会从数组中移除（数组长度减 `1` ）。玩家选中的数字将会加到他的得分上。当数组中没有剩余数字可取时，游戏结束。
@@ -182,7 +182,7 @@ bool predictTheWinner(vector<int>& nums) {
 };
 ```
 
-### 石子游戏类（区间DP） 
+#### 石子游戏类（区间DP） 
 [LeetCode 877](https://leetcode.cn/problems/stone-game/description/)
 
 亚历克斯和李用几堆石子在做游戏。
@@ -243,7 +243,7 @@ pub fn stone_game(piles: Vec<i32>) -> bool {
 }
 ```
 
-#### 数学结论
+##### 数学结论
 > 参考 [https://mp.weixin.qq.com/s/j4DK-RvervumKVcLR5tcBw](https://mp.weixin.qq.com/s/j4DK-RvervumKVcLR5tcBw)
 >
 
@@ -301,7 +301,7 @@ class Solution:
 
 **优先掌握区间 DP 的思路**，因为面试官可能会追问“如果堆数可以是奇数怎么办”。
 
-## 类型二：取石子变种（记忆化搜索） 
+### 类型二：取石子变种（记忆化搜索） 
 **状态**：`dp[n]`表示剩下 `n`个石子时，当前玩家的胜负。
 
 ```rust
@@ -359,7 +359,7 @@ pub fn nim_game(n: i32, moves: Vec<i32>) -> bool {
 }
 ```
 
-## 类型三：Nim游戏类（SG函数） 
+### 类型三：Nim游戏类（SG函数） 
 **SG定理**：游戏和 = 各子游戏 SG 值的异或和。
 
 ```rust
@@ -424,7 +424,7 @@ impl SGCalculator {
 }
 ```
 
-## 模板四：零和博弈（得分差DP）
+### 模板四：零和博弈（得分差DP）
 ```rust
 // 更通用的零和博弈模板
 pub fn zero_sum_game(nums: &[i32]) -> i32 {
@@ -447,7 +447,7 @@ pub fn zero_sum_game(nums: &[i32]) -> i32 {
 }
 ```
 
-## 经典例题对应模板 
+### 经典例题对应模板 
 | 题目类型 | 状态定义 | 转移方程 | 例题 |
 | --- | --- | --- | --- |
 | 区间取石子 | `dp[i][j]`净胜分 | `max(piles[i]-dp[i+1][j], piles[j]-dp[i][j-1])` | LeetCode 877, 486 |
@@ -457,7 +457,7 @@ pub fn zero_sum_game(nums: &[i32]) -> i32 {
 | 硬币游戏 | `dp[i]`当前玩家最大净胜 | `max(pick - dp[i+1], ...)` | LeetCode 1140 |
 
 
-# 博弈论泛化：强化学习
+## 博弈论泛化：强化学习
 博弈论 DP 和强化学习（Policy Iteration）本质上是**同一套数学框架在不同视角下的应用**。
 
 我们可以把博弈 DP 看作是**两人零和、完全信息、确定性环境下的 Policy Iteration**: [Lecture 7: Value-Based RL](https://www.yuque.com/yangguangfanxing/ql9baa/cb57f171999307e08321c64d795c4a0f)
@@ -471,7 +471,7 @@ pub fn zero_sum_game(nums: &[i32]) -> i32 {
 | **更新规则** | `dp[i] = max( gain - dp[i+1] )` | $V(s)\leftarrow max_a[R(s,a)+\gamma V(s')]$ | **Bellman 方程的不同形式** |
 
 
-### 特殊性与通用性 
+#### 特殊性与通用性 
 | 特性 | 博弈论 DP | 通用 RL (Policy Iteration) |
 | --- | --- | --- |
 | **模型已知** | ✅ 完全已知 (如石子规则固定) | ❌ 通常未知 (需探索) |
@@ -482,7 +482,7 @@ pub fn zero_sum_game(nums: &[i32]) -> i32 {
 
 **结论**：博弈 DP 是 RL 在**完美信息、确定性环境、小状态空间**下的一个特例。
 
-### 数学本质：Bellman 方程 
+#### 数学本质：Bellman 方程 
 博弈 DP 的状态转移：
 
 ```plain
@@ -497,7 +497,7 @@ dp[i][j] = max(
 + `nums[i]`对应**即时奖励**$R(s,a)$
 + `- dp[i+1][j]`对应**折扣后的下一状态价值**$\gamma V(s')$，只不过在零和博弈中，对手的收益是你的损失，所以是负号。
 
-### 算法过程：隐式的 Policy Iteration 
+#### 算法过程：隐式的 Policy Iteration 
 当你写博弈 DP 时，你其实在手动执行 Policy Iteration：
 
 + **策略评估 (Policy Evaluation)**：当你初始化 `dp`数组并开始循环时，你就是在计算当前策略（“总是取最优动作”）下的价值。
@@ -505,7 +505,7 @@ dp[i][j] = max(
 
 ---
 
-### 具体代码对比 
+#### 具体代码对比 
 博弈 DP (Rust 风格) 
 
 ```rust
@@ -542,7 +542,7 @@ def policy_iteration():
 
 ---
 
-# 解题步骤模板
+## 解题步骤模板
 ```rust
 fn game_theory_dp_template(piles: &[i32]) -> bool {
     // 1. 定义状态
@@ -572,8 +572,8 @@ fn game_theory_dp_template(piles: &[i32]) -> bool {
 }
 ```
 
-# 更多博弈问题示例 
-## 示例1：取硬币游戏 
+## 更多博弈问题示例 
+### 示例1：取硬币游戏 
 硬币游戏（LeetCode 1140）
 
 ```rust
@@ -608,7 +608,7 @@ pub fn stone_game_ii(piles: Vec<i32>) -> i32 {
 }
 ```
 
-## 示例2：记忆化搜索模板 
+### 示例2：记忆化搜索模板 
 我能赢吗？（LeetCode 464）
 
 ```rust
@@ -638,14 +638,14 @@ pub fn can_win(state: i32, memo: &mut HashMap<i32, bool>) -> bool {
 }
 ```
 
-## 关键要点（Rust实现） 
+### 关键要点（Rust实现） 
 1. **状态定义**：通常用 `dp[i][j]`或 `dp[mask]`
 2. **记忆化**：使用 `HashMap`或数组缓存
 3. **位运算**：对于状态压缩，使用 `u32`或 `i32`的位操作
 4. **遍历顺序**：区间DP从小区间到大区间
 5. **所有权**：注意Rust的所有权规则，可能需要使用引用或克隆
 
-## 测试用例 
+### 测试用例 
 ```rust
 #[cfg(test)]
 mod tests {

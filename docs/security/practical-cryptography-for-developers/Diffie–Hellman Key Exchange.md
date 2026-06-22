@@ -53,11 +53,11 @@ If a third parties have intercepted the color exchanging process, it would be co
 
 The **Diffie-Hellman Key Exchange** protocol is based on similar concept, but uses [discrete logarithms](https://en.wikipedia.org/wiki/Discrete_logarithm) and [modular exponentiations](https://en.wikipedia.org/wiki/Modular_exponentiation) instead of color mixing.
 
-# The Diffie-Hellman Key Exchange (DHKE) Protocol
+## The Diffie-Hellman Key Exchange (DHKE) Protocol
 
 Now, let's explain how the **DHKE** protocol works.
 
-## The Math behind DHKE
+### The Math behind DHKE
 
 **DHKE** is based on a simple property of [modular exponentiations](https://en.wikipedia.org/wiki/Modular_exponentiation):
 
@@ -69,7 +69,7 @@ In computing theory, these is no efficient algorithm which can find a secret exp
 
 there is no efficient (fast) algorithm to find the secret exponent . This is known as the [Discrete Logartihm Problem (DLP)](https://en.wikipedia.org/wiki/Discrete_Logarithm_Problem_(DLP)).
 
-## Discrete Logarithm Problem (DLP)
+### Discrete Logarithm Problem (DLP)
 
 The **Discrete Logarithm Problem (DLP)** in computer science is defined as follows:
 
@@ -92,7 +92,7 @@ In cryptography, many algorithms rely on the **computational difficulty of the D
 >
 > 显然这就意味着这个元素是一个阶为 n 的元素，即该元素是一个乘法群的**生成元**，进而显然该乘法群为循环群。证毕！
 
-## The DHKE Protocol
+### The DHKE Protocol
 
 Now, after we are familiar with the above mathematical properties of the modular exponentiations, we are ready to explain **the DHKE protocol**. This is how it works:
 
@@ -151,7 +151,7 @@ Let's explain each step of this key-exchange process:
 
 In the most common implementation of DHKE (following the [RFC 3526](https://tools.ietf.org/html/rfc3526)) the base is **g** = **2** and the modulus **p** is a large **prime number** (1536 ... 8192 bits).
 
-## Security of the DHKE Protocol
+### Security of the DHKE Protocol
 
 The DHKE protocol is based on the practical difficulty of the [Diffie–Hellman problem](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_problem), which is a variant of the well known in the computer science [DLP (discrete logarithm problem)](https://en.wikipedia.org/wiki/Discrete_Logarithm_Problem_(DLP)), for which no efficient algorithm still exists.
 
@@ -161,13 +161,13 @@ Again, be warned that DHKE protocol in its classical form is **vulnerable to** [
 
 Finally, note that the integers **g**, **p**, **a** and **p** are typically very big numbers (1024, 2048 or 4096 bits or even bigger) and this makes the [brute-force attacks](https://en.wikipedia.org/wiki/Brute-force_attack) non-sense.
 
-## DHKE - Live Example
+### DHKE - Live Example
 
 As live example, you can play with this online DHKE tool: <http://www.irongeek.com/diffie-hellman.php>
 
 ![](https://cdn.nlark.com/yuque/0/2023/png/22382307/1692092557047-81c8dd24-15ff-466d-ba34-db420f63ee5b.png)
 
-## ECDH - Elliptic Curves-based Diffie-Hellman Key Exchange Protocol
+### ECDH - Elliptic Curves-based Diffie-Hellman Key Exchange Protocol
 
 The [Elliptic-Curve Diffie–Hellman (ECDH)](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) is an anonymous key agreement protocol that allows two parties, each having an **elliptic-curve public–private key pair**, to establish a shared secret over an insecure channel.
 

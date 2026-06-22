@@ -16,7 +16,7 @@ First, install the pycryptodome package, which is a powerful Python library of l
 pip install pycryptodome
 ```
 
-# RSA Key Generation
+## RSA Key Generation
 
 Now, let's write the Python code. First, **generate the RSA keys** (1024-bit) and print them on the console (as hex numbers and in the `PKCS#8 PEM ASN.1` format):
 
@@ -41,7 +41,7 @@ Run the above code example: <https://repl.it/@nakov/RSA-Key-Generation-in-Python
 
 We use short key length to keep the sample input short, but in a real world scenario it is recommended to use 3072-bit or 4096-bit keys.
 
-# RSA Encryption
+## RSA Encryption
 
 Next, **encrypt the message** using **RSA-OAEP** encryption scheme (RSA with `PKCS#1 OAEP` padding) with the RSA **public key**:
 
@@ -54,7 +54,7 @@ print("Encrypted:", binascii.hexlify(encrypted))
 
 Run the above code example: <https://repl.it/@nakov/RSA-encryption-in-Python>.
 
-# RSA Decryption
+## RSA Decryption
 
 Finally, **decrypt the message** using using **RSA-OAEP** with the RSA **private key**:
 
@@ -66,7 +66,7 @@ print('Decrypted:', decrypted)
 
 Run the above code example: <https://repl.it/@nakov/RSA-decryption-in-Python>.
 
-# Sample Output
+## Sample Output
 
 A **sample output** of the code execution for the entire example is given below:
 

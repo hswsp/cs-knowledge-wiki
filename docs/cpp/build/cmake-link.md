@@ -35,11 +35,11 @@ int main()
 }
 ```
 
-# CMake变量
+## CMake变量
 
-## 一般变量
+### 一般变量
 
-### CMake变量引用的方式
+#### CMake变量引用的方式
 
 使用`${}`进行变量的引用。例如：
 
@@ -49,7 +49,7 @@ ${PROJECT_NAME} #返回项目名称
 
 在 IF 等语句中,是直接使用变量名而不通过`${}`取值。
 
-### cmake自定义变量的方式
+#### cmake自定义变量的方式
 
 cmake变量定义的方式有两种：隐式定义和显式定义。
 
@@ -67,9 +67,9 @@ SET(HELLO_SRC main.c)
 
 就可以通过`${HELLO_SRC}`来引用这个自定义变量(main.c)了.
 
-## 环境变量
+### 环境变量
 
-### 调用环境变量的方式
+#### 调用环境变量的方式
 
 使用 `$ENV{NAME} `指令就可以调用系统的环境变量了。比如
 
@@ -77,13 +77,13 @@ SET(HELLO_SRC main.c)
 MESSAGE(STATUS “HOME dir: $ENV{HOME}”)
 ```
 
-### 设置环境变量的方式
+#### 设置环境变量的方式
 
 ```scss
 SET(ENV{ 变量名 } 值 )
 ```
 
-##  CMake常用变量
+###  CMake常用变量
 
 使用`cmake --help-variable-list`可以查看cmake中默认变量。
 
@@ -122,7 +122,7 @@ SET(ENV{ 变量名 } 值 )
 - 运行CMake，并使用`cmake` GUI工具查看缓存。然后，您将获得所有变量。
 - 或者使用`-LH`.运行CMake，然后将在配置后打印所有变量。
 
-### 主要的开关选项:
+#### 主要的开关选项:
 
 1. `CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS `，用来控制 IF ELSE 语句的书写方式,在下一节语法部分会讲到。
 
@@ -132,7 +132,7 @@ SET(ENV{ 变量名 } 值 )
 
 4. **`CMAKE_CXX_FLAGS` 设置 C++ 编译选项,也可以通过指令 `ADD_DEFINITIONS()` 添加**。
 
-### 系统信息
+#### 系统信息
 
 1. `CMAKE_MAJOR_VERSION` , CMAKE 主版本号,比如 2.4.6 中的 2
 2. `CMAKE_MINOR_VERSION` , CMAKE 次版本号,比如 2.4.6 中的 4
@@ -144,7 +144,7 @@ SET(ENV{ 变量名 } 值 )
 8. `UNIX` ,在所有的类 UNIX 平台为 TRUE ,包括 OS X 和 cygwin
 9. `WIN32` ,在所有的 win32 平台为 TRUE ,包括 cygwin
 
-# 指定C++标准
+## 指定C++标准
 
 ```cmake
 # https://cmake.org/cmake/help/latest/prop_tgt/CXX_STANDARD.html
@@ -164,7 +164,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 In CMake, `PUBLIC` (for everyone) = `INTERFACE` (for the other) + `PRIVATE` (for me)
 
-# 引入第三方头文件
+## 引入第三方头文件
 
 hello.h 位于`/root/cpp_test/backup/cmake_test/t4/include/hello`目录中，并没有位于系统标准的头文件路径，为了让我们的工程能够找到 hello.h 头文件，我们需要引入一个新的指令` INCLUDE_DIRECTORIES`，其完整语法为:
 ```cmake
@@ -186,11 +186,11 @@ main.c:(.text+0x12): undefined reference to `func'
 
 因为我们并没有 link 到共享库 libhello 上。
 
-# 为 target 添加共享库
+## 为 target 添加共享库
 
 我们现在需要完成的任务是将目标文件链接到 libhello，这里我们需要引入两个新的指令 `LINK_DIRECTORIES` 和 `TARGET_LINK_LIBRARIES`
 
-## add_library
+### add_library
 
 该指令的主要作用就是将指定的源文件生成链接文件，然后添加到工程中去。该指令常用的语法如下：
 
@@ -211,7 +211,7 @@ add_library(<name> [STATIC | SHARED | MODULE]
 
 而语法中的source1 source2分别表示各个源文件。
 
-## link_directories
+### link_directories
 
 该指令的作用主要是指定要链接的库文件的路径，该指令有时候不一定需要。因为`find_package`和`find_library`指令可以得到库文件的绝对路径。不过你自己写的动态库文件放在自己新建的目录下时，可以用该指令指定该目录的路径以便工程能够找到。
 
@@ -229,7 +229,7 @@ LINK_DIRECTORIES(directory1 directory2 ...) #对应tasks的 "-L"参数  .dll等
 
 > Note that this command [link_directories] is rarely necessary. Library locations returned by find_package() and find_library() are absolute paths. Pass these absolute library file paths directly to the target_link_libraries() command. CMake will ensure the linker finds them.
 
-## target_link_libraries
+### target_link_libraries
 
 这个例子中我们没有用到这个指令而是使用`TARGET_LINK_LIBRARIES` 。 `TARGET_LINK_LIBRARIES` 的全部语法是:
 
@@ -254,7 +254,7 @@ TARGET_LINK_LIBRARIES(main /root/cpp_test/backup/cmake_test/t4/thirdPath/libhell
 
    > Deprecated. Use the target_link_libraries() command instead.
 
-## 链接库综合例子
+### 链接库综合例子
 
 ```cmake
 INCLUDE_DIRECTORIES(
@@ -285,7 +285,7 @@ bin/main
 #输出 hello world!
 ```
 
-# 查看执行文链接库的情况
+## 查看执行文链接库的情况
 
 让我们来检查一下 main 的链接情况,输入命令：
 
@@ -299,7 +299,7 @@ ldd bin/main
 
 可以清楚的看到 main 确实链接了共享库 libhello，而且链接的是动态库 libhello.so.1
 
-## 链接到静态库 
+### 链接到静态库 
 
 将 `TARGET_LINK_LIBRRARIES `指令修改为: 
 
@@ -314,7 +314,7 @@ TARGET_LINK_LIBRARIES(main /root/cpp_test/backup/cmake_test/t4/thirdPath/libhell
 说明，main 确实链接到了静态库 libhello.a
 
 
-# 总结
+## 总结
 
 CMakeLists.txt所有指令的基本操作如下：
 

@@ -2,7 +2,7 @@
 
 > Do not post your project on a public GitHub repository.
 
-# Overview
+## Overview
 
 At this point in the semester, you have implemented many internal components of a database management system. In [Project #1](https://15445.courses.cs.cmu.edu/fall2023/project1), you implemented a buffer pool manager. In [Project #2](https://15445.courses.cs.cmu.edu/fall2023/project2), you implemented a hash table index. In this project, you will implement the components that allow BusTub to execute queries. You will create the operator executors that execute SQL queries and implement optimizer rules to transform query plans.
 
@@ -16,7 +16,7 @@ This project is composed of several tasks:
 
 This project must be completed individually (i.e., no groups). Before starting, run `git pull public master` to pull the latest code from the public [BusTub repo](https://github.com/cmu-db/bustub).
 
-# Background: Query Processing
+## Background: Query Processing
 
 Please read this section carefully because you will need to construct your own SQL queries to test your executor implementation.
 
@@ -71,7 +71,7 @@ Please note:
 - Always end your statement with `;` (except internal commands).
 - BusTub only supports `INT` and `VARCHAR(n)` type. Also you should use single quotes for strings, e.g., `INSERT INTO table VALUES ('a')`.
 
-## Inspecting SQL Query Plans
+### Inspecting SQL Query Plans
 
 BusTub supports the `EXPLAIN` command to print a query's execution plan. You can add `EXPLAIN` in front of any query. For example:
 
@@ -122,11 +122,11 @@ For this example, the optimized query plan is:
 
 In this project, you will need to construct SQL queries to test each of your executor's implementations. `EXPLAIN` is extremely helpful for you to know if a SQL query is using a specific executor.
 
-## Sample Executors
+### Sample Executors
 
 In the BusTub public repository, we provide several sample executor implementations.
 
-### Projection
+#### Projection
 
 A **projection** node can represent various computations on its input. It will always have exactly one child node. In the BusTub shell, inspect the query plans for the following queries:
 
@@ -142,7 +142,7 @@ A projection plan node consists of one or more expressions representing a comput
 - `ConstantExpression`: represents a constant value (e.g., `1`).
 - `ArithmeticExpression`: a tree representing an arithmetic computation. For example, `1 + 2` would be represented by an `ArithmeticExpression` with two `ConstantExpression` (`1` and `2`) as children.
 
-### Filter
+#### Filter
 
 A **filter** plan node is used to filter the output of a child given a predicate. For example:
 
@@ -152,7 +152,7 @@ EXPLAIN SELECT * FROM __mock_table_1 WHERE colA > 1;
 
 A filter node has exactly one child and contains a predicate.
 
-### Values
+#### Values
 
 A **values** plan node is used to directly produce values:
 
@@ -164,7 +164,7 @@ EXPLAIN INSERT INTO table1 VALUES (1, 2, 'a'), (3, 4, 'b');
 
 Values plan nodes are useful when inserting user-supplied values into a table.
 
-## Query Plan Syntax
+### Query Plan Syntax
 
 As you might have noticed, `EXPLAIN` produces a string of column descriptions after each plan node. That's the output schema of the node. Consider this example output:
 
@@ -174,7 +174,7 @@ Projection { exprs=[#0.0, #0.1] } | (__mock_table_1.colA:INTEGER, __mock_table_1
 
 This indicates that the executor representing this plan node will produce two columns, both of integer types. The output schema is inferred within the planner. For this project, your executor implementations must produce tuples with schema exactly as specified in the plan node, or they will fail our unit tests.
 
-# Project Specification
+## Project Specification
 
 In this project, you will add new operator executors and query optimizations to BusTub. BusTub uses the iterator (i.e., Volcano) query processing model, in which every executor implements a `Next` function to get the next tuple result. When the DBMS invokes an executor's `Next` function, the executor returns either (1) a single tuple or (2) an indicator that there are no more tuples. With this approach, each executor implements a loop that continues calling `Next` on its children to retrieve tuples and process them one by one.
 
@@ -184,7 +184,7 @@ The executors are created from an execution plan in [`executor_factory.cpp`](htt
 
 All test cases in this project are written in a special file format called SQLLogicTest (derived from SQLite). You can find how to use it at the end of this page.
 
-## Task #1 - Access Method Executors
+### Task #1 - Access Method Executors
 
 In the background section above, we saw that the BusTub can already retrieve data from mock tables in `SELECT` queries. This is implemented without real tables by using a `MockScan` executor to always generate the same tuples using a predefined algorithm. This is why you cannot update these tables.
 
@@ -204,7 +204,7 @@ In this task, you will implement executors that read from and write to tables in
 
 Each of these executors is described below.
 
-### SeqScan
+#### SeqScan
 
 The [`SeqScanPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/seq_scan_plan.h) can be planned with a `SELECT * FROM table` statement.
 
@@ -226,7 +226,7 @@ The `SeqScanExecutor` iterates over a table and returns its tuples one at a time
 
 **Note:** BusTub does not support `DROP TABLE` or `DROP INDEX`. You can reset your database by restarting the shell.
 
-### Insert
+#### Insert
 
 The [`InsertPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/insert_plan.h) can be planned with a `INSERT` statement. Note that you will need to use a single quote to specify a `VARCHAR` value.
 
@@ -247,7 +247,7 @@ The `InsertExecutor` inserts tuples into a table and updates any affected indexe
 
 **Hint:** You only need to change the `is_delete_` field when creating or modifying `TupleMeta`. For the `insertion_txn_` and the `deletion_txn_` fields, just set it to `INVALID_TXN_ID`. These fields are intended to be used in future semesters where we might switch to an MVCC storage.
 
-### Update
+#### Update
 
 The [`UpdatePlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/update_plan.h) can be planned with an `UPDATE` statement. It has exactly one child with the records to be updated in the table.
 
@@ -262,7 +262,7 @@ The `UpdateExecutor` modifies existing tuples in a specified table. The executor
 
 **Hint:** To implement an update, first delete the affected tuple and then insert a new tuple. Do not use the `TableHeap` `UpdateTupleInplaceUnsafe` function unless you are implementing leaderboard optimizations for project 4.
 
-### Delete
+#### Delete
 
 The [`DeletePlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/delete_plan.h) can be planned with a `DELETE` statement. It has exactly one child with the records to be deleted from the table. Your delete executor should produce an integer output that represents the number of rows that it deleted from the table. It will also need to update any affected indexes.
 
@@ -284,7 +284,7 @@ You may assume that the `DeleteExecutor` is always at the root of the query plan
 
 **Hint:** To delete a tuple, you need to get a `RID` from the child executor and update the `is_deleted_` field of the corresponding [`TupleMeta`](https://github.com/cmu-db/bustub/blob/master/src/include/storage/table/tuple.h) for that tuple.
 
-### IndexScan
+#### IndexScan
 
 The `IndexScanExecutor` does point lookup using the hash index to retrieve `RIDs` for tuples. The operator then uses these RIDs to retrieve their tuples in the corresponding table. It then emits these tuples one at a time.
 
@@ -316,7 +316,7 @@ You will need to finish the optimizer rule in the next section to transform a `S
 
 **Hint:** As above, do not emit tuples that are deleted.
 
-### Optimizing SeqScan to IndexScan
+#### Optimizing SeqScan to IndexScan
 
 As we learned in lecture, when we are querying on the indexed column, using an IndexScan will significantly boost the lookup performance. To this end, we need to push down the filter into the scanner so that we know the key to lookup in the index. Then we can directly retrieve the value over the index, instead of doing a full table scan or index scan.
 
@@ -354,7 +354,7 @@ Now that you have implemented all storage related executors. In the following ta
 
 **Hint:** Again, you only need to support optimization for a single equality predicate on the indexed column.
 
-## Task #2 - Aggregation & Join Executors
+### Task #2 - Aggregation & Join Executors
 
 You will complete your implementation in the following files:
 
@@ -363,7 +363,7 @@ You will complete your implementation in the following files:
 - `src/include/execution/nested_loop_join_executor.h`
 - `src/execution/nested_loop_join_executor.cpp`
 
-### Aggregation
+#### Aggregation
 
 The [`AggregationPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/aggregation_plan.h) is used to support queries like the following:
 
@@ -388,7 +388,7 @@ The aggregation executor itself will not need to handle the `HAVING` predicate. 
 
 **Hint:** When performing aggregation on an empty table, `CountStarAggregate` should return zero and all other aggregate types should return `integer_null`. This is why `GenerateInitialAggregateValue` initializes most aggregate values as NULL.
 
-### NestedLoopJoin
+#### NestedLoopJoin
 
 The DBMS will use [`NestedLoopJoinPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/nested_loop_join_plan.h) for all join operations, by default. Consider the following example queries:
 
@@ -404,7 +404,7 @@ We will provide all test cases on Gradescope AS-IS. We will not test with strang
 
 **Hint:** You should use the predicate in the `NestedLoopJoinPlanNode`. See `AbstractExpression::EvaluateJoin`, which handles the left tuple and right tuple and their respective schemas. Note that this returns a `Value`, which could be false, true, or NULL. See `FilterExecutor` for how to apply predicates on tuples.
 
-## Task #3 - HashJoin Executor and Optimization
+### Task #3 - HashJoin Executor and Optimization
 
 You will complete your implementation in the following files:
 
@@ -414,7 +414,7 @@ You will complete your implementation in the following files:
 
 You need to implement `NestedLoopJoinExecutor` in [Task #2](https://15445.courses.cs.cmu.edu/fall2023/project3/#task2) before starting this task.
 
-### HashJoin
+#### HashJoin
 
 The DBMS can use [`HashJoinPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/hash_join_plan.h) if a query contains a join with a conjunction of several equi-conditions between two columns (equi-conditions are seperated by `AND`). Consider the following example queries:
 
@@ -435,7 +435,7 @@ Your implementation should correctly handle the case where multiple tuples have 
 
 **Hint:** As with aggregation, the build side of a hash join is a *pipeline breaker*. You should again consider whether the *build* phase of the hash join should be performed in `HashJoinExecutor::Init()` or `HashJoinExecutor::Next()`.
 
-### Optimizing NestedLoopJoin to HashJoin
+#### Optimizing NestedLoopJoin to HashJoin
 
 Hash joins usually yield better performance than nested loop joins. You should modify the optimizer to transform a `NestedLoopJoinPlanNode` into a `HashJoinPlanNode` when it is possible to use a hash join. Specifically, the hash join algorithm can be used when a join predicate is a conjunction of several equi-conditions between two columns. For this project, you should be able to handle a varying number of equi-conditions connected by `AND`.
 
@@ -469,7 +469,7 @@ Please check the [Optimizer Rule Implementation Guide](https://15445.courses.cs.
 
 **Hint** When dealing with multiple equi-conditions, try to extract out the keys recursively, instead of matching the joining condition with multiple layers of if clauses.
 
-## Task #4: Sort + Limit Executors + Window Functions + Top-N Optimization
+### Task #4: Sort + Limit Executors + Window Functions + Top-N Optimization
 
 You will complete your implementation in the following files:
 
@@ -487,7 +487,7 @@ You need to implement `IndexScanExecutor` in [Task #1](https://15445.courses.cs.
 
 For all `ORDER BY` clauses, we assume every sort key will only appear once. You do not need to worry about ties in sorting.
 
-### Sort
+#### Sort
 
 Except in the case that the `ORDER BY` attributes matches the keys of an index, BusTub will use a [`SortPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/sort_plan.h) for all `ORDER BY` operators.
 
@@ -499,7 +499,7 @@ This plan node does not change schema (i.e., the output schema is the same as th
 
 If the query does not include a sort direction in the `ORDER BY` clause (i.e., `ASC`, `DESC`), then the sort mode will be `default` (which is `ASC`).
 
-### Limit
+#### Limit
 
 The [`LimitPlanNode`](https://github.com/cmu-db/bustub/blob/master/src/include/execution/plans/limit_plan.h) specifies the number of tuples that query will generate. Consider the following example:
 
@@ -511,7 +511,7 @@ The `LimitExecutor` constrains the number of output tuples from its child execut
 
 This plan node does not change schema (i.e., the output schema is the same as the input schema). You do not need to support offsets.
 
-### Top-N Optimization Rule
+#### Top-N Optimization Rule
 
 For this last task, you are going to modify BusTub's optimizer to support converting top-N queries. Consider the following query:
 
@@ -534,7 +534,7 @@ Please check [Optimizer Rule Implementation Guide](https://15445.courses.cs.cmu.
 
 **Hint:** Think of what data structure can be used to track the top n elements (Andy mentioned it in the lecture). The struct should hold **at most** `k` elements (where `k` is the number specified in `LIMIT` clause).
 
-### Window Functions
+#### Window Functions
 
 In general, window functions have three parts: partition by, order by, and window frames. All three are optional, so multiple combinations of these features make the window function daunting at first. However, the conceptual model for a window function helps make it easier to understand. The conceptual model is the following: * Split the data based on the conditions in the partition by clause. * Then, in each partition, sort by the order by clause. * Then, in each partition (now sorted), iterate over each tuple. For each tuple, we compute the boundary condition for the frame for that tuple. Each frame has a start and end (specified by the window frame clause). The window function is computed on the tuples in each frame, and we output what we have computed in each frame.
 
@@ -634,7 +634,7 @@ You may reuse the code from sort executors to complete step 1 and the code from 
 
 Apart from aggregation functions implemented in previous tasks, you will need to implement `RANK` as well. The BusTub planner ensures that `ORDER BY` clause is not empty if `RANK` window function is present. Be aware that there might be ties and please refer to test cases for the expected behavior.
 
-## Optional Leaderboard Tasks
+### Optional Leaderboard Tasks
 
 For this project's leaderboard challenge, you should implement new executors and optimizer rules to make the system execute the following queries as fast as possible.
 
@@ -642,7 +642,7 @@ These tasks are optional. You do not need to complete them to get a perfect scor
 
 It is possible that your implementation will produce different results for existing queries after implementing the leaderboard optimizations. We require you to pass all tests after implementing new optimization rules. We will also force using starter rules for some test cases. For example, in order to ensure your index scan executor works, we force the starter rule in this sqllogictest file with `set force_optimizer_starter_rule=yes`.
 
-### Query 1: Do we really need window function?
+#### Query 1: Do we really need window function?
 
 Consider the following sample database:
 
@@ -661,7 +661,7 @@ SELECT x, y FROM (
 
 **Recommended Optimizations:** Optimize the window plan node into a group-by top-n. You may want to implement `TopNPerGroupPlan` and `TopNPerGroupExecutor`. Also notice if it contains multiple rows having the same rank, return all the rows which have `rank <= 3`.
 
-### Query 2: Too Many Joins!
+#### Query 2: Too Many Joins!
 
 Consider the following sample database:
 
@@ -681,7 +681,7 @@ SELECT * FROM t4, t5, t6
 
 **Recommended Optimizations:** Decompose the filter condition to extract hash join keys, and push down the remaining filter conditions to be below the hash join.
 
-### Query 3: The Mad Data Scientist
+#### Query 3: The Mad Data Scientist
 
 There is a data scientist invested all their money in NFTs. After realizing their terrible mistake, they go crazy and starts writing some weird SQL queries. Consider the following example:
 
@@ -702,7 +702,7 @@ SELECT v, d1, d2 FROM (
 
 **Hint:** You do not need to implement a complete rule for optimizing these queries. (1) a complete predicate pushdown requires you to handle all plan nodes – limit, order by, etc. But to optimize for Q2, you only need to implement push down predicates over hash join / nested loop joins. (2) a complete join reordering requires you to handle predicates correctly (and maybe absorb filters in-between back to the join predicate), and you do not need to do that. Just make your optimizer work with those queries is enough.
 
-### Leaderboard Policy
+#### Leaderboard Policy
 
 - Submissions *with leaderboard bonus* are subject to manual review by TAs.
   - By saying "review", it means that TAs will manually look into your code, or if they are unsure whether an optimization is correct or not by looking, they will make simple modification to existing test cases to see if your leaderboard optimization *correctly* handled the specific cases that you want to optimize.
@@ -718,23 +718,23 @@ SELECT v, d1, d2 FROM (
 - You cannot use late days for leaderboard tests.
 - If you are unsure about whether an optimization is reasonable, you should post on Piazza or visit any TA's office hour.
 
-# Additional Information
+## Additional Information
 
 This section provides some additional information on other system components in BusTub that you will need to interact in order to complete this project.
 
-## System Catalog
+### System Catalog
 
 A database maintains an internal catalog to keep track of meta-data about the database. In this project, you will interact with the system catalog to query information regarding tables, indexes, and their schemas.
 
 The entirety of the catalog implementation is in `src/include/catalog/catalog.h`. You should pay particular attention to the member functions `Catalog::GetTable()` and `Catalog::GetIndex()`. You will use these functions in the implementation of your executors to query the catalog for tables and indexes.
 
-## Index Updates
+### Index Updates
 
 For the table modification executors (`InsertExecutor`, `UpdateExecutor`, and `DeleteExecutor`) you must modify all indexes for the table targeted by the operation. You may find the `Catalog::GetTableIndexes()` function useful for querying all of the indexes defined for a particular table. Once you have the `IndexInfo` instance for each of the table's indexes, you can invoke index modification operations on the underlying index structure.
 
 In this project, we use your implementation of hash table index from [Project #2](https://15445.courses.cs.cmu.edu/fall2023/project2) as the underlying data structure for all index operations. Therefore, successful completion of this project relies on a working implementation of the hash tables.
 
-## Optimizer Rule Implementation Guide
+### Optimizer Rule Implementation Guide
 
 The BusTub optimizer is a rule-based optimizer. Most optimizer rules construct optimized plans in a bottom-up way. Because the query plan has this tree structure, before applying the optimizer rules to the current plan node, you want to first recursively apply the rules to its children.
 
@@ -742,13 +742,13 @@ At each plan node, you should determine if the source plan structure matches the
 
 In the public BusTub repository, we already provide the implementation of several optimizer rules. Please take a look at them as reference.
 
-# Instructions
+## Instructions
 
 See the [Project #0 instructions](https://15445.courses.cs.cmu.edu/fall2023/project0/#instructions) for how to create your private repository and set up your development environment.
 
 > You must pull the latest changes from the upstream BusTub repository for test files and other supplementary files we provide in this project.
 
-## Testing
+### Testing
 
 We will use `SQLLogicTest` to perform testing and benchmarking. To use it,
 
@@ -759,7 +759,7 @@ make -j$(nproc) sqllogictest
 
 You can use the `bustub-sqllogictest` program to run `slt` files. Remember to recompile `sqllogictest` before doing any testing. In this project, we provide ALL test cases to you. There are no hidden tests. The test cases are located at `test/sql/`.
 
-## Memory Leaks
+### Memory Leaks
 
 For this project, we use [LLVM Address Sanitizer (ASAN) and Leak Sanitizer (LSAN)](https://clang.llvm.org/docs/AddressSanitizer.html) to check for memory errors. To enable ASAN and LSAN, configure CMake in debug mode and run tests as you normally would. If there is memory error, you will see a memory error report. Note that macOS **only supports address sanitizer without leak sanitizer**.
 
@@ -769,7 +769,7 @@ In some cases, address sanitizer might affect the usability of the debugger. In 
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUSTUB_SANITIZER= ..
 ```
 
-## Development Hints
+### Development Hints
 
 You can use `BUSTUB_ASSERT` for assertions in debug mode. Note that the statements within `BUSTUB_ASSERT` will NOT be executed in release mode. If you have something to assert in all cases, use `BUSTUB_ENSURE` instead.
 
@@ -779,18 +779,18 @@ If you are having compilation problems, running `make clean` does not completely
 
 > Post all of your questions about this project on Piazza. Do **not** email the TAs directly with questions.
 
-# Grading Rubric
+## Grading Rubric
 
 Each project submission will be graded based on the following criteria:
 
 1. Does the submission successfully execute all of the test cases and produce the correct answer?
 2. Does the submission execute without any memory leaks?
 
-# Late Policy
+## Late Policy
 
 See the [late policy](https://15445.courses.cs.cmu.edu/fall2023/syllabus.html#late-policy) in the syllabus.
 
-# Submission
+## Submission
 
 After completing the assignment, submit your implementation to Gradescope for evaluation.
 
@@ -803,7 +803,7 @@ make format
 make check-clang-tidy-p3
 ```
 
-# Collaboration Policy
+## Collaboration Policy
 
 - Every student has to work individually on this assignment.
 - Students are allowed to discuss high-level details about the project with others.

@@ -295,7 +295,7 @@ needle2 found at position 1
 
 
 
-# 排序sort
+## 排序sort
 
 
 `sort(first_pointer,first_pointer+n,cmp)`
@@ -348,7 +348,7 @@ sort不只是能像上面那样简单的使用，我们可以对sort进行扩展
 
 
 
-## 方法一：定义比较函数（最常用）
+### 方法一：定义比较函数（最常用）
 
 
 ```c
@@ -405,7 +405,7 @@ sort(sutVector.begin(),stuVector.end(),Less());
 
 
 
-## 方法二：使用标准库函数
+### 方法二：使用标准库函数
 
 
 另外，其实我们还可以再懒一点，在标准库中已经有现成的。它在哪呢？答案是functional，我们include进来试试看。
@@ -428,7 +428,7 @@ functional提供了一堆基于模板的比较函数对象，它们是：`equal_
 
 
 
-## 方法三：使用lambda表达式
+### 方法三：使用lambda表达式
 
 
 与functional同理，我们可以使用Lambda表达式代替functional接口。

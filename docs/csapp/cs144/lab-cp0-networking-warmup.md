@@ -161,7 +161,7 @@ Start 2: t_webget
 
 The graders will run your `webget` program with a different hostname and path than make `check_webget` runs—so <font style="color:#601BDE;">make sure it doesn’t only work with the hostname and path used by the unit tests</font>.
 
-# An in-memory reliable byte stream
+## An in-memory reliable byte stream
 By now, you’ve seen how the abstraction of a reliable byte stream can be useful in communicating across the Internet, even though the <font style="color:#601BDE;">Internet itself only provides the service of “best-effort” (unreliable) datagrams</font>.
 
 To finish off this week’s lab, you will implement, in memory on a single computer, an object that provides this abstraction. (You may have done something similar in CS 110/111.) Bytes are written on the “input” side and can be read, in the same sequence, from the “output” side. The byte stream is finite: the writer can end the input, and then no more bytes can be written.<font style="color:#601BDE;"> When the reader has read to the end of the stream, it will reach “EOF” (end of file) and no more bytes can be read.</font>
@@ -199,7 +199,7 @@ For any late-breaking questions, please check out the lab FAQ on the course webs
 
 What’s next? Over the next four weeks, **you’ll implement a system to provide the same interface, no longer in memory, but instead over an unreliable network**. This is the **<font style="color:#DF2A3F;">Transmission Control Protocol</font>**—and its implementations are arguably the **most prevalent computer program in the world**.
 
-# Submit
+## Submit
 In your submission, please only make changes to webget.cc and the source code in the top level of src (byte stream.hh and byte stream.cc). Please don’t modify any of the tests or the helpers in util.
 
 Remember to make small commits as you code, with good commit messages. After making a commit, back up your VM’s repository to your private GitHub repository often by running `git push github` . Your code needs to be committed and pushed to GitHub for it to be gradable.

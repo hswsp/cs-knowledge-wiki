@@ -8,7 +8,7 @@
 
 ![4.jpg](https://images.spumn.eu.cc/blog/234fbd28af7deb06.jpg)
 
-# Decision Support Systems
+## Decision Support Systems
 
 For a read-only OLAP database, it is common to have a bifurcated environment, where there are multiple instances of OLTP databases that ingest information from the outside world which is then fed into the backend **OLAP database**, sometimes called a **data warehouse**. There is an intermediate step called *ETL*, or **E**xtract, **T**ransform, and **L**oad, which combines the OLTP databases into a universal schema for the data warehouse.
 
@@ -18,7 +18,7 @@ The two approaches for modeling an analytical database are *star schemas* and *s
 
 ![5.jpg](https://images.spumn.eu.cc/blog/5ba878f264e596e1.jpg)
 
-## Star Schema
+### Star Schema
 
 Star schemas contain two types of tables: *fact tables* and *dimension tables*. The **fact table** contains multiple “events” that occur in the application. It will contain the minimal unique information per event, and then the rest of the attributes will be foreign key references to outer dimension tables. The **dimension tables** contain redundant information that is reused across multiple events. In a star schema, there can only be one dimension-level out from the fact table. Since the data can only have one level of dimension tables, it can have redundant information. Denormalized data models may incur integrity and consistency violations, so replication must be handled accordingly. Queries on star schemas will (usually) be faster than a snowflake schema because there are fewer joins. An example of a star schema is shown in Figure 1.
 
@@ -26,7 +26,7 @@ Star schemas contain two types of tables: *fact tables* and *dimension tables*. 
 
 **Figure 1: Star Schema** – The center of the schema is the SALES fact table that contains key references to outer dimension tables. Because star schemas are only one-dimensional, the outer dimensional tables cannot point to other dimension tables.
 
-## Snowflake Schema
+### Snowflake Schema
 
 Snowflake schemas are similar to star schemas except that they allow for more than one dimension out from the fact table. They take up less storage space, but they require more joins to get the data needed for a query. For this reason, queries on star schemas are usually faster. An example of a snowflake schema is shown in Figure 2.
 
@@ -40,15 +40,15 @@ Snowflake schemas are similar to star schemas except that they allow for more th
 
 ![10.jpg](https://images.spumn.eu.cc/blog/1c32523c6b72714c.jpg)
 
-# Execution Models
+## Execution Models
 
 A distributed DBMS’s *execution model* specifies how it will communicate between nodes during query execution. Two approaches to executing a query are pushing and pulling.
 
-## Pushing a Query to Data
+### Pushing a Query to Data
 
 For the first approach, the DBMS sends the query (or a portion of it) to the node that contains the data. It then performs as much filtering and processing as possible where data resides before transmitting over network. The result is then sent back to where the query is being executed, which uses local data and the data sent to it, to complete the query. This is more common in a **shared nothing system**.
 
-## Pulling Data to Query
+### Pulling Data to Query
 
 For the second approach, the DBMS brings the data to the node that is executing a query that needs it for processing. In other words, nodes detect which partitions of the data they can do computation on and pull from storage accordingly. Then, the local operations are propagated to one node, which does the operation on all the intermediary results. This is normally what a shared disk system would do. The problem with this is that the size of the data relative to the size of the query could be very different. A filter can also be sent to only retrieve the data needed from disk.
 
@@ -68,7 +68,7 @@ For the second approach, the DBMS brings the data to the node that is executing 
 
 ![18.jpg](https://images.spumn.eu.cc/blog/b1097d4f1d52d57b.jpg)
 
-## Query Fault Tolerance
+### Query Fault Tolerance
 
 The data that a node receives from remote sources are cached in the buffer pool. This allows the DBMS to support intermediate results that are larger than the amount of memory available. Ephemeral pages, however, are not persisted after a restart. Therefore, a distributed DBMS must consider what happens to a long-running OLAP query if a node crashes during execution.
 
@@ -82,7 +82,7 @@ The DBMS could take a snapshot of the intermediate results for a query during ex
 
 ![21.jpg](https://images.spumn.eu.cc/blog/3f9ca2271edbe1e0.jpg)
 
-# Query Planning
+## Query Planning
 
 All the optimizations that we talked about before are still applicable in a distributed environment, including predicate pushdown, early projections, and optimal join orderings. Distributed query optimization is even harder because it must consider the physical location of data in the cluster and data movement costs.
 
@@ -98,7 +98,7 @@ Another approach is to take the *SQL* query and rewrite the original query into 
 
 ![25.jpg](https://images.spumn.eu.cc/blog/274c37589ec650df.jpg)
 
-# Distributed Join Algorithms
+## Distributed Join Algorithms
 
 For analytical workloads, the majority of the time is spent doing joins and reading from disk, showing the importance of this topic. The efficiency of a distributed join depends on the target tables’ partitioning schemes.
 
@@ -110,7 +110,7 @@ There are four scenarios for distributed join algorithms.
 
 ![26.jpg](https://images.spumn.eu.cc/blog/ae4fb3b05c709249.jpg)
 
-## Scenario 1
+### Scenario 1
 
 One of the tables is replicated at every node and the other table is partitioned across nodes. Each node joins its local data in parallel and then sends their results to a coordinating node.
 
@@ -118,7 +118,7 @@ One of the tables is replicated at every node and the other table is partitioned
 
 ![28.jpg](https://images.spumn.eu.cc/blog/6738f8ec47b293f7.jpg)
 
-## Scenario 2
+### Scenario 2
 
 Both tables are partitioned on the join attribute, with IDs matching on each node. Each node performs the join on local data and then sends to a node for coalescing.
 
@@ -126,7 +126,7 @@ Both tables are partitioned on the join attribute, with IDs matching on each nod
 
 ![30.jpg](https://images.spumn.eu.cc/blog/aada729f2a500d55.jpg)
 
-## Scenario 3
+### Scenario 3
 
 Both tables are partitioned on different keys. If one of the tables is small, then the DBMS broadcasts that table to all nodes. This takes us back to Scenario 1. Local joins are computed and then those joins are sent to a common node to operate the final join. This is known as a broadcast join.
 
@@ -138,7 +138,7 @@ Both tables are partitioned on different keys. If one of the tables is small, th
 
 ![34.jpg](https://images.spumn.eu.cc/blog/04fac418857df384.jpg)
 
-## Scenario 4
+### Scenario 4
 
 This is the worst case scenario. Both tables are not partitioned on the join key. The DBMS copies the tables by reshuffling them across nodes. Local joins are computed and then the results are sent to a common node for the final join. If there isn’t enough disk space, a failure is unavoidable. This is called a *shuffle join*.
 
@@ -154,7 +154,7 @@ This is the worst case scenario. Both tables are not partitioned on the join key
 
 ![40.jpg](https://images.spumn.eu.cc/blog/fb9411b0a51093b3.jpg)
 
-## Semi-Join
+### Semi-Join
 
 A semi-join is a join operator where the **result only contains columns from the left table**. Distributed DBMSs use semi-join to minimize the amount of data sent during joins.
 
@@ -172,7 +172,7 @@ It is like a natural join, except that the attributes on the right table that ar
 
 ![46.jpg](https://images.spumn.eu.cc/blog/61b14bf5397469b5.jpg)
 
-# Cloud Systems
+## Cloud Systems
 
 Vendors provide database-as-a-service (**DBaaS**) offerings that are managed DBMS environments.
 
@@ -180,17 +180,17 @@ Newer systems are starting to blur the lines between shared-nothing and shared-d
 
 ![47.jpg](https://images.spumn.eu.cc/blog/c044a544aba71a95.jpg)
 
-## Managed DBMSs
+### Managed DBMSs
 
 In a managed DBMS, no significant modification to the DBMS to be ”aware” that it is running in a cloud environment. It provides a way to abstract away all the backup and recovery for the client. This approach is deployed in most vendors.
 
-## Cloud-Native DBMS
+### Cloud-Native DBMS
 
 A cloud-native system is designed explicitly to run in a cloud environment. This is usually based on a shared-disk architecture. This approach is used in **Snowflake, Google BigQuery, Amazon Redshift**, and **Microsoft SQL Azure.**
 
 ![48.jpg](https://images.spumn.eu.cc/blog/07d9343ee27580e8.jpg)
 
-## Serverless Databases
+### Serverless Databases
 
 Rather than always maintaining compute resources for each customer, a serverless DBMS evicts tenants when they become idle, checkpointing the current progress in the system to disk. Now, a user is only paying for storage when not actively querying. A diagram of this is shown in Figure 3.
 
@@ -208,7 +208,7 @@ Rather than always maintaining compute resources for each customer, a serverless
 
 ![54.jpg](https://images.spumn.eu.cc/blog/153234a8574d75ee.jpg)
 
-## Data Lakes
+### Data Lakes
 
 A *Data Lake* is a centralized repository for storing large amounts of structured, semi-structured, and unstructured data without having to define a schema or ingest the data into proprietary internal formats. Data lakes are usually faster at ingesting data, as they do not require transformation right away. They do require the user to write their own transformation piplines.
 
@@ -220,7 +220,7 @@ A *Data Lake* is a centralized repository for storing large amounts of structure
 
 ![58.jpg](https://images.spumn.eu.cc/blog/b71a0ddc7cf1a37d.jpg)
 
-# Universal Formats
+## Universal Formats
 
 Most DBMSs use a proprietary on-disk binary file format for their databases. The only way to share data between systems is to convert data into a common text-based format, including CSV, JSON, and XML. There are new open-source binary file formats, which cloud vendors and distributed database systems support, that make it easier to access data across systems. Writing a custom file format would give way to better compression and performance, but this gives way to better interoperability.
 
@@ -244,7 +244,7 @@ Notable examples of universal database file formats:
 
 ![60.jpg](https://images.spumn.eu.cc/blog/1435ebb566f64cac.jpg)
 
-# Disaggregated Components
+## Disaggregated Components
 
 Many existing libraries/systems implement a single component of a distributed database. Distributed databases can then leverage these components instead of re-implementing it themselves. Additionally different distributed databases can share components with each other.
 

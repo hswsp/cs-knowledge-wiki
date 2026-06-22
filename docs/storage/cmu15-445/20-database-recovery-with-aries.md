@@ -4,7 +4,7 @@
 
 ![2.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488029674-987f6498-9c81-42fd-84cb-38eca6eb2d11.jpeg#averageHue=%23ececec&clientId=u545f74f4-b9e6-4&from=ui&id=u2016464f&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=313827&status=done&style=none&taskId=ueea00364-378c-493c-9d4b-c3003f1a6bd&title=)
 
-# Crash Recovery
+## Crash Recovery
 
 The DBMS relies on its recovery algorithms to ensure database consistency, transaction atomicity, and durability despite failures. Each recovery algorithm is comprised of two parts:
 • Actions during normal transaction processing to ensure that the DBMS can recover from a failure
@@ -24,7 +24,7 @@ There are three key concepts in the ARIES recovery protocol:
 
 ![6.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488031588-ad99c3d0-9dfa-46bd-a1d8-9e423f687d0a.jpeg#averageHue=%23efefef&clientId=u545f74f4-b9e6-4&from=ui&id=uc80867c1&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=209358&status=done&style=none&taskId=u52038007-5c96-4e60-b556-26e1c7c4336&title=)
 
-# WAL Records
+## WAL Records
 
 Write-ahead log records extend the DBMS’s log record format to include a globally unique *log sequence number* (**LSN)** . A high level diagram of how log records with LSN’s are written is shown in Figure 1.
 All log records have an LSN. The `pageLSN` is updated every time a transaction modifies a record in the page. The `flushedLSN` in memory is updated every time the DBMS writes out the WAL buffer to disk.
@@ -55,13 +55,13 @@ Each data page contains a `pageLSN`, which is the LSN of the most recent update 
 
 ![17.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488036554-8dc56b76-100d-4f44-ae57-25b7d5d09fd6.jpeg#averageHue=%23ededed&clientId=u545f74f4-b9e6-4&from=ui&id=uda95945f&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=275171&status=done&style=none&taskId=u351a6675-f92b-45f7-afaa-c592ceac1b0&title=)
 
-# Normal Execution
+## Normal Execution
 
 Every transaction invokes a sequence of reads and writes, followed by a commit or abort. It is this sequence of events that recovery algorithms must have.
 
 ![18.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488036680-87cf5c49-363e-43c2-b798-08804041c4c2.jpeg#averageHue=%23ededed&clientId=u545f74f4-b9e6-4&from=ui&id=uc835c8a7&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=304292&status=done&style=none&taskId=ub0504af3-610a-438e-afcf-1c57fb8aac7&title=)
 
-## Transaction Commit
+### Transaction Commit
 
 When a transaction goes to commit, the DBMS first writes `COMMIT` record to log buffer in memory. Then the DBMS flushes all log records up to and including the transaction’s `COMMIT` record to disk. Note that these log flushes are sequential, synchronous writes to disk. There can be multiple log records per log page. A diagram of a transaction commit is shown in Figure 3.
 Once the `COMMIT` record is safely stored on disk, the DBMS returns an acknowledgment back to the application that the transaction has committed. At some later point, the DBMS will write a special `**TXN-END**`** record to log. This indicates that the transaction is completely finished** in the system and there will not be anymore log records for it. These `TXN-END` records are used for internal bookkeeping and do **not** need to be flushed immediately.
@@ -76,7 +76,7 @@ Once the `COMMIT` record is safely stored on disk, the DBMS returns an acknowled
 
 ![23.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488039001-bffc9dc1-3672-4e9d-bf94-f1e2e6d9571c.jpeg#averageHue=%23e9e8e8&clientId=u545f74f4-b9e6-4&from=ui&id=u04e3a094&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=453760&status=done&style=none&taskId=u997c8b84-9fae-4a65-b599-1a1e277bba5&title=)
 
-## Transaction Abort
+### Transaction Abort
 
 Aborting a transaction is a special case of the ARIES undo operation applied to only one transaction.
 An additional field is added to the log records called the `prevLSN`. This corresponds to the previous LSN for the transaction. The DBMS uses these `prevLSN` values to maintain a **linked-list for each transaction that makes it easier to walk through the log to find its records.** 
@@ -107,12 +107,12 @@ To abort a transaction, the DBMS first appends a `ABORT` record to the log buffe
 
 ![35.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488044497-ef805dfc-e68f-4776-ad78-502db7709e14.jpeg#averageHue=%23efefef&clientId=u545f74f4-b9e6-4&from=ui&id=ua81144f6&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=215474&status=done&style=none&taskId=u21d5f396-51d3-44ff-af5d-4780ef3515d&title=)
 
-# Checkpointing
+## Checkpointing
 
 The DBMS periodically takes *checkpoints* where it writes the dirty pages in its buffer pool out to disk. This is used to minimize how much of the log it has to replay upon recovery.
 The first two blocking checkpoint methods discussed below pause transactions during the checkpoint process. This pausing is necessary to ensure that the DBMS does not miss updates to pages during the checkpoint. Then, a better approach that allows transactions to continue to execute during the checkpoint but requires the DBMS to record additional information to determine what updates it may have missed is presented.
 
-## Blocking Checkpoints
+### Blocking Checkpoints
 
 The DBMS halts the execution of transactions and queries when it takes a checkpoint to ensure that it writes a consistent snapshot of the database to disk. The is the same approach discussed in previous lecture:
 • Halt the start of any new transactions.
@@ -121,7 +121,7 @@ The DBMS halts the execution of transactions and queries when it takes a checkpo
 
 ![36.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488045434-a2b0673f-8224-4860-8549-060773aef012.jpeg#averageHue=%23ececec&clientId=u545f74f4-b9e6-4&from=ui&id=u514ec3c8&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=302432&status=done&style=none&taskId=ue15c6dc6-57fe-4564-88c4-57639f968b9&title=)
 
-## Slightly Better Blocking Checkpoints
+### Slightly Better Blocking Checkpoints
 
 Like previous checkpoint scheme except that you the DBMS does not have to wait for active transactions to finish executing. The DBMS now records the internal system state as of the beginning of the checkpoint.
 • Halt the start of any new transactions.
@@ -153,7 +153,7 @@ Overall, the ATT and the DPT serve to help the DBMS recover the state of the dat
 
 ![44.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488048235-a0302581-865f-48f0-b216-d53b27a89d7d.jpeg#averageHue=%23eaeaea&clientId=u545f74f4-b9e6-4&from=ui&id=u548fe280&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=492272&status=done&style=none&taskId=uae0112dc-ddeb-4e85-b6be-e1af8badb3f&title=)
 
-## Fuzzy Checkpoints
+### Fuzzy Checkpoints
 
 A *fuzzy checkpoint* is where the DBMS allows other transactions to continue to run. This is what ARIES uses in its protocol.
 The DBMS uses additional log records to track checkpoint boundaries:
@@ -166,7 +166,7 @@ The DBMS uses additional log records to track checkpoint boundaries:
 
 ![47.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488050080-fdc6b66f-a10d-4253-a5bf-1e5fae15df6a.jpeg#averageHue=%23ecebeb&clientId=u545f74f4-b9e6-4&from=ui&id=u90cca3cb&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=511751&status=done&style=none&taskId=ub6595b07-f886-4692-bb98-a61e6544a7d&title=)
 
-# ARIES Recovery
+## ARIES Recovery
 
 The ARIES protocol is comprised of three phases. Upon start-up after a crash, the DBMS will execute the following phases as shown in Figure 5:
 
@@ -178,7 +178,7 @@ The ARIES protocol is comprised of three phases. Upon start-up after a crash, th
 
 ![Figure 5: ARIES Recovery: The DBMS starts the recovery process by examining the log starting from the last BEGIN-CHECKPOINT found via MasterRecord. It then begins the Analysis phase by scanning forward through time to build out ATT and DPT. In the Redo phase, the algorithm jumps to the smallest recLSN, which is the oldest log record that may have modified a page not written to disk. The DBMS then applies all changes from the smallest recLSN. The Undo phase starts at the oldest log record of a transaction active at crash and reverses all changes up to that point.](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488050684-30c05bd0-7582-4564-8d27-201fe01607ee.jpeg#averageHue=%23e9e8e8&clientId=u545f74f4-b9e6-4&from=ui&id=u715a4d70&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=true&size=410841&status=done&style=none&taskId=ub8dd5b1d-5780-47de-a683-131035f6efd&title=Figure%205%3A%20ARIES%20Recovery%3A%20The%20DBMS%20starts%20the%20recovery%20process%20by%20examining%20the%20log%20starting%20from%20the%20last%20BEGIN-CHECKPOINT%20found%20via%20MasterRecord.%20It%20then%20begins%20the%20Analysis%20phase%20by%20scanning%20forward%20through%20time%20to%20build%20out%20ATT%20and%20DPT.%20In%20the%20Redo%20phase%2C%20the%20algorithm%20jumps%20to%20the%20smallest%20recLSN%2C%20which%20is%20the%20oldest%20log%20record%20that%20may%20have%20modified%20a%20page%20not%20written%20to%20disk.%20The%20DBMS%20then%20applies%20all%20changes%20from%20the%20smallest%20recLSN.%20The%20Undo%20phase%20starts%20at%20the%20oldest%20log%20record%20of%20a%20transaction%20active%20at%20crash%20and%20reverses%20all%20changes%20up%20to%20that%20point.)
 
-## Analysis Phase
+### Analysis Phase
 
 Start from last checkpoint found via the database’s `MasterRecord` LSN.
 
@@ -203,7 +203,7 @@ Start from last checkpoint found via the database’s `MasterRecord` LSN.
 
 ![57.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488054275-813e4136-8c83-497b-9a81-ade08995e27b.jpeg#averageHue=%23e6e6e6&clientId=u545f74f4-b9e6-4&from=ui&id=u89506e3d&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=351121&status=done&style=none&taskId=ub59df253-e3fd-434e-9f45-048ddc17690&title=)
 
-## Redo Phase
+### Redo Phase
 
 The goal of this phase is for the DBMS to repeat history to reconstruct its state up to the moment of the crash. It will reapply all updates (even aborted transactions) and redo **CLRs**.
 The DBMS scans forward from log record containing smallest `recLSN` in the DPT. For each update log record or CLR with a given LSN, the DBMS re-applies the update unless:
@@ -220,7 +220,7 @@ At the end of the redo phase, write `TXN-END` log records for all transactions w
 
 ![60.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1680488054860-bf1f9064-d608-45e4-93e8-a20fc61e8471.jpeg#averageHue=%23eeeded&clientId=u545f74f4-b9e6-4&from=ui&id=u11eba2de&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=276123&status=done&style=none&taskId=ubfc39ab0-354e-4f87-b808-6bad94abaf2&title=)
 
-## Undo Phase
+### Undo Phase
 
 In the last phase, the DBMS reverses all transactions that were active at the time of crash. These are all transactions with `UNDO` status in the ATT after the Analysis phase.
 The DBMS processes transactions in reverse LSN order using the `**lastLSN**` to speed up traversal. As it reverses the updates of a transaction, the DBMS writes a CLR entry to the log for each modification.

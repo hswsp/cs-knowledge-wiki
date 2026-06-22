@@ -4,7 +4,7 @@
 
 ![2.jpg](https://images.spumn.eu.cc/blog/6deaa6d34b3f535e.jpg)
 
-# Distributed DBMSs
+## Distributed DBMSs
 
 A distributed DBMS divides a single logical database across multiple physical resources. The application is (usually) unaware that data is split across separated hardware. The system relies on the techniques and algorithms from single-node DBMSs to support transaction processing and query execution in a distributed environment. An important goal in designing a distributed DBMS is **fault tolerance** (i.e., avoiding a single one node failure taking down the entire system).
 
@@ -32,7 +32,7 @@ Differences between **parallel** and **distributed** DBMSs:
 
 ![5.jpg](https://images.spumn.eu.cc/blog/a4cb61aa537b4f5f.jpg)
 
-# System Architectures
+## System Architectures
 
 A DBMS’s system architecture specifies what shared resources are directly accessible to CPUs. It affects how CPUs coordinate with each other and where they retrieve and store objects in the database.
 
@@ -44,7 +44,7 @@ A single-node DBMS uses what is called a *shared everything* architecture. This 
 
 **Figure 1: Database System Architectures** – Four system architecture approaches ranging from sharing everything (used by non distributed systems) to sharing memory, disk, or nothing.
 
-## Shared Memory
+### Shared Memory
 
 An alternative to shared everything architecture in distributed systems is *shared memory*. CPUs have access to common memory address space via a fast interconnect. CPUs also share the same disk.
 
@@ -54,7 +54,7 @@ Each processor has a global view of all the in-memory data structures. Each DBMS
 
 ![8.jpg](https://images.spumn.eu.cc/blog/30d6fcaa79860f5f.jpg)
 
-## Shared Disk
+### Shared Disk
 
 In a *shared disk* architecture, all CPUs can read and write to a single logical disk directly via an interconnect, but each have their own private memories. The local storage on each compute node can act as caches. This approach is more common in cloud-based DBMSs.
 
@@ -74,7 +74,7 @@ Nodes have their own buffer pool and are considered stateless. A node crash does
 
 ![13.jpg](https://images.spumn.eu.cc/blog/ea3373c7c9962938.jpg)
 
-# Shared Nothing
+## Shared Nothing
 
 In a *shared nothing* environment, each node has its own CPU, memory, and disk. Nodes only communicate with each other via network. Before the rise of cloud storage platforms, the shared nothing architecture used to be considered the correct way to build distributed DBMSs.
 
@@ -90,7 +90,7 @@ It is more difficult to increase capacity in this architecture because the DBMS 
 
 ![18.jpg](https://images.spumn.eu.cc/blog/7c6e1d0f79f34efd.jpg)
 
-# Design Issues
+## Design Issues
 
 Distributed DBMSs aim to maintain *data transparency*, meaning that users should not be required to know where data is physically located, or how tables are partitioned or replicated. The details of how data is being stored is hidden from the application. In other words, a SQL query that works on a single-node DBMS should work the same on a distributed DBMS.
 
@@ -114,7 +114,7 @@ Another design decision to make involves deciding how the nodes will interact in
 
 ![21.jpg](https://images.spumn.eu.cc/blog/7d56747047ae1deb.jpg)
 
-# Partitioning Schemes
+## Partitioning Schemes
 
 ![22.jpg](https://images.spumn.eu.cc/blog/a214a41123d0e827.jpg)
 
@@ -126,7 +126,7 @@ The goal of a partitioning scheme is to maximize single-node transactions, or tr
 
 For **logically partitioned** nodes, particular nodes are in charge of accessing specific tuples from a shared disk. For **physically partitioned** nodes, each shared nothing node reads and updates tuples it contains on its own local disk.
 
-## Implementation
+### Implementation
 
 The simplest way to partition tables is **naive data partitioning**. Each node stores one table, assuming enough storage space for a given node. This is easy to implement because a query is just routed to a specific partitioning. This can be bad, since it is not scalable. One partition’s resources can be exhausted if that one table is queried on often, not using all nodes available. See Figure 2 for an example.
 
@@ -192,15 +192,15 @@ The DBMS can partition a database physically (shared nothing) or logically (shar
 
 A distributed transaction accesses data at one or more partitions, which requires expensive coordination.
 
-## Centralized coordinator
+### Centralized coordinator
 
 The centralized coordinator acts as a global “traffic cop” that coordinates all the behavior. See Figure 5 for a diagram.
 
-## Middleware
+### Middleware
 
 Centralized coordinators can be used as middleware, which accepts query requests and routes queries to correct partitions.
 
-## Decentralized coordinator
+### Decentralized coordinator
 
 In a decentralized approach, nodes organize themselves. The client directly sends queries to one of the partitions. This *home partition* will send results back to the client. The home partition is in charge of communicating with other partitions and committing accordingly.
 

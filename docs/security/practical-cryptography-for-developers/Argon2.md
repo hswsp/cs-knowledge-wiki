@@ -8,7 +8,7 @@ source: https://www.yuque.com/yangguangfanxing/zuyi8o/icmf8iz25inkmg34
 
 [Argon2](https://en.wikipedia.org/wiki/Argon2) is modern **ASIC-resistant** and **GPU-resistant** secure key derivation function. It has better password cracking resistance (when configured correctly) than **PBKDF2**, **Bcrypt** and **Scrypt** (for similar configuration parameters for CPU and RAM usage).
 
-# Variants of Argon2
+## Variants of Argon2
 
 The **Argon2** function has several variants:
 
@@ -16,7 +16,7 @@ The **Argon2** function has several variants:
 -   **Argon2i** – provides less GPU resistance, but has no side-channel attacks.
 -   **Argon2id** – **recommended** (combines the Argon2d and Argon2i).
 
-# Config Parameters of Argon2
+## Config Parameters of Argon2
 
 **Argon2** has the following **config parameters**, which are very similar to Scrypt:
 
@@ -27,13 +27,13 @@ The **Argon2** function has several variants:
 -   **parallelism** `p`: degree of parallelism (i.e. number of threads)
 -   **outputKeyLength** `T`: desired number of returned bytes
 
-# Argon2 - Example
+## Argon2 - Example
 
 You can **play with the Argon2** password to key derivation function online here: <http://antelle.net/argon2-browser>.
 
 ![](https://cdn.nlark.com/yuque/0/2023/png/22382307/1691721146805-593fbfa2-6f05-4f64-b340-25317ce82ca1.png)
 
-# Argon2 Calculation in Python - Example
+## Argon2 Calculation in Python - Example
 
 Now, we shall write some **code in Python** to derive a key from a password using the **Argon2** algorithm.
 
@@ -88,7 +88,7 @@ Try to **execute the above code several times** to ensure that the **<u>derived 
 
 Try to change the **time_cost** or the **memory_cost** settings and see how they affect the **execution time** for the key derivation.
 
-# Storing Algorithm Settings + Salt + Hash Together
+## Storing Algorithm Settings + Salt + Hash Together
 
 In many applications, frameworks and tools, **Argon2 encrypted passwords are stored together with the algorithm settings and salt**, into a single string (in certain format, like it was shown above), consisting of several parts, separated by `$` character. For example, the password `p@ss~123` can be stored in the Argon2 standard format like this (several examples are given, to make the pattern apparent):
 
@@ -100,6 +100,6 @@ $argon2i$v=19$m=8192,t=32,p=1$c21hbGxzYWx0$lmO1aPPy3x0CcvrKpFLi1TL/uSVJ/eO5hPHiW
 
 All the above hashes hold the same password, but with different algotihm settings and different salt.
 
-# When to Use Argon2?
+## When to Use Argon2?
 
 When configured properly **Argon2** is considered a highly secure KDF function, **one of the best** available in the industry, so you can use it as general purpose password to key derivation algorithm, e.g. to when encrypting wallets, documents, files or app passwords. In the general case **Argon2 is recommended** over **Scrypt**, **Bcrypt** and **PBKDF2**.

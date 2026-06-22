@@ -10,7 +10,7 @@ date: 2022-09-14
 
 对于 Java 开发人员来说，平时需要阅读 Byte Code 的场景比较少，但和阅读框架源码能够了解到框架的设计思路一样，阅读 Java Byte Code 也有利于我们理解 Java 一些深层的东西，提高我们解决问题的能力。能够阅读 Byte Code 也有利于我们去理解 Kotlin 或其它运行在 JVM 上的语言，是如何扩展 Java 所没有的特性或语法糖。
 
-# 字节码文件结构
+## 字节码文件结构
 
 ```Java
 public class Hello {
@@ -45,7 +45,7 @@ public class Hello {
 
 在常量池后面还有访问标志，很显然这个文件对于我们来说阅读起来并不方便，但是我们可以转换为助记符来帮助我们阅读。
 
-## 使用 javap 命令
+### 使用 javap 命令
 
 当我们拥有一个 `.class` 文件时，我们可以通过 `javap` 来将字节码指令转换为助记符，这个命令有一些参数，你可以通过 `javap -help` 来查看所有参数的说明，这里为了显示尽量详细的内容，使用 `javap -verbose Hello`，其效果如下，但由于内容太长，我们不一次性展示所有内容，而是分区域来进行阅读。
 
@@ -68,7 +68,7 @@ public class Hello
 
 ![img](https://images.spumn.eu.cc/blog/82ffde7d2bee91a1.webp)
 
-## 常量池
+### 常量池
 
 在类信息的下面，则是常量池，它类似一个表，每个常量由编号、类型、值，这 3 个部分组成。我们列出一小部分来了解它的结构。
 
@@ -108,7 +108,7 @@ Constant pool:
 
 在常量池中我们可以看到，`#5` 是一个类，它的值和方法一样都是名称，因此它引用了常量 #32，对于 `Utf8` 类型的常量，其值则是一个字符串，也就是常量 `#32` 的值就是字符串 *Hello*。因此 `#5` 的值就是 *Hello*。同样的 `#27` 的值是 `add:(II)I`，将它们组合起来 `#2` 的值就是 `Hello.add:(II)I` 了。
 
-## 包含的方法
+### 包含的方法
 
 与 Java 代码一样，我们所定义的方法在类里面，而在字节码中我们定义在类中的方法也放在大括号里面，而这个大括号就在常量池下方。
 
@@ -142,7 +142,7 @@ Constant pool:
 
 而 flags 与 Class 的 flags 类似，用于声明方法所拥有的修饰符。而最后的 Code 中包含的则是该方法的代码所执行的指令。
 
-## Code 的结构
+### Code 的结构
 
 ```yaml
   public static void main(java.lang.String[]);
@@ -205,7 +205,7 @@ LineNumberTable:
 
 当我们初步了解了 Code 属性的格式后，我们就可以对其中的指令执行进行分析了，但在此之前，我们需要先有一点 JVM 内存布局的基础知识，这对于我们之后了解指令的执行过程非常重要。
 
-# JVM 内存结构
+## JVM 内存结构
 
 我们的 Java 程序在运行时是通过 `main()` 方法启动，它是程序的入口，我们的进程在启动时会为该方法创建一个主线程来执行代码。当我们使用多线程时，那么程序的进程将会拥有多个线程。每个线程的资源都拥有独自的资源，当然它们也可以共享进程的资源，那么在 JVM 中，根据资源的可用范围，可将内存区域分为线程独占和线程共享两个类别。
 
@@ -223,7 +223,7 @@ LineNumberTable:
 
 现在我们初步了解了 JVM 内存的布局，那么接下来可以继续看指令的执行过程了。
 
-# 指令的执行过程
+## 指令的执行过程
 
 由于 Java 程序从 `main()` 方法开始，我们也是从这个方法的指令开始进行分析。
 
@@ -273,7 +273,7 @@ LineNumberTable:
 
 那可能有人会觉得，如果每次查看一个类都需要去 command line 执行 `javap` 来查看对应的助记符，这样非常麻烦呀。那么接下来我们讲一下如何在 IntelliJ IDEA 里面直接阅读 Byte Code。
 
-# 在 IntelliJ IDEA 阅读
+## 在 IntelliJ IDEA 阅读
 
 如果你希望在 IntelliJ IDEA 里阅读 Byte Code，那么可以按照 **Bytecode Viewer** 这一个插件，只需要在 Plugins 里面查找就能找到。
 
@@ -293,7 +293,7 @@ LineNumberTable:
 
 由于该插件主要是为了阅读 Byte Code 中的指令，因此是以一种更加方便阅读指令的方式展示 Byte Code，例如对指令根据源码做分块，并把对应代码行数放在指令块的第一行，这样我们就不需要去对照 LineNumberTable 寻找当前指令的代码所在的位置了，反过来由于进行了分块查询对应代码的指令也很方便。但这个插件显示的内容也少了很多东西，如果需要查看初始常量池的内容，那就需要使用 `javap` 了。
 
-# 参考
+## 参考
 
 - 字节码增强技术探索：[tech.meituan.com/2019/09/05/…](https://link.juejin.cn?target=https%3A%2F%2Ftech.meituan.com%2F2019%2F09%2F05%2Fjava-bytecode-enhancement.html)
 - 一文看懂 JVM 内存布局及 GC 原理：[www.infoq.cn/article/3wy…](https://link.juejin.cn?target=https%3A%2F%2Fwww.infoq.cn%2Farticle%2F3wyretkqrhivtw4frmr3)

@@ -4,7 +4,7 @@
 
 ![2.jpg](https://images.spumn.eu.cc/blog/084b4ef9a212de7b.jpg)
 
-# Motivation
+## Motivation
 
 - **Lost Update Problem** (**Concurrency Control**): How can we avoid race conditions when updating records at the same time?
 - **Durability Problem** (**Recovery**): How can we ensure the correct state in case of a power failure?
@@ -15,7 +15,7 @@
 
 ![5.jpg](https://images.spumn.eu.cc/blog/21a056c4931a21ef.jpg)
 
-# Transactions
+## Transactions
 
 A *transaction* is the execution of a sequence of one or more operations (e.g., SQL queries) on a shared database to perform some higher level function. They are the basic unit of change in a DBMS. Partial transactions are not allowed (i.e. transactions must be atomic).
 
@@ -31,7 +31,7 @@ Either all of the steps need to be completed or none of them should be completed
 
 ![7.jpg](https://images.spumn.eu.cc/blog/72babe2abfcd027a.jpg)
 
-## The Strawman System
+### The Strawman System
 
 A simple system for handling transactions is to execute one transaction at a time **using a single worker** (e.g. one thread). Thus, only one transaction can be running at a time. To execute the transaction, the DBMS copies the entire database ﬁle and makes the transaction changes to this new ﬁle. If the transaction succeeds, then the new ﬁle becomes the current database ﬁle. If the transaction fails, the DBMS discards the new ﬁle and none of the transaction’s changes have been saved. This method is slow as it does not allow for concurrent transactions and requires copying the whole database ﬁle for every transaction.
 
@@ -50,7 +50,7 @@ The scope of a transaction is only inside the database. It cannot make changes t
 
 ![10.jpg](https://images.spumn.eu.cc/blog/ce765113db328837.jpg)
 
-# Deﬁnitions
+## Deﬁnitions
 
 Formally, a *database* can be represented as a ﬁxed set of named data objects $(A, B, C, . . .)$. These objects can be attributes, tuples, pages, tables, or even databases. The algorithms that we will discuss work on any type of object but all objects must be of the same type.
 
@@ -77,7 +77,7 @@ The criteria used to ensure the correctness of a database is given by the acrony
 
 ![15.jpg](https://images.spumn.eu.cc/blog/6eb8fc627a2e0968.jpg)
 
-# ACID: Atomicity
+## ACID: Atomicity
 
 The DBMS guarantees that transactions are **atomic**. The transaction either executes all its actions or none of them. There are two approaches to this:
 
@@ -85,19 +85,19 @@ The DBMS guarantees that transactions are **atomic**. The transaction either exe
 
 ![17.jpg](https://images.spumn.eu.cc/blog/249603f5d3012bb5.jpg)
 
-## Approach #1:# Logging
+### Approach #1:# Logging
 
 DBMS logs all actions so that it can undo the actions of aborted transactions. It maintains undo records both in memory and on disk. Logging is used by almost all modern systems for audit and efﬁciency reasons.
 
 ![18.jpg](https://images.spumn.eu.cc/blog/2e8376ce57b8236c.jpg)
 
-## Approach #2:# Shadow Paging
+### Approach #2:# Shadow Paging
 
 The DBMS makes copies of pages modiﬁed by the transactions and transactions make changes to those copies. Only when the transaction commits is the page made visible. This approach is typically slower at runtime than a logging-based DBMS. However, one beneﬁt is, if you are only single threaded, there is no need for logging, so there are less writes to disk when transactions modify the database. This also makes recovery simple, as all you need to do is delete all pages from uncommitted transactions. In general, though, better runtime performance is preferred over better recovery performance, so this is rarely used in practice.
 
 ![19.jpg](https://images.spumn.eu.cc/blog/ea57c7f3756bf4fe.jpg)
 
-# ACID: Consistency
+## ACID: Consistency
 
 At a high level, consisitency means the “world” represented by the database is **logically** correct. All questions (i.e., queries) that the application asks about the data will return logically correct results. There are two notions of consistency:
 
@@ -111,13 +111,13 @@ At a high level, consisitency means the “world” represented by the database 
 
 ![22.jpg](https://images.spumn.eu.cc/blog/198e135e703f4166.jpg)
 
-# ACID: Isolation
+## ACID: Isolation
 
 The DBMS provides transactions the illusion that they are running alone in the system. They do not see the effects of concurrent transactions. This is equivalent to a system where transactions are executed in serial order (i.e., one at a time). But to achieve better performance, the DBMS has to interleave the operations of concurrent transactions while maintaining the illusion of isolation.
 
 ![23.jpg](https://images.spumn.eu.cc/blog/3582fa989f6a6f9a.jpg)
 
-## Concurrency Control
+### Concurrency Control
 
 A *concurrency control protocol* is how the DBMS decides the proper interleaving of operations from multiple transactions at runtime.
 
@@ -178,7 +178,7 @@ There are two types for serializability: (1) *conﬂict* and (2) *view*. Neither
 
 ![42.jpg](https://images.spumn.eu.cc/blog/aa96eab2d0b6f64a.jpg)
 
-## Conﬂict Serializability
+### Conﬂict Serializability
 
 Two schedules are ***conﬂict equivalent*** iff they involve the same operations of the same transactions and every pair of conﬂicting operations is ordered in the same way in both schedules. A schedule $S$ is ***conﬂict serializable*** if it is conﬂict equivalent to some **serial schedule**.
 
@@ -228,7 +228,7 @@ In a dependency graph, each transaction is a node in the graph. There exists a d
 
 ![63.jpg](https://images.spumn.eu.cc/blog/a39fecea48860563.jpg)
 
-## View Serializability
+### View Serializability
 
 *View serializability* is a weaker notion of serializibility that allows for all schedules that are conﬂict serializable and “**blind writes**” (i.e. performing writes without reading the value ﬁrst). Thus, it allows for more schedules than conﬂict serializability, but is difﬁcult to enforce efﬁciently. This is because the DBMS does not know how the application will “interpret” values.
 
@@ -242,13 +242,13 @@ In a dependency graph, each transaction is a node in the graph. There exists a d
 
 ![68.jpg](https://images.spumn.eu.cc/blog/a7aace82f4e749a3.jpg)
 
-## Universe of Schedules
+### Universe of Schedules
 
 $SerialSchedules ⊂ ConflictSerializableSchedules ⊂ V iewSerializableSchedules ⊂ AllSchedules$
 
 ![69.jpg](https://images.spumn.eu.cc/blog/2c6ef1b8a5902160.jpg)
 
-# ACID: Durability
+## ACID: Durability
 
 All of the changes of committed transactions must be **durable** (i.e., persistent) after a crash or restart. The DBMS can either use logging or shadow paging to ensure that all changes are durable.
 

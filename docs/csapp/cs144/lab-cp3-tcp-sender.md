@@ -12,7 +12,7 @@ In Checkpoint 0, you implemented the abstraction of a flow-controlled byte strea
 
 Now, in Checkpoint 3, you’ll implement the other side of the connection. The `TCPSender` is a tool that translates from an outbound byte stream to segments that will become the payloads of unreliable datagrams. Finally, in Checkpoint 4, you’ll combine your work from the previous to labs to create a working TCP implementation: a `TCPPeer` that contains a `TCPSender` and `TCPReceiver`. You’ll use this to talk to a classmate and to peers across the Internet—real servers that speak TCP.
 
-# 1 Getting started
+## 1 Getting started
 Your implementation of a `TCPSender` will use the same Minnow library that you used in Checkpoints 0–2, with additional classes and tests. To get started:
 
 1. Make sure you have committed all your solutions to Checkpoint 1. Please don’t modify any files outside the top level of the src directory, or **webget.cc**. You may have trouble merging the Checkpoint 1 starter code otherwise.
@@ -23,7 +23,7 @@ Your implementation of a `TCPSender` will use the same Minnow library that you u
 6. Open and start editing the **writeups/check3.md** file. This is the template for your lab writeup and will be included in your submission.
 7. Reminder: <font style="color:#601BDE;">please make frequent </font>**<font style="color:#601BDE;">small commits</font>**<font style="color:#601BDE;"> in your local Git repository as you work</font>. If you need help to make sure you’re doing this right, please ask a classmate or the teaching staff for help. You can use the `git log` command to see your Git history
 
-# 2 Checkpoint 3: The TCP Sender
+## 2 Checkpoint 3: The TCP Sender
 TCP is a protocol that reliably conveys a pair of flow-controlled byte streams (one in each direction) over unreliable datagrams. Two party participate in the TCP connection, and each party is a peer of the other. <font style="color:#601BDE;">Each peer acts as both “sender” (of its own outgoing byte-stream) and “receiver” (of an incoming byte-stream) at the same time</font>.
 
 This week, you’ll implement the “sender” part of TCP, responsible for reading from a `ByteStream` (created and written to by some sender-side application), and turning the stream into a sequence of outgoing TCP segments. On the remote side, a TCP `receiver1` transforms those segments (those that arrive—they might not all make it) back into the original byte stream, and sends acknowledgments and window advertisements back to the sender.
@@ -40,7 +40,7 @@ It will be your `TCPSender`’s responsibility to:
 
 It’s important to remember that the <font style="color:#601BDE;">receiver can be any implementation of a valid TCP receiver</font>—it won’t necessarily be your own `TCPReceiver`. **<font style="color:#DF2A3F;">One of the valuable things about Internet standards is how they establish a common language between endpoints that may otherwise act very differently</font>**
 
-## 2.1 How does the TCPSender know if a segment was lost?
+### 2.1 How does the TCPSender know if a segment was lost?
 Your `TCPSender` will be sending a bunch of `TCPSenderMessages`. Each will contain a (possibly-empty) substring from the outgoing `ByteStream`, indexed with a sequence number to indicate its position in the stream, and marked with the **SYN** flag at the beginning of the stream, and **FIN** flag at the end.
 
 In addition to sending those segments, the `TCPSender` also has to <font style="color:#601BDE;">keep track of its outstanding segments</font> until the sequence numbers they occupy have been fully acknowledged. Periodically, the owner of the `TCPSender` will call the `TCPSender`’s `tick` method, indicating the passage of time. The `TCPSender` is responsible for looking through its collection of outstanding `TCPSenderMessages` and deciding if the <font style="color:#601BDE;">oldest-sent segment</font> has been outstanding for too long without acknowledgment (that is, without all of its sequence numbers being acknowledged). If so, it needs to be retransmitted (sent again).
@@ -68,7 +68,7 @@ ii. <font style="color:#DF2A3F;">Double the value of RTO. This is called “expo
 
 You might choose to implement the functionality of the retransmission timer in a separate class, but it’s up to you. If you do, please add it to the existing files (`tcp_sender.hh` and `tcp_sender.cc`).
 
-## 2.2 Implementing the TCP sender
+### 2.2 Implementing the TCP sender
 Okay! We’ve discussed the basic idea of what the TCP sender does (given an outgoing `ByteStream`, split it up into segments, send them to the receiver, and if they don’t get acknowledged soon enough, keep resending them). And we’ve discussed when to conclude that an outstanding segment was lost and needs to be resend.
 
 Now it’s time for the concrete interface that your `TCPSender` will provide. There are four important events that it needs to handle:
@@ -99,7 +99,7 @@ Note: a segment like this one, which occupies no sequence numbers, doesn’t nee
 
 To complete Checkpoint 3, please review the full interface in `src/tcp_sender.hh` implement the complete `TCPSender` public interface in the `tcp_sender.h`h and `tcp_sender.cc files`. We expect you’ll want to add private methods and member variables, and possibly a helper class.
 
-## 2.3 FAQs and special cases
+### 2.3 FAQs and special cases
 + What should my `TCPSender` assume as the receiver’s window size <font style="color:#601BDE;">before the receive</font> method informs it otherwise? <font style="color:#601BDE;">One</font>.
 + What do I do if an acknowledgment only partially acknowledges some outstanding segment? Should I try to clip off the bytes that got acknowledged?  
 A TCP sender could do this, but for purposes of this class, t<font style="color:#601BDE;">here’s no need to get fancy</font>. Treat each segment as fully outstanding <font style="color:#601BDE;">until it’s been fully acknowledged</font>—all of the sequence numbers it occupies are less than the ackno.
@@ -110,21 +110,21 @@ No—the only segments that should be tracked as outstanding, and possibly retra
 + Where can I read if there are more FAQs after this PDF comes out?  
 Please check the website ([https://cs144.github.io/lab_faq.html](https://cs144.github.io/lab_faq.html)) and Ed regularly.
 
-# 3 Development and debugging advice
+## 3 Development and debugging advice
 1. Implement the `TCPSender`’s public interface (and any private methods or functions you’d like) in the file `tcp_sender.cc`. You may add any private members you like to the `TCPSender` class in tcp sender.hh.
 2. You can test your code with `cmake --build build --target check3` .
 3. Please re-read the section on “using Git” in the Checkpoint 0 document, and remember to keep the code in the Git repository it was distributed in on the main branch. Make small commits, using good commit messages that identify what changed and why.
 4. Please work to make your code readable to the CA who will be grading it for style. Use reasonable and clear naming conventions for variables. Use comments to explain complex or subtle pieces of code. <font style="color:#601BDE;">Use “defensive programming”—explicitly check preconditions of functions or invariants</font>, and throw an exception if anything is ever wrong. Use modularity in your design—identify common abstractions and behaviors and <font style="color:#D22D8D;">factor them out</font> when possible. Blocks of repeated code and enormous functions will make it hard to follow your code.
 
-# 4 Hands-on activity
+## 4 Hands-on activity
 Congratulations—you have made a fully working implementation of the Transmission Control Protocol, implementations of which are arguably the most prevalent computer program on the planet. It’s time to take a victory lap! You’ll communicate with Linux’s TCP and with a lab partner, and then you’ll modify your **webget** (from checkpoint 0) to use your TCP implementation. In your writeup, describe what you did, answer the questions below, and try to find something interesting to discuss!
 
-## 4.1 Experiments within your own VM
+### 4.1 Experiments within your own VM
 We’ve given you a client program (**./build/apps/tcp_ipv4**) that uses your `TCPSender` and `TCPReceiver` to speak TCP-over-IP over the Internet. We’ve also given you a similar program (**./build/apps/tcp_native**) that uses a Linux `TCPSocket`.
 
 The big question: Can your TCP implementation (`tcp_ipv4`) interoperate with Linux’s TCP (`tcp_native`)?
 
-### 4.1.1 Have Linux’s TCP talk to itself
+#### 4.1.1 Have Linux’s TCP talk to itself
 First, let’s do the boring part of making sure Linux’s TCP implementation can talk to itself. Run Linux’s TCP as a “server” (the peer that waits for an incoming **SYN** segment), listening on port 9090. On your VM, run: `./build/apps/tcp_native -l 0 9090`
 
 Next, try using Linux’s TCP as the “client”: the peer that initiates the connection by sending the first **SYN** segment to the server. In another terminal window on your VM, run: `./build/apps/tcp_native 169.254.144.1 9090`
@@ -137,14 +137,14 @@ To end a stream, type `ctrl -D (on a line by itself)` to close the `ByteStream` 
 
 Now end the stream in the second direction by typing `ctrl-D (on a line by itself)` in the other terminal. If all went well, both programs will quit and bring you back to the command line in both terminals. This indicates the TCP connection has finished in both directions (as discussed in class, <font style="color:#601BDE;">Linux will “linger” in the background before reusing one of the port numbers</font> to reduce the chance of a “two general’s problem”).
 
-### 4.1.2 Have your TCP talk to Linux’s
+#### 4.1.2 Have your TCP talk to Linux’s
 Repeat the above steps, but connect your TCP implementation to Linux’s. **First**, run `sudo ./scripts/tun.sh start 144` to give your implementation permission to send raw Internet datagrams without needing to be root. You’ll have to rerun this command any time you reboot your VM.
 
 Then, rerun the above experiment, replacing one of the programs (the client or server) with `tcp_ipv4` (which is your TCP implementation). Does the connection still get established as before, and can each peer still type at the other and have the text appear on the other peer’s window? If so, pat yourself on the back (and we’ll shake your hand)—you’ve earned it! If not. . . time to start debugging. You can capture the TCP segments with a command like `sudo rm -f /tmp/capture.raw; sudo tcpdump -n -w /tmp/capture.raw -i tun144 --print --packet-buffered ; `the resulting **/tmp/capture.raw** file can be visualized in wireshark as before.
 
 After you’ve typed a little in each direction, try closing one of the `ByteStreams` and keep typing a little in the other direction. Do both programs quit cleanly after both streams have finished with a `ctrl-D` ? They should—although you may need to see `tcp_ipv4` wait a little to reduce the chance of a “two general’s problem.” When does it need to wait (when it’s the first to close or the second to close)? Does this match what was discussed in class?
 
-### 4.1.3 Try to pass the “one megabyte challenge”
+#### 4.1.3 Try to pass the “one megabyte challenge”
 Once it looks like you can have a basic conversation, try sending a file between `tcp_ipv4` (your TCP) and `tcp_native` (Linux’s TCP).
 
 To create a random file that’s 12345 bytes as “**/tmp/big.tx**t”: `dd if=/dev/urandom bs=12345 count=1 of=/tmp/big.txt` 
@@ -173,14 +173,14 @@ If the SHA-256 hashes match, you can be almost certain the file was transmitted 
 
 Try this with a tiny file (12 bytes), then 65534 bytes (a little less than 216), then 65537 bytes (a little omre than 216), then 200000 bytes, then the full megabyte (1000000 bytes). If they all match, give yourself an even bigger pat on the back! If not. . . time to debug (possibly with `tcpdump` and wireshark as described above).
 
-## 4.2 Reach out and talk to a friend
+### 4.2 Reach out and talk to a friend
 If everything works above, try communicating with a labmate over the Internet! One of you will run `tcp_native` as a server, as above. The other will run `tcp_ipv4` as the client, connecting to the labmate’s address on the CS144 private network (10.144.. . . ).
 
 Can you type to each other and successfully end the two streams cleanly? And if so, can you pass the one-megabyte challenge (sending a random 1000000-byte file successfully over the Internet to your labmate’s VM, with the SHA-256 hashes matching perfectly on both sides)? If so, congratulations. . . now trade places and try sending the file in the other direction!
 
 What’s the biggest file that you have the patience to successfully send to your labmate? In your lab report, include the sizes of the two files (the output of `ls -l /tmp/big.txt` for the sender and `ls -l /tmp/big-received.txt` for the receiver) and the results of `sha256sum /tmp/big.tx`t (on the sender’s VM) and `sha256sum /tmp/big-received.txt` (on the receiver’s).
 
-## 4.3 webget revisited
+### 4.3 webget revisited
 Remember your **webget.cc** that you wrote in Checkpoint 0? It used a TCP implementation (TCPSocket) provided by the Linux kernel. We’d like you to switch it to use your own TCP implementation without changing anything else. We think that all you’ll need to do is:
 
 + Replace `#include "socket.hh"` with `#include "tcp_minnow_socket.hh"` . 
@@ -192,7 +192,7 @@ Remember your **webget.cc** that you wrote in Checkpoint 0? It used a TCP implem
 
 Recompile, and run `make check_webget` to confirm that you’ve gone full-circle: you’ve written a basic Web fetcher on top of your own complete TCP “stack”, and it still successfully talks to a real webserver. If you have trouble, try running the program manually:` ./build/apps/webget cs144.keithw.org /hasher/xyzzy` . You’ll get some debugging output on the terminal that may be helpful.
 
-# 5 Submit
+## 5 Submit
 In your submission, please only make changes to the .hh and .cc files in the src directory (and **apps/webget.cc**). Within these files, please feel free to add private members as necessary, but please don’t change the public interface of any of the classes.
 
 Before handing in any assignment, please run these in order:
@@ -214,6 +214,6 @@ Please also fill in the number of hours the assignment took you and any other co
 
 Please let the course staff know ASAP of any problems at a lab session, or by posting a question on Ed. Good luck!
 
-# 6 Extra Credit
+## 6 Extra Credit
 Extra credit will be rewarded for improvements to the test suite. Add a test case to one of the files in the tests directory (e.g. **minnow/tests/recv_connect.cc**) that catches a real bug that somebody might reasonably make that isn’t already caught by the existing test suite. Please post your test on EdStem (it’s okay to make this public) so we can take a look and decide whether to add it to the overall testsuite. (This opportunity will remain open—e.g. if you find a good additional test for the `Reassembler` in week 10, that’s great too.)
 

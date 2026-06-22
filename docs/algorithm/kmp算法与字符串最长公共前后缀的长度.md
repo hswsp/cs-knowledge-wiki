@@ -306,7 +306,7 @@ int main()
 
 
 
-# 两字符串前缀与后缀的最长公共部分
+## 两字符串前缀与后缀的最长公共部分
 
 
 [Simpsons’ Hidden Talents](http://acm.hdu.edu.cn/showproblem.php?pid=2594)
@@ -321,7 +321,7 @@ int main()
 
 
 
-## 思路
+### 思路
 
 
 将两个字符串拼接起来，即变成了求一个字符串的后缀与前缀的最大匹配长度，即为 next 数组的含义。
@@ -385,10 +385,10 @@ int main() {
 
 那么俩字符串最长前后公共部分有什么用呢？其实它与回文串息息相关。
 
-# [LeetCode 214. Shortest Palindrome](https://leetcode.cn/problems/shortest-palindrome/)
+## [LeetCode 214. Shortest Palindrome](https://leetcode.cn/problems/shortest-palindrome/)
 
 
-## 题目描述
+### 题目描述
 
 
 You are given a string s. You can convert s to a palindrome by adding characters in front of it.
@@ -429,7 +429,7 @@ s consists of lowercase English letters only.
 
 
 
-## 思路分析
+### 思路分析
 
 
 我们需要在给定的字符串 s 的前面添加字符串 s'，得到最短的回文串。这里我们用 s'+s表示得到的回文串。显然，这等价于找到**最短的**字符串 s'使得 s'+s 是一个回文串。
@@ -479,7 +479,7 @@ s consists of lowercase English letters only.
 
 
 
-## 代码
+### 代码
 
 
 ```c

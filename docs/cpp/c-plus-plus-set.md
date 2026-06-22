@@ -120,7 +120,7 @@ int main(){
 
 
 
-# unordered_set
+## unordered_set
 
 
 unordered_set 容器，可直译为“无序 set 容器”，即 unordered_set 容器和 set 容器很像，唯一的区别就在于 set 容器会自行对存储的数据进行排序，而 unordered_set 容器不会。
@@ -187,7 +187,7 @@ template < class Key,            //容器中存储元素的类型
 
 
 
-## 创建C++ unordered_set容器
+### 创建C++ unordered_set容器
 
 
 前面介绍了如何创建 unordered_map 和 unordered_multimap 容器，值得一提的是，创建它们的所有方式完全适用于 unordereded_set 容器。不过，考虑到一些读者可能尚未学习其它无序容器，因此这里还是讲解一下创建 unordered_set 容器的几种方法。
@@ -338,7 +338,7 @@ void hashset_rect()
 
 
 
-## C++ unordered_set容器的成员方法
+### C++ unordered_set容器的成员方法
 
 
 unordered_set 类模板中，提供了如表 2 所示的成员方法。

@@ -24,7 +24,7 @@ Technically, the **input data** for **PBKDF2** consists of:
 
 The **output data** is the **derived key** of requested length (e.g. 256 bits).
 
-# PBKDF2 and Number of Iterations
+## PBKDF2 and Number of Iterations
 
 **PBKDF2** allows to configure the number of **iterations** and thus to configure the time required to derive the key.
 
@@ -32,7 +32,7 @@ The **output data** is the **derived key** of requested length (e.g. 256 bits).
 -   **Faster key derivation** means short login time / faster decryption / etc. and **lower resistance** to password cracking attacks.
 -   **PBKDF2** is **not resistant** to [GPU attacks](https://security.stackexchange.com/questions/118147/how-are-gpus-used-in-brute-force-attacks) (parallel password cracking using video cards) and to [ASIC attacks](https://en.wikipedia.org/wiki/Custom_hardware_attack) (specialized password cracking hardware). This is the main motivation behind more modern KDF functions.
 
-# PBKDF2 - Example
+## PBKDF2 - Example
 
 Try **PBKDF2 key derivation** online here: <https://asecuritysite.com/encryption/PBKDF2z>.
 
@@ -40,7 +40,7 @@ Try **PBKDF2 key derivation** online here: <https://asecuritysite.com/encryption
 
 Try to **increase the iterations count** to see how this affects the speed of key derivation.
 
-# PBKDF2 Calculation in Python - Example
+## PBKDF2 Calculation in Python - Example
 
 Now, we shall write some **code in Python** to derive a key from a password using the **PBKDF2** algorithm.
 
@@ -74,11 +74,11 @@ Derived key: b'52c5efa16e7022859051b1dec28bc65d9696a3005d0f97e506c42843bc3bdbc0'
 
 Try to change the number of **iterations** and see whether and how the **execution time** changes.
 
-# When to Use PBKDF2?
+## When to Use PBKDF2?
 
 Today **PBKDF2** is considered old-fashioned and less secure than modern KDF functions, so it is recommended to use **Bcrypt**, **Scrypt** or **Argon2** instead. We shall explain all these KDF functions in details later in this section.
 
-# Modern Key Derivation Functions
+## Modern Key Derivation Functions
 
 **PBKDF2** has a major weakness: it is **not GPU-resistant** and **not ASIC-resistant**, because it uses relatively small amount of RAM and can be efficiently implemented on GPU (graphics cards) or **ASIC** (specialized hardware).
 

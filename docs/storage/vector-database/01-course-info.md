@@ -12,7 +12,7 @@ Cutting-edge AI applications rely on custom storage systems that store billions 
 
 This seminar-style course will introduce the key ideas and techniques used in this emerging class of storage systems, such as standard and hybrid querying, approximate nearest neighbour search, cluster and graph-based indexes, liveness layers, disk-resident indexing, and quantization. We will also discuss recent papers on updatable indexes, GPU-based indexing, multi-tenancy, VDBMS architecture, and more.
 
-# Schedule and Slides
+## Schedule and Slides
 
 Click on links for the lecture slides.
 
@@ -32,7 +32,7 @@ Click on links for the lecture slides.
 | 11 | Mar 26 | Student presentations: VDBMS architectures [Zhang, SIGMOD'24] [Wei, VLDB'20] [Chen, VLDB'24] |  |
 | 12 | Apr 2 | Project showcase[!](https://www.youtube.com/watch?v=l8HInxDeC-o&t=10s) | Project report due Apr 4 |
 
-# Paper List
+## Paper List
 
 Note that some papers focus on algorithms, some are more math-heavy, while others lean towards computer systems and architecture. A small number of papers might require deeper knowledge in systems or stronger understanding of machine learning. In the end, it falls to you to choose which paper to present and to fill-in any missing knowledge as you do so. It is a great opportunity to learn! However, regardless of how your paper leans, it will be your job as a presenter to make it accessible to the class.
 
@@ -86,7 +86,7 @@ VDBMS architectures:
 - **[Wei, VLDB'20]** Chuangxian Wei et al. [AnalyticDB-V: A Hybrid Analytical Engine Towards Query Fusion for Structured and Unstructured Data](http://www.vldb.org/pvldb/vol13/p3152-wei.pdf). Proc. VLDB Endow. 13, 12. **(AnalyticDB-V, ADBV)**
 - **[Chen, VLDB'24]** Cheng Chen et al. [SingleStore-V: An Integrated Vector Database System in SingleStore](https://www.vldb.org/pvldb/vol17/p3772-chen.pdf). Proc. VLDB Endow. 17, 12. **(SingleStore-V)**
 
-# Projects
+## Projects
 
 You will [pair up](https://q.utoronto.ca/courses/386675/groups#tab-76542) to propose and pursue a small hands-on research project on vector databases. The goal is for you to gain experience doing such hands-on research, as well and synthesizing your results in written form. (Depending on factors, we may also do a small "workshop" during the final class where each group presents their work in a short six-minute presentation.)
 
@@ -94,13 +94,13 @@ Our TA, Pritish Mishra, will be available on [Fridays at 11am-12pm on Zoom](http
 
 You are welcome to come up with your own project, or grab a [project idea from the list](https://piazza.com/class/m4vtcawln643cc/post/22).
 
-### Scope
+#### Scope
 
 The main requirement is that your project must involve some modest but (ideally) meaningful contribution to the field of vector databases or ANNS indexing. It could be trying out a new idea, extending a paper in the area, implement or benchmark and compare existing work, fresh analysis of common datasets, contribute theoretical insights and analysis, or provide some other constructive contribution. The project should focus on **quantitative methods**, such as algorithm design, various techniques, empirical evaluation of systems and algorithms, or mathematical modeling; something you can measure or prove.
 
 The scope should be roughly about the size of a small systems workshop paper. You are welcome to tailor your project to align with your own research interests or background, or to make it more relevant and impactful. But it should be connected to vector databases.
 
-### Deliverables
+#### Deliverables
 
 To ensure steady progress on your project, we will ask you to submit three PDF deliverables through the term. The PDFs are submitted through [Quercus assignments](https://q.utoronto.ca/courses/386675/assignments), and any feedback on them will come back via Quercus as well.
 
@@ -108,7 +108,7 @@ To ensure steady progress on your project, we will ask you to submit three PDF d
 
 Note that using LaTeX is mandatory! Do **not** use Word, not even the Word template from USENIX. Using LaTeX is an [essential skill for CS grad students](https://guides.library.utoronto.ca/thesis/formatting_latex) and is a learning goal. Instead of using LaTeX locally you can use [Overleaf](https://www.overleaf.com/), which can make collaboration easier and requires no setup.
 
-#### I. Proposal (due mid-Feb, exact date is in Quercus)
+##### I. Proposal (due mid-Feb, exact date is in Quercus)
 
 A concise document outlining your idea and execution plan (up to one page page). Explain in reasonable detail your idea, how you will pursue it, and how you will evaluate it. The proposed plan is not set in stone; it is perfectly OK (and even normal) that as you go with the project, you end up doing things differently than what you planned for. But you do need a plan! Do not forget to include a project title and the names of the authors (i.e., you names). The PDF should be **up to a single page** (with two columns of text) plus as many additional pages at the end as you need for references (bibliography). In other words, the referneces do not count in the page limit.
 
@@ -120,19 +120,19 @@ Guidance:
 
 The best empirical work can often tell the entire story with a single winning figure. Think what would that figure look like for your project: suppose you have done all the work and everything is great, what is the figure you would like to show that will tell the whole story? What is its X axis? What is the Y axis? What kind of figure it is and what is drawn on it? What story does it tell a reader? You can even include dummy figures in your proposal.
 
-#### II. Progress Report (due mid March)
+##### II. Progress Report (due mid March)
 
 A **2-page report** (two-column pages) plus unlimited references, mean to help you keep on track. Before writing it, think about your progress towards the goal. What have you accomplished so far? How well into the plan are you? What have you tried that worked, and what did not work? Has your plan changed, and if so how? What more needs to be done?
 
 We suggest the report follow a similar format to the project plan in the proposal, but now including much more detail. If some parts are already done, you can mix in content (paragraphs, tables, figures, etc.) and later re-use this content for your final report. For some projects it might even make sense to include one or two things that did **not** work, and how you adapted your plan.
 
-#### III. Final Report (due end of term):
+##### III. Final Report (due end of term):
 
 A comprehensive write-up akin to a journal or conference submission **4-6 two-column pages**.
 
 As guidance, the format should (in general) be roughly similar to an academic paper: a short abstract, an introduction section, related work section (you can also weave the related work into the introduction instead of its own section), a "methods" section (it can take different forms depending on the project), an evaluation section (detailing experiments, results, and analysis), and end with a "discussion" or conclusion paragraph summarizing and discussing the results in a high level and how you might continue the work if you could. To be clear, these are not hard rules -- for some projects it makes sense to tweak these sections. Feel free to include diagrams, figures, tables, and every type of content that would make sense to include. By the end of the project you would have read at least 5 papers, so you know what they look like.
 
-### Project Showcase (the final lecture):
+#### Project Showcase (the final lecture):
 
 The last class will be a project showcase, where every project group will present a short 5-minute talk about their project.
 

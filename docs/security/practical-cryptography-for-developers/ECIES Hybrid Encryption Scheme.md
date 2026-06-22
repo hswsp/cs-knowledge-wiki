@@ -24,7 +24,7 @@ The ECIES encryption scheme is a **framework**, not a concrete algorithm. It can
 
 In the next section we shall demonstrate through a **code example** how to use ECIES in practice.
 
-# ECIES Encryption - Example
+## ECIES Encryption - Example
 
 Now, let's demonstrate how the **ECIES encryption scheme** works in practice in **Python**. We shall use a Python library [eciespy](https://kigawas.me/eciespy/):
 

@@ -275,7 +275,7 @@ std::cout << "The number of even is " << even_count << std::endl;
 
 
 
-# C++ std::function
+## C++ std::function
 
 
 std::function是一个函数对象的包装器，std::function的实例可以存储，复制和调用任何可调用的目标，包括：
@@ -293,7 +293,7 @@ std::function是一个函数对象的包装器，std::function的实例可以存
 
 
 
-## std::function简介
+### std::function简介
 
 
 类模版std::function是一种通用、多态的函数封装。std::function的实例可以对任何可以调用的目标实体进行存储、复制、和调用操作，这些目标实体包括普通函数、Lambda表达式、函数指针、以及其它函数对象等。std::function对象是对C++中现有的可调用实体的一种类型安全的包裹（我们知道像函数指针这类可调用实体，是类型不安全的）。
@@ -312,7 +312,7 @@ C++标准库详细说明了这个的基本使用[http://www.cplusplus.com/refere
 
 
 
-### Member types
+#### Member types
 | 成员类型 | 说明 |
 | :---: | :---: |
 | result_type | 返回类型 |
@@ -323,7 +323,7 @@ C++标准库详细说明了这个的基本使用[http://www.cplusplus.com/refere
 
 
 
-### Member functions
+#### Member functions
 | 成员函数声明 | 说明 |
 | :---: | :---: |
 | constructor | 构造函数：constructs a new std::function instance |
@@ -335,7 +335,7 @@ C++标准库详细说明了这个的基本使用[http://www.cplusplus.com/refere
 
 
 
-## std::function使用
+### std::function使用
 
 
 封装普通函数例子：
@@ -529,8 +529,8 @@ int main()
 > [C++ std::function技术浅谈](https://blog.csdn.net/xiangbaohui/article/details/106741654)
 >
 
-# 
-# 右值引用和move语义
+## 
+## 右值引用和move语义
 
 
 先看一个简单的例子直观感受下：
@@ -723,7 +723,7 @@ unique_ptr<Shape> c(make_triangle());       // okay
 
 
 
-## 转移左值
+### 转移左值
 
 
 有时候，我们可能想转移左值，也就是说，有时候我们想让编译器把左值当作右值对待，以便能使用转移构造函数，即便这有点不安全。出于这个目的，C++ 11在标准库的头文件< utility >中提供了一个模板函数std::move。实际上，std::move仅仅是简单地将左值转换为右值，它本身并没有转移任何东西。它仅仅是让对象可以转移。

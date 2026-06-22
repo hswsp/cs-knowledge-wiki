@@ -8,7 +8,7 @@ date: 2020-09-28
 
 假设当前所在分支为B，可以在Version Control 的 Log 中选择在A分支单个commit或者多个commit的内容，会将选中的内容拉到B分支重新进行commit，之后记得push上去，就完成了公共功能代码的拉取。
 
-# Git Cherry-Pick的使用
+## Git Cherry-Pick的使用
 
 1. 单个commit合并
 
@@ -46,7 +46,7 @@ git cherry-pick --continue
 git cherry-pick --abort 
 ```
 
-# IDEA Cherry-Pick的使用
+## IDEA Cherry-Pick的使用
 
 此时我有两个分支 分别为 test1分支和master分支,现要将test1分支的代码合并到master分支上.
 

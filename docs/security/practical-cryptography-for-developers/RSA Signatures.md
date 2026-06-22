@@ -23,7 +23,7 @@ By definition, the RSA key-pairs has the following property:
 
 for all ***m*** in the range
 
-# RSA Sign
+## RSA Sign
 
 **Signing** a message `msg` with the private key exponent `d` **** :
 
@@ -32,7 +32,7 @@ for all ***m*** in the range
 
 The hash ***h*** should be in the range \[0...***n***). The obtained **signature*s*** is an integer in the range \[0...***n***).
 
-# RSA Verify Signature
+## RSA Verify Signature
 
 **Verifying** a signature `s` for the message `msg` with the public key exponent `e`:
 
@@ -44,7 +44,7 @@ If the signature is correct, then the following will be true:
 
 The **RSA sign / verify algorithm** is pretty simple. Let's implement it with some code.
 
-# RSA: Sign / Verify - Examples
+## RSA: Sign / Verify - Examples
 
 Let's demonstrate in practice the **RSA sign / verify** algorithm. We shall use the `pycryptodome` package in Python to generate **RSA keys**. After the keys are generated, we shall compute RSA digital signatures and verify signatures by a simple modular exponentiation (by encrypting and decrypting the message hash).
 
@@ -130,7 +130,7 @@ Signature valid (tampered): False
 
 Enjoy **playing with the above RSA sign / verify examples**. Try to modify the code, e.g. use 4096-bit keys, try to tamper the public key at the signature verification step or the signature.
 
-# The RSA Signature Standard PKCS#1
+## The RSA Signature Standard PKCS#1
 
 The simple use of **RSA signatures** is demonstrated above, but the industry usually follows the **crypto standards**. For the RSA signatures, the most adopted standard is "**PKCS#1**", which has several versions (1.5, 2.0, 2.1, 2.2), the latest described in [RFC 8017](https://tools.ietf.org/html/rfc8017#page-15). The PKCS#1 standard defines the RSA signing algorithm (**RSASP1**) and the RSA signature verification algorithm (**RSAVP1**), which are almost the same like the implemented in the previous section.
 

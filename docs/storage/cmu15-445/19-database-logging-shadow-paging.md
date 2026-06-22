@@ -6,7 +6,7 @@
 
 ![3.jpg](https://images.spumn.eu.cc/blog/b3f130beef93a6fa.jpg)
 
-# Crash Recovery
+## Crash Recovery
 
 *Recovery algorithms* are techniques to ensure database consistency, transaction atomicity, and durability despite failures. When a crash occurs, all the data in memory that has not been committed to disk is at risk of being lost. Recovery algorithms act to prevent loss of information after a crash.
 
@@ -36,7 +36,7 @@ The key primitives that used in recovery algorithms are UNDO and REDO. Not all a
 
 ![10.jpg](https://images.spumn.eu.cc/blog/d3b75179d00589c0.jpg)
 
-# Storage Types
+## Storage Types
 
 • **Volatile Storage**
 
@@ -58,13 +58,13 @@ The key primitives that used in recovery algorithms are UNDO and REDO. Not all a
 
 ![11.jpg](https://images.spumn.eu.cc/blog/7e27d4451dcb05cb.jpg)
 
-# Failure Classification
+## Failure Classification
 
 Because the DBMS is divided into different components based on the underlying storage device, there are a number of different types of failures that the DBMS needs to handle. Some of these failures are recoverable while others are not.
 
 ![12.jpg](https://images.spumn.eu.cc/blog/0b7ea7c1e5819c38.jpg)
 
-## Type #1:# Transaction Failures
+### Type #1:# Transaction Failures
 
 *Transactions failures* occur when a transaction reaches an error and must be aborted. Two types of errors that can cause transaction failures are logical errors and internal state errors.
 
@@ -74,7 +74,7 @@ Because the DBMS is divided into different components based on the underlying st
 
 ![13.jpg](https://images.spumn.eu.cc/blog/4a0e19f99e67ddd4.jpg)
 
-## Type #2:# System Failures
+### Type #2:# System Failures
 
 *System failures* are unintented failures in the underlying software or hardware that hosts the DBMS. These failures must be accounted for in crash recovery protocols.
 
@@ -84,7 +84,7 @@ Because the DBMS is divided into different components based on the underlying st
 
 ![14.jpg](https://images.spumn.eu.cc/blog/4f2914bcc28ecc6d.jpg)
 
-## Type #3:# Storage Media Failure
+### Type #3:# Storage Media Failure
 
 *Storage media failures* are non-repairable failures that occur when the physical storage device is damaged. When the storage media fails, the DBMS must be restored from an archived version. The DBMS cannot recover from a storage failure and requires human intervention.
 
@@ -96,7 +96,7 @@ Because the DBMS is divided into different components based on the underlying st
 
 ![17.jpg](https://images.spumn.eu.cc/blog/ad491940633aee73.jpg)
 
-# Buffer Pool Management Policies
+## Buffer Pool Management Policies
 
 The DBMS needs to ensure the following guarantees:
 
@@ -158,7 +158,7 @@ A limitation of **NO STEAL + FORCE** is that all of the data (ie. the write set)
 
 ![34.jpg](https://images.spumn.eu.cc/blog/2b52112c6fe7b532.jpg)
 
-# Shadow Paging
+## Shadow Paging
 
 Shadow Paging is an improvement upon the previous scheme where the DBMS copies pages on write to maintain two separate versions of the database:
 
@@ -190,7 +190,7 @@ Updates are only made in the shadow copy. When a transaction commits, the shadow
 
 ![44.jpg](https://images.spumn.eu.cc/blog/0394b1919d1cec34.jpg)
 
-## Recovery
+### Recovery
 
 • **Undo**: Remove the shadow pages. Leave the master and DB root pointer alone.
 
@@ -198,13 +198,13 @@ Updates are only made in the shadow copy. When a transaction commits, the shadow
 
 ![45.jpg](https://images.spumn.eu.cc/blog/2ab5d187b9394707.jpg)
 
-## Disadvantages
+### Disadvantages
 
 A disadvantage of shadow paging is that copying the entire page table is expensive. In reality, only paths in the tree that lead to updated leaf nodes need to be copied, not the entire tree. In addition, the commit overhead of shadow paging is high. Commits require the page table, and root, in addition to every updated page to be flushed. This causes fragmented data and also requires garbage collection. Another issue is that this only supports one writer transaction at a time or transactions in a batch.
 
 ![46.jpg](https://images.spumn.eu.cc/blog/48b7212c0fdc38bb.jpg)
 
-# Journal File
+## Journal File
 
 When a transaction modifies a page, the DBMS copies the original page to a separate journal file before overwriting the master version. After restarting, if a journal file exists, then the DBMS restores it to undo changes from uncommited transactions.
 
@@ -228,7 +228,7 @@ When a transaction modifies a page, the DBMS copies the original page to a separ
 
 ![56.jpg](https://images.spumn.eu.cc/blog/55c347b75cf78191.jpg)
 
-# Write-Ahead Logging
+## Write-Ahead Logging
 
 With write-ahead logging, the DBMS records all the changes made to the database in a log file (on stable storage) before the change is made to a disk page. The log contains sufficient information to perform the necessary undo and redo actions to restore the database after a crash. The DBMS must write to disk the log file records that correspond to changes made to a database object before it can flush that object to disk. An example of WAL is shown in Figure 3. **WAL is an example of a STEAL + NO-FORCE system**.
 
@@ -238,7 +238,7 @@ In shadow paging, the DBMS was required to perform writes to random non-contiguo
 
 ![58.jpg](https://images.spumn.eu.cc/blog/855c1e7d25e93b7c.jpg)
 
-## Implementation
+### Implementation
 
 The DBMS first stages all of a transaction’s log records in volatile storage. All log records pertaining to an updated page are then written to non-volatile storage before the page itself is allowed to be overwritten in non-volatile storage. A transaction is not considered committed until all its log records have been written to stable storage.
 
@@ -294,7 +294,7 @@ The DBMS must flush all of a transaction’s log entries to disk **before** it c
 
 ![76.jpg](https://images.spumn.eu.cc/blog/0fc3fd13751f551b.jpg)
 
-## Log-Structured Systems
+### Log-Structured Systems
 
 In a log-structured DBMS, log records of transactions are written to an in-memory buffer called the **MemTable**. When this buffer is full, it is flushed to disk. This approach **still requires a distinct write-ahead log**. This is due to the fact that **flushes of the WAL are typically more frequent than flushes of the MemTable**, and the WAL may contain uncommitted transactions. **The WAL is used to recreate the in-memory MemTable while recovering from a crash.**
 
@@ -302,7 +302,7 @@ In a log-structured DBMS, log records of transactions are written to an in-memor
 
 ![78.jpg](https://images.spumn.eu.cc/blog/c7cd280b9fe185da.jpg)
 
-# Logging Schemes
+## Logging Schemes
 
 The contents of a log record can vary based on the implementation.
 
@@ -333,7 +333,7 @@ The contents of a log record can vary based on the implementation.
 
 ![82.jpg](https://images.spumn.eu.cc/blog/1ffd420f7cbca0b4.jpg)
 
-# Checkpoints
+## Checkpoints
 
 The main problem with a WAL-based DBMS is that the log file will grow forever. After a crash, the DBMS has to replay the entire log, which can take a long time if the log file is large. Thus, the DBMS can periodically take a checkpoint where it flushes all buffers out to disk.
 
@@ -341,7 +341,7 @@ The main problem with a WAL-based DBMS is that the log file will grow forever. A
 
 How often the DBMS should take a checkpoint depends on the application’s performance and downtime requirements. Taking a checkpoint too often causes the DBMS’s runtime performance to degrade. But waiting a long time between checkpoints can potentially be just as bad, as the system’s recovery time after a restart increases.
 
-## Blocking Checkpoint Implementation:
+### Blocking Checkpoint Implementation:
 
 • The DBMS stops accepting new transactions and waits for all active transactions to complete.
 

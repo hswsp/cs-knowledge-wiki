@@ -44,7 +44,7 @@ Explanation: The longest substring is "ababb", as 'a' is repeated 2 times and 'b
 + `s`**consists of only lowercase English letters.**
 + $1 <= k <= 10^5$
 
-# 分治
+## 分治
 
 
 解决思路：当我们采用常规的分析思路发现无法进行时，要去**关注一下数据范围中「数值小」的值。**因为数值小其实是代表了「可枚举」，往往是解题或者降低复杂度的一个重要（甚至是唯一）的突破口。
@@ -55,7 +55,7 @@ Explanation: The longest substring is "ababb", as 'a' is repeated 2 times and 'b
 
 
 
-## 代码
+### 代码
 
 
 ```c
@@ -101,7 +101,7 @@ public:
 
 
 
-## **复杂度分析**
+### **复杂度分析**
 
 
 + 时间复杂度：$O(N\cdot |\Sigma|)$，其中 $N$ 为字符串的长度，$\Sigma$为字符集，本题中字符串仅包含小写字母，因此$\mid \Sigma \mid =26$ 。由于**每次递归调用都会完全去除某个字符**，因此递归深度最多为$\mid \Sigma \mid$。
@@ -109,7 +109,7 @@ public:
 
 
 
-# 枚举 + 双指针
+## 枚举 + 双指针
 
 
 其实看到这道题，我第一反应是「二分」，直接「二分」答案。
@@ -211,7 +211,7 @@ public:
 
 
 
-## 代码
+### 代码
 
 
 ```java
@@ -251,7 +251,7 @@ class Solution {
 
 
 
-## 复杂度分析
+### 复杂度分析
 
 
 + 时间复杂度：$O(N \cdot |\Sigma| + |\Sigma|^2)$，其中 N 为字符串的长度，$\Sigma$为字符集，本题中字符串仅包含小写字母，因此$\mid \Sigma \mid =26$。我们需要遍历所有可能的 $t$t，共$\mid \Sigma \mid$种可能性；内层循环中滑动窗口的复杂度为 $O(N)$，且初始时需要 $O(|\Sigma|)$的时间初始化 $\textit{cnt}$ 数组。

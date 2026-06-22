@@ -189,7 +189,7 @@ Raft's RPCs typically require the recipient to persist information to stable sto
 - **日志压缩**：如何解决日志集合无限制增长带来的问题。
 - **集群成员变更**：如何安全地改变集群的节点成员。
 
-# 日志压缩
+## 日志压缩
 
 我们知道 Raft 核心算法维护了日志的一致性，通过 apply 日志我们也就得到了一致的状态机，客户端的操作命令会被包装成日志交给 Raft 处理。
 
@@ -239,7 +239,7 @@ This snapshotting approach departs from Raft's strong leader principle, since fo
 - 若 next 在 snapshot 中，则发送 snapshot，发送成功后，再发送后续的 entries；
 - follower 收到 snapshot 时，如果 log 与 snapshot 有冲突或者 snapshot 比 log 新，则丢弃全部 log，应用 snapshot。如果follower收到的快照是包含在它自身log entries中的（由于重传或错误），那么被快照覆盖的日志条目会被删除，但是快照之后的条目仍有效且必须被保留。
 
-# 集群成员变更
+## 集群成员变更
 
 在前文的理论描述中我们都假设了集群成员是不变的，然而在实践中有时会需要替换宕机机器或者改变复制级别（即增减节点）。一种最简单暴力达成目的的方式就是：停止集群、改变成员、启动集群。这种方式在执行时会导致集群整体不可用，此外还存在手工操作带来的风险。
 
@@ -249,7 +249,7 @@ This snapshotting approach departs from Raft's strong leader principle, since fo
 
 ![image.png](https://images.spumn.eu.cc/distributed-consensus/0207d84343f181ef.png)
 
-## 成员变更的问题
+### 成员变更的问题
 
 在集群中进行成员变更的最大风险是，可能会同时出现 2 个领导者。
 
@@ -261,7 +261,7 @@ This snapshotting approach departs from Raft's strong leader principle, since fo
 
 如果出现了 2 个领导者，那么就违背了"领导者的唯一性"的原则，进而影响到集群的稳定运行。
 
-## Joint consensus
+### Joint consensus
 
 最开始 Raft 使用 joint consensus 实现成员变更，其使用一种两阶段方法平滑切换集群成员配置来避免遇到前一节描述的问题。
 
@@ -291,7 +291,7 @@ This snapshotting approach departs from Raft's strong leader principle, since fo
 
 联合共识让每个服务器能在不同时间切换配置而不需要做出安全性妥协。另外，联合共识让集群能够在配置变更时继续为客户端请求提供服务。
 
-## single-server changes
+### single-server changes
 
 该算法**每次只允许增加或移除一个节点**，只有当上一轮成员变更结束，才能开始下一轮，复杂的成员变更转换为多次单个成员变更。 增加或删除一个节点时，新旧配置中构成 majority 的部分必有重叠，不会有单独一部分做出决定，保证了 safety:
 

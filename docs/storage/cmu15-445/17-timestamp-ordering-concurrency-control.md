@@ -4,7 +4,7 @@
 
 ![2.jpg](https://images.spumn.eu.cc/blog/557abea104c10646.jpg)
 
-# Timestamp Ordering Concurrency Control
+## Timestamp Ordering Concurrency Control
 
 Timestamp ordering (T/O) is an **optimistic** class of concurrency control protocols where the DBMS assumes that transaction conflicts are rare. Instead of requiring transactions to acquire locks before they are allowed to read/write to a database object, the DBMS instead uses timestamps to determine the serializability order of transactions.
 
@@ -20,19 +20,19 @@ There are multiple timestamp allocation implementation strategies. The DBMS can 
 
 ![5.jpg](https://images.spumn.eu.cc/blog/9147fef356202b52.jpg)
 
-# Basic Timestamp Ordering (BASIC T/O)
+## Basic Timestamp Ordering (BASIC T/O)
 
 The basic timestamp ordering protocol (BASIC T/O) allows reads and writes on database objects without using locks. Instead, every database object X is tagged with timestamp of the last transaction that successfully performed a read (denoted as $R-TS(X)$) or write (denoted as $W-TS(X)$) on that object. The DBMS then checks these timestamps for every operation. If a transaction tries to access an object in a way which violates the timestamp ordering, the transaction is aborted and restarted. The underlying assumption is that violations will be rare and thus these restarts will also be rare.
 
 ![6.jpg](https://images.spumn.eu.cc/blog/3dc774b97ddf5715.jpg)
 
-## Read Operations
+### Read Operations
 
 For read operations, if $TS(T_i ) &lt; W-TS(X)$, this violates timestamp order of $T_i$ with regard to the previous writer of $X$ (do not want to read something that is written in the “future”). Thus, $T_i$ is aborted and restarted with a new timestamp. Otherwise, the read is valid and $T_i$ is allowed to read $X$. The DBMS then updates $R-TS(X)$ to be the max of $R-TS(X)$ and $TS(T_i )$. It also has to make a local copy of $X$ in a private workspace to ensure repeatable reads for $T_i$ .
 
 ![7.jpg](https://images.spumn.eu.cc/blog/e020a97e79e315d7.jpg)
 
-## Write Operations
+### Write Operations
 
 For write operations, if $TS(T_i ) &lt; R-TS(X)$ or $TS(T_i ) &lt; W-TS(X)$, $T_i$ must be restarted (do not want to overwrite “future” change). Otherwise, the DBMS allows $T_i$ to write $X$ and updates $W-TS(X)$. Again, it needs to make a local copy of $X$ to ensure repeatable reads for $T_i$ .
 
@@ -66,7 +66,7 @@ For write operations, if $TS(T_i ) &lt; R-TS(X)$ or $TS(T_i ) &lt; W-TS(X)$, $T_
 
 ![22.jpg](https://images.spumn.eu.cc/blog/b0bca7795be77c37.jpg)
 
-## Optimization: Thomas Write Rule
+### Optimization: Thomas Write Rule
 
 An optimization for writes is if $TS(T_i ) &lt; W-TS(X)$, the DBMS can instead ignore the write and allow the transaction to continue instead of aborting and restarting it. This is called the **Thomas Write Rule.**  Note that this violates timestamp order of $T_i$ but this is okay because no other transaction will ever read $T_i$ ’s write to object $X$.
 
@@ -86,7 +86,7 @@ It also permits schedules that are not recoverable. A schedule is *recoverable* 
 
 ![28.jpg](https://images.spumn.eu.cc/blog/5648fb8a5a89cfd2.jpg)
 
-## **Potential Issues:**
+### **Potential Issues:**
 
 • High overhead from copying data to transaction’s workspace and from updating timestamps.
 
@@ -98,7 +98,7 @@ It also permits schedules that are not recoverable. A schedule is *recoverable* 
 
 ![30.jpg](https://images.spumn.eu.cc/blog/5687bee44359e02c.jpg)
 
-# Optimistic Concurrency Control (OCC)
+## Optimistic Concurrency Control (OCC)
 
 Optimistic concurrency control (OCC) is another optimistic concurrency control protocol which also uses timestamps to validate transactions. OCC works best when the number of conflicts is low. This is when either all of the transactions are read-only or when transactions access disjoint subsets of data. If the database is large and the workload is not skewed, then there is a low probability of conflict, making OCC a good choice.
 
@@ -142,7 +142,7 @@ OCC consists of three phases:
 
 ![44.jpg](https://images.spumn.eu.cc/blog/25e57f0b4174b8c4.jpg)
 
-## Validation Phase
+### Validation Phase
 
 The DBMS assigns transactions timestamps when they enter the validation phase. To ensure only serializable schedules are permitted, the DBMS checks $T_i$ against other transactions for RW and WW conflicts and makes sure that all conflicts go one way.
 
@@ -198,7 +198,7 @@ If $TS(T_i ) &lt; TS(T_j )$, then one of the following three conditions must hol
 
 ![64.jpg](https://images.spumn.eu.cc/blog/74f82db0eb40213a.jpg)
 
-## Potential Issues:
+### Potential Issues:
 
 • High overhead for copying data locally into the transaction’s private workspace.
 
@@ -210,7 +210,7 @@ If $TS(T_i ) &lt; TS(T_j )$, then one of the following three conditions must hol
 
 ![65.jpg](https://images.spumn.eu.cc/blog/6d6e7eebc0087820.jpg)
 
-# Dynamic Databases
+## Dynamic Databases
 
 ![66.jpg](https://images.spumn.eu.cc/blog/2b00e70b7084e4e2.jpg)
 
@@ -244,7 +244,7 @@ If $TS(T_i ) &lt; TS(T_j )$, then one of the following three conditions must hol
 
 ![81.jpg](https://images.spumn.eu.cc/blog/9801453eb65cc8aa.jpg)
 
-# Isolation Levels
+## Isolation Levels
 
 Serializability is useful because it allows programmers to ignore concurrency issues but enforcing it may allow too little parallelism and limit performance. We may want to use a weaker level of consistency to improve scalability.
 

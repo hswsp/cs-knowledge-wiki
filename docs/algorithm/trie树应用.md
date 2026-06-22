@@ -91,7 +91,7 @@ public:
 
 
 
-# LeetCode [212. Word Search II](https://leetcode-cn.com/problems/word-search-ii/)
+## LeetCode [212. Word Search II](https://leetcode-cn.com/problems/word-search-ii/)
 Given an `m x n` board of characters and a list of strings words, return all words on the board.
 
 
@@ -111,7 +111,7 @@ Example 1:
 
 
 
-## 思路和算法
+### 思路和算法
 
 
 根据题意，我们需要逐个遍历二维网格中的每一个单元格；然后搜索从该单元格出发的所有路径，找到其中对应 words 中的单词的路径。因为这是一个回溯的过程，所以我们有如下算法：
@@ -133,7 +133,7 @@ Example 1:
 
 
 
-## 算法优化
+### 算法优化
 
 
 考虑以下情况。假设给定一个所有单元格都是 a 的二维字符网格和单词列表 `["a", "aa", "aaa", "aaaa"]`。当我们使用方法一来找出所有同时在二维网格和单词列表中出现的单词时，我们需要遍历每一个单元格的所有路径，会找到大量重复的单词。
@@ -144,7 +144,7 @@ Example 1:
 
 
 
-## 代码
+### 代码
 
 
 ```c

@@ -12,7 +12,7 @@ date: 2022-11-07
 
 如上图所示，在 下午3:45 分之前，CPU 的使用率明显飙高，最高飙到近 100%，为什么会出现这样的现象呢？
 
-# 排查过程
+## 排查过程
 
 **Step 1：** 使用top命令，查询资源占用情况：
 
@@ -66,6 +66,6 @@ date: 2022-11-07
 
 如上图所示，显示了PID为20567的 Java 进程每秒的 GC 情况，其中**1000表示 GC 状态的更新频率**，单位为毫秒。
 
-# Reference
+## Reference
 
 1. [High Java CPU Usage – Troubleshooting Tips](https://www.eginnovations.com/blog/troubleshoot-java-cpu-issues/)

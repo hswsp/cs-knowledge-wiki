@@ -2,7 +2,7 @@
 
 ![1.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720225946-bbe043a5-f2ad-42fe-9b42-143445367cf2.jpeg#averageHue=%231d2635&clientId=uc3fb2d5e-e0b4-4&from=ui&id=ue5f9e5c3&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=607874&status=done&style=none&taskId=uf5f060bc-365e-4743-91df-f9fced5eb0e&title=)
 
-# Multi-Version Concurrency Control
+## Multi-Version Concurrency Control
 
 Multi-Version Concurrency Control (MVCC) is a larger concept than just a concurrency control protocol. It involves all aspects of the DBMS’s design and implementation. MVCC is the most widely used scheme in DBMSs. It is now used in almost every new DBMS implemented in last 10 years. Even some systems (e.g., NoSQL) that do not support multi-statement transactions use it.
 
@@ -55,7 +55,7 @@ The choice of concurrency protocol is between the approaches discussed in previo
 
 ![16.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720231947-e0f2d998-ec6f-4663-9224-26ad8ea22aca.jpeg#averageHue=%23e5e5e5&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u9a2ed982&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=401440&status=done&style=none&taskId=u242a3b5f-19e2-4257-b0bf-d829832382b&title=)
 
-# Snapshot Isolation
+## Snapshot Isolation
 
 Snapshot Isolation involves providing a transaction with a consistent snapshot of the database when the transaction started. Data values from a snapshot consist of only values from committed transactions, and the transaction operates in complete isolation from other transactions until it finishes. This is idea for read-only transactions since they do not need to wait for writes from other transactions. Writes are maintained in a transaction’s private workspace and only become visible to the database once the transaction successfully commits. If two transactions update the same object, the first writer wins.
 
@@ -79,7 +79,7 @@ Snapshot Isolation involves providing a transaction with a consistent snapshot o
 
 ![24.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720236302-cfc000f1-f88c-4c63-a318-1ff3794c4b63.jpeg#averageHue=%23e9e9e9&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u323ad047&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=370608&status=done&style=none&taskId=ua8794ed9-db94-4607-b294-003fe69595c&title=)
 
-# Version Storage
+## Version Storage
 
 This how the DBMS will store the different physical versions of a logical object and how transactions find the newest version visible to them.
 
@@ -87,15 +87,15 @@ The DBMS uses the tuple’s pointer field to create a **version chain** per logi
 
 ![25.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720236341-39a6439f-a685-4ef6-9f65-e170dc1dc499.jpeg#averageHue=%23ececec&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u1a754dd8&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=317062&status=done&style=none&taskId=ucad7c724-a095-4f90-a243-cf505b55057&title=)
 
-## Approach #1:# Append-Only Storage
+### Approach #1:# Append-Only Storage
 
 All physical versions of a logical tuple are stored in the same table space. Versions are mixed together in the table and each update just appends a new version of the tuple into the table and updates the **version chain**. The chain can either be sorted *oldest-to-newest* (O2N) which requires chain traversal on look-ups, or *newest-to-oldest* (N2O), which requires updating index pointers for every new version.
 
-## Approach #2:# Time-Travel Storage
+### Approach #2:# Time-Travel Storage
 
 The DBMS maintains a separate table called the time-travel table which stores older versions of tuples. On every update, the DBMS copies the old version of the tuple to the time-travel table and overwrites the tuple in the main table with the new data. Pointers of tuples in the main table point to past versions in the time-travel table.
 
-## Approach #3:# Delta Storage
+### Approach #3:# Delta Storage
 
 Like time-travel storage, but **instead of the entire past tuples**, the DBMS only stores the deltas, or changes between tuples in what is known as the delta storage segment. Transactions can then recreate older versions by iterating through the deltas. This results in faster writes than time-travel storage but slower reads.
 
@@ -127,13 +127,13 @@ Like time-travel storage, but **instead of the entire past tuples**, the DBMS on
 
 ![39.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720247403-9c5693b1-79a3-4265-b82b-761ebd5fccc6.jpeg#averageHue=%23e6e5e5&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u200451ca&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=391456&status=done&style=none&taskId=u8b02a9a3-c28c-401e-b3db-d51eb4a7c35&title=)
 
-# Garbage Collection
+## Garbage Collection
 
 The DBMS needs to remove *reclaimable* physical versions from the database over time. A version is reclaimable if no active transaction can “see” that version or if it was created by a transaction that was aborted.
 
 ![40.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720247777-cbc17390-5a92-4c91-9147-a4cac0adf4df.jpeg#averageHue=%23ecebeb&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u75b0a9ca&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=358231&status=done&style=none&taskId=ucc1289e8-eb04-4415-85cf-6985ee5acf3&title=)
 
-## Approach #1:# Tuple-level GC
+### Approach #1:# Tuple-level GC
 
 With tuple-level garbage collection, the DBMS finds old versions by examining tuples directly. There are two approaches to achieve this:
 
@@ -160,7 +160,7 @@ With tuple-level garbage collection, the DBMS finds old versions by examining tu
 
 ![50.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720254249-1d96d510-70f5-4947-a0a7-fb9810785cad.jpeg#averageHue=%23e5e5e5&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u98398f9e&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=398965&status=done&style=none&taskId=u6ca170b8-a1ab-4553-ae67-52e6bd3d1bf&title=)
 
-## Approach #2:# Transaction-level GC
+### Approach #2:# Transaction-level GC
 
 Under transaction-level garbage collection, each transaction is responsible for keeping track of their own old versions so the DBMS does not have to scan tuples. Each transaction maintains its own read/write set. When a transaction completes, the garbage collector can use that to identify which tuples to reclaim. The DBMS determines when all versions created by a finished transaction are no longer visible.
 
@@ -182,7 +182,7 @@ Under transaction-level garbage collection, each transaction is responsible for 
 
 ![59.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720258130-86b903f6-0e69-48dc-9239-05627729f769.jpeg#averageHue=%23e3e2e2&clientId=uc3fb2d5e-e0b4-4&from=ui&id=udcae5c7c&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=297867&status=done&style=none&taskId=uff0dd918-148a-4c7f-91f9-75fb8aedc14&title=)
 
-# Index Management
+## Index Management
 
 All primary key (pkey) indexes always point to version chain head. How often the DBMS has to update the pkey index depends on whether the system creates new versions when a tuple is updated. If a transaction updates a pkey attribute(s), then this is treated as a `DELETE` followed by an `INSERT`.
 Managing secondary indexes is more complicated. There are two approaches to handling them.
@@ -193,11 +193,11 @@ Managing secondary indexes is more complicated. There are two approaches to hand
 
 ![62.jpg](https://cdn.nlark.com/yuque/0/2023/jpeg/22382307/1678720259097-1d4f47fa-f5ec-4498-ae9c-3c8194705fd3.jpeg#averageHue=%23ededed&clientId=uc3fb2d5e-e0b4-4&from=ui&id=u8eda9480&originHeight=1688&originWidth=3000&originalType=binary&ratio=2&rotation=0&showTitle=false&size=277951&status=done&style=none&taskId=u400d33b7-390e-42c2-9394-5fd4518c219&title=)
 
-## Approach #1:# Logical Pointers
+### Approach #1:# Logical Pointers
 
 The DBMS uses a fixed identifier per tuple that does not change. This requires an extra indirection layer that maps the logical id to the physical location of the tuple. Then, updates to tuples can just update the mapping in the indirection layer.
 
-## Approach #2:# Physical Pointers
+### Approach #2:# Physical Pointers
 
 The DBMS uses the physical address to the version chain head. This requires updating every index when the version chain head is updated.
 

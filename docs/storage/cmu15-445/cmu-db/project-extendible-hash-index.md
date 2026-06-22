@@ -2,7 +2,7 @@
 
 > Do not post your project on a public Github repository.
 
-# Overview
+## Overview
 
 In this programming project you will implement disk-backed hash index in your database system. You will be using a variant of [extendible hashing](https://en.wikipedia.org/wiki/Extendible_hashing) as the hashing scheme. Unlike the two-level scheme taught in class, we added a non-resizable header page on top of the directory pages so that the hash table can hold more values and potentially achieve better multi-thread performance.
 
@@ -30,7 +30,7 @@ Before starting, run `git pull public master` to pull the latest code from the p
 
 Your work here depends on your implementation of the buffer pool from Project 1. If your Project 1 solution was incorrect, you must fix it to successfully complete this project. We will not provide solutions for the previous programming projects.
 
-# Project Specification
+## Project Specification
 
 Like the first project, we are providing stub classes that contain the API that you need to implement. You should **not** modify the signatures for the pre-defined functions in these classes. If you modify the signatures, our grading test code will not work and you will get no credit for the project.
 
@@ -38,7 +38,7 @@ If a class already contains data members, you should **not** remove them. These 
 
 You may use any built-in [C++17 containers](http://en.cppreference.com/w/cpp/container) in your project unless specified otherwise. It is up to you to decide which ones you want to use. Be warned that these containers are not thread-safe; will need to use latches to protect access to them. You may not use additional third-party libraries (e.g. boost).
 
-## Task #1 - Read/Write Page Guards
+### Task #1 - Read/Write Page Guards
 
 In the Buffer Pool Manager, `FetchPage` and `NewPage` functions return pointers to pages that are already pinned. The pinning mechanism ensures that the pages are not evicted until there are no more reads and writes on the page. To indicate that the page is no longer needed in memory, the programmer has to manually call `UnpinPage`.
 
@@ -71,7 +71,7 @@ With the new page guards, implement the following wrappers in `BufferPoolManager
 
 Please refer to the header files (`buffer_pool_manager.h` and `page_guard.h`) for more detailed specs and documentations.
 
-## Task #2 - Extendible Hash Table Pages
+### Task #2 - Extendible Hash Table Pages
 
 You must implement three Page classes to store the data of your Extendible Hash Table.
 
@@ -79,7 +79,7 @@ You must implement three Page classes to store the data of your Extendible Hash 
 - [**Hash Table Directory Page**](https://15445.courses.cs.cmu.edu/fall2023/project2/#htable-directory-page)
 - [**Hash Table Bucket Page**](https://15445.courses.cs.cmu.edu/fall2023/project2/#htable-bucket-page)
 
-### Hash Table Header Page
+#### Hash Table Header Page
 
 The header page sits the at the first level of our disk-based extendible hash table, and there is only one header page for a hash table. It stores the logical child pointers to the directory pages (as page ids). You can think about it as a static first-level directory page. The header page has the following fields:
 
@@ -92,7 +92,7 @@ Note that although there is a physical limit of how large a page is, you should 
 
 You must implement the extendible hash table header page by modifying only its header file (`src/include/storage/page/extendible_htable_header_page.h`) and corresponding source file (`src/storage/page/extendible_htable_header_page.cpp`).
 
-### Hash Table Directory Page
+#### Hash Table Directory Page
 
 Directory pages sit at the second level of our disk-based extendible hash table. Each of them stores the logical child pointers to the bucket pages (as page ids), as well as metadata for handling bucket mapping and dynamic directory growing and shrinking. The directory page has the following fields:
 
@@ -107,7 +107,7 @@ Note that although there is a physical limit of how large a page is, you should 
 
 You must implement the extendible hash table directory page by modifying only its header file (`src/include/storage/page/extendible_htable_directory_page.h`) and corresponding source file (`src/storage/page/extendible_htable_directory_page.cpp`).
 
-### Hash Table Bucket Page
+#### Hash Table Bucket Page
 
 Bucket pages sit at the third level of our disk-based extendible hash table. They are the ones that are actually storing the key-value pairs. The bucket page has the following fields:
 
@@ -123,7 +123,7 @@ You must implement the extendible hash table bucket page by modifying only its h
 
 Each extendible hash table header/directory/bucket page corresponds to the content (i.e., the `data_` part) of a memory page fetched by the buffer pool. Every time you read or write a page, you must first fetch the page from the buffer pool (using its unique `page_id`), reinterpret cast it the corresponding type, and unpin the page after reading or writing it. We strongly encourage you to take advantage of the `PageGuard` APIs you implemented in [**Task #1**](https://15445.courses.cs.cmu.edu/fall2023/project2/#page-guard) to achieve this.
 
-## Task #3 - Extendible Hashing Implementation
+### Task #3 - Extendible Hashing Implementation
 
 Your implementation needs to support insertions, point search and deletions. There are many helper functions either implemented or documented the extendible hash table's header and cpp files. Your only strict API requirement is adhering to `Insert`, `GetValue`, and `Remove`. You also must leave the `VerifyIntegrity` function as it is. Please feel free to design and implement additional functions as you see fit.
 
@@ -151,23 +151,23 @@ You must implement the extendible hash table bucket page by modifying only its h
 
 This project requires you to implement bucket splitting/merging and directory growing/shrinking. The following subsections provide a specification on the implementation details.
 
-### Empty Table
+#### Empty Table
 
 When you first create an empty hash table, it should only have the (one and only) header page. Directory pages and bucket pages should be created on demand.
 
-### Header Indexing
+#### Header Indexing
 
 You will want to use the **most-significant bits** for indexing into the header page's `directory_page_ids_` array. This involves taking the hash of your key and perform bit operations with the depth of the header page. The header page depth will not change.
 
-### Directory Indexing
+#### Directory Indexing
 
 You will want to use the **least-significant bits** for indexing into the directory page's `bucket_page_ids_` array. This involves taking the hash of your key and perform bit operations with the current depth of the directory page.
 
-### Bucket Splitting
+#### Bucket Splitting
 
 You must split a bucket if there is no room for insertion. You can ostensibly split as soon as the bucket becomes full, if you find that easier. However, the reference solution splits only when an insertion would overflow a page. Hence, you may find that the provided API is more amenable to this approach. As always, you are welcome to factor your own internal API.
 
-### Bucket Merging
+#### Bucket Merging
 
 Merging must be attempted when a bucket becomes empty. There are ways to merge more aggressively by checking the occupancy of buckets and their split images, but these expensive checks and extra merges can increase thrashing.
 
@@ -179,15 +179,15 @@ To keep things relatively simple, we provide the following rules for merging:
 
 If you are confused about a "split image,” please review the algorithm and code documentation. The concept falls out quite naturally.
 
-### Directory Growing
+#### Directory Growing
 
 There are no fancy rules for part of the hash table. You either have to grow the directory, or you do not.
 
-### Directory Shrinking
+#### Directory Shrinking
 
 Only shrink the directory if the local depth of every bucket is strictly less than the global depth of the directory.
 
-## Task #4 - Concurrency Control
+### Task #4 - Concurrency Control
 
 Finally, modify your extendible hash table implementation so that it safely supports concurrent operations with multiple threads. The thread traversing the index should acquire latches on hash table pages as necessary to ensure safe concurrent operations, and should release latches on parent pages as soon as it is possible to determine that it is safe to do so.
 
@@ -197,11 +197,11 @@ We recommend that you complete this task by using the `FetchPageWrite` or `Fetch
 
 **Note:** You should make careful design decisions on latching. Always holding a global latch the entire hash table is probably not a good idea. TAs will manual review your implementation and bad latching design would result in points deduction.
 
-# Instructions
+## Instructions
 
 See the [Project #0 instructions](https://15445.courses.cs.cmu.edu/fall2023/project0/#instructions) on how to create your private repository and setup your development environment.
 
-## Testing
+### Testing
 
 You can test the individual components of this assigment using our testing framework. We use [GTest](https://github.com/google/googletest) for unit test cases. There are three separate files that contain tests for each component:
 
@@ -220,7 +220,7 @@ You can also run `make check-tests` to run ALL of the test cases. Note that some
 
 **Important:** These tests are only a subset of the all the tests that we will use to evaluate and grade your project. You should write additional test cases on your own to check the complete functionality of your implementation.
 
-## Formatting
+### Formatting
 
 Your code must follow the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html). We use [Clang](https://clang.llvm.org/) to automatically check the quality of your source code. Your project grade will be **zero** if your submission fails any of these checks.
 
@@ -231,7 +231,7 @@ $ make format
 $ make check-clang-tidy-p2
 ```
 
-## Memory Leaks
+### Memory Leaks
 
 For this project, we use [LLVM Address Sanitizer (ASAN) and Leak Sanitizer (LSAN)](https://clang.llvm.org/docs/AddressSanitizer.html) to check for memory errors. To enable ASAN and LSAN, configure CMake in debug mode and run tests as you normally would. If there is memory error, you will see a memory error report. Note that macOS **only supports address sanitizer without leak sanitizer**.
 
@@ -241,7 +241,7 @@ In some cases, address sanitizer might affect the usability of the debugger. In 
 $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUSTUB_SANITIZER= ..
 ```
 
-## Development Hints
+### Development Hints
 
 You can use `BUSTUB_ASSERT` for assertions in debug mode. Note that the statements within `BUSTUB_ASSERT` will NOT be executed in release mode. If you have something to assert in all cases, use `BUSTUB_ENSURE` instead.
 
@@ -251,7 +251,7 @@ We encourage you to use a graphical debugger to debug your project if you are ha
 
 If you are having compilation problems, running `make clean` does not completely reset the compilation process. You will need to delete your build directory and run `cmake ..` again before you rerun `make`.
 
-# Grading Rubric
+## Grading Rubric
 
 Each project submission will be graded based on the following criteria:
 
@@ -261,11 +261,11 @@ Each project submission will be graded based on the following criteria:
 
 Note that we will use additional test cases to grade your submission that are more complex than the sample test cases that we provide you.
 
-# Late Policy
+## Late Policy
 
 See the [late policy](https://15445.courses.cs.cmu.edu/fall2023/syllabus.html#late-policy) in the syllabus.
 
-# Submission
+## Submission
 
 After completing the assignment, you can submit your implementation to Gradescope:
 
@@ -275,7 +275,7 @@ Running `make submit-p2` in your `build/` directory will generate a `zip` archiv
 
 You can submit your answers as many times as you like and get immediate feedback.
 
-## Notes on Gradescope and Autograder
+### Notes on Gradescope and Autograder
 
 1. If you are timing out on Gradescope, it's likely because you have a deadlock in your code or your code is too slow and does not run in 60 seconds. If your code is too slow it may be because you have performance issue on the buffer pool manager you implemented in project 1.
 2. The autograder will not work if you are printing too many logs in your submissions.
@@ -283,7 +283,7 @@ You can submit your answers as many times as you like and get immediate feedback
 
 > CMU students should use the Gradescope course code announced on Piazza.
 
-# Collaboration Policy
+## Collaboration Policy
 
 - Every student has to work individually on this assignment.
 - Students are allowed to discuss high-level details about the project with others.

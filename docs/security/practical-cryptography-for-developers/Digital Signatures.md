@@ -16,7 +16,7 @@ source: https://www.yuque.com/yangguangfanxing/zuyi8o/pt90tagyotrkb8q5
 
 **Digital signatures** cannot identify who is the person, created a certain signature. This can be solved in combination with a [digital certificate](https://en.wikipedia.org/wiki/Public_key_certificate), which binds a public key owner with identity (person, organization, web site or other). By design digital signatures bind messages to public keys, not to digital identities.
 
-# Sign Messages and Verify Signatures: How It Works?
+## Sign Messages and Verify Signatures: How It Works?
 
 **Digital signature** schemes typically use a **public-key cryptosystem** (such as RSA or ECC) and use a **public / private key pairs**. A message is signed by a private key and the signature is verified by the corresponding public key:
 
@@ -42,7 +42,7 @@ At **signature verification**, the message for verification is **hashed** (eithe
 
 **Digital signatures** are different from **MAC** (message authentication codes), because MACs are created and verified by the same secret key using a **symmetric algorithm**, while digital signatures are created by a signing key and are verified by a different verification key, corresponding to the signing key using an **asymmetric algorithm**. Both signatures and MAC codes provide message authentication and integrity.
 
-# Digital Signature Schemes and Algorithms
+## Digital Signature Schemes and Algorithms
 
 Most public-key cryptosystems like **RSA** and **ECC** provide secure **digital signature schemes** (signature algorithms). Examples of well known digital signature schemes are: [DSA](https://en.wikipedia.org/wiki/Digital_Signature_Algorithm), [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm), [EdDSA](https://en.wikipedia.org/wiki/EdDSA), [RSA signatures](https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Signing_messages), [ElGamal signatures](https://en.wikipedia.org/wiki/ElGamal_signature_scheme) and [Schnorr signatures](https://en.wikipedia.org/wiki/Schnorr_signature).
 
@@ -50,7 +50,7 @@ The above mentioned signature schemes are based on the difficulty of the **DLP**
 
 The most popular digital signature schemes (as of Nov 2018) are: [RSA signatures](https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Signing_messages), [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) and [EdDSA](https://en.wikipedia.org/wiki/EdDSA). Let's give some details about them, along with some live code examples.
 
-## RSA Signatures
+### RSA Signatures
 
 The **RSA** public-key cryptosystem provides a cryptographically secure **digital signature scheme** (sign + verify), based on the math of the **modular exponentiations** and discrete logarithms and the difficulty of the **integer factorization problem** (**IFP**). The **RSA sign / verify** process works as follows:
 
@@ -61,7 +61,7 @@ RSA signatures are **deterministic** (the same message + same private key produc
 
 **RSA signatures** are widely used in modern cryptography, e.g. for signing digital certificates to protect Web sites. For example (as of Nov 2018) the Microsoft's official Web site uses `Sha256RSA` for its digital certificate. Nevertheless, the trend in the last decade is to move from RSA and DSA to **elliptic curve-based signatures** (like ECDSA and EdDSA). Modern cryptographers and developers **prefer ECC signatures** for their shorter key length, shorter signature, higher security (for the same key length) and better performance.
 
-## DSA (Digital Signature Algorithm)
+### DSA (Digital Signature Algorithm)
 
 The [DSA (Digital Signature Algorithm)](https://en.wikipedia.org/wiki/Digital_Signature_Algorithm) is a cryptographically secure standard for **digital signatures** (signing messages and signature verification), based on the math of the **modular exponentiations** and discrete logarithms and the difficulty of the discrete logarithm problem (**DLP**). It is alternative of RSA and is used instead of RSA, because of patents limitations with RSA (until Sept 2000). **DSA** is variant of the [ElGamal signature scheme](https://en.wikipedia.org/wiki/ElGamal_signature_scheme). The **DSA sign / verify** process works as follows:
 
@@ -74,7 +74,7 @@ A **deterministic-DSA** variant is defined in [RFC 6979](https://tools.ietf.org/
 
 In the modern cryptography, the **elliptic-curve-based signatures** (liike ECDSA and EdDSA) are **prefered to DSA**, because of shorter key lengths, shorter signature lengths, higher security levels (for the same key length) and better performance.
 
-## ECDSA (Elliptic Curve Digital Signature Algorithm)
+### ECDSA (Elliptic Curve Digital Signature Algorithm)
 
 The [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) (Elliptic Curve Digital Signature Algorithm) is a cryptographically secure **digital signature** scheme, based on the elliptic-curve cryptography (**ECC**). **ECDSA** relies on the math of the **cyclic groups of elliptic curves over finite fields** and on the difficulty of the **ECDLP problem** (elliptic-curve discrete logarithm problem).
 
@@ -89,7 +89,7 @@ A **deterministic-ECDSA** variant is defined in [RFC 6979](https://tools.ietf.or
 
 **ECDSA signatures** are the most widely used signing algorithm, used by millions every day (as of Nov 2018). For example, the digital certificates in Amazon Web sites are signed by the `Sha256ECDSA` signature scheme.
 
-## EdDSA (Edwards-curve Digital Signature Algorithm)
+### EdDSA (Edwards-curve Digital Signature Algorithm)
 
 **EdDSA** (Edwards-curve Digital Signature Algorithm) is a fast **digital signature algorithm**, using **elliptic curves** in Edwards form (like [Ed25519](https://ed25519.cr.yp.to) and [Ed448-Goldilocks](https://eprint.iacr.org/2015/625.pdf)), a deterministic variant of the [Schnorr's signature](https://en.wikipedia.org/wiki/Schnorr_signature) scheme, designed by a team of the well-known cryptographer [Daniel Bernstein](https://cr.yp.to/djb.html).
 
@@ -121,7 +121,7 @@ Public **blockchains** (like Bitcoin and Ethereum) often use **secp2561-based EC
 
 In the general case, it is considered that **EdDSA signatures are recommended** to ECDSA, but this is highly disputable and depends on the use case, on the curves involved and many other parameters.
 
-## Other Signature Schemes and Algorithms
+### Other Signature Schemes and Algorithms
 
 Most signature algorithms are derived from generic signature schemes like [ElGamal signatures](https://en.wikipedia.org/wiki/ElGamal_signature_scheme) and [Schnorr signatures](https://en.wikipedia.org/wiki/Schnorr_signature).
 

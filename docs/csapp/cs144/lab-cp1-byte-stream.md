@@ -15,7 +15,7 @@ This checkpoint contains a “hands-on” component and an implementation compon
 
 The hands-on component is new this year and involves multiple moving parts—so there might be some glitches. Please bear with us at the lab session and we’ll do our best to get it working for everybody. If you see an error message from the [https://cs144.net](https://cs144.net) website, please report it in a public post on EdStem and we’ll take a look.
 
-# Getting started
+## Getting started
 Your implementation of TCP will use the same Minnow library that you used in Checkpoint 0, with additional classes and tests. To get started:
 
 1. Make sure you have committed all your solutions to Checkpoint 0. Please don’t modify any files outside of the src directory, or **webget.cc**. You may have trouble merging the Checkpoint 1 starter code otherwise.
@@ -25,7 +25,7 @@ Your implementation of TCP will use the same Minnow library that you used in Che
 5. Compile the source code: `cmake --build build`
 6. Open and start editing the `writeups/check1.md` file. This is the template for your lab writeup and will be included in your submission.
 
-# Hands-on component: a private network for the class
+## Hands-on component: a private network for the class
 We have created a private network for the CS144 class. This will allow your VM to send datagrams directly to and from the VMs of other students in the class. To make your VM join this network:
 
 1. On your VM, install the “`wireguard`” package by running `sudo apt install wireguard`
@@ -33,7 +33,7 @@ We have created a private network for the CS144 class. This will allow your VM t
 3. Once you have joined the network, verify that you can connect by following the “ping” instructions on that page (the instructions appear after you have joined the network).
 4. <font style="color:#2F4BDA;">Every time you reboot your VM, you’ll have to rejoin the network </font>(if you want to be able to send datagrams to and from other students in this class). You don’t have to register a new public key each time, but you do have to rerun the commands on that webpage. The commands will be the same each time.
 
-## Ping a friend and look at the datagrams
+### Ping a friend and look at the datagrams
 1. On your own computer (e.g. your Mac or Windows machine—not your VM), install the “wireshark” program by following the instructions at [https://www.wireshark.org/.](https://www.wireshark.org/.)   
 (If you are using Debian or Ubuntu GNU/Linux, the command is `sudo apt install wireshark` .   
 If you don't need a graphical interface, you can choose to install only the command-line version of Wireshark：`sudo apt-get install tshark`）
@@ -81,7 +81,7 @@ This command will capture the datagrams on the “`wg0`” interface (the privat
 
     6. Are there any differences between the same datagrams when they were captured on your VM compared with when they were captured on your friend’s VM? What?
 
-## Send an Internet datagram by hand
+### Send an Internet datagram by hand
 In the `apps/ip raw.cc` file, write a program that sends an Internet datagram to your friend by using a raw socket, using the same method as the January 10 lecture. It’s okay to adapt code from this lecture.
 
 1. Send your groupmate an Internet datagram with IP protocol “`5`” (you’ll have to use “sudo” to run the “`./build/apps/ip raw`” program), and have your friend use `tcpdump` to make sure they receive the datagram. They can run `sudo tcpdump -n -i wg0 ’proto 5’` to print out only datagrams matching protocol “5”. Make sure they get it!
@@ -109,7 +109,7 @@ Have your groupmate **receive** this datagram without using “sudo”. They can
 3. Include the code for your “`ip raw.cc`” in your submission to this checkpoint.
 4. Do the same in reverse and receive a datagram from your groupmate.
 
-# Implementation: putting substrings in sequence
+## Implementation: putting substrings in sequence
 As part of the lab assignment, you are implementing a TCP receiver: the module that receives datagrams and <font style="color:#601BDE;">turns them into a reliable byte stream</font> to be read from the socket by the application—just as your webget program read the byte stream from the webserver in Checkpoint 0. 
 
 The TCP sender is dividing its byte stream up into short segments (substrings no more than about 1,460 bytes apiece) so that they each fit inside a datagram. But the network might reorder these datagrams, or drop them, or deliver them more than once. <font style="color:#601BDE;">The receiver must reassemble the segments into the contiguous stream of bytes that they started out as.</font> 
@@ -133,7 +133,7 @@ Reader& reader();
 
 The full (public) interface of the reassembler is described by the `Reassembler` class in the `reassembler.hh` header. Your task is to implement this class. You may add any private members and member functions you desire to the Reassembler class, but you cannot change its public interface.
 
-## What should the Reassembler store internally?
+### What should the Reassembler store internally?
 The insert method informs the `Reassembler` about a new excerpt of the `ByteStream`, and where it fits in the overall stream (the index of the beginning of the substring). 
 
 In principle, then, the `Reassembler` will have to handle three categories of knowledge:
@@ -151,7 +151,7 @@ In principle, then, the `Reassembler` will have to handle three categories of kn
 
 You may find this picture useful as you implement the `Reassembler` and work through the tests—it’s not always natural what the “right” behavior is.
 
-## FAQs
+### FAQs
 + What is the index of the first byte in the whole stream? Zero.
 + How efficient should my implementation be? The choice of data structure is again important here. Please don’t take this as a challenge to build a grossly space- or time-inefficient data structure—the Reassembler will be the foundation of your TCP implementation.   
 You have a lot of options to choose from. We have provided you with a benchmark; anything greater than 0.1 Gbit/s (100 megabits per second) is acceptable. A top-of-the-line Reassembler will achieve 10 Gbit/s.
@@ -179,14 +179,14 @@ So a reasonable implementation of the Reassembler might be about 50–60 lines o
 
 + More FAQs: For more, please see [https://cs144.github.io/lab faq.htm](https://cs144.github.io/lab%20faq.htm)
 
-# Development and debugging advice
+## Development and debugging advice
 1. You can test your code (after compiling it) with `cmake --build build --target check1` .
 2. Please re-read the section on “using Git” in the Lab 0 document, and remember to keep the code in the Git repository it was distributed in on the main branch. Make small commits, using good commit messages that identify what changed and why.
 3. Please work to make your code readable to the CA who will be grading it for style and soundness. Use reasonable and clear naming conventions for variables. Use comments to explain complex or subtle pieces of code. Use “defensive programming”—explicitly check preconditions of functions or invariants, and throw an exception if anything is ever wrong. Use modularity in your design—identify common abstractions and behaviors and factor them out when possible. Blocks of repeated code and enormous functions will make it hard to follow your code.
 4. Please also keep to the “Modern C++” style described in the Checkpoint 0 document. The cppreference website ([https://en.cppreference.com](https://en.cppreference.com)) is a great resource, although you won’t need any sophisticated features of C++ to do these labs. (You may sometimes need to use the move() function to pass an object that can’t be copied.)
 5. If you get your builds stuck and aren’t sure how to fix them, you can erase your build directory ( `rm -rf build` —please be careful not to make a typo as this will erase whatever you tell it), and then run `cmake -S . -B` build again.
 
-# Submit
+## Submit
 In your submission, please only make changes to the .hh and .cc files in the src directory. Within these files, please feel free to add private members as necessary, but please don’t change the public interface of any of the classes.
 
 Before handing in any assignment, please run these in order:

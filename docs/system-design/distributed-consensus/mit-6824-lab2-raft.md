@@ -51,7 +51,7 @@ The commonly used CFT includes:
 
 Raft produces a result equivalent to (multi-)Paxos, and it is as efﬁcient as Paxos. In this lab we'll implement Raft, a replicated state machine protocol. 
 
-# Introduction
+## Introduction
 
 We should follow the design in the [extended Raft paper](https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf), with particular attention to Figure 2. We'll implement most of what's in the paper, including saving persistent state and reading it after a node fails and then restarts. We will not implement cluster membership changes (Section 6).
 
@@ -61,7 +61,7 @@ To help us to understand Raft algorithm, this [working draft](http://thesecretli
 
 Raft decomposes the consensus problem into three relatively independent subproblems: **Leader Election, Log Replication in the state machine, and Cluster Membership Changes**. In this lab, we will only implement the first two parts, with two other essential techniques for Raft practice: **Persistence and Log Compaction**.
 
-## Lab Code Structure
+### Lab Code Structure
 
 A service calls `Make(peers,me,…)` to create a Raft peer.  the ports of all the Raft servers (including this one) are in `peers[]`. this server's port is `peers[me]`. all the servers' `peers[]` arrays have the same order. `persister` is a place for this server to save its persistent state, and also initially holds the most  recent saved state, if any.  `Make()` must return quickly, so it should start goroutines for any long-running work.
 
@@ -94,7 +94,7 @@ The test functions call `func make_config(t *testing.T, n int, unreliable bool, 
 
 The service calls `func (cfg *config) one(cmd interface{}, expectedServers int, retry bool) int` to do a complete agreement, in which, it calls `rf.Start(cmd)` to append the command to the replicated log.
 
-## Logging 
+### Logging 
 
 In order to debug distributed systems, We will make Go print a boring log with a specific format for each peer service. Here I use [go-hclog](https://github.com/hashicorp/go-hclog) as the logger to output formatted log in a file for each peer. **It prints the message along with the topic and the amount of milliseconds since the start of the run**.
 
@@ -124,7 +124,7 @@ rf.logger = hclog.New(&hclog.LoggerOptions{
 	})
 ```
 
-## Locking Advice
+### Locking Advice
 
 To avoid Livelocks, I use Golang `Atomic` as much as possible and fetch all the variables at the very beginning of each function. And try to use fine-grained lock instead of Coarse-Grained Lock (such as using  `sync.Mutex` to lock the whole function). And also copy-on-write technich when dealing with the Raft `logs`.
 
@@ -143,11 +143,11 @@ func asyncNotifyCh(ch chan struct{}) {
 
 To aovid deadlock, we can prevent Deadlock by eliminating Circular wait condition: all of the functions request the resources in an increasing order of numbering. For example, `lastLock sync.Mutex` first and then `logsLock sync.RWMutex`.
 
-# Data Structure Design
+## Data Structure Design
 
 As for the general structure, the tables in Raft paper are very clear in Figure 2, and we only need to add some details.
 
-## Server State
+### Server State
 
 Firstly, we define some enum constants to represent the server node status:
 
@@ -280,7 +280,7 @@ type Raft struct {
 }
 ```
 
-## AppendEntries RPC
+### AppendEntries RPC
 
 One important things to define PRC struct is that go RPC sends only struct fields whose names start with **capital letters**. **Sub-structures must also have capitalized field names** (e.g. fields of log records in an array). The `labgob` package will warn you about this; don't ignore the warnings.
 
@@ -321,7 +321,7 @@ func (arg AppendEntriesReply) String() string {
 
 Another important things here is that, for all of the data structure, **attaching a `String()` function to a named struct** allows us to convert a struct to a string. This will help me a lot during debugging!
 
-## RequestVote RPC
+### RequestVote RPC
 
 ![lab2 Raft RequestVote](https://images.spumn.eu.cc/blog/6376ac7e7ed3c25d.png)
 
@@ -362,7 +362,7 @@ func (arg RequestVoteReply) String() string {
 }
 ```
 
-## InstallSnapshot RPC
+### InstallSnapshot RPC
 
 In the Raft paper, Snapshots are split into chunks for transmission; this gives the follower a sign of life with each chunk, so it can reset its election timer.
 
@@ -407,7 +407,7 @@ func (arg InstallSnapshotReply) String() string {
 }
 ```
 
-# RPC Handler
+## RPC Handler
 
 Our Raft peers should exchange RPCs using the `labrpc` Go package (source in `src/labrpc`). The tester can tell `labrpc` to delay RPCs, re-order them, and discard them to simulate various network failures. 
 
@@ -432,7 +432,7 @@ select {
 }
 ```
 
-# Server Behavior
+## Server Behavior
 
 At any given time each server is in one of three states: **leader, follower, or candidate**.
 
@@ -475,13 +475,13 @@ What is left is to code all the behaviors of different states for one server. Fi
 
 ![lab2 Raft Rules for Servers](https://images.spumn.eu.cc/blog/26e4f24b9894c205.png)
 
-# Leader Election
+## Leader Election
 
 Raft uses a heartbeat mechanism to trigger leader election. When servers start up, they **begin as followers** running code  `rf.runFollower()`. A server remains in follower state as long as it receives valid RPCs from a leader or candidate.
 
  If a follower receives no communication over a period of time called the *election timeout* (in code we use `HeartbeatTimeout` to represent), then it assumes there is no viable leader and begins an election to choose a new leader. After the node elects itself as a candidate, the function  `rf.runCandidate()`executes. 
 
-## runFollower()
+### runFollower()
 
 Each follower will have a random time to see if the leader's *contact* has been received within a certain period of time(`HeartbeatTimeout`). If the time from the **last contact** exceeds the timeout time, it will enter the *candidate* state:
 
@@ -544,7 +544,7 @@ func (r *Raft) InstallSnapShot(req *InstallSnapshotRequest,reply *InstallSnapsho
 }
 ```
 
-## runCandidate()
+### runCandidate()
 
 The core logic of the *candidate* is in the `electSelf()` function, where the candidate will first increase its own *term*, and then send RequestVote RPC in parallel to each of the other servers in the cluster., and finally become the leader when the number of votes is greater than 1/2 of the number of nodes.
 
@@ -659,7 +659,7 @@ for r.getState() == Candidate {
 }
 ```
 
-## Safety Argument
+### Safety Argument
 
 Generally, consensus algorithms need to satisfy three basic properties, namely **agreement, integrity, and termination**. These three basic properties can also be summarized into two, namely **Liveness and Safety**. Safety refers to agreement and integrity, which means that the processed proposal comes from the correct node, and the final state of the correct node can always be consistent. 
 
@@ -716,7 +716,7 @@ Raft ensures this security by adding some additional restrictions and measures t
    ```
 
 
-# Log Replication
+## Log Replication
 
 Log replication is initiated by the leader and executed in the function  `rf.runLeader()`. 
 
@@ -815,7 +815,7 @@ Then the follower deletes all the logs after the `Index` and appends the log ent
 
 Only after the majority of followers respond to receive the log, indicating that the log can be committed, can leader response to client applying successfully.
 
-## The Importance of Details
+### The Importance of Details
 
 1. Follower deleting the existing entry is conditional
 
@@ -833,7 +833,7 @@ Figure 8 use a time sequence showing why a leader cannot determine commitment us
 
 
 
-## Coding Hints
+### Coding Hints
 
 1. One trick here to implement the rules in Figure 2 for Leaders:
 
@@ -932,7 +932,7 @@ func (r *Raft) heartbeat(id int, s *followerReplication, stopCh chan struct{}){
    }
    ```
 
-## Accelerated Log Backtracking 
+### Accelerated Log Backtracking 
 
 To optimize accelerated log backtracking, we can follow these steps:
 
@@ -1041,7 +1041,7 @@ To optimize accelerated log backtracking, we can follow these steps:
    }
    ```
 
-# Persistence
+## Persistence
 
 For the persistent content of the state, it is provided by the Figure 2 at the *State* part : `currentTerm`,`voteFor` and `log[]`. Besides, in *InstallSnapshot*, we also need to persist `lastIncludedIndex` and `lastIncludedTerm` in order to let server be able to restore the original state after the machine reboots. 
 
@@ -1061,7 +1061,7 @@ func (rf *Raft) persistData() []byte {
 
 And of course we should call `persist()` every time these contents of the state change.
 
-# Log Compaction
+## Log Compaction
 
 Raft implements log compaction through snapshot. Server persistently store a "snapshot" of their state from time to time, at which point Raft discards log entries that precede the snapshot.The result is a smaller amount of persistent data and faster restart. 
 
@@ -1081,7 +1081,7 @@ We can start with the diagram of Raft interactions as mentioned above:
 
 ![lab2 Raft interactions](https://images.spumn.eu.cc/blog/b8e1574ba8f925ad.png)
 
-## Functions to Implement
+### Functions to Implement
 
 Lab 2 require us to implement `Snapshot()` ,`CondInstallSnapshot()` and the ***InstallSnapshot RPC***.
 
@@ -1100,7 +1100,7 @@ if nextIndex < lastIncludeIndex{
 }
 ```
 
-## Subscript Tips
+### Subscript Tips
 
 Every time you update *logs* during AppendEntries RPC process, you must take the subscript of the snapshot into count. There are two points you need to take into carefully consideration:
 
@@ -1130,7 +1130,7 @@ Every time you update *logs* during AppendEntries RPC process, you must take the
    }
    ```
 
-# Reference
+## Reference
 
 1. [hashicorp-raft](https://github.com/hashicorp/raft)
 2.  [extended Raft paper](https://pdos.csail.mit.edu/6.824/papers/raft-extended.pdf)

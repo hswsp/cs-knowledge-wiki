@@ -24,7 +24,7 @@ SPI整体机制图如下：
 
 当服务的提供者提供了一种接口的实现之后，需要在classpath下的META-INF/services/目录里创建一个以服务接口命名的文件，这个文件里的内容就是这个接口的具体的实现类。当其他的程序需要这个服务的时候，就可以通过查找这个jar包（一般都是以jar包做依赖）的META-INF/services/中的配置文件，配置文件中有接口的具体实现类名，可以根据这个类名进行加载实例化，就可以使用该服务了。JDK中查找服务的实现的工具类是：`java.util.ServiceLoader`。
 
-# SPI 的不足
+## SPI 的不足
 
 1.不能按需加载，需要遍历所有的实现，并实例化，然后在循环中才能找到我们需要的实现。如果不想用某些实现类，或者某些类实例化很耗时，它也被载入并实例化了，这就造成了浪费。
 
@@ -32,9 +32,9 @@ SPI整体机制图如下：
 
 3.多个并发多线程使用 ServiceLoader 类的实例是不安全的。
 
-# API 与 SPI
+## API 与 SPI
 
-## SPI与API区别：
+### SPI与API区别：
 
 API是调用并用于实现目标的类、接口、方法等的描述；
 
@@ -44,22 +44,22 @@ SPI是扩展和实现以实现目标的类、接口、方法等的描述；
 
 >  参考： [https://stackoverflow.com/questions/2954372/difference-between-spi-and-api?answertab=votes#tab-top](https://links.jianshu.com/go?to=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F2954372%2Fdifference-between-spi-and-api%3Fanswertab%3Dvotes%23tab-top) 
 
-## SPI和API的使用场景解析：
+### SPI和API的使用场景解析：
 
 - API （Application Programming Interface）在大多数情况下，都是实现方制定接口并完成对接口的实现，调用方仅仅依赖接口调用，且无权选择不同实现。 从使用人员上来说，API 直接被应用开发人员使用。
 - SPI （Service Provider Interface）是调用方来制定接口规范，提供给外部来实现，调用方在调用时则选择自己需要的外部实现。  从使用人员上来说，SPI 被框架扩展人员使用。
 
-# SPI 应用场景
+## SPI 应用场景
 
 SPI扩展机制应用场景有很多，比如Common-Logging，JDBC，Dubbo等等。
 
-### SPI流程：
+#### SPI流程：
 
 有关组织和公式定义接口标准
 
 第三方提供具体实现: 实现具体方法, 配置 META-INF/services/${interface_name} 文件
 
-### 开发者使用
+#### 开发者使用
 
 比如JDBC场景下：
 
@@ -69,7 +69,7 @@ SPI扩展机制应用场景有很多，比如Common-Logging，JDBC，Dubbo等等
 
 同样在PostgreSQL的jar包PostgreSQL-42.0.0.jar中，也可以找到同样的配置文件，文件内容是org.postgresql.Driver，这是PostgreSQL对Java的java.sql.Driver的实现。
 
-# 项目案例
+## 项目案例
 
 Java 工程目录：
 
@@ -77,7 +77,7 @@ Java 工程目录：
 
 下面我们来简单实现一个 JDK 的SPI的简单实现。
 
-## Java代码开发
+### Java代码开发
 
 首先第一步，定义一个接口：
 
@@ -131,7 +131,7 @@ public class IPhone implements Phone {
 }
 ```
 
-## 约定配置
+### 约定配置
 
 新建 META-INF/services 目录
 
@@ -152,7 +152,7 @@ com.light.sword.IPhone
 
 ![img](https://images.spumn.eu.cc/blog/507b6b1648c08de7.png)
 
-## 加载实现类并调用服务
+### 加载实现类并调用服务
 
 这时，通过ServiceLoader 加载实现类并调用服务：
 
@@ -192,7 +192,7 @@ iOS
 >
 > 这就相当于spring制定了注解规范，我们按照这个注解规范开发相应的实现类或controller，spring并不需要感知我们是怎么实现的，他只需要根据注解规范和scan标签注入相应的bean，这正是 spi 理念的体现。 
 
-# SPI 实现原理解析
+## SPI 实现原理解析
 
 首先，ServiceLoader实现了Iterable接口，所以它有迭代器的属性，这里主要都是实现了迭代器的hasNext和next方法。这里主要都是调用的lookupIterator的相应hasNext和next方法，lookupIterator是懒加载迭代器。
 
@@ -628,7 +628,7 @@ public final class ServiceLoader<S> implements Iterable<S>
 }
 ```
 
-# 参考资料
+## 参考资料
 
 1. [https://www.cnblogs.com/jy107600/p/11464985.html](https://links.jianshu.com/go?to=https%3A%2F%2Fwww.cnblogs.com%2Fjy107600%2Fp%2F11464985.html) [http://blog.itpub.net/69912579/viewspace-2656555/](https://links.jianshu.com/go?to=http%3A%2F%2Fblog.itpub.net%2F69912579%2Fviewspace-2656555%2F) 
 2. [https://segmentfault.com/a/1190000020422160](https://links.jianshu.com/go?to=https%3A%2F%2Fsegmentfault.com%2Fa%2F1190000020422160)

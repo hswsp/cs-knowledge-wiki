@@ -19,10 +19,10 @@ In this warmup, you will set up an installation of GNU/Linux on your computer, l
 
 **EdStem**: Please feel free to ask questions on EdStem, but please don’t post any source code.
 
-# Set up GNU/Linux on your computer
+## Set up GNU/Linux on your computer
 Let’s get started with using the network. You are going to do two tasks by hand: retrieving a Web page (just like a Web browser) and sending an email message (like an email client). Both of these tasks rely on a networking abstraction called a reliable bidirectional byte stream: you’ll type a sequence of bytes into the terminal, and the same sequence of bytes will eventually be delivered, in the same order, to a program running on another computer (a server). The server responds with its own sequence of bytes, delivered back to your terminal.
 
-## 2.1 Fetch a Web page
+### 2.1 Fetch a Web page
 1. In a Web browser, visit [http://cs144.keithw.org/hello](http://cs144.keithw.org/hello) and observe the result.
 2. Now, you’ll do the same thing the browser does, by hand.
     1. On your VM (or on your own computer—e.g. the Terminal program on macOS), run `telnet cs144.keithw.org http` . This tells the telnet program to open a reliable byte stream between your computer and another computer (named cs144.keithw.org), and with a particular service running on that computer: the “http” service, for the Hyper-Text Transfer Protocol, used by the World Wide Web.
@@ -45,7 +45,7 @@ If you need to quit, hold down `ctrl` and press `]` , and then type `close(Enter
     6. If all went well, you will see the same response that your browser saw, preceded by HTTP headers that tell the browser how to interpret the response.
 3. **Assignment**: Now that you know how to fetch a Web page by hand, show us you can! Use the above technique to fetch the URL [http://cs144.keithw.org/lab0/sunetid](http://cs144.keithw.org/lab0/sunetid), replacing sunetid with your own primary SUNet ID. You will receive a secret code in the X-Your-Code-Is: header. Save your SUNet ID and the code for inclusion in your writeup.
 
-## Send yourself an email
+### Send yourself an email
 Now that you know how to fetch a Web page, it’s time to send an email message, again using a reliable byte stream to a service running on another computer.
 
 SSH to `sunetid@cardinal.stanford.edu` (to make sure you are on Stanford’s network), then run `telnet 148.163.153.234 smtp` . The “smtp” service refers to the **Simple Mail Transfer Protocol**, used to send email messages. If all goes well, you will see:
@@ -81,7 +81,7 @@ Type `QUIT <font style="color:rgb(46, 46, 46);">↩</font>` to end the conversat
 
 **Assignment**: Now that you know how to send an email by hand to yourself, try sending one to a friend or lab partner and make sure they get it. Finally, show us you can send one to us. Use the above technique to send an email, from yourself, to cs144grader@gmail.com.
 
-## Listening and connecting
+### Listening and connecting
 You’ve seen what you can do with `telnet`: a **client** program that makes outgoing connections to programs running on other computers. Now it’s time to experiment with being a simple **server**: the kind of program that waits around for clients to connect to it.
 
 In one terminal window, run `netcat -v -l -p 9090` on your VM. You should see:

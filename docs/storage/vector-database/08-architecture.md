@@ -8,7 +8,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/dqnzk9areuc1s1nd
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239839969-4b9d5fb3-230b-4e92-a4a2-9ff0997cd69e.png)![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239839881-b0b7b5b4-e27f-430e-a26e-0c1daa081a89.png)
 
-# 回顾：向量数据库的基本任务
+## 回顾：向量数据库的基本任务
 
 向量数据库可以概括为：
 
@@ -25,7 +25,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/dqnzk9areuc1s1nd
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239839909-b309e6b8-14de-461a-a74a-ddc179aade77.png)![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239839876-8ff42267-2855-4759-917a-1ad497e87daa.png)
 
-# ANNS Index 回顾
+## ANNS Index 回顾
 
 ANNS index 在多个指标之间权衡：recall、latency、throughput、memory 和 update cost。
 
@@ -42,7 +42,7 @@ ANNS index 在多个指标之间权衡：recall、latency、throughput、memory 
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239839819-9de8697b-111d-42e8-b304-2738d3716b81.png)![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239842460-42a24b5f-8011-41ad-8cd5-9d226d152ed7.png)
 
-# 逻辑 VDBMS 组件
+## 逻辑 VDBMS 组件
 
 一个概念架构：
 
@@ -63,13 +63,13 @@ ANNS index 在多个指标之间权衡：recall、latency、throughput、memory 
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239842483-58bc354b-194e-4b5d-ad95-bd0a5688b324.png)
 
-# 早期架构：Vearch
+## 早期架构：Vearch
 
 Vearch 是较早的分布式向量搜索系统，采用定制化分布式架构：sharding、ingest queue、文件存储，并服务过生产系统。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239843775-3f73ab7e-3ede-448f-a663-f37817aea4fa.png)
 
-### 1. 查询架构
+#### 1. 查询架构
 
 Vearch 的搜索子系统是层级结构：
 
@@ -111,7 +111,7 @@ Vearch 的搜索子系统是层级结构：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239843554-edde5e5a-db48-4cb7-994d-e8cb2f658a7b.png)
 
-### 2. 索引与更新
+#### 2. 索引与更新
 
 Vearch 使用 IVF：每个 cluster 维护向量列表，并用 end position table 加速插入。每个 searcher 管理一个 shard，索引驻留在 searcher RAM 中，属性存储在 forward index 中。
 
@@ -125,7 +125,7 @@ Vearch 使用 IVF：每个 cluster 维护向量列表，并用 end position tabl
 - **End Position Table** 是**每个书架**内部的索引卡，告诉你哪个位置是空的可以放新书。
 - **Shard Index Vertical** 是建立了**多个****完全相同的****、分布在不同城区的社区分馆**。每个分馆都有一套完整的藏书目录。市民（查询请求）可以就近去任何一个分馆查找，分馆的目录就在管理员手边（内存中），查找速度极快。如果某个分馆关门了，市民可以去另一个分馆。
 
-#### End Position Table（结束位置表）
+##### End Position Table（结束位置表）
 
 这是一个**优化数据插入性能**的机制，与**倒排文件** 的数据结构紧密相关。
 
@@ -144,7 +144,7 @@ Vearch 使用 IVF：每个 cluster 维护向量列表，并用 end position tabl
 
 **简单比喻**：就像一个图书馆为每个主题（聚类）的书架预留了一整排空位。图书管理员手边有一个“结束位置表”，记录了每个主题书架最后一本书的位置。新书到来时，管理员查表，把书放到下一个空位，然后更新一下表格即可，无需移动其他书架的书。
 
-#### Shard Index Vertical（垂直分片索引）
+##### Shard Index Vertical（垂直分片索引）
 
 这是一个**数据分布与高可用性**的架构设计，用于构建分布式向量检索服务。
 
@@ -190,7 +190,7 @@ Vearch 使用 IVF：每个 cluster 维护向量列表，并用 end position tabl
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239844474-6429238d-7304-4df7-aadd-6577d31569fc.png)
 
-### 3. 性能与问题
+#### 3. 性能与问题
 
 ![](https://cdn.nlark.com/yuque/__latex/049516e22226e779d6c04302b4d9127c.svg)，20 个 searchers + 6 个 blenders/brokers，平均延迟约 100ms，P99 超过 300ms，最大延迟 2.1s，吞吐约 1800 QPS。
 
@@ -198,7 +198,7 @@ Vearch 使用 IVF：每个 cluster 维护向量列表，并用 end position tabl
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239844530-f958a279-d589-4430-8c2f-dc87e5d48091.png)
 
-# 现代架构：Manu / Milvus 2.0
+## 现代架构：Manu / Milvus 2.0
 
 Manu 是 Milvus 2.0 背后的架构思想，采用 service-oriented / disaggregated design。
 
@@ -212,7 +212,7 @@ Manu 是 Milvus 2.0 背后的架构思想，采用 service-oriented / disaggrega
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239844797-63e5d4c3-a1cf-448b-8aef-1e569ead760b.png)
 
-## 需求如何转化为架构特性
+### 需求如何转化为架构特性
 
 | 需求 | 架构特性 |
 | --- | --- |
@@ -224,7 +224,7 @@ Delta consistency 允许用户指定最大 stale 时间 ![](https://cdn.nlark.co
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239844797-b24d1d41-8256-4bd8-94d3-ffc12996f263.png)
 
-## 数据组织
+### 数据组织
 
 Manu 存储：
 
@@ -246,9 +246,9 @@ segment 在达到 512MB 或经过 10 秒后 seal 并建索引。Growing segment 
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239844933-30a403d7-eddb-48c2-8076-42712fb67919.png)
 
-## Manu 架构分层
+### Manu 架构分层
 
-### 1. Storage layer
+#### 1. Storage layer
 
 对象存储（S3、MinIO、文件）保存 columnar binlog、vectors、attributes、index、segment mapping SSTables。
 
@@ -256,7 +256,7 @@ KV store（etcd）保存 metadata、状态信息，并供 coordinators 使用。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239845315-059b961c-e2da-4c38-8276-5f1106a617eb.png)
 
-### 2. Worker nodes
+#### 2. Worker nodes
 
 Workers 是 stateless 的，彼此无直接协调，可独立扩缩容：
 
@@ -270,7 +270,7 @@ Workers 是 stateless 的，彼此无直接协调，可独立扩缩容：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239845152-ffd9f08f-1180-4b9a-a1df-3b83e86cc390.png)
 
-### 3. Coordinators
+#### 3. Coordinators
 
 | Coordinator | 职责 |
 | --- | --- |
@@ -281,13 +281,13 @@ Workers 是 stateless 的，彼此无直接协调，可独立扩缩容：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239845329-8633ce6e-81ab-43bd-ac58-d16d455f95f1.png)
 
-### 4. Access layer
+#### 4. Access layer
 
 通常是 stateless proxy：接收请求、用 metadata cache 验证、分发给 workers、聚合结果并返回。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239845350-b34c8ae0-db78-42af-9cc7-673bb31f4c10.png)
 
-## Log Backbone：WAL 作为系统骨架
+### Log Backbone：WAL 作为系统骨架
 
 Manu 使用 Write-Ahead Log 连接组件，通常由 Kafka / Pulsar 实现。
 
@@ -297,7 +297,7 @@ Manu 使用 Write-Ahead Log 连接组件，通常由 Kafka / Pulsar 实现。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239845732-299dfd41-cb41-436c-b184-5b0a2d7889ae.png)
 
-## 插入路径：从 insert 到 index
+### 插入路径：从 insert 到 index
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239845651-335ad4c8-415a-4f89-b422-ea3067f83ca0.png)
 
@@ -346,7 +346,7 @@ Slice 的概念与作用：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239846783-ae46d4e8-17be-4a79-9861-44ea972b94a6.png)
 
-## 复杂架构的收益
+### 复杂架构的收益
 
 虽然路径复杂，但收益明显：
 
@@ -360,7 +360,7 @@ Slice 的概念与作用：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239846814-a293e619-2fe8-4013-8122-83de2378ecc0.png)
 
-## 查询路径
+### 查询路径
 
 简单查询流程：
 
@@ -375,7 +375,7 @@ Slice 的概念与作用：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239846829-243f7d72-2938-4d3d-a779-168986271715.png)
 
-## Delta Consistency
+### Delta Consistency
 
 设查询时间为 ![](https://cdn.nlark.com/yuque/__latex/aee3c627a51feaa9ae9728090354dc3f.svg)，用户指定最大 stale 时间为 ![](https://cdn.nlark.com/yuque/__latex/e7ccb9bf589e539415d2ed8b202fb932.svg)，query node 已接收的最新更新时间为 ![](https://cdn.nlark.com/yuque/__latex/1f96a44e66fac346bde8c25379712ba2.svg)。
 
@@ -390,7 +390,7 @@ Slice 的概念与作用：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239846853-00c4d0c4-6029-43eb-b00a-cb8bd4fcb635.png)
 
-## 其他架构考虑
+### 其他架构考虑
 
 - Full index rebuild：从 data coord 获取 segment 路径，分配 index nodes，构建后通知 query nodes 加载。
 - Delete/update：通常通过 per-segment bitmap 或 tombstone 标记，后续在 rebuild/compaction 时清理。
@@ -402,15 +402,15 @@ Slice 的概念与作用：
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239847356-554e205e-72ff-4eea-a579-f6cd72fcd21e.png)
 
-## 性能结果
+### 性能结果
 
-### 单机性能
+#### 单机性能
 
 配置：单节点 EC2 m5.4xlarge，16 vCPU、64GB RAM，Recall@50，SIFT 10M 和 DEEP 10M。结论是 Manu 单机性能较好，SIMD 和 CPU 优化很重要，磁盘系统在该实验下较慢。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239847360-a5945087-9e36-4613-9762-62d135e5f336.png)
 
-### Elasticity
+#### Elasticity
 
 配置：4 nodes，包括 2 data nodes、1 query node、1 index node，SIFT 100M，Recall@50 > 80%。系统可根据延迟调整 query nodes：低于 100ms 可减少，高于 150ms 可增加。
 
@@ -422,19 +422,19 @@ SIFT 的全称是 **Scale-Invariant Feature Transform（尺度不变特征变换
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239847371-278a3b6e-c26b-4f80-9fc6-2c7c98a6ef11.png)
 
-### Scalability
+#### Scalability
 
 Segmenting 允许随着数据集大小和 query nodes 数量近似线性扩展，即使使用 HNSW 这类图索引也能扩展。若想更好利用图索引的亚线性复杂度，可以增大 segment size。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239847334-fd4e0e15-c82b-4805-88fa-e7972752b316.png)
 
-### Index building
+#### Index building
 
 单个 index node 在 EC2 m5.4xlarge 上可在 1 小时内处理 100M vectors。由于查询和建索引路径解耦，对查询影响较小，但可能影响较小 ![](https://cdn.nlark.com/yuque/__latex/e7ccb9bf589e539415d2ed8b202fb932.svg) 下的 freshness。
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/22382307/1780239848427-63ab6e45-3c13-49af-9c39-5ae47ead1221.png)
 
-# 总结
+## 总结
 
 本讲展示了向量数据库架构从早期定制化系统 Vearch，到现代解耦式系统 Manu / Milvus 2.0 的演进。
 

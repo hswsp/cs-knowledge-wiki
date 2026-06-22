@@ -72,7 +72,7 @@ Your implementation of the router will use the Minnow library with a new `Router
 | **SDN** | 架构（非协议） | 控制-转发分离 | 灵活适配 | 数据中心、云网络 |
 
 
-# Getting started
+## Getting started
 1. Make sure you have committed all your solutions to Checkpoint 5. Please don’t modify any files outside the top level of the src directory, or **webget.cc**. You may have trouble merging the Checkpoint 6 starter code otherwise.
 2. While inside the repository for the lab assignments, run `git fetch --all` to retrieve the most recent version of the lab assignment.
 3. Download the starter code for Checkpoint 6 by running `git merge origin/check6-startercode` .  
@@ -85,7 +85,7 @@ Your implementation of the router will use the Minnow library with a new `Router
 6. Open and start editing the **writeups/check6.md** file. This is the template for your lab writeup and will be included in your submission.
 7. Reminder: please make frequent **small commits** in your local Git repository as you work. If you need help to make sure you’re doing this right, please ask a classmate or the teaching staff for help. You can use the `git log` command to see your Git history.
 
-# Implementing the Router
+## Implementing the Router
 In this lab, you will implement a Router class that can: 
 
 + keep track of a routing table (the list of forwarding rules, or routes), and 
@@ -128,12 +128,12 @@ Here’s where the rubber meets the road. This method needs to route each incomi
 > There’s a beauty (or at least a successful abstraction) in the Internet’s design here: the router never thinks about TCP, about ARP, or about Ethernet frames. The router doesn’t even know what the link layer looks like. The router only thinks about Internet datagrams, and only interacts with the link layer through the `NetworkInterface` abstraction. When it comes to questions like, “How are link-layer addresses resolved?” or “Does the link layer even have its own addressing scheme distinct from IP?” or “What’s the format of the link-layer frames?” or “What’s the meaning of the datagram’s payload?”, the router just doesn’t care.
 >
 
-# Testing
+## Testing
 You can test your implementation by running `cmake --build build --target check6` . This will test your router in a particular simulated network, shown in Figure 2.
 
 ![Figure 2: The simulated test network used in the router test, also run by cmake --build build --target check5 . (Fun fact: the uun network is David Mazi`eres’s slice of the Internet, allocated in 1993. The whois tool, or the linked website, can be used to look up who controls each IP address allocation.)](https://images.spumn.eu.cc/cs-knowledge-wiki/csapp/cs144/labs/9358136cfbc1-1750996122181-c327dc73-b23b-4ee5-9877-df4c8d2b958e.png)
 
-# Q & A
+## Q & A
 1. What data structure should I use to record the routing table?
 
 Up to you! But please don’t get crazy. It’s perfectly acceptable for each datagram to require $ O(N) $ work, where N is the number of entries in the routing table. If you’d like to do something more efficient, we’d encourage you to get a working implementation first before optimizing, and carefully document and comment whatever you choose to implement.
@@ -160,7 +160,7 @@ Recall that <font style="color:#601BDE;">in C and C++, it can produce undefined 
 
 Please check the website ([https://cs144.github.io/lab_faq.html](https://cs144.github.io/lab_faq.html)) and EdStem regularly.
 
-# Submit
+## Submit
 In your submission, please only make changes to the .hh and .cc files in the src directory. Within these files, please feel free to add private members as necessary, but please don’t change the public interface of any of the classes.
 
 Before handing in any assignment, please run these in order:

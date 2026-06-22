@@ -11,11 +11,11 @@
 
 ![4.jpg](https://images.spumn.eu.cc/blog/bb55b3de6da44b7d.jpeg)
 
-# Query Plan
+## Query Plan
 
 The DBMS converts a SQL statement into a query plan. Operators in the query plan are arranged in a tree. Data flows from the leaves of this tree towards the root. The output of the root node in the tree is the result of the query. Typically operators are binary (1–2 children). The same query plan can be executed in multiple ways.
 
-# Processing Models
+## Processing Models
 
 A DBMS *processing model* defines how the system executes a query plan. It specifies things like the direction in which the query plan is evaluated and what kind of data is passed between operators along the way. There are different models of processing models that have various trade-offs for different workloads.
 These models can also be implemented to invoke the operators either from **top-to-bottom** or from **bottom-to-top**. Although the top-to-bottom approach is much more common, the bottom-to-top approach can allow for tighter control of caches/registers in pipelines.
@@ -26,7 +26,7 @@ The three execution models that we consider are:
 
 ![5.jpg](https://images.spumn.eu.cc/blog/4bb232b391806141.jpeg)
 
-## Iterator Model
+### Iterator Model
 
 The *iterator model*, also known as the Volcano or Pipeline model, is the most common processing model and is used by almost every (row-based) DBMS.
 
@@ -46,7 +46,7 @@ Output control works easily with this approach (`LIMIT`) because an operator can
 
 ![8.jpg](https://images.spumn.eu.cc/blog/b6ba6ceca7cd1d99.jpeg)
 
-## Materialization Model
+### Materialization Model
 
 The *materialization* model is a specialization of the iterator model where each operator processes its input all at once and then emits its output all at once. Instead of having a `next` function that returns a single tuple, each operator returns all of its tuples every time it is reached. To avoid scanning too many tuples, the DBMS can propagate down information about how many tuples are needed to subsequent operators (e.g. `LIMIT`). The operator “materializes” its output as a single result. The output can be either a whole tuple (NSM) or a subset of columns (DSM). A diagram of the materialization model is shown in Figure 2.
 
@@ -61,7 +61,7 @@ This approach is better for OLTP workloads because queries typically only access
 
 ![11.jpg](https://images.spumn.eu.cc/blog/c057914902280594.jpeg)
 
-## Vectorization Model
+### Vectorization Model
 
 Like the iterator model, each operator in the *vectorization* *model* implements a `Next` function. However, each operator emits a *batch* (i.e. vector) of data instead of a single tuple. The operator’s internal loop implementation is optimized for processing batches of data instead of a single item at a time. The size of the batch can vary based on hardware or query properties. See Figure 3 for an example of the vectorization model.
 
@@ -76,7 +76,7 @@ The vectorization model allows operators to more easily use **vectorized (SIMD) 
 
 ![14.jpg](https://images.spumn.eu.cc/blog/1056bdf34da28372.jpeg)
 
-## Processing Direction
+### Processing Direction
 
 • **Approach #1: Top-to-Bottom**
 – Start with the root and “pull” data from children to parents
@@ -88,13 +88,13 @@ The vectorization model allows operators to more easily use **vectorized (SIMD) 
 
 ![15.jpg](https://images.spumn.eu.cc/blog/067da958c30a2551.jpeg)
 
-# Access Methods
+## Access Methods
 
 An *access method* is how the DBMS accesses the data stored in a table. In general, there are two approaches to access models; data is either read from a table or from an index with a sequential scan.
 
 ![16.jpg](https://images.spumn.eu.cc/blog/f15b1c096452f5e2.jpeg)
 
-## Sequential Scan
+### Sequential Scan
 
 The sequential scan operator iterates over every page in the table and retrieves it from the buffer pool. As the scan iterates over all the tuples on each page, it evaluates the predicate to decide whether or not to emit the tuple to the next operator.
 The DBMS maintains an internal cursor that tracks the last page/slot that it examined.
@@ -118,7 +118,7 @@ A sequential table scan is almost always the least efficient method by which a D
 
 **Figure 4: Zone Map Example** – The zone map stores pre-computed aggregates for values in a page. In the example above, the select query realizes from the zone map that the max value in the original data is only 400. Then, instead of having to iterate through every tuple in the page, the query can avoid accessing the page at all since none of the values will be greater than 600.
 
-## Index Scan
+### Index Scan
 
 In an *index scan*, the DBMS picks an index to find the tuples that a query needs.
 There are many factors involved in the DBMSs’ index selection process, including:
@@ -147,7 +147,7 @@ More advanced DBMSs support multi-index scans. When using multiple indexes for a
 
 **Figure 6: Multi-Index Scan Example** – Consider the same table in Figure 5. With multi-index scan support, we first compute the sets of record IDs satisfying the predicate for age and dept, respectively, using the corresponding index. We then compute the intersection of the two sets, fetch the corresponding records, and apply the remaining predicate `country=’US’`.
 
-# Modification Queries
+## Modification Queries
 
 Operators that modify the database (`INSERT`, `UPDATE`, `DELETE`) are responsible for checking constraints and updating indexes. For `UPDATE`/`DELETE`, child operators pass Record IDs for target tuples and must keep track of previously seen tuples.
 
@@ -159,7 +159,7 @@ There are two implementation choices on how to handle `INSERT` operators:
 
 ![27.jpg](https://images.spumn.eu.cc/blog/23e6829f1637056a.jpeg)
 
-## Halloween Problem
+### Halloween Problem
 
 The Halloween Problem is an anomaly in which an update operation changes the physical location of a tuple, causing a scan operator to visit the tuple multiple times. This can occur on clustered tables or index scans.
 This phenomenon was originally discovered by IBM researchers while building **System R** on Halloween day in 1976. The solution to this problem is to keep track of the modified record IDs for each query.
@@ -168,7 +168,7 @@ This phenomenon was originally discovered by IBM researchers while building **Sy
 
 ![29.jpg](https://images.spumn.eu.cc/blog/c0abc7e8e52d510d.jpeg)
 
-# Expression Evaluation
+## Expression Evaluation
 
 The DBMS represents a `WHERE` clause as an *expression tree* (see Figure 7 for an example). The nodes in the tree represent different expression types.
 Some examples of expression types that can be stored in tree nodes:
