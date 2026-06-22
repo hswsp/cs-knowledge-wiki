@@ -450,9 +450,9 @@ export default defineConfig({
                 { text: 'JVM CPU 飙高排查', link: '/java/jvm/troubleshoot-high-cpu' },
                 { text: 'JVM 内存参数设置', link: '/java/jvm/JVM内存参数设置' },
                 { text: 'JVM Attach', link: '/java/jvm/JVM Attach' },
+                { text: 'Shallow heap 及 Retained heap', link: '/java/jvm/Shallow heap及Retained heap' },
                 { text: 'JVM GC 总结', link: '/java/jvm/JVM GC 总结' },
                 { text: 'JDK 11 ZGC', link: '/java/jvm/JDK 11  ZGC' },
-                { text: 'Shallow heap 及 Retained heap', link: '/java/jvm/Shallow heap及Retained heap' },
               ],
             },
             {

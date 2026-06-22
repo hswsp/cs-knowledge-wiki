@@ -11,6 +11,11 @@
 
 - [如何阅读 Java 字节码](./jvm/java-bytecode)
 - [JVM CPU 飙高问题的排查过程](./jvm/troubleshoot-high-cpu)
+- [JVM 内存参数设置](./jvm/JVM内存参数设置)
+- [JVM Attach](./jvm/JVM%20Attach)
+- [Shallow heap 及 Retained heap](./jvm/Shallow%20heap及Retained%20heap)
+- [JVM GC 总结](./jvm/JVM%20GC%20总结)
+- [JDK 11 ZGC](./jvm/JDK%2011%20%20ZGC)
 
 ## 并发编程
 
