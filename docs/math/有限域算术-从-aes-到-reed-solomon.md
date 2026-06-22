@@ -85,7 +85,7 @@ $ \forall f(x) \in E[x], (f(a) = 0 \implies p(x) \mid f(x)) $
 
 <font style="color:#000000;">我们称这个多项式为 </font>$ a $<font style="color:#000000;"> 在</font>**<font style="color:#000000;">域 </font>**$ E $**<font style="color:#000000;"> </font>**<font style="color:#000000;">上的最小多项式。</font>
 
-<font style="color:#000000;">例如 </font>$ f(x)=(x−1)(x+1) $<font style="color:#000000;">，那么 </font>$ a = 1 $<font style="color:#000000;"> 的最小多项式是 </font>$ x−1 $<font style="color:#000000;">，因为它是首一的、以 </font>$ 1 $<font style="color:#000000;">为根的最低次多项式，并且整除任何以 </font>$ 1 $<font style="color:#000000;">为根的多项式（如 </font>$ (x−1)(x+1) $<font style="color:#000000;">）。</font>
+<font style="color:#000000;">例如 </font>$ f(x)=(x-1)(x+1) $<font style="color:#000000;">，那么 </font>$ a = 1 $<font style="color:#000000;"> 的最小多项式是 </font>$ x-1 $<font style="color:#000000;">，因为它是首一的、以 </font>$ 1 $<font style="color:#000000;">为根的最低次多项式，并且整除任何以 </font>$ 1 $<font style="color:#000000;">为根的多项式（如 </font>$ (x-1)(x+1) $<font style="color:#000000;">）。</font>
 
 ---
 
@@ -122,7 +122,7 @@ $ F $<font style="color:#000000;"> (记为</font>$ \mathbb{F}_q $<font style="co
 
 $ R = \mathbb{F}_p[x] / (f(x)). $
 
-因为 $ f $ 不可约，理想 $ (f) $ 是极大理想，所以 $ R $ 是一个域。又因为 $ \dim_{\mathbb{F}_p} R = n $($ R $作为 $ \mathbb{F}_p $-向量空间的维数等于 $ degf=n $)，所以 $ R $** 是 **$ \mathbb{F}_p $** 的 **$ n $** 次扩域。**即$ R $中的每个元素都可以唯一表示为次数小于 $ n $的多项式，即形如 $ a_0+a_1x+⋯+a_{n−1}x^{n−1} $，其中 $ a_i∈\mathbb{F}_p $。
+因为 $ f $ 不可约，理想 $ (f) $ 是极大理想，所以 $ R $ 是一个域。又因为 $ \dim_{\mathbb{F}_p} R = n $($ R $作为 $ \mathbb{F}_p $-向量空间的维数等于 $ degf=n $)，所以 $ R $** 是 **$ \mathbb{F}_p $** 的 **$ n $** 次扩域。**即$ R $中的每个元素都可以唯一表示为次数小于 $ n $的多项式，即形如 $ a_0+a_1x+⋯+a_{n-1}x^{n-1} $，其中 $ a_i∈\mathbb{F}_p $。
 
 这样的表示共有 $ p^n $种，因此 $ R $恰有 $ p^n $个元素。根据引理 3，这样的扩域唯一（同构意义下），所以$ R \cong \mathbb{F}_{p^n}. $
 
@@ -149,7 +149,7 @@ $ \mathbb{F}_p[x]/(f(x)) \cong \mathbb{F}_p(\alpha). $
 
 $ \boxed{\mathbb{F}_{p^n} \cong \mathbb{F}_p[x] / (f(x)) \cong \mathbb{F}_p(\alpha)}. $
 
-根据有限域的基本定理$ \mathbb{F}_{p^n} $乘法阶为 $ p^n−1 $。
+根据有限域的基本定理$ \mathbb{F}_{p^n} $乘法阶为 $ p^n-1 $。
 
 因此，**不可约多项式 **$ f(x) $** 决定了 **$ \mathbb{F}_p $** 的一个 **$ n $** 次扩域 **$ \mathbb{F}_{p^n} $**，并且 **$ \alpha $** 是该扩域的一个本原元（即生成元）当且仅当 **$ \alpha $** 的乘法阶为 **$ p^n - 1 $。
 
