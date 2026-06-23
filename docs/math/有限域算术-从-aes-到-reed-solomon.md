@@ -83,7 +83,7 @@ $\text{cont}(f) = \gcd(a_0, \cdots, a_n)$
 
 $\forall f(x) \in E[x], (f(a) = 0 \implies p(x) \mid f(x))$
 
-我们称这个多项式为 $a$ 在**域**$E$** **上的最小多项式。
+我们称这个多项式为 $a$ 在**域 $E$ 上的**最小多项式。
 
 > 唯一的首一多项式 $p(x)$正是满足 $p(a)=0$的**次数最低**的首一多项式
 >
@@ -121,7 +121,7 @@ $F$ (记为$\mathbb{F}_q$或 $GF(q)$)是 $x^{p^n} - x$**在**$\mathbb{F}_p$**上
 
 ---
 
-设 $f(x) \in \mathbb{F}_p[x]$ 是一个** **$n$** **次**不可约多项式**。考虑商环
+设 $f(x) \in \mathbb{F}_p[x]$ 是一个 **$n$ 次不可约多项式**。考虑商环
 
 $R = \mathbb{F}_p[x] / (f(x)).$
 
@@ -131,7 +131,7 @@ $R = \mathbb{F}_p[x] / (f(x)).$
 
 即：
 
-$\boxed{\mathbb{F}_p[x] / (f(x)) \cong \mathbb{F}_{p^n}}$其中 $f(x) \in \mathbb{F}_p[x]$ 是一个** **$n$** **次**不可约多项式**.
+$\boxed{\mathbb{F}_p[x] / (f(x)) \cong \mathbb{F}_{p^n}}$其中 $f(x) \in \mathbb{F}_p[x]$ 是一个 **$n$ 次不可约多项式**.
 
 另一方面，在商环$R = \mathbb{F}_p[x] / (f(x))$ 中，记**元素**$\alpha = x + (f(x))$，即 $x (\in \mathbb{F}_p[x])$所在的陪集，记为$\bar{x}$。
 
