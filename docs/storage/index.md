@@ -5,8 +5,8 @@
 ## 分布式存储
 
 - [HDFS 简介](./distributed-storage/hdfs-intro)
-- [OceanBase 架构图文档](./distributed-storage/OceanBase架构图文档.html)
-- [SeekDB Architecture](./distributed-storage/seekdb-architecture.html)
+- [OceanBase 架构图文档](/diagrams/OceanBase架构图文档.html)
+- [SeekDB Architecture](/diagrams/seekdb-architecture.html)
 
 ## 存储引擎
 
