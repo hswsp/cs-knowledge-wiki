@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OceanBase 数据库架构图文档（源码视角）</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: "default",
+    flowchart: { htmlLabels: true, curve: "basis" },
+    securityLevel: "loose" });
+</script>
+<style>
+  :root{--bg:#fafbfc;--fg:#1a1f2c;--muted:#5b6573;--card:#fff;--border:#e5e9f0;
+        --accent:#2a6df4;--accent-2:#11a36a;--warn:#e08a00;--code-bg:#0f1730;--code-fg:#d6e2ff;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+    font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",
+         "Hiragino Sans GB","Microsoft Yahei",sans-serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 28px 80px;}
+  header.hero{background:linear-gradient(135deg,#0f2554 0%,#2a6df4 100%);color:#fff;
+    border-radius:14px;padding:28px 32px;margin-bottom:28px;box-shadow:0 8px 24px rgba(42,109,244,.18);}
+  header.hero h1{margin:0 0 6px;font-size:26px;letter-spacing:.5px;}
+  header.hero .sub{opacity:.92;font-size:14px;}
+  header.hero .meta{margin-top:14px;font-size:12px;opacity:.85;}
+  nav.toc{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:18px 22px;margin-bottom:28px;}
+  nav.toc h3{margin:0 0 10px;font-size:13px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+  nav.toc ol{margin:0;padding-left:22px;columns:2;column-gap:32px;}
+  nav.toc a{color:var(--fg);text-decoration:none;}
+  nav.toc a:hover{color:var(--accent);text-decoration:underline;}
+  section.card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:26px 30px;margin-bottom:22px;box-shadow:0 1px 0 rgba(0,0,0,.02);}
+  section.card>h2{margin:0 0 8px;font-size:22px;color:#0f2554;
+    border-bottom:2px solid var(--accent);padding-bottom:8px;display:inline-block;}
+  section.card>h3{margin:22px 0 8px;font-size:17px;color:#1a3a8c;}
+  section.card>h4{margin:16px 0 6px;font-size:15px;color:#1a3a8c;}
+  p,li{color:var(--fg);}
+  .muted{color:var(--muted);}
+  code,.path{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.5px;background:#eef2fb;color:#1d2b50;padding:1px 6px;border-radius:4px;}
+  pre{background:var(--code-bg);color:var(--code-fg);padding:14px 16px;border-radius:8px;
+    overflow:auto;font-size:12.5px;line-height:1.55;}
+  pre code{background:transparent;color:inherit;padding:0;}
+  .diagram{background:#f6f8ff;border:1px dashed #b9c8ee;border-radius:10px;
+    padding:16px;margin:14px 0 18px;overflow:auto;}
+  .diagram .mermaid{background:transparent;text-align:center;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 16px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#eef3ff;color:#1a3a8c;font-weight:600;}
+  tr:nth-child(even) td{background:#fbfcff;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .pill{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;
+    background:#eaf3ff;color:#1a3a8c;margin-right:6px;}
+  .pill.ok{background:#e5f7ee;color:#11a36a;}
+  .pill.warn{background:#fff3df;color:var(--warn);}
+  .callout{background:#fffbea;border-left:4px solid var(--warn);padding:10px 14px;
+    border-radius:6px;margin:12px 0;font-size:13.5px;}
+  .callout.info{background:#eaf3ff;border-left-color:var(--accent);}
+  .callout.ok{background:#e5f7ee;border-left-color:var(--accent-2);}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:32px;}
+  .qa{background:#fff5f5;border-left:4px solid #d64;margin:16px 0;padding:0 16px;border-radius:8px;}
+  .qa summary{cursor:pointer;font-weight:700;color:#a01;padding:12px 0 6px;font-size:14.5px;}
+  .qa details[open] summary{padding-bottom:8px;}
+  .qa .q{font-weight:600;color:#922;margin:8px 0 2px;font-size:13.5px;}
+  .qa .a{margin:0 0 10px;font-size:13.5px;color:#1a1f2c;}
+  details{padding-left:2px;}
+  hr.soft{border:0;border-top:1px dashed var(--border);margin:18px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>OceanBase 数据库架构图文档（源码视角）</h1>
+  <div class="sub">基于 oceanbase/oceanbase master 源码梳理：整体架构 · SQL 引擎 · 存储引擎（LSM-Tree）· 事务（MVCC+2PC）· PaLF/Multi-Paxos · 索引体系 · RootService</div>
+  <div class="meta">所有路径为仓库相对路径，例如 <code>src/logservice/palf/log_state_mgr.h</code>。流程图由 Mermaid 渲染。</div>
+</header>
+
+<nav class="toc">
+  <h3>目录</h3>
+  <ol>
+    <li><a href="#overview">整体架构与定位</a></li>
+    <li><a href="#components">组件全景与源码布局</a></li>
+    <li><a href="#observer">OBServer 进程内分层架构</a></li>
+    <li><a href="#sql">SQL 引擎流程（Parser→Executor）</a></li>
+    <li><a href="#das-px">DAS / PX 并行执行</a></li>
+    <li><a href="#storage">存储引擎：LSM-Tree + Tablet</a></li>
+    <li><a href="#compaction">三级合并（Mini/Minor/Major/Medium）</a></li>
+    <li><a href="#mvcc">事务、MVCC 与 2PC 状态机</a></li>
+    <li><a href="#palf">日志服务 PaLF 与 Multi-Paxos</a></li>
+    <li><a href="#election">选举（Lease-based，非 Fast Paxos）</a></li>
+    <li><a href="#index">索引体系（B+ / LSM / FTS / 向量）</a></li>
+    <li><a href="#rs">RootService 与多租户</a></li>
+    <li><a href="#refs">关键源码索引</a></li>
+  </ol>
+</nav>
+
+<!-- =============== 1. Overview =============== -->
+<section class="card" id="overview">
+<h2>1. 整体架构与定位</h2>
+<p>OceanBase 是<strong>分布式 Shared-Nothing 关系型数据库</strong>。每个节点对等运行单个 <code>observer</code> 进程
+（入口 <code>src/observer/main.cpp</code> → <code>ObServer::start()</code>），节点内自带 SQL、存储、事务、分布式日志四大引擎，
+基于 <strong>Multi-Paxos</strong>（在 PaLF 中实现）保证副本一致性与高可用（RPO=0，RTO&lt;8s）。</p>
+
+<p>关键特性（摘自 <code>README.md</code> / <code>docs/docs/en/architecture.md</code>）：
+<span class="pill">透明水平扩展</span>
+<span class="pill">HTAP 单引擎</span>
+<span class="pill">向量检索</span>
+<span class="pill">MySQL 兼容</span>
+<span class="pill ok">RPO=0 / RTO&lt;8s</span>
+<span class="pill">多租户隔离</span></p>
+
+<h3>1.1 集群拓扑</h3>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  A1["应用 / 客户端"] -->|MySQL 协议| P1["ObProxy<br/>无状态路由"]
+  P1 --> Z1
+  P1 --> Z2
+  P1 --> Z3
+  subgraph Z1["Zone 1（机房 A）"]
+    O1A["OBServer A"]
+    O1B["OBServer B"]
+  end
+  subgraph Z2["Zone 2（机房 B）"]
+    O2A["OBServer C"]
+  end
+  subgraph Z3["Zone 3（机房 C 或仲裁）"]
+    O3A["OBServer D / Arbiter"]
+  end
+  Z1 <-->|Paxos 复制| Z2
+  Z2 <-->|Paxos 复制| Z3
+  Z1 <-->|Paxos 复制| Z3
+  classDef zone fill:#eaf3ff,stroke:#2a6df4,stroke-width:1px;
+  class Z1,Z2,Z3 zone;
+</div></div>
+
+<h3>1.2 数据组织：Tenant → LS → Tablet → SSTable</h3>
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  CL["Cluster"] --> T1["sys 租户(系统元数据)"]
+  CL --> T2["Meta 租户(每用户租户一个)"]
+  CL --> T3["User 租户(MySQL/Oracle)"]
+  T3 --> LS0["LS 1 (SYS LS)"]
+  T3 --> LS1["LS 1001"]
+  T3 --> LS2["LS 1002"]
+  LS1 --> TAB1["Tablet 200001"]
+  LS1 --> TAB2["Tablet 200002"]
+  TAB1 --> MT["MemTable (KeyBtree, MVCC)"]
+  TAB1 --> MN["Mini SSTable*"]
+  TAB1 --> MI["Minor SSTable*"]
+  TAB1 --> MJ["Major SSTable"]
+  LS1 -. 同步 .-> CLOG["CLOG 流(PaLF)"]
+  CLOG -. Multi-Paxos .-> CLOG2["CLOG 流副本 x3"]
+  classDef ls fill:#fff3df,stroke:#e08a00;
+  class LS0,LS1,LS2 ls;
+</div></div>
+
+<div class="callout info"><strong>核心抽象：Log Stream（LS）</strong>。Tablet 不再像 OB 1.x/2.x 那样每分区一份 Paxos 组；
+3.x/4.x 起一台机器一个租户内拥有少量 LS，多个 Tablet 共享同一个 LS 上的 Multi-Paxos 日志流（见 <code>src/logservice/palf</code>），
+显著降低 Paxos 心跳/选主开销。Tablet 通过 LS 之间的「迁移」实现负载均衡。</div>
+</section>
+
+<!-- =============== 2. Components =============== -->
+<section class="card" id="components">
+<h2>2. 组件全景与源码布局</h2>
+
+<p>仓库根目录的关键模块（节选 <code>src/</code>）：</p>
+<table>
+  <tr><th>目录</th><th>角色</th><th>说明</th></tr>
+  <tr><td><code>src/observer</code></td><td>OBServer 进程框架</td>
+      <td>包含进程入口 <code>main.cpp</code>、网络层 <code>net/</code>、MySQL 协议 <code>mysql/</code>、
+          多租户运行容器 <code>omt/</code>、RPC 派发 <code>ob_srv_deliver/xlator</code>。</td></tr>
+  <tr><td><code>src/sql</code></td><td>SQL 引擎</td>
+      <td><code>parser → resolver → rewrite → optimizer → code_generator → engine → executor</code>，外加 PX 并行
+          <code>engine/px</code> 与数据访问层 <code>das</code>，计划缓存 <code>plan_cache</code>。</td></tr>
+  <tr><td><code>src/storage</code></td><td>存储引擎（基于 LSM-Tree）</td>
+      <td>MemTable <code>memtable/</code>、SSTable / 微块 <code>blocksstable/</code>、合并 <code>compaction/</code>、
+          访问路径 <code>access/</code>、LS 管理 <code>ls/</code>、事务 <code>tx/</code>、tablet 元数据 <code>meta_mem/</code>、
+          列式 <code>column_store/</code>、检查点 <code>checkpoint/</code>。</td></tr>
+  <tr><td><code>src/logservice</code></td><td>分布式日志服务</td>
+      <td>PaLF（Multi-Paxos 实现）<code>palf/</code>、回放 <code>replayservice/</code>、应用回调 <code>applyservice/</code>、
+          归档 <code>archiveservice/</code>、CDC <code>cdcservice/</code>、选举 <code>palf/election/</code>。</td></tr>
+  <tr><td><code>src/rootserver</code></td><td>RootService（集群管控）</td>
+      <td>DDL、负载均衡 <code>balance/</code>、容灾 <code>ob_disaster_recovery_*</code>、
+          冻结/合并调度 <code>freeze/</code>、备份 <code>backup/</code>。RootService 本身也是一个 LS 的 Leader。</td></tr>
+  <tr><td><code>src/share</code></td><td>共享基础</td>
+      <td>Schema、location cache、partition table、object pool 等。</td></tr>
+  <tr><td><code>src/pl</code></td><td>PL/SQL 引擎</td><td>Oracle/MySQL 兼容的存储过程。</td></tr>
+  <tr><td><code>src/objit</code></td><td>表达式 JIT</td><td>LLVM 表达式编译。</td></tr>
+  <tr><td><code>src/plugin</code></td><td>插件机制</td><td>FTS、向量、JSON 插件挂载点。</td></tr>
+  <tr><td><code>deps/oblib</code></td><td>基础库</td><td>容器、内存、网络、RPC、协议、加密。</td></tr>
+</table>
+
+<h3>2.1 组件级关系图</h3>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  CLI["客户端/ObProxy"] --> NET["MySQL 协议层<br/>(observer/mysql, observer/net)"]
+  NET --> OMT["多租户运行容器 OMT<br/>(observer/omt)"]
+  OMT --> SQL["SQL 引擎<br/>(src/sql)"]
+  SQL --> PXENG["PX 并行执行<br/>(sql/engine/px)"]
+  SQL --> DAS["DAS 数据访问<br/>(sql/das)"]
+  DAS --> STO["存储引擎<br/>(src/storage)"]
+  STO --> MT["MemTable"]
+  STO --> SST["SSTable / 微块"]
+  STO --> COMP["Compaction"]
+  SQL --> TXN["事务引擎<br/>(storage/tx)"]
+  TXN --> LOG["分布式日志 PaLF<br/>(src/logservice)"]
+  STO --> LOG
+  LOG --> APP["Apply / Replay<br/>(applyservice/replayservice)"]
+  RS["RootService<br/>(src/rootserver)"] -.元数据/调度.-> OMT
+  RS -.DDL/负载均衡.-> SQL
+  RS -.LS 调度.-> LOG
+  classDef core fill:#eaf3ff,stroke:#2a6df4;
+  class SQL,STO,TXN,LOG core;
+</div></div>
+</section>
+
+<!-- =============== 3. OBServer =============== -->
+<section class="card" id="observer">
+<h2>3. OBServer 进程内分层架构</h2>
+
+<p>一个 OBServer 进程内的整体分层（参考 <code>src/observer/ob_server.h</code>、
+<code>ob_srv_network_frame</code>、<code>ob_srv_deliver</code>、<code>ob_srv_xlator</code>、<code>omt/</code>）：</p>
+
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  subgraph N["网络与协议层"]
+    NF["ObSrvNetworkFrame<br/>(libeasy/RPC)"]
+    MP["MySQL 协议<br/>observer/mysql"]
+    XL["ObSrvXlator<br/>(把 packet 翻译为 Task)"]
+    DV["ObSrvDeliver<br/>(投递到租户队列)"]
+  end
+  subgraph M["多租户容器 OMT"]
+    TENANT1["Tenant 1001 资源池<br/>(CPU/MEM 配额)"]
+    TENANT2["Tenant 1002 资源池"]
+    SYS["sys Tenant"]
+  end
+  subgraph K["内核引擎"]
+    SQL["SQL 引擎"]
+    TX["事务引擎"]
+    STO["存储引擎"]
+    LOG["PaLF 日志服务"]
+    PL["PL/SQL"]
+  end
+  subgraph SVC["进程级常驻服务"]
+    HB["ObHeartbeat<br/>(observer/ob_heartbeat)"]
+    LSSVC["ObLSService"]
+    LOC["LocationService"]
+    SCH["Tablet/Compaction Scheduler"]
+    GTS["Timestamp / GTS"]
+    SCHEMA["Schema Updater"]
+  end
+  NF --> XL --> DV
+  MP --> XL
+  DV --> M
+  M --> K
+  K --> SVC
+  classDef hi fill:#fff3df,stroke:#e08a00;
+  class K hi;
+</div></div>
+
+<p>启动流程（<code>ObServer::start()</code> 简化）：</p>
+<pre><code>main() 
+  ├─ ObServer::init()  // 解析 cfg、初始化 schema/location/log_block_mgr 等
+  └─ ObServer::start()
+     ├─ start ObSrvNetworkFrame  // 监听 2881/2882
+     ├─ start OMT（多租户线程池）
+     ├─ start ObLSService / ObTenantFreezer / ObCheckpointService
+     ├─ start LogService (PaLF) + ApplyService + ReplayService
+     ├─ register heartbeat to RootService
+     └─ start RootService（若本机为 RS Leader 副本）
+</code></pre>
+</section>
+
+<!-- =============== 4. SQL Engine =============== -->
+<section class="card" id="sql">
+<h2>4. SQL 引擎流程</h2>
+
+<p>SQL 引擎入口 <code>src/sql/ob_sql.h</code> <code>ObSql::stmt_query()</code>。整条 pipeline：</p>
+
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  IN["SQL 文本"] --> PC{"Plan Cache 命中?<br/>(sql/plan_cache)"}
+  PC -- 命中 --> EXEC
+  PC -- 未命中 --> PAR["Parser<br/>(sql/parser, Bison/Flex)"]
+  PAR --> RES["Resolver<br/>(sql/resolver)<br/>语义/Schema 绑定"]
+  RES --> RW["Rewrite<br/>(sql/rewrite)<br/>子查询展开/谓词下推/视图合并"]
+  RW --> OPT["Optimizer<br/>(sql/optimizer)<br/>代价模型 + 动态采样"]
+  OPT --> CG["Code Generator<br/>(sql/code_generator)<br/>生成 ObPhysicalPlan & 向量化表达式"]
+  CG --> CACHE["写回 Plan Cache"]
+  CACHE --> EXEC["Executor<br/>(sql/executor + engine/*)<br/>火山/向量化算子树"]
+  EXEC --> DAS["DAS<br/>(sql/das)"]
+  EXEC --> PX["PX 并行调度<br/>(sql/engine/px)"]
+  DAS --> SE["存储引擎<br/>(src/storage)"]
+  PX --> DAS
+  classDef hot fill:#eaf3ff,stroke:#2a6df4;
+  class OPT,EXEC hot;
+</div></div>
+
+<h3>4.1 Plan Cache 与软硬解析</h3>
+<p>语种路径 <code>src/sql/plan_cache</code>，<code>ObPlanCache</code> 用 SQL 文本（参数化后）+ schema_version + literval 模式为 key 缓存 <code>ObPhysicalPlan</code>。</p>
+<ul>
+  <li>硬解析：未命中 → 走完整 Parser→Rewrite→Optimize→CG；完成后渐热。</li>
+  <li>软解析：命中（且参数 / schema / stat 没变）→ 直接拿 plan，绑定新参数执行，省 90%+ 编译时间。</li>
+  <li>参数化：<code>ob_plan_set.h</code> 区分 FAST / PL"_TYPE / PS 模式；literal 类型维度去重。</li>
+  <li>eviction：基于占用内存上限与命中率统计，使用 LRU + size 差额淘汰。</li>
+</ul>
+
+<h3>4.2 SPM：Manual vs Auto Baseline</h3>
+<p>SQL Plan Management（<code>src/sql/spm</code>）维护 evolved baseline。当优化器选择新计划且代价优于现有 baseline 阈值，会被加入 evolve 队列；DBA 或自动任务执行 verify 后确认升级为新 baseline。Outline（<code>sql/ob_outline.h</code>）和 UDR''<code>udr</code>` 提供人工 pin 计划能力。</p>
+
+<h3>4.3 优化器（基于代价的 CBO）</h3>
+<ul>
+  <li>逻辑算子：<code>ObLogicalOperator</code>（<code>sql/optimizer/ob_log_plan.h</code>）树形 IR。</li>
+  <li>Join Order 枚举：<code>ob_join_order_enum_idp.cpp</code>（IDP 动态规划）+ <code>ob_join_order_enum_permutation.cpp</code>。多表时折叠使用 System-R / IDP-2 with DPVol。</li>
+  <li>访问路径估算：<code>ob_access_path_estimation.cpp</code>，对每个候选索引基于 <code>ObOptStatManager</code>（直方图、NDV、Density）计算 cost。索引估算区分 ss_rowcount/emory/seek/selectivity 并考虑 covering、skip scan、回表 bitcost。</li>
+  <li>动态采样：<code>ob_dynamic_sampling.cpp</code>，统计信息不足时即席 OpenGauss 风采样（默认 level=2）。</li>
+  <li>分布式优化：考虑数据分布、Partition Pruning、并行度（DOP=ceil(目标ισα * CPU）、Exchange 算子插入位点。</li>
+  <li>Col 剪裁与 Project Pushdown、Semi Join 转 Inner Join、Outer Job Elimination、Anti 重写、SubUnnest（<code>ob_unnest</code>）。</li>
+</ul>
+
+<h3>4.4 代码生成与向量化</h3>
+<ul>
+  <li><code>ObStaticEngineCG</code> 遍历 CBO 计划树 → 构造 <code>ObOpSpec</code>（算子规格）+ 表达式 spec，全部序列化可缓存可 RPC 复用。</li>
+  <li>表达式分两类：expression-level <code>ObExpr</code>，exec 路径 <code>ObExprCG</code> 生成为函数指针 vec 求值；复杂表达式可被 <code>src/objit</code>（<strong>LLVM JIT</strong>）编译为原生机器码。</li>
+  <li>Vec 执行：算子一次处理一个 <code>ObBatchRows</code>（默认 2048 行，由 <code>ObExecContext::batch_size_</code> 控制）。HashJoin / HashAgg 走。<code>ob_exec_hash_struct_vec.cpp</code>。</li>
+  <li>执行内存：每个查询 <code>ObSQLMemMgrProcessor</code> 跟踪内存，超 <code>workarea_percentage</code> 走落盘（temp store）。</li>
+</ul>
+
+<h3>4.5 执行引擎算子家族</h3>
+<p>算子工厂在 <code>sql/engine/ob_operator_factory.{h,cpp}</code>。生成两种模式：</p>
+<ul>
+  <li><strong>静态引擎（向量化）</strong>：上面所述。</li>
+  <li><strong>火山式</strong>：<code>ObOperator::get_next_row()</code> 兼容路径（仅 PL 临时表或特定虚拟表内部走）。</li>
+</ul>
+
+<h3>4.6 谓词下推到存储与其他高级特性</h3>
+<ul>
+  <li><strong>Index Filter Pushdown</strong>：<code>storage/access/ob_sstable_index_filter</code> 把可在 IndexBlock 上求值的谓词涂色，减少数据微块 IO。</li>
+  <li><strong>Pushdown Aggregate</strong>：<code>storage/access/ob_pushdown_aggregate_vec</code> 在 micro block 维度聚合，上层只需 reduce。</li>
+  <li><strong>PGG / Skip Scan</strong>：<code>ob_index_skip_scanner</code> + <code>ob_skip_index_sortedness</code>：对前缀列范围整块跳过，性能类似 MySQL Index Skip Scan。</li>
+  <li><strong>Adaptive Bypass</strong>：<code>sql/engine/aggregate/ob_adaptive_bypass_ctrl</code>：HashAgg 小基数直接 bypass 到 partial/单分区模式，避免哪些需要二次聚合的开销。</li>
+  <li><strong>SQL Trace / Optimizer Trace</strong>：<code>ob_optimizer_trace_impl</code> 把 plan 选择全过程埋点导出表 <code>opt_trace</code> 用于调优。</li>
+</ul>
+
+<details class="qa" open><summary> · SQL 引擎</summary>
+<div class="q">Q1：Plan Cache 怎么决定命中？key 是什么？</div>
+<div class="a">A1：key = (parameterized SQL fingerprint, schema_version, environment/charset) + 必要的 literal 模式。其中"参数化"使用 OB-SQL Parser 的 literal replacement，把 IN 列表等标准化为 ParamMap；schema 变更则使全部相关 plan 失效（<code>ObPlanCache::flush_cache</code> by `refine_task`）。</div>
+
+<div class="q">Q2：向量化执行一坨表达式里有一个 if 不走 vec，会不会降级？</div>
+<div class="a">A2：每个 <code>ObExpr</code> 都有 <code>eval</code> 与 <code>eval_batch</code> 两种入口。如果某个表达式只支持 row 级（如 PL SPI 调用），CG 会保留变体并在 batch 角标 fallback 为逐行调用。代价是劣化但正确；不会全盘退化为火山式。</div>
+
+<div class="q">Q3：CBO 如何为分布式查询选 DOP？多 DFO 下选择算子分布容易产生网络内存打绑吗？</div>
+<div class="a">A3：DOP 基于可用 CPU quota（租户 <code>parallel_max_servers</code> + pool CPU）、数据量估算、小表 broadcasting 决定；Exchange 分布类型选择按 join 类型和表分布 hash/pkey/broadcast，并与 hash subpartition 的 redistribute cost 模型比较。Admission 在执行入口（PX Coord）拦截不合规 DOP。</div>
+
+<div class="q">Q4：JIT 实际跑不跑？什么场景触发？</div>
+<div class="a">A4：JIT 默认对超复杂表达式开（big expr depth、重复次数高、单 plan 累计 exec rows > 阈值），代价高得多 + 调通环境需要 <code>ob_enable_jit</code> + objit not stripped。OLTP 一般关闭，AP 大 query scene 才 enabled。LLVM IR compile 需要~几十 ms，因此 sample 入库 first/warm-up 时不受限于。</div>
+</details>
+
+<h3>4.2 执行引擎</h3>
+<p>算子工厂在 <code>sql/engine/ob_operator_factory.{h,cpp}</code>。代码生成两种模式：</p>
+<ul>
+  <li><strong>静态引擎（向量化）</strong>：<code>ObStaticEngineCG</code> 生成基于 <code>ObBatchRows</code>/<code>ObBitVector</code> 的批量化算子，
+      表达式可被 <strong>JIT 编译</strong>（<code>src/objit</code> 基于 LLVM）。</li>
+  <li><strong>火山式</strong>：旧式 <code>ObOperator::get_next_row()</code> 兼容路径。</li>
+</ul>
+<p>主要算子族：</p>
+<table>
+  <tr><th>家族</th><th>代码位置</th><th>代表算子</th></tr>
+  <tr><td>聚合</td><td><code>engine/aggregate</code></td><td>HashGroupBy / MergeGroupBy / HashDistinct（含向量化 vec 版本）</td></tr>
+  <tr><td>Join</td><td><code>engine/join</code></td><td>HashJoin / NestedLoop / MergeJoin / NLJ_Vec</td></tr>
+  <tr><td>排序/集合</td><td><code>engine/sort, set</code></td><td>外排序 + 落盘、UNION/INTERSECT/EXCEPT</td></tr>
+  <tr><td>窗口/CTE</td><td><code>engine/window_function</code>,<code>recursive_cte</code></td><td>Window、递归 CTE</td></tr>
+  <tr><td>子查询</td><td><code>engine/subquery</code></td><td>SubPlan Filter、Subplan Scan</td></tr>
+  <tr><td>表/扫描</td><td><code>engine/table</code></td><td>Table Scan、Direct Receive、Function Table、向量索引扫描</td></tr>
+  <tr><td>DML</td><td><code>engine/dml</code></td><td>Insert/Update/Delete/Merge/Replace</td></tr>
+  <tr><td>PDML</td><td><code>engine/pdml</code></td><td>并行 DML</td></tr>
+  <tr><td>并行</td><td><code>engine/px</code></td><td>PX Coord、DFO、Granule、Exchange</td></tr>
+</table>
+</section>
+
+<!-- =============== 5. DAS & PX =============== -->
+<section class="card" id="das-px">
+<h2>5. DAS 与 PX 并行执行</h2>
+
+<h3>5.1 DAS（Data Access Service）</h3>
+<p>DAS 是 SQL 与存储之间的数据访问中间层（<code>src/sql/das</code>），把每个 Scan/DML 拆分成对各 Tablet 的 <code>ObDasTask</code>，
+并按数据位置远程/本地下推。核心类：<code>ObDataAccessService</code>、<code>ObDASRef</code>、<code>ObDASScanOp</code>、
+<code>ObDASInsert/Update/Delete/LockOp</code>、定位 <code>ObDASLocationRouter</code>、重试 <code>ObDASRetryCtrl</code>。</p>
+
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  EX["Executor 算子<br/>TableScan / DML"] --> REF["ObDASRef"]
+  REF --> SCAN["ObDASScanOp / DmlOp"]
+  SCAN --> LOC["ObDASLocationRouter<br/>(tablet → server)"]
+  LOC -->|local| LOCAL["本地存储 ObAccessService"]
+  LOC -->|remote| RPC["DAS RPC<br/>ob_das_rpc_proxy"]
+  RPC --> REMOTE["远端 OBServer 上的 DAS handler"]
+  REMOTE --> LOCAL2["远端 ObAccessService"]
+  classDef k fill:#eaf3ff,stroke:#2a6df4;
+  class SCAN,LOC k;
+</div></div>
+
+<h3>5.2 PX（Parallel eXecution）</h3>
+<p>PX 实现 MPP 风格多机并行。源码在 <code>src/sql/engine/px</code>。关键概念：</p>
+<ul>
+  <li><strong>DFO（Data Flow Operator）</strong>：把计划切成多个 DFO，每个 DFO 是一段可独立并行的子计划（<code>ob_dfo.h</code>）。</li>
+  <li><strong>Granule</strong>：DFO 内的分片单位，调度到 SQC（Sub-Query Coordinator）上的工作线程（<code>ob_granule_pump</code>）。</li>
+  <li><strong>Exchange</strong>：DFO 间的数据重分布算子（Hash/Range/Pkey/Random/Broadcast），数据通过 <code>sql/dtl</code>（Data Transfer Layer）传输。</li>
+  <li><strong>PX Coord</strong>：根 DFO，负责调度（<code>ob_dfo_scheduler</code>）、Admission（<code>ob_px_admission</code>）。</li>
+</ul>
+
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  Q["QC: Query Coordinator<br/>(根 OBServer)"] --> S1["SQC 1<br/>(OBServer A)"]
+  Q --> S2["SQC 2<br/>(OBServer B)"]
+  Q --> S3["SQC 3<br/>(OBServer C)"]
+  S1 --> W1["PX Worker x N<br/>处理 Granule"]
+  S2 --> W2["PX Worker x N"]
+  S3 --> W3["PX Worker x N"]
+  W1 -.DTL Exchange.-> W2
+  W2 -.DTL Exchange.-> W3
+  W1 --> R["Receive"]
+  R --> Q
+</div></div>
+</section>
+
+<!-- =============== 6. Storage =============== -->
+<section class="card" id="storage">
+<h2>6. 存储引擎：LSM-Tree + Tablet</h2>
+
+<p>OceanBase 的存储引擎是<strong>准 LSM-Tree 架构</strong>，对应代码 <code>src/storage</code>：</p>
+<ul>
+  <li>写入先进 MemTable（<code>storage/memtable</code>），同时通过 PaLF 写多副本 REDO。</li>
+  <li>MemTable 冻结后 flush 成 Mini SSTable；多个 Mini 合并成 Minor SSTable；
+      每日（或基于阈值）所有副本一起做全局一致的 Major / Medium 合并。</li>
+  <li>所有 SSTable 都是<strong>不可变</strong>的 macro_block + micro_block 文件块（<code>storage/blocksstable</code>）。</li>
+</ul>
+
+<h3>6.1 写入路径</h3>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  SQL["SQL DML"] --> TS["ObTransService<br/>(storage/tx)"]
+  TS --> CTX["ObPartTransCtx (per LS)"]
+  CTX --> RD["MemtableCtx + Redo Generator<br/>(memtable/ob_redo_log_generator)"]
+  RD --> WMT["写 MemTable<br/>(memtable/mvcc/ob_keybtree + ob_mvcc_row)"]
+  RD --> RLOG["生成 redo log entry"]
+  RLOG --> PALF["PaLF append (Multi-Paxos)<br/>logservice/palf"]
+  PALF -- majority ack --> CB["on_success → 提交回调"]
+  CB --> CTX
+  WMT -. snapshot 可见性 .-> RD2["读路径 ObAccessService"]
+</div></div>
+
+<h3>6.2 读取路径（合并多版本 + 多 SSTable）</h3>
+<p>位于 <code>src/storage/access</code>。读需要把同一行在 MemTable 与多层 SSTable 的版本「融合」：</p>
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  Q["TableScan / Get"] --> AS["ObAccessService"]
+  AS --> ITER["ObMultipleMerge<br/>(ObMultipleScanMerge / GetMerge)"]
+  ITER --> M0["MemTable iterator<br/>(memtable/ob_memtable_iterator)"]
+  ITER --> M1["Mini SSTable iter"]
+  ITER --> M2["Minor SSTable iter"]
+  ITER --> M3["Major SSTable iter"]
+  M1 -.索引树.-> IB["index_block<br/>(blocksstable/index_block)"]
+  M2 -.索引树.-> IB
+  M3 -.索引树.-> IB
+  ITER --> LOSER["LoserTree 多路归并<br/>+ MVCC 可见性过滤 (snapshot version)"]
+  LOSER --> ROWS["按 rowkey 输出最新有效版本"]
+  AS --> CACHE["BlockCache / RowCache<br/>BloomFilter (blocksstable/ob_bloom_filter_*)"]
+</div></div>
+
+<h3>6.3 微块格式与列式</h3>
+<ul>
+  <li><strong>Macro Block</strong>：2MB 默认，<code>blocksstable/ob_block_manager</code> 管理。</li>
+  <li><strong>Micro Block</strong>：通常 16KB，是 IO 与压缩的最小单位。</li>
+  <li><strong>编码</strong>：<code>blocksstable/encoding</code> 提供 RAW/Dict/RLE/Const/Diff/Prefix/HexString 等列式编码器，
+      并有 NEON/SIMD 优化解码（<code>encoding/neon</code>、<code>ob_raw_decoder_simd.cpp</code>、<code>ob_dict_decoder_simd.cpp</code>）。</li>
+  <li><strong>列存（CS）</strong>：<code>blocksstable/cs_encoding</code> + <code>storage/column_store</code> 实现真正按列组织的 SSTable，
+      支持 HTAP 中的 AP 查询；<code>CONVERT_CO_MAJOR_MERGE</code> 把行存 major 转列存。</li>
+</ul>
+
+<h3>6.4 缓存层</h3>
+<table>
+  <tr><th>缓存</th><th>路径</th><th>用途</th></tr>
+  <tr><td>BlockCache</td><td><code>blocksstable/ob_block_cache_*</code></td><td>缓存解码后的微块</td></tr>
+  <tr><td>RowCache</td><td><code>blocksstable/ob_row_cache_*</code></td><td>点查 row 级缓存</td></tr>
+  <tr><td>FuseRowCache</td><td><code>blocksstable/ob_fuse_row_cache</code></td><td>融合多 SSTable 的结果行</td></tr>
+  <tr><td>BloomFilter</td><td><code>blocksstable/ob_bloom_filter_*</code></td><td>SSTable 上 rowkey 是否存在</td></tr>
+</table>
+
+<h3>6.5 MemTable 内部结构（常点）</h3>
+<p>数据源码：<code>src/storage/memtable</code>。每行结构：</p>
+<pre><code>ObMemtable
+ ├─ ObQueryEngine         // 用 KeyBtree + HashIndex 索引
+ │     ├─ ob_mvcc/ob_keybtree.{h,cpp}    // B+树，叶节点为 ObMvccRow*
+ │     └─ ob_mt_hash.h                   // JIT hash 索引适配点查
+ ├─ ObMvccEngine          // 行级 latch + write handler
+ │     ├─ ObMvccRow      // 同 rowkey 多版本链表 ObMvccTransNode
+ │     ├─ ObMvccTransNode // 一个版本：trans_version + data
+ │     └─ row_latch.h    // 行写锁
+ ├─ ObRedoLogGenerator     // 与 clog 衔接
+ ├─ ObRowCompactor         // 行级 flush
+ └─ ObMemtableCtx          // TX 局部上下文：回调链 + undo 链
+</code></pre>
+
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  subgraph MT["ObMemtable"]
+    KE["ObQueryEngine<br/>(KeyBtree + 可选 HashIndex)"]
+    KE --> R1["ObMvccRow<br/>rowkey=k1"]
+    KE --> R2["ObMvccRow<br/>rowkey=k2"]
+    R1 --> N11["TransNode v=100<br/>committed"]
+    R1 --> N12["TransNode v=150<br/>uncommitted"]
+    R2 --> N21["TransNode v=120<br/>committed"]
+  end
+  subgraph CTX["ObMemtableCtx"]
+    CB["txn callback 链表<br/>支持回滚 + 提交顺序"]
+  end
+  MT -.存储.-> TXCB
+  CB --> R1
+  CTX --> CB
+  style MT fill:#fff3df,stroke:#e08a00;
+</div></div>
+
+<h4>写冲突处理</h4>
+<ul>
+  <li>在 <code>ObMvccRow</code> 上持有 <code>row_latch</code>（<code>ob_row_latch.h</code>）写锁后追加新 TransNode。若发现已有 <strong>大于自身 trans_seq 的未提交版本</strong>，则触发 write-write 冲突，回滚自身（<code>ob_row_conflict_handler.{h,cpp}</code>）。</li>
+  <li>未提交数据不可见：读路径在 <code>ObMvccEngine::get</code> 中遍历版本链，只接受 <code>trans_version &lt;= snapshot_scn</code> 或当前事务自己写的版本。</li>
+</ul>
+
+<h3>6.6 MVCC 可见性算法（必答）</h3>
+<p>读时刻保存 <code>read_snapshot_scn</code>（来自 <code>ObTxReadCtx</code>，可能取自 GTS / Standby Timestamp / Pure Local）。对每个版本 <code>n</code>：</p>
+<pre><code>if n.trans_version &lt;= read_snapshot_scn AND
+   n.commit_version 已经通过 PA + TxData落盘稳定:
+    可见 n
+elif n.write_seq &lt; = own_tx_seq (是自己写的):  // self-modification
+    在 curr_stmt 内可见
+else:
+    skip n
+</code></pre>
+
+<p>读会按 rowkey 融合：MemTable（活跃 / frozen） + 各层 SSTable（Mini / Minor / Major） → <code>ObMultipleMerge</code> 通过 <strong>LoserTree</strong> 多路归并，结合 <strong>bloom filter</strong>、<strong>index filter</strong>、<strong>push down filter</strong> 提前裁剪。</p>
+
+<h3>6.7 隔离级别实现</h3>
+<table>
+  <tr><th>隔离级别</th><th>实现要点</th><th>出入点</th></tr>
+  <tr><td>READ-COMMITTED</td><td>每条 SQL 重新申请 snapshot_scn（来自 GTS）</td><td><code>ObTransService::get_read_snapshot</code></td></tr>
+  <tr><td>REPEATABLE-READ</td><td>事务开始拿一次 snapshot_scn，复用整个事务</td><td><code>ObSqlCtx::isolation_</code></td></tr>
+  <tr><td>SERIALIZABLE</td><td>snapshot SCN + 写时检查 write-write 冲突（等于 SI + 首冲突回滚）</td><td><code>ob_row_conflict_handler</code></td></tr>
+  <tr><td>弱一致读 / Standby Read</td><td>用 standby_time_service 或某个 PAlog位点回放后的 SCN</td><td><code>ob_standby_timestamp_service</code>、<code>ob_tx_sby_read_define</code></td></tr>
+</table>
+
+<h3>6.8 文件分布与 IO 路径</h3>
+<p>OB 不再像一维文件系统（一行一文件），而是在指定目录（<code>squarerouter/ob_file_system_router.h</code>）下按 tenant/ls/tablet 分层；macro block 由 <code>ob_block_manager</code> 以一组大小为 2MB 的 PGE 文件统一划块回收，写入通过 libeasy / io_uring 提交 IO。</p>
+
+<details class="qa" open><summary> · 存储引擎</summary>
+<div class="q">Q1：MemTable 是 B+树还是 SkipList？为什么选这个？</div>
+<div class="a">A1：OB MemTable 用 <strong>B+树（KeyBtree）</strong>（<code>memtable/mvcc/ob_keybtree</code>），并可选 hash 索引（<code>ob_mt_hash.h</code>）作为点查加速。选 B+树的理由：1）多版本追加写入需要顺序扫描性能稳定；2）缓存的 chunk 集中便于复用；3）回放 / dump 时天然顺序读 rowkey。RocksDB 老牌 SkipList 是为了无锁插入，OB 用 latch + B+ 树 在长 scan 上占优。</div>
+
+<div class="q">Q2：MemTable 写入和持久化（clog）的关系是？clog 是否足够丢？</div>
+<div class="a">A2：写 MemTable 之前先写 redo log entry 到 PaLF（<code>ObRedoLogGenerator::submit</code>）；redo log 多 Buff写后回调成功后再"提交到" MemTable 内存结构。即使 MemTable 还在内存中刷盘前进程崩溃，重启从 clog replay 即可恢复。Memtable 本身 flush 出的小 sstable 文件 + clog 双重持久化，clog的多数派可追保住 RPO=0。</div>
+
+<div class="q">Q3：MVCC 多版本去读时，如何避免读太多 sstable？</div>
+<div class="a">A3：Major 周期性举措把"老版本"提纯为一个大 SSTable：Testtable 中充斥的 multi-version（所有 &lt;= snapshot_version 的）版本只在 Major 中保留一行；mini/minor 只保留仍可能被在读 snapshot 上追溯的版本。BloomFilter + RowCache + FuseRowCache + Index Filter 完整地减少块读取。</div>
+
+<div class="q">Q4：CompactionFilter 与 Major/Minor 的关系？谁清理行级 GC？</div>
+<div class="a">A4：CompactionFilter 只在合并时运行；只在 Major / Medium / Minor 上插入，Mini 几乎只用还原（无 GC）。它检查"事务 commit_version 早于 snapshot_version 且已 not-locked"，则丢行；Mini 不做安全丢弃（因为只跨越一个 MemTable 固定范围，降不经过 commit-version решений）。</div>
+
+<div class="q">Q5：如果 RTO&lt;8s 是真的，那么崩溃后必然要回放 clog，一般回放多久？</div>
+<div class="a">A5：OB 对崩溃分阶段：<strong>（1）进程拉起/分区恢复</strong>包含从 clog 拉日志并回放（<code>ob_replay_handler</code>）；<strong>（2）只读 LS 上的恢复操作 + reconfirm</strong>会启动恢复。并行回放（多 LS 线程）、多 worker 加速；8s 对故障的短极限目标是指 leader 损失场景下 lease 过期 + 准连锁 reconfirm 后新 leader 接写。并非进程全量重启时间。</div>
+</details>
+
+</section>
+
+<!-- =============== 7. Compaction =============== -->
+<section class="card" id="compaction">
+<h2>7. 三级合并（Mini / Minor / Major / Medium）</h2>
+
+<p>合并类型在 <code>src/storage/compaction/ob_compaction_util.h</code> 定义：</p>
+<pre><code>enum MergeType {
+  INVALID_MERGE_TYPE,
+  MINOR_MERGE,            // 多个 Mini -> 更大 Mini
+  HISTORY_MINOR_MERGE,
+  META_MAJOR_MERGE,
+  MINI_MERGE,             // MemTable flush -> Mini SSTable
+  MAJOR_MERGE,            // 全量基线合并(每日)
+  MEDIUM_MERGE,           // 中型增量合并
+  ...
+  CONVERT_CO_MAJOR_MERGE, // 行存 Major -> 列存 CG SSTables
+  INC_MAJOR_MERGE,        // 增量 Major
+};
+</code></pre>
+
+<h3>7.1 合并层级与触发</h3>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  W["写入"] --> MT["MemTable"]
+  MT -- freeze/flush --> M1["Mini SSTable"]
+  M1 -- "Minor Merge" --> M2["Minor SSTable"]
+  M2 -- "Medium / Major" --> M3["Major SSTable (基线)"]
+  M3 -- 每日全量 --> M3
+  RS["RootService 调度<br/>rootserver/freeze & compaction"] -.触发.-> MT
+  RS -.触发.-> M3
+  classDef hot fill:#fff3df,stroke:#e08a00;
+  class M3 hot;
+</div></div>
+
+<h3>7.2 合并的内部结构</h3>
+<ul>
+  <li>DAG 调度：<code>compaction/ob_compaction_dag_ranker</code>、<code>ob_schedule_dag_func</code>。</li>
+  <li>合并器：<code>ob_partition_merger.*</code>、<code>ob_partition_merge_fuser.*</code>（多 SSTable 行融合 fuser）。</li>
+  <li>过滤：<code>i_compaction_filter</code> 与 <code>compaction/filter</code>：丢弃已删除/过期版本，回收空间。</li>
+  <li>诊断：<code>ob_compaction_diagnose</code>、<code>ob_compaction_suggestion</code>。</li>
+  <li>列存合并： majors 转换为 CG（Column Group）sstable 详见 <code>column_store</code>。</li>
+</ul>
+<div class="callout info">Major/Medium 的「全局一致性」通过 <code>snapshot_version</code> + <code>medium_list</code> 实现，确保所有副本 Major 后产生相同基线版本（见 <code>ob_medium_list_checker</code>、<code>ob_extra_medium_info</code>、<code>ob_medium_compaction_mgr</code>）。</div>
+
+<h3>7.3 合并类型逐项详解（源码：ob_compaction_util.h / ob_schedule_tablet_func / ob_basic_schedule_tablet_func）</h3>
+<table>
+  <tr><th>类型</th><th>阶段</th><th>输入</th><th>输出</th><th>触发条件</th><th>是否停写</th><th>关键代码</th></tr>
+  <tr><td><strong>MINI_MERGE</strong></td><td>实时</td><td>1 个冻结 MemTable</td><td>1 个 Mini SSTable（增量基线 0）</td>
+      <td>MemTable 冻结后立即触发；阈值受 <code>ob_tenant_freezer</code> 控制（memstore 内存 / 行数 / 时间）</td>
+      <td>否（后台）</td>
+      <td><code>ob_tablet_memtable_mgr::schedule_mini_merge</code>、<code>ob_mini_merge</code></td></tr>
+  <tr><td><strong>MINOR_MERGE</strong></td><td>近实时</td><td>N 个 Mini SSTable + 历史 minor</td><td>1 个更大的 Minor SSTable</td>
+      <td>Mini 数达到 <code>minor_compact_trigger</code>（默认 2~3）</td><td>否</td>
+      <td><code>ob_schedule_tablet_func::schedule_minor_merge</code>、<code>ob_partition_merge_iter</code></td></tr>
+  <tr><td><strong>HISTORY_MINOR_MERGE</strong></td><td>后台</td><td>历史 Minor + Minis</td><td>归并历史</td>
+      <td>清理 stale minor、控制 minor 层数</td><td>否</td><td><code>HISTORY_MINOR_MERGE</code> 分支</td></tr>
+  <tr><td><strong>MEDIUM_MERGE</strong></td><td>中型增量</td><td>Major + Minor/Mini(range 内)</td><td>新 Medium SSTable</td>
+      <td>RootService 在 medium_list 为每个 tablet 颁发 <code>MediumCompactionInfo</code>；watermark 之上的 minor/mini 都是被合并对象</td><td>否</td>
+      <td><code>ob_medium_compaction_mgr</code>、<code>ob_medium_loop</code>、<code>ob_medium_compaction_func</code></td></tr>
+  <tr><td><strong>MAJOR_MERGE</strong></td><td>全量基线</td><td>当前 Major + 其上所有增量</td><td>1 个新 Major SSTable（全表 flat）</td>
+      <td>全局冻结（<code>ObTenantFreezer::do_major_freeze</code>）后，RootService 下发到所有 tablet；所有副本按相同 snapshot_version 做</td><td>否（不停写）</td>
+      <td><code>ob_root_minor_freeze</code>、<code>ob_tenant_freezer</code>、<code>ob_basic_schedule_tablet_func::schedule_major_merge</code>、<code>ob_partition_merge_fuser</code></td></tr>
+  <tr><td><strong>META_MAJOR_MERGE</strong></td><td>全量</td><td>meta tablet（如 LOB/aux）</td><td>新 meta SSTable</td><td>随 Major 联动</td><td>否</td><td><code>META_MAJOR_MERGE</code> 分支</td></tr>
+  <tr><td><strong>CONVERT_CO_MAJOR_MERGE</strong></td><td>行列转换</td><td>行存 Major</td><td>列存 CG（Column Group）SSTables</td>
+      <td>用户切列存策略 / 列存化升级</td><td>读路径切换</td><td><code>column_store/</code>、<code>cs_encoding/</code>、<code>ob_dag_macro_block_writer</code></td></tr>
+  <tr><td><strong>INC_MAJOR_MERGE</strong></td><td>增量基线</td><td>Major + 增量</td><td>在新 Major 中保留部分增量</td>
+      <td>大表渐进合并</td><td>否</td><td><code>ob_progressive_merge_helper</code></td></tr>
+  <tr><td><strong>MDS_MINI / MDS_MINOR</strong></td><td>多源数据</td><td>multi_data_source 制数据</td><td>—</td><td>MDS 模块自带 mini/minor</td><td>否</td><td><code>ob_mds_filter_info</code>、<code>multi_data_source/</code></td></tr>
+  <tr><td><strong>BATCH_FREEZE_TABLETS</strong></td><td>批量冻结</td><td>多小 tablet memstore</td><td>同时冻结</td><td>节省 clog 流量</td><td>否</td><td><code>ob_batch_freeze_tablets_dag</code></td></tr>
+</table>
+
+<h3>7.4 MemTable 冻结的条件与流量控制</h3>
+<p><code>ObTenantFreezer</code>（<code>storage/tx_storage/ob_tenant_freezer.h</code>）控制租户级写入门槛：</p>
+<ul>
+  <li><strong>主动冻结</strong>：MemTable 写满到 <code>freeze_trigger_percentage</code>（默认 20%）后触发该 tablet 的小冻结。</li>
+  <li><strong>写入限流</strong>：当所有 MemTable 占用达到 <code>memstore_limit_percentage</code>（默认 90%）开始让写操作回滚并走 Throttle（<code>log_throttle</code>、<code>ob_memtable_write_throttle</code>）。</li>
+  <li><strong>主动 Major Freeze</strong>：每日 / 用户 <code>ALTER SYSTEM MAJOR FREEZE</code> / 介质变更 passed (<code>compaction_suggestion</code>)。</li>
+  <li><strong>Batch Freeze</strong>：将一批小 tablet 合并冻结，减少 clog entry、加速冻结。</li>
+</ul>
+
+<h3>7.5 调度优先级与 DAG Ranker</h3>
+<p>所有合并统一进入 <strong>DAG 调度器</strong>（<code>share/scheduler/</code> + <code>compaction/ob_compaction_dag_ranker</code>）：每个 tablet 合并抽象为 dag（含多 task）。<code>ObDagRanker</code> 根据如下维度打分：</p>
+<ul>
+  <li>合并类型权重：MAJOR &gt; CONVERT_CO_MAJOR &gt; MEDIUM &gt; MINOR &gt; MINI &gt; HISTORY_MINOR</li>
+  <li>等待时间 + tenant 优先级 + LS 优先级（受 <code>suspend_merging</code> 控制）</li>
+  <li>资源配额：每个 tenant 有限的 DAG slot，超过 push back</li>
+  <li>诊断反馈：<code>ob_compaction_diagnose</code> 检测 "schedule too slow"/"merge waiting" 等，<code>ob_compaction_suggestion</code> 给出自动放大资源/放宽时机的提议</li>
+</ul>
+
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  subgraph SL["Schedule Loop (per tenant)"]
+    IC["ObCompactionScheduleIterator<br/>遍历 tablet"]
+    IC --> RK["ObCompactionDagRanker<br/>打分/排名"]
+    RK --> SCH["ScheduleDag 系列函数<br/>调度 winner tablet"]
+    SCH --> DAGF["ObPartitionMergeDag<br/>含 ParaMerge 进度"]
+    DAGF --> TH["DAG Thread Pool<br/>(merge thread)"]
+  end
+  FF["ObTenantFreezer<br/>检测 memstore 阈值"] --> IC
+  RS["RootService<br/>medium_list / major_freeze"] --> IC
+  TH --> WR["ob_data_macro_block_merge_writer<br/>输出新 macro blocks"]
+  WR --> NEW["新 SSTable 挂到 TabletMeta"]
+  classDef hl fill:#fff3df,stroke:#e08a00;
+  class RK,DAGF hl;
+</div></div>
+
+<h3>7.6 合并过程内部细节（常问）</h3>
+<h4>(a) Iterator、Fuser、Merger 三件套</h4>
+<ul>
+  <li><strong>Iterator</strong>（<code>ob_partition_merge_iter.h</code>）：打开各参与 sstable，按 rowkey 顺序吐行。</li>
+  <li><strong>Fuser</strong>（<code>ob_partition_merge_fuser.*</code>）：把同行多个版本合并成「最终有效版」，处理 uncommitted row（来自 MemTable）和 multi-version 行。</li>
+  <li><strong>Merger</strong>（<code>ob_partition_merger.*</code>）：按行输出 macro block + micro block，通过 IndexBlockBuilder 构建索引。</li>
+</ul>
+
+<h4>(b) Compaction Filter（行级 GC）</h4>
+<ul>
+  <li>接口：<code>i_compaction_filter.h</code> 的 <code>ObICompactionFilter</code>。</li>
+  <li>实现：<code>compaction/filter/</code> + DDL filter staleness filter + TTL filter + MDS filter。</li>
+  <li>判定逻辑：当一行所有版本 <strong>max commit version &lt; snapshot_version</strong> 且 <strong>无活跃事务回链</strong> 且 <strong>非稳态占位</strong> → 丢弃。</li>
+  <li>影响：显著降低 Major 后的 SSTable 行数与体积。</li>
+</ul>
+
+<h4>(c) Progressive / 渐进式合并</h4>
+<p><code>ObProgressiveMergeHelper</code>（<code>ob_progressive_merge_helper.h</code>）：当 Major 数据量巨大、一刀切会打垮 IO 时，按 macro block 「轮转合并」，由 <code>progressive_merge_round</code> 控制剩余未合并 range，逐 round 推进。INC_MAJOR_MERGE 类型即应用此机制。</p>
+
+<h4>(d) Medium List 与一致基线</h4>
+<div class="diagram"><div class="mermaid">
+sequenceDiagram
+  participant RS as RootService
+  participant L as ObLS (leader)
+  participant FT as MediumListChecker
+  participant MM as MediumCompactionMgr
+  RS->>L: schedule_medium (medium_info v_k)
+  L->>MM: append medium_info_k
+  FT->>MM: check medium_list 单调&连续
+  FT->>L: 校验通过则 schedule MEDIUM_MERGE
+  L->>FT: merge 完成 -> 推进 medium_watermark
+  Note over RS,L: Major 时所有副本用同一个 snapshot_version<br/>且 medium_list 完全相同 -> 全集群同一基线
+</div></div>
+
+<h3>7.7 失败与回滚</h3>
+<ul>
+  <li>DAG 状态：SCHEDULING / READY / RUNNING / FINISH / FAIL；失败 dag 复用同 dag_id 走 <code>dag_status_manager</code> 报告并指数退避重试（<code>ob_schedule_status_cache</code>）。</li>
+  <li>介质块写失败：丢弃 scaffolded macro block；连续失败 &gt;= 阈值 -> tablet 异常报告 RootService。</li>
+  <li>Reader 兼容：合并产出期间读路径仍可读老 Major + 其上增量直到新 SSTable meta 安装成功（atomicité via <code>TabletPointer</code> switch）。</li>
+</ul>
+
+<details class="qa" open><summary> · 合并策略</summary>
+<div class="q">Q1：为什么 OB 用「全局 Major」而不是 RocksDB 那种 tiered/leveled？如何保证查询不读多百个 Minor？</div>
+<div class="a">A1：因为 OB 优先 HTAP、查询性能要求 SSTable 层数尽量少。MemTable→Mini→Minor 进行局部 tiered；同时每日 Major 把基线重铺回收空间；再叠加 Medium 在中型增量下提前逼近 Major。Mini 数达到 <code>minor_compact_trigger</code>（2~3）就 minor；Minor 数不会无限堆叠。</div>
+
+<div class="q">Q2：Major 全量合并对在线写有影响吗？是否需要停写？</div>
+<div class="a">A2：不需要停写。MemTable 持续可写；Major 在后台 dag 上用 freeze 时刻的 snapshot_version 作为读起始点，对 Active MemTable 无影响。DAG 线程池资源 + schedule_status_cache 防资源打满。</div>
+
+<div class="q">Q3：为何称为「全局一致基线」？多副本 Major 后如何保证一致？</div>
+<div class="a">A3：RootService 在 medium_list 为每个 tablet 颁发 <code>MediumCompactionInfo</code>（snapshot_version + schema_version + medium_type 等）。所有副本 Major/Medium 不可超过 medium_watermark；完成后写相同的 <code>extra_medium_info</code>。因此多副本 Major 完成后产出的新 SSTable 的 <strong>rowkey 范围、版本谱、schema_version</strong> 三者一致；合并输出的字节流上方相等（同 macro block hash 又可验）。</div>
+
+<div class="q">Q4：Major 的输入为什么不止是 Major？会不会与 Minor 并发冲突？</div>
+<div class="a">A4：Major 的输入包括当前 Major SSTable + 所有其上的 Minor / Mini / MemTable。同一 tablet 上 Major 同一时间点不允许并发其他合并（见 DAG 状态机 <code>ob_dag_macro_block_writer</code>）。Scheduler 为了吞吐会在不同 tablet 间并发。</div>
+
+<div class="q">Q5：渐进合并（Progressive / INC_MAJOR）vs 普通 Major 区别？</div>
+<div class="a">A5：Progressive 不在单轮内合并全部 macro block，而是按 round 推进，每轮只换一部分宏块。INC_MAJOR 是为超大表在多次拿到 medium_info 后"增量收口"成新基线，利于减少一次性 IO 突发。</div>
+</details>
+
+</section>
+
+<!-- =============== 8. Transaction =============== -->
+<section class="card" id="mvcc">
+<h2>8. 事务、MVCC 与 2PC 状态机</h2>
+
+<h3>8.1 事务引擎总览</h3>
+<p>代码位置：<code>src/storage/tx</code> 与 <code>src/storage/tx_storage</code>。核心类：</p>
+<ul>
+  <li><code>ObTransService</code>（<code>ob_trans_service.h</code>）/ V4 <code>ob_trans_service_v4</code>：向 SQL 层提供 begin/commit/rollback。</li>
+  <li><code>ObTxDesc</code>：事务描述符（客户端视角事务）。</li>
+  <li><code>ObPartTransCtx</code>（<code>ob_trans_part_ctx</code>）：某 LS 上该事务的参与者上下文。</li>
+  <li><code>ObTxCtxMgrV4</code>：每个 LS 一个 ctx 管理器。</li>
+  <li><code>ObITSManager</code> / GTS / Standby Timestamp：分布式读时间戳 / 全局单调时间戳服务（<code>ob_ts_mgr</code>、<code>ob_gts_*</code>、<code>ob_timestamp_service</code>）。</li>
+</ul>
+
+<h3>8.2 MVCC</h3>
+<ul>
+  <li>MemTable 中每行挂在 <code>ObMvccRow</code>（<code>memtable/mvcc/ob_mvcc_row</code>），下行链表为本 row 的多个版本，每个版本带 <code>trans_version</code>（事务提交 SCN）。</li>
+  <li>读操作持 <code>snapshot</code> / SCN，决定可见版本；MemTable 索引用 <strong>KeyBTree</strong>（<code>memtable/mvcc/ob_keybtree</code>）。</li>
+  <li>写冲突检测：<code>ob_row_conflict_handler</code> + <code>ob_row_latch</code>（行级 latch）+ <strong>write-write 冲突</strong>回滚。</li>
+  <li>ELR（Early Lock Release）：<code>ob_tx_elr_handler</code>。</li>
+</ul>
+
+<h3>8.3 两阶段提交（2PC）状态机</h3>
+<p>2PC 角色与状态见 <code>src/storage/tx/ob_committer_define.h</code>：</p>
+<pre><code>enum class Ob2PCRole  { UNKNOWN=0, ROOT, INTERNAL, LEAF };    // 树形分布式事务
+enum class ObTxState   : uint8_t {
+  UNKNOWN=0, INIT=10, REDO_COMPLETE=20, PREPARE=30,
+  PRE_COMMIT=40, COMMIT=50, ABORT=60, CLEAR=70, MAX=100
+};
+enum class ObTwoPhaseCommitLogType  { OB_LOG_TX_INIT, OB_LOG_TX_COMMIT_INFO,
+  OB_LOG_TX_PREPARE, OB_LOG_TX_PRE_COMMIT, OB_LOG_TX_COMMIT, OB_LOG_TX_ABORT, OB_LOG_TX_CLEAR };
+</code></pre>
+
+<div class="diagram"><div class="mermaid">
+stateDiagram-v2
+  [*] --> INIT
+  INIT --> REDO_COMPLETE : Drain REDO/LSN stop
+  REDO_COMPLETE --> PREPARE : ROOT 发 PREPARE_REQ
+  PREPARE --> PRE_COMMIT : 多数派应答 PREPARE_RESP
+  PRE_COMMIT --> COMMIT : PRE_COMMIT_REQ 完成
+  COMMIT --> CLEAR : COMMIT 完成，清理
+  REDO_COMPLETE --> ABORT : 任一参与者失败
+  PREPARE --> ABORT : 任一参与者应答 abort
+  PRE_COMMIT --> ABORT
+  COMMIT --> ABORT
+  ABORT --> CLEAR
+  CLEAR --> [*]
+</div></div>
+
+<p>2PC 协调器核心：<code>ObTwoPhaseCommitter</code>（<code>storage/tx/ob_two_phase_committer.h</code>），与上下游 commit 链
+<code>ob_two_phase_upstream_committer</code> / <code>ob_two_phase_downstream_committer</code> 形成多级 commit tree，
+IDA 的「分布式事务」形态通过 <code>ob_tx_2pc_ctx_impl</code>、<code>ob_tx_2pc_msg_handler</code> 消息驱动。</p>
+
+<h3>8.4 REDO 提交优化 + Multi-Source</h3>
+<ul>
+  <li>REDO 日志与 MEMTable 入参同步通过 <code>ob_redo_log_generator</code> 流式提交，织入 PaLF（<code>ob_tx_redo_submitter.h</code>）。</li>
+  <li><strong>Multi-Source</strong>（<code>ob_multi_data_source.*</code>）：把 DDL/DUMP/Lob/外挂消息等跨模块信息以 commit 阶段离线写入 commit_info log（<code>OB_LOG_TX_COMMIT_INFO</code>），保证事务与外部副作用一致。</li>
+  <li>Standby 节点回放：<code>ob_tx_replay_executor</code> 把提交信息回放到 follower 上，支持 StandbyReadable。</li>
+</ul>
+
+<h3>8.5 Commit Tree（树形分布式事务）</h3>
+<p>跨多个 LS 的分布式协调不是直接的 N-方 2PC，而是按依赖关系组织成 <strong>commit tree</strong>：
+<code>Ob2PCRole</code> 分 ROOT / INTERNAL / LEAF，由 root 服务（通常事主参与 LS）作为 coordinator；
+每个分发到的 LS 都是一个 downstream committer；上游者应答前驱 agnostic。<code>ObTwoPhaseCommitter</code> 同时
+向上游发送 <code>PRE_COMMIT / COMMIT / ABORT</code>，在 <code>ob_two_phase_upstream_committer</code>/<code>ob_two_phase_downstream_committer</code>
+上完成树形级联。这样可以樹形隐藏 single-coordinator bottleneck，时延近似 O(log L)，避免某分片持有 participant 名称表。</p>
+
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  RT["ROOT<br/>coordinator LS"] --> A["INTERNAL LS A"]
+  RT --> B["INTERNAL LS B"]
+  A --> A1["LEAF LS A1"]
+  A --> A2["LEAF LS A2"]
+  B --> B1["LEAF LS B1"]
+  RT -. upstream/dn.-> A
+  A -. do/ack.-> A2
+  classDef rt fill:#fff3df,stroke:#e08a00;
+  class RT rt;
+</div></div>
+
+<h3>8.6 TxFreeRoute（关键 OB 4.x 特性）</h3>
+<p>源码：<code>ob_tx_free_route.*</code>。允许同一逻辑事务在物理 <strong>多个 OBServer 节点之间路由</strong>（即便事务尚未提交，
+客户端 SQL 也可被 ObProxy 路由到任意 server 执行 next part），而事务状态不再严格"绑在某一 server 上"。状态机
+<code>TxFreeRouteState</code>：SAVEPOINT / COMMIT_INFO 等通过 <strong>commit_info log + 内存 session state snapshot</strong> 在 server 间传递。
+这是 OLTP 负载均衡与秒级切关键。</p>
+
+<h3>8.7 Standby Read 与弱一致读</h3>
+<ul>
+  <li>Standby-Readable：standby（异地）租户可用快照在已回放 SCN 上提供读。</li>
+  <li>由 <code>ob_tx_sby_read_ctx_helper</code> / <code>ob_standby_timestamp_service</code> 维护可读 SCN。</li>
+  <li>弱一致读：read-only 允许"读到比当前最新稍旧数据"，换取路由灵活（<code>ob_weak_read</code> 路径）。</li>
+</ul>
+
+<h3>8.8 死锁检测</h3>
+<ul>
+  <li>死锁检测：本地 deadlock_adapter（<code>storage/tx/deadlock_adapter</code>）等待样在行锁图谱上跑 DFS；检测到 cycle 则 abort 一个 victim。</li>
+  <li>session wait chain + tx_describe 联动，超时（默认 100s）也会自动回滚。</li>
+</ul>
+
+<h3>8.9 XA / GTI 全局唯一 ID</h3>
+<ul>
+  <li>XA：<code>ob_xa_*.{h,cpp}</code> 支持 XA 协议（含 dblink）。</li>
+  <li>GTI/独特 ID：<code>ob_gti_source.h</code>、<code>ob_trans_id_service</code>：租户级全局唯一 ID service，基于 clog 推进。</li>
+  <li>GTS（Global Timestamp Service）：<code>ob_gts_source</code> 提供 monotone counter，作为快照 SCN 来源；多副本备份。</li>
+</ul>
+
+<details class="qa" open><summary> · 事务</summary>
+<div class="q">Q1：OB 的"分布式事务"是哪种？2PC 多少阶段？关在哪？</div>
+<div class="a">A1：基于多个参与 LS 的树形 2PC，过程：REDO 完成 → PREPARE → PRE_COMMIT（优化阶段）→ COMMIT → CLEAR。状态机在 <code>enum ObTxState</code>（10~70）。PRE_COMMIT 是 OB 加的优化阶段，让 leader 端的多数派持久化"提 prepare"后告知下游，减少 COMMIT 阶段 RTT。</div>
+
+<div class="q">Q2：如果 commit 已经 PREPARE 后某参与者崩溃，恢复后会是什么行为？</div>
+<div class="a">A2：参与者启动后从 clog replay，看到 PREPARE log 但无 COMMIT/ABORT。它会向 ROOT/上游主动查询最终状态（<code>retransmit_upstream_msg_</code>）；root 若已发布 COMMIT 则下发 CLAIM；若严格未发布、且 timeout，会按 PREPARE emission 时间决定 ABORT/COMMIT：通常 commit_info 已包含 redo/结果 → 不会丢；保护由 retain_ctx_mgr（<code>ob_tx_retain_ctx_mgr</code>）保留结构直到 commit/abort 完成。</div>
+
+<div class="q">Q3：如何预防一个事务"读半截"看到部分提交记录？</div>
+<div class="a">A3：快照 SCN（snapshot_version）+ commit_version（TxData 落定后）的 dual-check：在读时刻 <code>ObTxDataTable::check_tx_status</code> 验证目标 trans 是否已 commit 与是否 &lt;= snapshot_version；同时脏读未被可见 access 限制（每次读到 ObMvccRow 时检查被事务是否在 commit_version 中"确定状态"，使用 TxData 临时把 committed/unfinished 分类）。</div>
+
+<div class="q">Q4：TxFreeRoute 是怎么做到"任意节点继续事务"而不破坏 ACID？</div>
+<div class="a">A4：每个 part 上 <code>ObPartTransCtx</code> 持有事务态、回叙并旃；当客户端路由到新节点、从 commit_info log 中恢复了主要 participant 中的 snapshot。强一致性由 clog + 2PC + commit info-log 保证，不在 server 内存里维持"transactor host"。</div>
+
+<div class="q">Q5：没有死锁也会先持有的解决资源锁定怎么让脚法不全?</div>
+<div class="a">A5：MemTable 行 latch + tx callback 链：<code>ObRowLatch</code> 在被多事务并发更新同 row 时 serialize，影响仅限冲突同 row。deadlock_adapter 通过 "wait-for" graph（加锁链表）定期发现有向环；同时强超时（ob_tx_timeout）自毫 fault-injection 与高 trauma 又 印证。</div>
+</details>
+</section>
+
+<!-- =============== 9. PALF =============== -->
+<section class="card" id="palf">
+<h2>9. 日志服务 PaLF 与 Multi-Paxos</h2>
+
+<h3>9.1 PaLF 是什么</h3>
+<p>PaLF = <strong>Paxos Log Facility</strong>（<code>src/logservice/palf</code>），是 OceanBase 自研的、面向 LS 的、基于
+<strong>Multi-Paxos + Lease-based 选举</strong>的日志复制引擎。每个 LS 自己有一组 PaLF 实例。<strong>它不是 Fast Paxos</strong>
+（Fast Paxos 需要 2F+1 全部参与 prepare 阶段且不需 Leader），OceanBase 使用 Leader-based Multi-Paxos：
+只有 Leader 接读写，其余副本只持久化和回放。Leader 通过独立的选举模块（<code>palf/election</code>） lease 选出。</p>
+
+<div class="callout">为什么不是 Fast Paxos：PaLF 用 Leader（独 Lease）归约掉 prepare 阶段，写路径为「Leader 提议→多数派持久化→回调用户」。
+Fast Paxos 在 3F 副本场景中无法显著省 LiN，且不兼容 Lease 切主、日志连续性、可回放等数据库日志需求。</div>
+
+<h3>9.2 PaLF 内部模块</h3>
+<table>
+  <tr><th>模块</th><th>路径</th><th>职责</th></tr>
+  <tr><td>PalfEnv / PalfHandle</td><td><code>palf_env_impl</code>, <code>palf_handle_impl</code></td><td>管理一组 LS 的 PaLF 实例及句柄</td></tr>
+  <tr><td>LogStateMgr</td><td><code>log_state_mgr.{h,cpp}</code></td><td>维护本副本的 (role, state) 状态机并驱动切换</td></tr>
+  <tr><td>LogConfigMgr</td><td><code>log_config_mgr.{h,cpp}</code></td><td>成员变更（加/减副本、降级、仲裁、切主）</td></tr>
+  <tr><td>LogSlidingWindow</td><td><code>log_sliding_window.{h,cpp}</code></td><td>提案编号、leader 上的 ack 滑窗、follower 接收点</td></tr>
+  <tr><td>LogEngine</td><td><code>log_engine.{h,cpp}</code></td><td>阻塞 IO、checksum、落盘、回收、网络收发</td></tr>
+  <tr><td>LogModeMgr</td><td><code>log_mode_mgr</code></td><td>访问模式切换（RAW_WRITE / APPEND）</td></tr>
+  <tr><td>LogReconfirm</td><td><code>log_reconfirm.{h,cpp}</code></td><td>新主上线时把多数派未一致的日志拉全、补齐</td></tr>
+  <tr><td>Election</td><td><code>palf/election/</code></td><td>独立选举模块（非 Paxos 缺一不可的部分）</td></tr>
+  <tr><td>ApplyService / ReplayService</td><td><code>logservice/applyservice, replayservice</code></td><td>把已提交日志应用到存储引擎</td></tr>
+</table>
+
+<h3>9.3 角色与副本状态机（LogStateMgr）</h3>
+<p>角色 <code>ObRole</code>：LEADER / FOLLOWER；副本状态 <code>ObReplicaState</code>（<code>log_define.h</code>）：</p>
+<pre><code>enum ObReplicaState {
+  INVALID_STATE = 0, INIT = 1, ACTIVE = 2, RECONFIRM = 3, PENDING = 4,
+};
+</code></pre>
+
+<p>状态转移节选自 <code>log_state_mgr.cpp</code>：</p>
+<div class="diagram"><div class="mermaid">
+stateDiagram-v2
+  [*] --> INIT
+  INIT --> FOLLOWER_ACTIVE : init_to_follower_active_ (启动)
+  FOLLOWER_ACTIVE --> LEADER_RECONFIRM : follower_active_to_reconfirm_ (赢得选举)
+  INIT --> FOLLOWER_PENDING : init 后收到 prepare
+  FOLLOWER_PENDING --> FOLLOWER_ACTIVE : flush 完成 / 自动恢复<br/>follower_pending_to_follower_active_
+  FOLLOWER_PENDING --> LEADER_RECONFIRM : follower_pending_to_reconfirm_
+  LEADER_RECONFIRM --> LEADER_ACTIVE : reconfirm_to_leader_active_<br/>（Reconfirm 拉日志→START_WORKING）
+  LEADER_ACTIVE --> FOLLOWER_PENDING : leader_active_to_follower_pending_<br/>（Lease 过期 / 切主）
+  FOLLOWER_ACTIVE --> [*]
+  LEADER_ACTIVE --> [*]
+</div></div>
+
+<h3>9.4 Reconfirm 子状态机（新主上线修复不一致）</h3>
+<p><code>LogReconfirm::State</code>（<code>log_reconfirm.h</code>）。这是 OceanBase Multi-Paxos 重要扩展——确保新 Leader 在服务写之前，
+<strong>把多数派未确认的日志全部补齐</strong>，这是不同 Paxos 组从「无主 / 切主 / 宕机」直奔稳定阶段的恢复路径：</p>
+<div class="diagram"><div class="mermaid">
+stateDiagram-v2
+  [*] --> INITED
+  INITED --> WAITING_LOG_FLUSHED : 等待本地日志持久化完成
+  WAITING_LOG_FLUSHED --> FETCH_MAX_LOG_LSN : 找出多数派中 max_lsn 的 newest_server_
+  FETCH_MAX_LOG_LSN --> RECONFIRM_MODE_META : 同步 mode_meta 到多数派
+  RECONFIRM_MODE_META --> RECONFIRM_FETCH_LOG : 从 newest_server_ 拉缺失日志
+  RECONFIRM_FETCH_LOG --> RECONFIRMING : 等待日志拉齐
+  RECONFIRMING --> START_WORKING : 提交 START_WORKING 日志<br/>（之后才可对外服务）
+  START_WORKING --> FINISHED
+  FINISHED --> [*]
+</div></div>
+
+<h3>9.5 写日志路径</h3>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  TS["ObTransService append redo"] --> APP["PalfHandleImpl::append"]
+  APP --> SW["LogSlidingWindow: 预占 LSN/提案号"]
+  SW --> GB["LogGroupBuffer"]
+  GB --> W["LogIOWorker 落盘"]
+  W --> RPC["Leader→Followers: push_log_to_paxos_follower_"]
+  RPC --> ACK["各副本 ACK (持久化完成)"]
+  ACK --> MAJ{"多数派持久化?"}
+  MAJ -- yes --> CB["on_success 回调业务"]
+  W --> LST["本地 apply 队列<br/>ApplyService"]
+  LST --> STO["应用回放到 MemTable/SSTable"]
+  RPC --> FST["Follower ReplayService<br/>replayservice/ob_log_replay_service"]
+  FST --> STO
+</div></div>
+
+<h3>9.6 成员变更与降级</h3>
+<ul>
+  <li>降级（degrade）：把失联副本置为「degraded paxos member」，不参与多数派计数；恢复后升级（upgrade）。</li>
+  <li>仲裁成员（arbitration member）：单节点参与多数派裁决但不存数据，跨可用区仲裁。<code>log_config_mgr</code> 支持。</li>
+  <li>列存在 ACTIVE / DEGRADED / LEARNER（学习者，只拉不投票）多种身份。</li>
+</ul>
+
+<h3>9.7 成员变更具体流程（reconfig）</h3>
+<p>源码：<code>log_config_mgr.cpp</code> 的 <code>LogConfigChangeType</code> 包括 ADD/REMOVE/CHANGE_NUM/DEGRADE/UPGRADE/ADD_ARB/REMOVE_ARB/CHANGE_LEADER/SETR_LOGONLY/...。一次变更分四步：</p>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  BR["用户/RotService 触发 reconfigure"] --> PR["阶段1: Prepare<br/>多数派持久化 config_version + new_member_list"]
+  PR --> ST["阶段2: 与目标副本同步<br/>(必要日志推送 / 抓取至 latest_lsn)"]
+  ST --> CM["阶段3: Commit<br/>多数派持久化新的有效配置"]
+  CM --> AP["阶段4: Apply<br/>切换 LogConfigMgr inner_state"]
+  classDef k fill:#fff3df,stroke:#e08a00;
+  class PR,CM k;
+</div></div>
+<ul>
+  <li>Prepare 失败：直接弃 changelog，恢复旧配置。</li>
+  <li>Commit 失败但 Prepare 已 ok：用「云 on disk」的 config_version 重试 reconfirm；不会留双 leader。</li>
+  <li>双 majority 计数：alive_paxos_replica_num_ 跟 expected_paxos_replica_num_，前者用于写多数派、后者用于配置多数派。</li>
+</ul>
+
+<h3>9.8 Reconfirm 内部细节</h3>
+<p><code>LogReconfirm</code>（<code>log_reconfirm.{h,cpp}</code>）做新主补全多副本不一致日志。关键变量：</p>
+<ul>
+  <li><code>max_lsn_</code>：本机当前最大已 flush LSN。</li>
+  <li><code>majority_max_log_server_</code>：在多数派中具有最大 lsn 的 server。</li>
+  <li><code>fetching_lsn_</code>：正在从多数派拉取的目标 LSN。</li>
+  <li><code>RECONFIRM_PREPARE_RETRY_INTERVAL_US=2s</code>。</li>
+</ul>
+<p>进程：选举胜选 → 本机 flush 完毕 → 向多数派发 prepare → 找出 lsn 最大者 → 拉 (max_lsn_local, majority_max_lsn] 区间日志 → 写 START_WORKING log（多 raft 唯一标志）→ 切 LEADER_ACTIVE。 START_WORKING commit 后才允许对该 LS append 新日志——这是 Multi-Paxos "断主重主不准漏日志" 的关键实现。</p>
+
+<h3>9.9 为什么 OB RTO &lt; 8s？</h3>
+<ol>
+  <li><strong>Leader 离职 → 租约过期 &lt; 3s</strong>：选举租约短（默认 9s 内可续；租约检查原 cycle 1s），断主到选主即 1~2s。</li>
+  <li><strong>选出后再做 Reconfirm</strong>：Reconfirm 只对不一致区间拉日志；正常情况下 majority_max_lsn == max_lsn 后 0 拉取即 START_WORKING。</li>
+  <li><strong>START_WORKING log 是 single-log</strong>：仅一次 append + 多数派即 leader 可服务。</li>
+  <li><strong>磁盘 IO 复用 clog 多 Group batch</strong>：日志落盘单条很短，write 链路稳定 ms 级。</li>
+  <li>Replay 多 LS 并行回放（<code>ob_replay_handler</code>），follower 一直 hot，不需要冷启动。</li>
+</ol>
+<p>实例：3F normal 切主一般在 1~3s 完成 START_WORKING；整 RTO 阈值 8s 留 buffer 给网络抖动 + brick 恢复。</p>
+
+<h3>9.10 Group Buffer 与 Sliding Window</h3>
+<p>OB 把多条 redo log entry 合成 <strong>LogGroupEntry</strong>（<code>log_group_entry</code>）批量落盘，减少 IO 次数。Sliding Window（<code>log_sliding_window</code>）维护 ack 位图：leader 维护每 follower 的 acked lsn；当&quot;多数派 ack	lon &gt;= entry 的 lsn&quot; 则该 entry committed 走 ApplyService。</p>
+</section>
+
+<!-- =============== 10. Election =============== -->
+<section class="card" id="election">
+<h2>10. 选举（Lease-based，非 Fast Paxos）</h2>
+
+<h3>10.1 为什么独立一个选举模块</h3>
+<p>Multi-Paxos 本身只是协议，需要「谁来做 Leader」这一前提。OceanBase 把选举与共识拆开：选举模块
+（<code>src/logservice/palf/election</code>）用 <strong>Lease 选举</strong>每 LS 独立维护一个稳定 Leader，
+Paxos 只在 Lease 失效或切主时被重新启动（见 <code>LogStateMgr::switch_state</code>）。</p>
+
+<div class="callout info"><strong>角色变化原因</strong>(<code>election/interface/election.h</code>)：
+DevoteToBeLeader（无主选举登基）、ChangeLeaderToBeLeader（切主登基）、LeaseExpiredToRevoke（租约过期退位）、
+ChangeLeaderToRevoke（切主退位）、StopToRevoke（停服退位）。</div>
+
+<h3>10.2 选举算法：基于 Prepare/Accept 两阶段 + Lease</h3>
+<div class="diagram"><div class="mermaid">
+sequenceDiagram
+  participant F1 as Follower A
+  participant F2 as Follower B
+  participant L as Old Leader / 空缺
+  F1->>F2: ElectionPrepareRequest (proposal_id++)
+  F2-->>F1: ElectionPrepareResponse (ack highest log, priority)
+  F1->>F2: ElectionAcceptRequest (leader=A, lease=[t0,t1])
+  F2-->>F1: ElectionAcceptResponse (grant lease)
+  Note over F1: 多数派应答 + 自身优先级最高<br/>当选 Leader
+  F1->>F1: RoleChangeReason = DevoteToBeLeader
+  F1->>L: 通告 ChangeLeader (optional)
+  F1->>F1: 启动 LogReconfirm → 切换到 Leader Active
+</div></div>
+
+<p>关键代码：</p>
+<ul>
+  <li>Proposer：<code>palf/election/algorithm/election_proposer.</code>（发起 Prepare/Accept）。</li>
+  <li>Acceptor：<code>election_acceptor</code>（应答 Prepare/Accept、记录 promised_proposal_id）。</li>
+  <li>消息：<code>palf/election/message/election_message</code>：Prepare/Accept 请求与应答，带优先级（<code>election_priority</code>）。</li>
+  <li>优先级：按 (data_seq, member_version) 比较，多数情况下让日志最全者当选，避免反复选举。</li>
+  <li>协议降级：<code>temporarily_downgrade_protocol_priority</code>：短暂降低本副本优先级（如刚恢复但日志较少）。</li>
+</ul>
+
+<h3>10.3 Lease 与领导者连任</h3>
+<p>Leader 持有严格租约，租约期内不开新一轮选举；租约即将到期时由 Leader 自我续约（lease renew），
+减少选举震荡。租约过期后由 Follower 触发新一轮。<code>RCHandle</code>、<code>RequestChecker</code> 处理过期与消息时序。</p>
+
+<h3>10.4 选举优先级与避免脑裂 / 反复选举</h3>
+<p><code>ElectionPriority</code>（<code>palf/election/interface/election_priority.h</code>）的比较维度（从高到低）：</p>
+<ol>
+  <li>本地 <code>log_lsn / proposal_id</code>（日志更全者优先）</li>
+  <li>成员变更版本（更晚变更优先，避免老 member 抢占）</li>
+  <li>server_id（兜底确定性）</li>
+</ol>
+<p>因此在切主时<strong>原则上由日志最全者当选</strong>，避免后续 leader 还要回拉 follower 日志的代价。<code>temporarily_downgrade_protocol_priority</code> 提供外部介入：刚恢复的 server 短时下调自己优先级，避免它当选后立刻被更全者"切回来"。</p>
+
+<h3>10.5 切主（ChangeLeader）路径</h3>
+<div class="diagram"><div class="mermaid">
+sequenceDiagram
+  participant CLI as 用户/RotService
+  participant L as 旧 Leader
+  participant F as 目标 Follower B
+  participant M as 多数派副本
+  CLI->>L: CHANGE_LEADER TO B
+  L->>F: ChangeLeaderMsg (lease transfer)
+  F->>L: 同意接管
+  L->>M: 广播原主停止写 (revoke_RChangeReason=ChangeLeaderToRevoke)
+  L->>F: 当本地 lsn 同步完成授权揽
+  F->>M: ElectionAcceptRequest (proposal_id++)
+  M-->>F: 接受新 lease
+  F->>F: 赢得选举 → LogReconfirm → 切 Leader Active
+  Note over L,F: 全程双 Leader 共存窗口通过 lease 边界 + config_version 严格互斥，<br/>不会写同一 proposal_id 的两条日志
+</div></div>
+
+<details class="qa" open><summary> · Paxos / 选举</summary>
+<div class="q">Q1：OB Paxos 是否是 Fast Paxos？为什么不用？（高频追问）</div>
+<div class="a">A1：不是。Fast Paxos 需要 quorum 大小 = 2F+1（即所有副本），且 client 直接 propose，不预先选 leader，本质不能 3F 多数派持久化即可提交；亦不兼容 lease 切主、日志连续性、回放优先级。OB 用 Leader-based Multi-Paxos：Leader 由独立 lease 选举选出，正常写请求归约掉 prepare 阶段（接单条 append → 多数派持久 → ack），RPO=0 / RTO&lt;8s。</div>
+
+<div class="q">Q2：Reconfirm 在补不必要的日志吗？多数已经OK 时仍要拉？</div>
+<div class="a">A2：不必。Reconfirm 在 FETCH_MAX_LOG_LSN 阶段就先比 lsn：若本机 max_lsn == majority_max_lsn 则跳过 RECONFIRM_FETCH_LOG 直入 START_WORKING。即使需要拉，也只补充 (max_lsn_local, majority_max_lsn] 这一段，并且缓冲区预占最大 ObGroupBuffer 容量；所以"缺多少 拉 多少"。</div>
+
+<div class="q">Q3：选举优先级里 "日志最全者当选"，那日志同样多怎么决？</div>
+<div class="a">A3：备选梯次：log_lsn == 时 → 看成员变更版本（member_version 越新越优先，保证不在重配期间脑裂）；同样时 → server_id 比较（deterministic）。结合 lease 续约：旧 Leader 续约若成功 lease 仍持有，无新一轮选举，自然消除抖动。</div>
+
+<div class="q">Q4：少数派副本故障怎么办？会触发选举吗？</div>
+<div class="a">A4：少数派故障 Leader 仍可写（多数派仍 forming），不会选举。可通过 reconfig 进 DEGRADE 把它从多数派计数中摘除；等它恢复后 UPGRADE 回来。两可用区 + Arbiter 仲裁模式下，单少数可用区挂也能保证多数派 alive。</div>
+
+<div class="q">Q5：会不会出现两个 Leader 同时写？</div>
+<div class="a">A5：不会。新 Leader 必须先 commit START_WORKING 日志（一份 lease epoch 标志）才能 append 业务日志；旧 Leader 退出由 ChangeLeaderToRevoke / LeaseExpiredToRevoke 触发；config_version 严格单调使得旧 leader 的旧 proposal_id 不被其它大多数接受。即使 lease 重叠也只能"旧 leader 晚到 ACK 多数派"提交受阻，绝不会双 commit。</div>
+</details>
+</section>
+
+<!-- =============== 11. Index =============== -->
+<section class="card" id="index">
+<h2>11. 索引体系（B+ / LSM / 全文 / 向量）</h2>
+
+<h3>11.1 索引类型矩阵</h3>
+<p>索引定义见 <code>src/share/schema/ob_schema_struct.h</code>（<code>ObIndexType</code>）。OceanBase 的二级索引并不直接坐落
+B+Tree 数据结构上，而是<strong>「索引表」</strong>——每张索引表本身就是一个 Tablet，存储布局与数据表一致（LSM-Tree）。
+用户表与索引表之间通过 rowkey 维持对应关系。</p>
+
+<table>
+  <tr><th>大类</th><th>典型 index_type</th><th>存储形态</th><th>用途</th></tr>
+  <tr><td>本地索引（local）</td><td>IS_LOCAL/UNIQUE_LOCAL</td><td>主表 Tablet 内的辅助 SSTable</td><td>同一 Tablet 范围的快速定位</td></tr>
+  <tr><td>全局索引（global）</td><td>IS_GLOBAL/UNIQUE_GLOBAL</td><td>独立 Tablet，跨分区分布</td><td>跨分区查询、不绑定主表分区</td></tr>
+  <tr><td>向量索引 IVF</td><td>INDEX_TYPE_VEC_IVFFLAT_CENTROID_LOCAL / CID_VECTOR_LOCAL / ROWKEY_CID_LOCAL</td><td>多张辅助 Tablet：质心表 + 倒排</td><td>IVF_FLAT / IVF_SQ8 向量 ANN</td></tr>
+  <tr><td>向量索引 HNSW</td><td>vec_hnsw_*（见 schema_struct.h:429）</td><td>列存 HNSW 图数据</td><td>近似向量检索（高召回）</td></tr>
+  <tr><td>全文检索 FTS</td><td>is_local/global/global_local_fts_index*、fts_doc_word_aux</td><td>doc-word 倒排辅助表</td><td>全文 MATCH AGAINST</td></tr>
+  <tr><td>多值索引</td><td>is_multivalue_index*</td><td>多值列倒排表</td><td>JSON 数组成员查询</td></tr>
+  <tr><td>Domain 索引</td><td>domain_index 相关</td><td>插件可扩展</td><td>插件化自定义索引</td></tr>
+</table>
+
+<h3>11.2 索引存储：Index Block 树</h3>
+<p>每张 SSTable 由 <strong>Index Block</strong> 树（多级 + 微块）组织，源码在 <code>src/storage/blocksstable/index_block</code>：</p>
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  RT["Root Index Block<br/>(常驻内存)"] --> M1["Macro Index Block 1"]
+  RT --> M2["Macro Index Block 2"]
+  M1 --> B1["Micro Index Block<br/>(rowkey→data block offset)"]
+  B1 --> D1["Data Micro Block (实际行)"]
+  M2 --> B2["Micro Index Block"]
+  B2 --> D2["Data Micro Block"]
+  style RT fill:#fff3df,stroke:#e08a00
+</div></div>
+
+<p>索引扫描核心组件（<code>src/storage/access</code>）：</p>
+<ul>
+  <li><code>ob_index_block_tree_traverser</code>：B+ 树遍历。</li>
+  <li><code>ob_index_tree_prefetcher</code>：预取优化。</li>
+  <li><code>ob_index_skip_scanner</code> + <code>ob_skip_index_sortedness</code>：Skip Scan（跳过不匹配段）。</li>
+  <li><code>ob_sstable_index_filter</code>：下推到 SSTable 的索引层过滤（列裁剪 + 谓词）。</li>
+</ul>
+
+<h3>11.3 向量索引</h3>
+<p>位于 <code>src/sql/das/ob_das_vec_define</code>、<code>ob_vector_index_lookup_op</code>、<code>ob_das_search_index_utils</code>、
+<code>src/sql/optimizer/ob_access_path_estimation</code>。IVF 系列：
+<strong>Centroid Local（质心）+ CID-Vector Local（每个质心所属向量）+ Rowkey-CID Local（反向映射）</strong>，3 张辅助 Tablet 联合检索；
+HNSW：单独的图结构辅助表。SQL 层支持 VECTOR 数据类型、距离函数（L2/IP/Cosine）与混合检索
+（<code>sql/code_generator/ob_hybrid_search_cg_service_*</code>）。</p>
+
+<h3>11.4 全文索引 FTS</h3>
+<p>位于 <code>src/storage/fts</code>、<code>sql/code_generator/ob_hybrid_search_cg_service_fulltext</code>。结构：分词后的
+doc-word 倒排辅助表（<code>is_fts_doc_word_aux</code>），查 MATCH AGAINST 时复用 parser 分词结果做倒排合并。支持 local/global/global-local 三种形态。</p>
+
+<h3>11.5 多值索引</h3>
+<p>用于 JSON / ARRAY 列：把数组每个元素展开到一张倒排辅助表，使 <code>MEMBER OF</code>、<code>JSON_CONTAINS</code> 等可以走索引。</p>
+
+<h3>11.6 索引选择与代价（常问）</h3>
+<ul>
+  <li><strong>Covering Index</strong>：<code>ObAccessPathEstimation</code> 计算时判断 select/where 列是否全部在索引前缀 + 主键中；是则可避免回表 lookup cost。</li>
+  <li><strong>Index Skip Scan</strong>（<code>ob_index_skip_scanner</code>、<code>ob_skip_index_sortedness</code>）：当前缀列基数小但取值离散时，对每个前缀值都做 1 次 range scan，等效消除前缀谓词。代价模型上要算多次 micro block 开销，CBO 决定是否启用。</li>
+  <li><strong>Index Condition Pushdown / Index Filter</strong>（<code>ob_sstable_index_filter</code>）：能在索引块上解出的谓词 → 直接过滤；其余谓词 push 到 row-level（push down filter）。</li>
+  <li><strong>Forward / Backward Scan</strong>：index_block 的微块迭代器支持双向扫描，配合 ORDER BY DESC/ASC 避免 sort。</li>
+  <li><strong>索引统计采样估算</strong>：列 ESTimation 依赖 <code>ObOptStatManager</code> 的直方图，索引列同样采直方图 + density；global/local 索引采用 global stats.</li>
+</ul>
+
+<h3>11.7 复合表 / Clustered Index / RowStore-vs-ColumnStore</h3>
+<ul>
+  <li><strong>Clustered Index Block</strong>（<code>ob_clustered_index_block_writer</code>）：与数据 macro block 同构存储，将某索引列集和数据内容物理交错，减少回表。</li>
+  <li><strong>Column Store (CG SSTable)</strong>：列存基于 Column Group，把大量列分组到不同 SSTable，读时按需打开部分 CG：OLAP 场景 IO 显著降低。</li>
+</ul>
+
+<h3>11.8 向量检索执行链路（IVF + HNSW）</h3>
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  Q["query vector"] --> CEN["Centroid Local<br/>(质心搜索 top-k)"]
+  CEN --> CID["CID-Vector Local<br/>在选中质心下属做 ANN"]
+  CID --> RK["Rowkey-CID Local<br/>回到 rowkey 取主表 row"]
+  RK --> T["主表 Tablet"]
+  HNSW["HNSW 图辅助表"] -. approx kNN .-> CID
+  HYBRID["Hybrid Search<br/>(vec + fts + 关系)"] --> T
+  classDef k fill:#fff3df,stroke:#e08a00;
+  class CEN,HYBRID k;
+</div></div>
+
+<details class="qa" open><summary> · 索引</summary>
+<div class="q">Q1：OB 的「全局索引」和「本地索引」本质区别？走全局索引时为什么不写 clog？</div>
+<div class="a">A1：本地索引 tablet 数据跟主表 tablet 一一绑定（同 LS/Paxos 组），写主表时就一起写本地索引 tablet 行，不再有跨 LS 一致性问题。全局索引是独立分布的 tablet 集，可能落在不同 LS 上，因此 DML 维护全局索引要单独走 2PC，性能慢但全局可分布。两种索引都写各自 LS 的 clog。</div>
+
+<div class="q">Q2：Skip Scan 和与索引扫描比起来什么时候赚？</div>
+<div class="a">A2：当索引前缀列基数小且非 ranger/Ranger 区间集中（如 flag IN 0,1），而剩余谓词选择度高时收益大。CBO 估算时按「前缀块数 × 谓词选择率」与「普通全范围 Scan × 谓词选择率」对比；同样考虑 covering 后者代价；Skip Scan 通常省去 80% IO 开销。</div>
+
+<div class="q">Q3：列存（CG SSTable）和行存同一张表 / 同一 Tablet 内怎么共存？</div>
+<div class="a">A3：通过 <strong>CONVERT_CO_MAJOR_MERGE</strong> 把 Major 转出 CG SSTable，此时同时存在 Major CG 和 Minor row sst（中间版增量仍是行存）。读路径在 <code>ob_multiple_merge</code> 中按列需求拼接：AP 查询列打开 CG，要小行 rowkey lookup 仍取 minor 行存。Major 切换保证 schema 一致。</div>
+
+<div class="q">Q4：FTS/向量索引/多值索引都不是普通 B+，为什么不全都接通用 SQL 引擎？</div>
+<div class="a">A4：DAS 通过 <code>ObDASScanOp</code> 抽象 + <code>ObDASExtraData</code> 适配不同索引类型：FTS 用 hybrid_search_cg、向量用 <code>ob_vector_index_lookup_op</code>，多值用倒排 task。SQL 算子侧对外仍是 TableScan / SubPlan Scan，专门索引插.min scan_descriptors（<code>ob_das_def_reg</code>）注册以避免上层重新发明算子。</div>
+</details>
+</section>
+
+<!-- =============== 12. RootService & Multi-tenant =============== -->
+<section class="card" id="rs">
+<h2>12. RootService 与多租户</h2>
+
+<h3>12.1 RootService 职责</h3>
+<p>RootService（<code>src/rootserver</code>）是一个集群级单点服务（实际上也是根 LS 的 Leader 副本承担），负责：</p>
+<ul>
+  <li><strong>集群管理</strong>：bootstrap（<code>ob_bootstrap</code>）、server 上下线、心跳（<code>ob_heartbeat_service</code>）、<code>ob_all_server_checker</code>。</li>
+  <li><strong>Schema / DDL</strong>：<code>ob_ddl_service</code>、<code>ob_ddl_operator</code>、<code>ob_index_builder</code>、<code>ob_lob_meta_builder</code>、catalog（<code>ob_catalog_ddl_*</code>）、AI model（<code>ob_ai_model_ddl_*</code>）。</li>
+  <li><strong>负载均衡</strong>：<code>balance/</code>、<code>ob_root_balancer</code>、<code>ob_partition_balance</code>、<code>ob_balance_ls_primary_zone</code>：Unit 与 LS 在 zone 间迁移。</li>
+  <li><strong>容灾</strong>：<code>ob_disaster_recovery_*</code>、教师副本切换、补副本（<code>ob_lost_replica_checker</code>、<code>ob_empty_server_checker</code>）。</li>
+  <li><strong>冻结 / 合并</strong>：<code>freeze/ob_root_minor_freeze</code>、<code>compaction_ttl/</code>：调度 Major / Medium。</li>
+  <li><strong>备份恢复</strong>：<code>backup/</code>。</li>
+  <li><strong>物化视图</strong>：<code>mview/</code> 与 <code>ob_mlog_builder</code>。</li>
+  <li><strong>DDL 任务框架</strong>：<code>ddl_task/</code>、<code>direct_load/</code>。</li>
+</ul>
+
+<div class="diagram"><div class="mermaid">
+flowchart LR
+  RS["RootService (根 LS 的 Leader)"]
+  RS --> HBT["heartbeat / all_server_checker"]
+  RS --> DDL["DDL Service"]
+  RS --> BAL["balancer: Unit/LS 级"]
+  RS --> DR["disaster_recovery"]
+  RS --> FZ["freeze/compaction scheduler"]
+  RS --> BU["backup/restore"]
+  RS --> MV["mview builder"]
+  DDL --> OB["所有 OBServer 上的 ddl 任务执行器"]
+  BAL --> OB
+  DR --> OB
+  FZ --> OB
+  classDef hi fill:#fff3df,stroke:#e08a00;
+  class RS hi;
+</div></div>
+
+<h3>12.2 多租户与资源隔离</h3>
+<div class="diagram"><div class="mermaid">
+flowchart TB
+  CL["Cluster"] --> Z1["Zone 1"] & Z2["Zone 2"] & Z3["Zone 3"]
+  Z1 --> S1["OBServer A"]
+  Z1 --> S2["OBServer B"]
+  Z2 --> S3["OBServer C"]
+  Z3 --> S4["OBServer D"]
+  S1 --> U1A["Unit (tenant T1)"]
+  S1 --> U2A["Unit (tenant T2)"]
+  S2 --> U1B["Unit (tenant T1)"]
+  S2 --> U2B["Unit (tenant T2)"]
+  U1A ---|资源池 pool_T1| U1B
+  subgraph T1["Tenant T1"]
+    POOL1["Pool T1 (3 单元, 跨 zone)"]
+    POOL1 --> LST1["LS-x1"]
+    POOL1 --> LST2["LS-x2"]
+  end
+  classDef tn fill:#eaf3ff,stroke:#2a6df4;
+  class T1 tn;
+</div></div>
+<ul>
+  <li><strong>Unit（资源单元）</strong>：定义 CPU/MEM/磁盘 上限；一个 Unit 在某一 OBServer 上只为一个 Tenant 服务。</li>
+  <li><strong>Pool（资源池）</strong>：多个跨 zone 的 Unit 组合；租户绑定 Pool。</li>
+  <li><strong>租户模式</strong>：sys（系统租户）、Meta（每用户租户一一对应的元数据租户）、User（MySQL / Oracle 模式）。</li>
+  <li>每个租户的 LS <strong>不在物理上跨集群同步</strong>（除了主备 standby 物理 sync 备份），但跨 zone 副本通过 PaLF 同步。</li>
+</ul>
+</section>
+
+<!-- =============== 13. Source Index =============== -->
+<section class="card" id="refs">
+<h2>13. 关键源码索引（导航）</h2>
+<table>
+  <tr><th>主题</th><th>关键文件 / 目录</th></tr>
+  <tr><td>进程入口</td><td><code>src/observer/main.cpp</code>、<code>ob_server.{h,cpp}</code>、<code>ob_srv_network_frame</code>、<code>ob_srv_deliver/xlator</code></td></tr>
+  <tr><td>SQL 入口</td><td><code>src/sql/ob_sql.{h,cpp}</code>、<code>ob_result_set</code></td></tr>
+  <tr><td>Parser</td><td><code>src/sql/parser/</code>（ob_sql_parser.l/y、<code>raw_token.h</code>）</td></tr>
+  <tr><td>Resolver</td><td><code>src/sql/resolver/</code>（<code>ob_resolver.h</code>、dml/ddl/cmd/tcl/dcl 子目录）</td></tr>
+  <tr><td>Rewrite</td><td><code>src/sql/rewrite/ob_transform_rule.*</code>、<code>udr/</code></td></tr>
+  <tr><td>Optimizer</td><td><code>src/sql/optimizer/ob_optimizer.h、ob_log_plan.h、ob_join_order_enum_idp</code></td></tr>
+  <tr><td>Code Generator</td><td><code>src/sql/code_generator/ob_static_engine_cg.{h,cpp}</code>、<code>ob_expr_generator_impl</code></td></tr>
+  <tr><td>执行算子</td><td><code>src/sql/engine/*</code>（<code>ob_operator.h、ob_operator_factory</code>、basic/join/sort/aggregate/px/dml）</td></tr>
+  <tr><td>DAS</td><td><code>src/sql/das/ob_data_access_service.h、ob_das_scan_op.h、ob_das_location_router.h</code></td></tr>
+  <tr><td>PX</td><td><code>src/sql/engine/px/ob_dfo.h、ob_dfo_scheduler、ob_granule_pump、ob_px_coord</code></td></tr>
+  <tr><td>存储访问</td><td><code>src/storage/access/ob_multiple_merge、ob_index_block_tree_traverser</code></td></tr>
+  <tr><td>MemTable / MVCC</td><td><code>src/storage/memtable/ob_memtable.h、mvcc/ob_keybtree.h、mvcc/ob_mvcc_engine.h</code></td></tr>
+  <tr><td>SSTable</td><td><code>src/storage/blocksstable/ob_block_manager、ob_micro_block_*、index_block/ob_index_block_builder</code></td></tr>
+  <tr><td>列式编码</td><td><code>src/storage/blocksstable/encoding/*</code>、<code>cs_encoding/*</code></td></tr>
+  <tr><td>Compaction</td><td><code>src/storage/compaction/ob_compaction_util.h、ob_partition_merger、ob_partition_merge_fuser、ob_medium_compaction_mgr</code></td></tr>
+  <tr><td>Tablet / LS</td><td><code>src/storage/ls/</code>、<code>src/storage/tx_storage/ob_ls_service/ob_ls_map</code>、<code>src/storage/meta_mem/</code></td></tr>
+  <tr><td>事务</td><td><code>src/storage/tx/ob_trans_service.h、ob_trans_part_ctx.h、ob_two_phase_committer.h、ob_committer_define.h</code></td></tr>
+  <tr><td>PaLF</td><td><code>src/logservice/palf/</code>：<code>palf_env_impl、palf_handle_impl、log_state_mgr、log_config_mgr、log_sliding_window、log_reconfirm、log_engine</code></td></tr>
+  <tr><td>Apply / Replay</td><td><code>src/logservice/applyservice/ob_log_apply_service</code>、<code>replayservice/ob_log_replay_service、ob_replay_handler</code></td></tr>
+  <tr><td>选举</td><td><code>src/logservice/palf/election/algorithm/</code>：<code>election_impl、election_proposer、election_acceptor</code>；<code>interface/election.h</code></td></tr>
+  <tr><td>归档 / CDC</td><td><code>src/logservice/archiveservice/</code>、<code>cdcservice/</code>、<code>libobcdc/</code></td></tr>
+  <tr><td>RootService</td><td><code>src/rootserver/ob_root_service.h、ob_ddl_service.h、ob_root_balancer、ob_bootstrap</code></td></tr>
+  <tr><td>Schema</td><td><code>src/share/schema/</code>（<code>ob_schema_struct.h</code>：<code>ObIndexType</code> 定义）</td></tr>
+  <tr><td>FTS</td><td><code>src/storage/fts/</code>、<code>sql/code_generator/ob_hybrid_search_cg_service_fulltext.cpp</code></td></tr>
+  <tr><td>向量索引</td><td><code>src/sql/das/ob_das_vec_define、ob_vector_index_lookup_op</code>、<code>sql/code_generator/ob_hybrid_search_cg_service_vec.cpp</code></td></tr>
+</table>
+
+<div class="callout ok">建议结合本图动手追代码：从 <code>ObSql::stmt_query()</code> 跟到 <code>ObPhysicalPlan</code>，再进入
+<code>ObTableScanOp</code> → <code>ObDASScanOp</code> → <code>ObMultipleScanMerge</code> → MemTable/SSTable 算子，
+同时从 <code>ObTransService::start_tx</code> 跟到 <code>ObPartTransCtx::submit_log</code> → <code>PalfHandleImpl::append</code>，
+即可贯通 SQL / Storage / Tx / Paxos 四层。</div>
+</section>
+
+<footer>
+  本文档基于 OceanBase master 分支源码梳理 · 仅用于学习交流 · 部分组件描述为简化呈现。
+</footer>
+
+</div>
+</body>
+</html>

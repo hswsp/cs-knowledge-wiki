@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>seekdb 数据库架构图（源码导览）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#eef4ff',
+      primaryTextColor: '#1f2937',
+      primaryBorderColor: '#3b82f6',
+      lineColor: '#475569',
+      fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', useMaxWidth: true }
+  });
+</script>
+<style>
+  :root{
+    --bg:#f7f9fc;--card-bg:#fff;--border:#e5e7eb;--primary:#2563eb;
+    --primary-dark:#1d4ed8;--accent:#0ea5e9;--text:#1f2937;--muted:#6b7280;
+    --code-bg:#0f172a;--code-fg:#e2e8f0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.75}
+  header{background:linear-gradient(135deg,#1d4ed8,#0ea5e9);color:#fff;padding:48px 32px;text-align:center}
+  header h1{font-size:34px;margin:0 0 10px;letter-spacing:1px}
+  header p{margin:4px 0;opacity:.92;font-size:15px}
+  header .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:3px 10px;border-radius:12px;margin:6px 4px 0;font-size:12px}
+  .container{max-width:1200px;margin:0 auto;padding:32px 24px 80px}
+  nav.toc{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:18px 24px;margin-bottom:32px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  nav.toc h2{font-size:16px;margin:0 0 10px;color:var(--primary-dark)}
+  nav.toc ol{margin:0;padding-left:22px;columns:2;column-gap:32px}
+  nav.toc a{color:var(--text);text-decoration:none}
+  nav.toc a:hover{color:var(--primary);text-decoration:underline}
+  section{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:28px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  section h2{font-size:24px;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--primary);color:var(--primary-dark)}
+  section h3{font-size:18px;margin:24px 0 10px;color:#0f172a;border-left:4px solid var(--accent);padding-left:10px}
+  section h4{font-size:15px;margin:16px 0 8px;color:#334155}
+  p,li{font-size:14.5px}
+  code{font-family:"JetBrains Mono","Fira Code",Menlo,Consolas,monospace;font-size:13px;background:#eef2f7;color:#0f172a;padding:2px 6px;border-radius:4px}
+  pre{background:var(--code-bg);color:var(--code-fg);padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.55}
+  pre code{background:transparent;color:inherit;padding:0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+  th{background:#f1f5f9;font-weight:600}
+  tr:nth-child(even) td{background:#fafbfd}
+  .mermaid{background:#fcfdff;border:1px dashed #c7d2fe;border-radius:10px;padding:18px;margin:18px 0;overflow-x:auto;text-align:center}
+  .callout{border-left:4px solid var(--primary);background:#eef4ff;padding:12px 16px;border-radius:6px;margin:14px 0;font-size:14px}
+  .callout.warn{border-left-color:#fb923c;background:#fff7ed}
+  .callout.ok{border-left-color:#10b981;background:#ecfdf5}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.grid-2{grid-template-columns:1fr}nav.toc ol{columns:1}}
+  .pill{display:inline-block;font-size:12px;color:#fff;background:var(--primary);padding:2px 8px;border-radius:10px;margin-right:6px}
+  .pill.green{background:#16a34a}.pill.amber{background:#d97706}.pill.gray{background:#64748b}
+  footer{text-align:center;padding:30px 20px;font-size:13px;color:var(--muted)}
+  .path{font-family:"JetBrains Mono",Menlo,monospace;color:#1e40af;font-size:12.5px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>seekdb 数据库架构图（源码导览）</h1>
+  <p>The State Store for AI Agents · MySQL-compatible · Hybrid Vector + Full-text Search</p>
+  <p>
+    <span class="tag">基于 OceanBase 内核演进</span>
+    <span class="tag">Embedded / Server / 分布式三态</span>
+    <span class="tag">Change Stream 异步索引流水线</span>
+    <span class="tag">两级 HNSW</span>
+    <span class="tag">FORK/MERGE COW 沙箱</span>
+  </p>
+</header>
+
+<div class="container">
+
+<nav class="toc">
+  <h2>目录</h2>
+  <ol>
+    <li><a href="#overview">一、seekdb 是什么</a></li>
+    <li><a href="#layers">二、整体分层架构</a></li>
+    <li><a href="#deploy">三、三种部署形态</a></li>
+    <li><a href="#source-tree">四、源码顶层目录</a></li>
+    <li><a href="#observer">五、Observer 接入与调度</a></li>
+    <li><a href="#sql">六、SQL 引擎</a></li>
+    <li><a href="#storage">七、存储引擎</a></li>
+    <li><a href="#tx">八、事务子系统</a></li>
+    <li><a href="#logservice">九、LogService（PALF 复制日志）</a></li>
+    <li><a href="#rootserver">十、RootServer 集群大脑</a></li>
+    <li><a href="#share">十一、share 公共服务</a></li>
+    <li><a href="#change-stream">十二、Change Stream 异步索引流水线 ★</a></li>
+    <li><a href="#vector">十三、向量索引（两级 HNSW / IVF）★</a></li>
+    <li><a href="#fts">十四、全文检索（FTS）</a></li>
+    <li><a href="#hybrid">十五、Hybrid Search 混合检索</a></li>
+    <li><a href="#fork">十六、FORK / MERGE COW 沙箱 ★</a></li>
+    <li><a href="#plugin">十七、Plugin 框架</a></li>
+    <li><a href="#pl-objit">十八、PL / ObJIT</a></li>
+    <li><a href="#dataflow">十九、典型数据流</a></li>
+    <li><a href="#summary">二十、组件能力总表</a></li>
+    <li><a href="#deep-lsm">附 A · LSM-Tree 存储引擎深入</a></li>
+    <li><a href="#deep-mvcc">附 B · MVCC 实现深入</a></li>
+    <li><a href="#deep-vector-arch">附 C · 向量索引层架构深入</a></li>
+    <li><a href="#deep-hnsw">附 D · HNSW 算法与工程实现</a></li>
+    <li><a href="#deep-cs">附 E · Change Stream 正确性与背压</a></li>
+    <li><a href="#deep-write-path">附 F · 写路径全链路时序</a></li>
+    <li><a href="#deep-interview">附 G · 常见问题回答</a></li>
+  </ol>
+</nav>
+
+<section id="overview">
+<h2>一、seekdb 是什么</h2>
+<p>
+  <b>seekdb</b> 是 OceanBase 团队推出的、面向 <b>AI Agent 状态存储 (state store)</b>
+  的多模态数据库：同时承载 <b>向量 / 全文 / 关系</b> 三类数据，对外完全兼容
+  <b>MySQL 协议</b>，可作为<b>嵌入式库</b>、<b>单机 Server</b> 或<b>分布式集群</b>运行。
+  它继承自 OceanBase 的 SQL 优化器与 LSM-Tree 存储引擎，并针对 Agent 的
+  「流式写 + 毫秒级检索 + 并发查询」工作负载，重写了索引构建路径，并提供
+  Kernel-level Copy-on-Write 沙箱。
+</p>
+<ul>
+  <li><b>三态部署一致性</b>：嵌入式 / Server / 分布式共享同一份 <span class="path">oceanbase_static</span> 内核库（见 <span class="path">src/observer/embed/CMakeLists.txt</span>）。</li>
+  <li><b>多租户单进程</b>：<span class="path">src/observer/omt</span> 把同一个 observer 进程切分为多个独立租户。</li>
+  <li><b>Paxos 复制日志</b>：<span class="path">src/logservice/palf</span>（Paxos-based Append-only Log File）。</li>
+  <li><b>LSM-Tree + MVCC 存储</b>：<span class="path">src/storage/memtable</span> + <span class="path">src/storage/blocksstable</span>。</li>
+  <li><b>异步索引流水线</b>：<span class="path">src/share/change_stream/</span> 解耦 DML 与索引构建，消除 P99 抖动。</li>
+  <li><b>两级 HNSW 向量索引</b>：<span class="path">src/share/vector_index/</span> + <span class="path">storage/ddl/ob_hnsw_embedmgr.*</span>。</li>
+  <li><b>COW Fork 沙箱</b>：<span class="path">src/rootserver/fork_table/</span> + <span class="path">share/ob_fork_table_util.*</span>。</li>
+</ul>
+<div class="callout">
+  <b>性能定位</b>：在 VectorDBBench Streaming 场景下，seekdb 在持续写入 500 行/秒的同时取得
+  1,523 QPS、并发 P99 21.7 ms（Milvus 的 10.7×；P99 抖动比 1.1× vs ES/Milvus 的 ~10×）。
+  本质原因是「写路径不碰索引」+「查询永远只扫两层索引」。
+</div>
+</section>
+
+<section id="layers">
+<h2>二、整体分层架构</h2>
+<p>从客户端协议到底层物理存储，seekdb 由六个逻辑层组成。每一层既在嵌入模式下作为函数调用栈存在，也能在 Server 模式下被网络与 RPC 框架横向切分到多节点：</p>
+
+<div class="mermaid">
+flowchart TB
+  subgraph CLIENT["客户端 / SDK 层"]
+    PY["Python SDK<br>pyseekdb"]
+    MY["MySQL 客户端<br>JDBC / mysql-cli / SQLAlchemy"]
+    EMB["嵌入式 C API<br>seekdb_embed.h"]
+    JNI["Android JNI<br>seekdb_jni"]
+  end
+
+  subgraph PROTO["接入 / 协议层 · src/observer"]
+    MP["MySQL 协议<br>obmp_query / obmp_stmt_*"]
+    NET["网络框架<br>ob_srv_network_frame"]
+    DLV["请求派发<br>ob_srv_deliver"]
+    OMT["多租户调度 OMT<br>observer/omt/ob_multi_tenant"]
+  end
+
+  subgraph SQL["SQL 引擎 · src/sql"]
+    PARSE["Parser"]
+    RESOLVE["Resolver"]
+    OPT["Optimizer"]
+    REWRITE["Rewrite"]
+    CG["Code Generator"]
+    EXEC["Executor + DTL"]
+    PC["Plan Cache"]
+  end
+
+  subgraph TX_DAS["数据访问 / 事务 · src/sql/das + storage/tx"]
+    DAS["DAS<br>Data Access Service"]
+    TRX["ObTransService<br>MVCC + 2PC"]
+    GTS["GTS Timestamp Service"]
+  end
+
+  subgraph STORAGE["存储引擎 · src/storage"]
+    LS["LS 日志流<br>storage/ls"]
+    MT["Memtable<br>storage/memtable"]
+    SST["Block SSTable<br>storage/blocksstable"]
+    COMP["Compaction<br>storage/compaction"]
+    DDL["DDL / Direct Load<br>storage/ddl"]
+    FTS_S["FTS<br>storage/fts"]
+  end
+
+  subgraph PLAT["平台 / 集群服务"]
+    PALF["LogService PALF<br>src/logservice"]
+    RS["RootServer<br>src/rootserver"]
+    SHARE["share 公共服务<br>change_stream / vector_index / hybrid_search"]
+    PLUG["Plugin / PL / ObJIT"]
+  end
+
+  PY --> EMB
+  JNI --> EMB
+  EMB -. in-process .-> SQL
+  MY --> MP
+  MP --> NET --> DLV --> OMT --> SQL
+  PARSE --> RESOLVE --> REWRITE --> OPT --> CG --> EXEC
+  EXEC --> DAS
+  DAS --> TRX
+  DAS --> MT
+  DAS --> SST
+  DAS --> FTS_S
+  MT --> SST
+  COMP --> SST
+  MT --> LS
+  LS --> PALF
+  EXEC --> SHARE
+  DDL --> SHARE
+  RS --> LS
+  RS --> SHARE
+  PLUG --> SQL
+</div>
+
+<div class="callout">
+  <b>读路径与写路径的关键差异</b>：写入只经过 <code>Memtable → CLOG/PALF</code> 即返回；
+  索引构建（向量 HNSW、FTS、物化视图增量）由 <b>Change Stream</b> 异步在背后消费 redo
+  完成。读路径则在 DAS 中并行下推到 <code>Memtable + SSTable + Delta 索引 + Snapshot 索引</code>
+  并做行级融合。
+</div>
+</section>
+
+<section id="deploy">
+<h2>三、三种部署形态</h2>
+
+<div class="mermaid">
+flowchart LR
+  subgraph EMBED["Embedded 模式 · in-process"]
+    direction TB
+    APP1["App 进程<br>Python / Java / Go / C / Android"]
+    LIB["libseekdb_embed<br>oceanbase_static"]
+    APP1 -.链接.-> LIB
+    LIB --> KER1["完整 OB 内核<br>不走网络"]
+  end
+
+  subgraph SERVER["单机 Server 模式"]
+    direction TB
+    CLI1["MySQL Clients"]
+    OBS1["observer 进程<br>:2881 MySQL · :2886 RPC"]
+    KER2["Sys Tenant + User Tenant"]
+    CLI1 -- MySQL 协议 --> OBS1 --> KER2
+  end
+
+  subgraph CLUSTER["OceanBase 分布式集群"]
+    direction TB
+    PROXY["OBProxy / Sharding-JDBC"]
+    O1["observer #1<br>RS/Leader"]
+    O2["observer #2"]
+    O3["observer #3"]
+    PROXY --> O1
+    PROXY --> O2
+    PROXY --> O3
+    O1 <-- Paxos --> O2
+    O2 <-- Paxos --> O3
+    O1 <-- Paxos --> O3
+  end
+</div>
+
+<h3>3.1 嵌入模式（Embedded）</h3>
+<ul>
+  <li>入口位于 <span class="path">src/observer/embed/{c,python,android}</span>。</li>
+  <li><b>C API</b>（<span class="path">seekdb.h</span>）：<code>seekdb_open / seekdb_connect / seekdb_execute / seekdb_prepare / seekdb_step</code>，仿 SQLite 风格 (<code>SEEKDB_OK / SEEKDB_ROW / SEEKDB_DONE</code>)。</li>
+  <li><b>Python 绑定</b>：<span class="path">ob_embed_impl.cpp</span>，pybind11；亦可通过 <code>SEEKDB_NO_PYTHON</code> 编出纯 C 库供 Go/Android 复用。</li>
+  <li><b>Android</b>：<span class="path">android/seekdb_jni.cpp</span> 通过 JNI 桥接 C 库；<span class="path">client/embedded_client.c</span> 是 NDK 交叉编译的 CLI。</li>
+  <li>无网络栈、无 RPC，函数调用直达 SQL → Storage。</li>
+</ul>
+
+<h3>3.2 单机 Server 模式</h3>
+<ul>
+  <li>启动入口：<span class="path">src/observer/main.cpp → ob_server.cpp::ObServer</span>。</li>
+  <li>对外暴露 MySQL Wire Protocol（端口 2881）+ 内部 RPC（端口 2886）。</li>
+  <li>单 observer 进程内 <b>多租户共存</b>，sys/user 租户隔离 CPU、内存、IO。</li>
+</ul>
+
+<h3>3.3 OceanBase 分布式模式</h3>
+<ul>
+  <li>多 observer 节点组成 Zone/Region。</li>
+  <li>每个 partition（即 LS / tablet）有三副本，使用 PALF 做 Paxos 复制。</li>
+  <li>RootServer 服务在 sys 租户内运行，负责调度、Schema、负载均衡。</li>
+</ul>
+</section>
+
+<section id="source-tree">
+<h2>四、源码顶层目录</h2>
+<table>
+  <thead><tr><th>路径</th><th>角色</th><th>关键内容</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">src/observer/</span></td><td>接入层 + 进程入口</td><td>MySQL 协议、OMT 多租户、嵌入式 API、main.cpp</td></tr>
+    <tr><td><span class="path">src/sql/</span></td><td>SQL 引擎</td><td>parser/resolver/optimizer/code_generator/executor/das/dtl/plan_cache</td></tr>
+    <tr><td><span class="path">src/storage/</span></td><td>存储引擎</td><td>LSM-Tree (memtable+blocksstable)、tx、ls、compaction、ddl、fts、向量列存、mview</td></tr>
+    <tr><td><span class="path">src/logservice/</span></td><td>复制日志服务</td><td>PALF Paxos、apply/replay/archive/restore/cdc/logfetcher</td></tr>
+    <tr><td><span class="path">src/rootserver/</span></td><td>集群大脑（仅 sys 租户）</td><td>DDL service、freeze、balancer、fork_table、mview、direct_load</td></tr>
+    <tr><td><span class="path">src/share/</span></td><td>跨模块公共服务</td><td>change_stream、vector_index、hybrid_search、cache、ai_service、catalog、schema</td></tr>
+    <tr><td><span class="path">src/pl/</span></td><td>存储过程 (PL/SQL & MySQL Routines)</td><td>resolver/compile/code_generator/package/pl_cache/sys_package</td></tr>
+    <tr><td><span class="path">src/plugin/</span></td><td>插件机制</td><td>动态加载分词器、UDF、Storage Engine 等</td></tr>
+    <tr><td><span class="path">src/objit/</span></td><td>表达式 JIT</td><td>基于 LLVM 的 expression / PL 字节码 JIT</td></tr>
+    <tr><td><span class="path">src/diagnose/</span></td><td>诊断 / Lua 脚本</td><td>调试探针、问题诊断脚本</td></tr>
+    <tr><td><span class="path">deps/</span></td><td>第三方</td><td>oblib、easy、libobcdc 等</td></tr>
+    <tr><td><span class="path">unittest/ mittest/ test/</span></td><td>测试体系</td><td>mysqltest、单元测试、模块集成测试</td></tr>
+    <tr><td><span class="path">tools/</span></td><td>工具集</td><td>deploy 脚本、obadmin、ob_admin、benchmark 等</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="observer">
+<h2>五、Observer 接入与调度层</h2>
+<p>Observer 是整个进程的<b>大门</b>。它负责接收客户端请求、按租户调度执行、并把请求转换成 SQL 引擎可识别的格式。代码位于 <span class="path">src/observer/</span>。</p>
+
+<div class="mermaid">
+flowchart TB
+  subgraph IN["网络入口"]
+    NF["ObSrvNetworkFrame<br>libeasy/easy_io 线程"]
+    DLV["ObSrvDeliver<br>按租户/优先级派发"]
+  end
+  subgraph PROTO["MySQL 协议 · observer/mysql"]
+    CONN["obmp_connect<br>登录握手"]
+    QRY["obmp_query<br>文本协议"]
+    PREP["obmp_stmt_prepare/execute<br>二进制协议"]
+    PIPE["obmp_packet_sender<br>结果集回包"]
+  end
+  subgraph OMT["OMT 多租户 · observer/omt"]
+    MTNT["ObMultiTenant"]
+    TNT["ObTenant<br>每租户独立线程池/资源"]
+    WK["ObThWorker<br>工作线程"]
+    RQ["ObRetryQueue<br>重试队列"]
+  end
+  subgraph CORE["核心服务句柄"]
+    SRV["ObServer 单例"]
+    SVC["ObService<br>RPC 处理"]
+    SCHU["ObServerSchemaUpdater"]
+    LIVE["ObSrvLiveSession"]
+  end
+
+  NF --> DLV --> OMT
+  OMT --> CONN
+  OMT --> QRY
+  OMT --> PREP
+  QRY --> SQL_ENG[("SQL 引擎")]
+  PREP --> SQL_ENG
+  PIPE --> NF
+  SRV --- SVC
+  SRV --- MTNT
+  SRV --- SCHU
+</div>
+
+<h3>5.1 关键文件</h3>
+<table>
+  <thead><tr><th>文件</th><th>职责</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">main.cpp / ob_server.cpp</span></td><td>进程入口、Server 生命周期、全局单例初始化</td></tr>
+    <tr><td><span class="path">ob_srv_network_frame.cpp</span></td><td>基于 libeasy 的网络框架，监听 MySQL/RPC 端口</td></tr>
+    <tr><td><span class="path">ob_srv_deliver.cpp</span></td><td>请求按租户、按优先级派发到 OMT 队列</td></tr>
+    <tr><td><span class="path">ob_srv_xlator.cpp</span></td><td>RPC 包到内部 processor 的路由</td></tr>
+    <tr><td><span class="path">mysql/obmp_*.cpp</span></td><td>MySQL 协议命令的逐条 processor（query/prepare/execute/init_db/auth 等）</td></tr>
+    <tr><td><span class="path">mysql/ob_query_driver.cpp</span></td><td>查询统一驱动：同步/异步、流式/缓冲</td></tr>
+    <tr><td><span class="path">omt/ob_multi_tenant.cpp</span></td><td>多租户管理器，租户的添加/卸载/资源分配</td></tr>
+    <tr><td><span class="path">omt/ob_tenant.cpp</span></td><td>单租户对象（自有线程池、自适应工人池）</td></tr>
+    <tr><td><span class="path">omt/ob_th_worker.cpp</span></td><td>worker 线程，绑定到租户上下文执行 SQL</td></tr>
+    <tr><td><span class="path">embed/c/seekdb_embed.cpp</span></td><td>嵌入式 C 入口；本地直接驱动 SQL Engine</td></tr>
+    <tr><td><span class="path">embed/python/ob_embed_impl.cpp</span></td><td>Python pybind11 绑定</td></tr>
+    <tr><td><span class="path">virtual_table/</span></td><td>所有 <code>__all_virtual_*</code>、<code>oceanbase.gv$*</code> 视图实现</td></tr>
+    <tr><td><span class="path">table_load/</span></td><td>Direct Load API 入口（旁路写）</td></tr>
+  </tbody>
+</table>
+
+<h3>5.2 多租户 (OMT) 设计</h3>
+<ul>
+  <li>每个租户拥有自有 <b>worker pool</b> + <b>retry queue</b> + 内存隔离上下文；越界请求被排队或拒绝。</li>
+  <li>用户租户之外存在 <b>sys tenant</b>（id=1），运行 RootServer、调度内部 SQL。</li>
+  <li>线程通过 <code>MTL_SWITCH(tenant_id)</code> 切换到目标租户上下文执行，所有模块对应的 <code>MTL(Module*)</code> 单例都按租户隔离。</li>
+</ul>
+</section>
+
+<section id="sql">
+<h2>六、SQL 引擎</h2>
+<p>SQL 引擎位于 <span class="path">src/sql/</span>，是 OceanBase 历经多年沉淀的核心，seekdb 在其上扩展了向量、FTS、混合检索算子与 FORK/MERGE 语义。</p>
+
+<div class="mermaid">
+flowchart LR
+  REQ["SQL 文本"] --> PARSER
+  subgraph PIPELINE["执行流水线"]
+    direction LR
+    PARSER["Parser<br>parser/ flex+bison"] --> RESOLVER["Resolver<br>resolver/"]
+    RESOLVER --> REWRITE["Rewrite<br>rewrite/"]
+    REWRITE --> OPTIM["Optimizer<br>optimizer/"]
+    OPTIM --> CG["Code Generator<br>code_generator/"]
+    CG --> PLAN["Physical Plan"]
+    PLAN --> EXEC["Executor<br>engine/executor"]
+  end
+  PLAN -- 缓存 --> PC[("Plan Cache<br>plan_cache/")]
+  PC --> EXEC
+  EXEC --> DAS["DAS Layer<br>das/"]
+  EXEC --> DTL["DTL 数据传输<br>dtl/ 分布式"]
+  DAS --> STORAGE[("Storage")]
+  EXEC --> PRIV["Privilege Check<br>privilege_check/"]
+  EXEC --> SESSION["Session 管理<br>session/"]
+  EXEC --> MONITOR["Monitor / Trace<br>monitor/"]
+</div>
+
+<h3>6.1 子模块一览</h3>
+<table>
+  <thead><tr><th>子目录</th><th>能力</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">parser/</span></td><td>Lex/Yacc 词法语法，输出 ParseNode AST</td></tr>
+    <tr><td><span class="path">resolver/</span></td><td>语义分析、列绑定、权限基础校验；按 DML/DDL/DCL/TCL 分子目录</td></tr>
+    <tr><td><span class="path">rewrite/</span></td><td>查询改写（视图展开、子查询消除、谓词下推、Outer-Join 重排）</td></tr>
+    <tr><td><span class="path">optimizer/</span></td><td>基于成本的优化器 (CBO)；支持并行、分布式 plan、向量/FTS hint</td></tr>
+    <tr><td><span class="path">code_generator/</span></td><td>把逻辑 plan 翻译成物理算子（ObOpSpec）</td></tr>
+    <tr><td><span class="path">engine/</span></td><td>40+ 算子实现：aggregate / basic / cmd / dml / expand / expr / join / 等</td></tr>
+    <tr><td><span class="path">executor/</span></td><td>物理 plan 执行驱动；分布式调度</td></tr>
+    <tr><td><span class="path">plan_cache/</span></td><td>语句指纹 → Plan 复用</td></tr>
+    <tr><td><span class="path">das/</span></td><td>Data Access Service：把 SQL 算子下推到存储；含 <b>ob_text_retrieval_op</b>、<b>ob_vector_index_lookup_op</b></td></tr>
+    <tr><td><span class="path">dtl/</span></td><td>Data Transfer Layer：分布式算子间数据流</td></tr>
+    <tr><td><span class="path">monitor/</span></td><td>执行 trace、慢日志、real-time stat</td></tr>
+    <tr><td><span class="path">printer/</span></td><td>反解析 SQL（schema 重建、explain 输出）</td></tr>
+    <tr><td><span class="path">privilege_check/</span></td><td>权限检查</td></tr>
+  </tbody>
+</table>
+
+<h3>6.2 SQL 执行链路</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant C as Client
+  participant MP as obmp_query
+  participant SQL as ObSql
+  participant RS as Resolver
+  participant OPT as Optimizer
+  participant EX as Executor
+  participant DAS as DAS Layer
+  participant ST as Storage
+  C->>MP: COM_QUERY "SELECT ..."
+  MP->>SQL: stmt_query()
+  SQL->>SQL: Parse → ParseNode
+  SQL->>RS: resolve
+  RS->>SQL: stmt（逻辑 AST）
+  SQL->>OPT: rewrite + plan
+  OPT-->>SQL: Physical Plan
+  SQL->>EX: open(plan)
+  EX->>DAS: scan / dml ops
+  DAS->>ST: 行级读写（含向量/FTS lookup）
+  ST-->>DAS: rows
+  DAS-->>EX: rows
+  EX-->>MP: result set
+  MP-->>C: MySQL packets
+</div>
+
+<h3>6.3 向量 / 全文相关的 DAS 算子</h3>
+<ul>
+  <li><span class="path">das/ob_vector_index_lookup_op.cpp</span> — 向量索引 ANN 查找（HNSW / IVF），结果按距离回表。</li>
+  <li><span class="path">das/ob_text_retrieval_op.cpp</span> — 倒排表扫描，支持 MATCH AGAINST。</li>
+  <li><span class="path">das/ob_das_vec_define.cpp</span> — 向量 DAS 任务结构。</li>
+  <li><span class="path">das/ob_das_domain_utils.cpp</span> — 文本/向量等"领域索引"通用入口。</li>
+</ul>
+</section>
+
+<section id="storage">
+<h2>七、存储引擎</h2>
+<p>位于 <span class="path">src/storage/</span>，是经典的 <b>LSM-Tree + MVCC</b> 架构。一个表被分成多个 <b>tablet</b>，多个 tablet 隶属于一个 <b>LS (Log Stream)</b>，LS 是复制和事务的最小单位。</p>
+
+<div class="mermaid">
+flowchart TB
+  subgraph LSMAP["LS · Log Stream"]
+    direction TB
+    LSMETA["ObLS<br>ls_meta + state"]
+    LSDDL["ObLSDDLLogHandler"]
+    LSFR["ObFreezer<br>转储"]
+    LSREPL["ObLSReservedSnapshotMgr"]
+  end
+  subgraph TBLT["Tablet · 行存/列存"]
+    direction TB
+    META["meta_mem<br>tablet 元信息"]
+    MT["Memtable<br>memtable/"]
+    SST["SSTable<br>blocksstable/"]
+    LOB["LOB<br>lob/"]
+    MV["Mview<br>mview/"]
+    DDLKV["DDL KV<br>ddl/ob_tablet_ddl_kv"]
+    HNSW["HNSW EmbedMgr<br>ddl/ob_hnsw_embedmgr"]
+  end
+  subgraph BSL["blocksstable 物理层"]
+    BLKMGR["ObBlockManager<br>本地宏块管理"]
+    BLKSTORE["blockstore/<br>分层存储 / S3"]
+    BF["BloomFilter Cache"]
+    ENC["encoding / cs_encoding<br>编码压缩"]
+    IDX["index_block<br>多级索引块"]
+  end
+  subgraph COMP["compaction/ 合并"]
+    direction TB
+    MNF["Minor Freeze<br>memtable→mini sstable"]
+    MJF["Major Merge<br>合并基线"]
+    FLT["filter / 谓词下推"]
+  end
+  subgraph CKPT["checkpoint/"]
+    CKE["ObCheckpointExecutor"]
+    DCK["ObDataCheckpoint"]
+    FCK["ObFreezeCheckpoint"]
+  end
+
+  LSMETA --> TBLT
+  MT --> SST
+  COMP --> SST
+  SST --> BSL
+  HNSW -. 列存 .-> BSL
+  LSFR --> COMP
+  CKE --> CKPT
+  CKPT --> LSMETA
+</div>
+
+<h3>7.1 关键概念</h3>
+<table>
+  <thead><tr><th>对象</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><b>LS</b>（Log Stream）</td><td>复制和事务最小单元；含若干 tablet；一个 LS 对应一组 PALF 日志</td></tr>
+    <tr><td><b>Tablet</b></td><td>表/分区/索引在一个 LS 内的物理实例；行存或列存</td></tr>
+    <tr><td><b>Memtable</b></td><td>内存增量；行存 B+Tree / Hash；MVCC 版本链</td></tr>
+    <tr><td><b>Mini/Minor SSTable</b></td><td>memtable 转储产物；按时间窗口合并</td></tr>
+    <tr><td><b>Major SSTable</b></td><td>基线数据；定期全量合并</td></tr>
+    <tr><td><b>HEAP / 行存 / 列存</b></td><td>HEAP = 无主键堆表；普通索引组织表用 IOT；分析列用 column_store</td></tr>
+  </tbody>
+</table>
+
+<h3>7.2 模块清单</h3>
+<table>
+  <thead><tr><th>子目录</th><th>职责</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">access/</span></td><td>统一的 scan / get / multi_get / multi_scan 接口</td></tr>
+    <tr><td><span class="path">blocksstable/</span></td><td>SSTable 宏块/微块格式、读写器、行/列编码、bloom filter</td></tr>
+    <tr><td><span class="path">blockstore/</span></td><td>本地/远端 (S3、对象存储) 块存储抽象</td></tr>
+    <tr><td><span class="path">checkpoint/</span></td><td>多维度检查点（数据 / 冻结）</td></tr>
+    <tr><td><span class="path">column_store/</span></td><td>列存 (CG: Column Group) 实现，分析型查询用</td></tr>
+    <tr><td><span class="path">compaction/</span></td><td>Mini/Minor/Major Merge 调度，及谓词/重排</td></tr>
+    <tr><td><span class="path">concurrency_control/</span></td><td>表锁、行锁、ROW LOCK</td></tr>
+    <tr><td><span class="path">ddl/</span></td><td>DDL 增量与回放、Direct Load、Tablet split/fork、<b>HNSW EmbedMgr</b></td></tr>
+    <tr><td><span class="path">direct_load/</span></td><td>旁路写 (skip memtable) 加速大批量装载</td></tr>
+    <tr><td><span class="path">fts/</span></td><td>全文检索内嵌的分词器、词典、参数化 helper</td></tr>
+    <tr><td><span class="path">high_availability/</span></td><td>副本迁移、Rebuild、Restore</td></tr>
+    <tr><td><span class="path">lob/</span></td><td>大对象 (LOB) 列存储</td></tr>
+    <tr><td><span class="path">ls/</span></td><td>LS 对象、状态机、handler 集合</td></tr>
+    <tr><td><span class="path">memtable/</span></td><td>Memtable 实现 + MVCC + Multi-source Data</td></tr>
+    <tr><td><span class="path">meta_mem/</span></td><td>tablet/ls 元信息内存管理</td></tr>
+    <tr><td><span class="path">meta_store/</span></td><td>持久化元信息</td></tr>
+    <tr><td><span class="path">multi_data_source/</span></td><td>事务多源数据（DDL / TableLock / TXBuffer）</td></tr>
+    <tr><td><span class="path">mview/</span></td><td>物化视图刷新</td></tr>
+    <tr><td><span class="path">tx/</span></td><td>分布式事务、GTS、2PC、版本号</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="tx">
+<h2>八、事务子系统</h2>
+<p>位于 <span class="path">src/storage/tx/</span>。seekdb 完整继承 OceanBase 的 <b>MVCC + 2PC + Paxos</b> 事务设计。</p>
+
+<div class="mermaid">
+flowchart LR
+  subgraph TX["ObTransService"]
+    BEG["Begin TX"] --> WR["写入 memtable<br>挂载到 tx_ctx"]
+    WR --> CMT{"Commit?"}
+    CMT -- 单分区 --> ONE["ObOnePhaseCommitter"]
+    CMT -- 多分区 --> TWO["2PC<br>Prepare→Commit"]
+    ONE --> CLOG["CLOG 落日志"]
+    TWO --> CLOG
+    CLOG --> PALF[("PALF Paxos")]
+    PALF --> CB["end_trans_cb"]
+  end
+  GTS["ObTimestampService / GTS<br>全局时间戳"] --> TX
+  GTSL["ObGtsSource / Local Cache"] --> GTS
+  DLK["deadlock_adapter<br>分布式死锁"]
+  TX --- DLK
+</div>
+
+<ul>
+  <li><b>GTS</b>（Global Timestamp Service）：通过 <span class="path">ob_timestamp_service.cpp / ob_gts_source.cpp</span> 提供全局单调递增时间戳作为 MVCC 版本。</li>
+  <li><b>MVCC</b>：行多版本由 memtable 链维护；读用 snapshot version 进行可见性判断。</li>
+  <li><b>分布式事务</b>：跨 LS 写入走 2PC；<span class="path">ob_one_phase_committer</span> 优化单 LS 提交。</li>
+  <li><b>多源数据 (MDS)</b>：DDL、TableLock、auto-inc 元数据等附挂在事务里，与数据一起落 CLOG。</li>
+</ul>
+</section>
+
+<section id="logservice">
+<h2>九、LogService（PALF 复制日志）</h2>
+<p>位于 <span class="path">src/logservice/</span>，是分布式一致性、灾备、CDC 的统一底座。</p>
+
+<div class="mermaid">
+flowchart TB
+  subgraph PALF["PALF · Paxos Append-only Log File"]
+    direction TB
+    LH["LogHandler<br>对外 API"]
+    LE["LogEngine<br>日志读写"]
+    LCM["LogConfigMgr<br>配置变更"]
+    LSW["LogSlidingWindow<br>同步窗口"]
+    LELE["election/<br>Paxos 选举"]
+    LCAC["LogCache"]
+    LBM["LogBlockMgr<br>本地块"]
+    LFR["fetch_log_engine<br>追赶/补日志"]
+  end
+  subgraph SVC["围绕 PALF 的服务"]
+    APPLY["applyservice<br>commit→memtable callback"]
+    REPLAY["replayservice<br>followers 重放"]
+    ARC["archiveservice<br>归档到对象存储"]
+    REST["restoreservice<br>从归档恢复"]
+    CDC["cdcservice / logfetcher<br>对外抽 CDC 流"]
+    DD["data_dictionary<br>schema 字典"]
+    LC["leader_coordinator<br>主选举协调"]
+    RC["rcservice<br>角色/容灾"]
+  end
+  LH --> LE --> LBM
+  LH --> LSW
+  LH --> LCM --> LELE
+  APPLY --> LH
+  REPLAY --> LH
+  CDC --> LFR
+  ARC --> LE
+  REST --> LFR
+</div>
+
+<h3>9.1 子目录</h3>
+<table>
+  <thead><tr><th>子目录</th><th>职责</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">palf/</span></td><td>Paxos 实现，提供强一致 append-only 日志</td></tr>
+    <tr><td><span class="path">applyservice/</span></td><td>Leader 把日志 commit 后回调 memtable，完成本地可见</td></tr>
+    <tr><td><span class="path">replayservice/</span></td><td>Follower 顺序重放 redo</td></tr>
+    <tr><td><span class="path">archiveservice/</span></td><td>把 redo 归档到 NAS / S3 / OSS</td></tr>
+    <tr><td><span class="path">restoreservice/</span></td><td>物理备份恢复</td></tr>
+    <tr><td><span class="path">cdcservice/ logfetcher/ logrouteservice/</span></td><td>OBCDC：把 redo 翻译成行级变更流</td></tr>
+    <tr><td><span class="path">data_dictionary/</span></td><td>嵌入到日志流里的 schema 字典快照</td></tr>
+    <tr><td><span class="path">leader_coordinator/</span></td><td>多 LS 选主 / 切主调度</td></tr>
+    <tr><td><span class="path">rcservice/</span></td><td>角色变更（主备切换、停机维护）</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <b>seekdb 的关键复用</b>：Change Stream（异步索引）也走 PALF 的 logfetcher 接口订阅
+  redo，因此对外的 CDC 接口与内部异步索引共享同一份日志读取基础设施。
+</div>
+</section>
+
+<section id="rootserver">
+<h2>十、RootServer（集群大脑）</h2>
+<p>仅 sys 租户启动，位于 <span class="path">src/rootserver/</span>。负责 schema、调度、备份、DDL 串行化、Fork/Merge、合并冻结等。</p>
+
+<div class="mermaid">
+flowchart TB
+  RS["ObRootService"] --> DDL["ObDDLService<br>所有 DDL 入口"]
+  DDL --> DDLT["ddl_task/<br>DDL 任务追踪与重做"]
+  RS --> FRZ["freeze/<br>major freeze 调度"]
+  RS --> LB["ObLoadBalancer<br>partition 负载均衡"]
+  RS --> SCH["ObServerLocalityCache"]
+  RS --> FORK["fork_table/<br>ObForkDatabase/TableService"]
+  RS --> MV["mview/<br>物化视图调度"]
+  RS --> DI["direct_load/<br>大批量装载调度"]
+  RS --> BACK["backup/<br>备份调度"]
+  DDL --> IDX["ObIndexBuilder<br>建索引<br>含 vector/FTS"]
+  DDL --> LOB["ObLobMetaBuilder<br>ObLobPieceBuilder"]
+  DDL --> CCL["ob_ccl_ddl_service<br>限流规则"]
+  DDL --> AI["ob_ai_model_ddl_service<br>AI 模型注册"]
+</div>
+
+<ul>
+  <li><b>DDL service</b>：CREATE/ALTER/DROP/INDEX 等全部串行化执行；产生 schema 版本，通过 schema service 广播。</li>
+  <li><b>fork_table</b>：核心实现 FORK DATABASE / FORK TABLE，下面专门展开。</li>
+  <li><b>mview</b>：物化视图刷新调度，对接 Change Stream。</li>
+  <li><b>ai_model</b>：注册外部 LLM/Embedding 模型；与 <span class="path">share/ai_service/</span> 协同。</li>
+  <li><b>ccl</b>（Concurrency Control）：限流规则 DDL。</li>
+</ul>
+</section>
+
+<section id="share">
+<h2>十一、share 公共服务</h2>
+<p><span class="path">src/share/</span> 是<b>跨 SQL、Storage、RS</b> 的横切层，集中存放公共服务、跨节点 RPC、缓存、AI 集成。</p>
+
+<table>
+  <thead><tr><th>子目录</th><th>角色</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">schema/ inner_table/</span></td><td>所有 __all_xxx 内部表、schema getter/cache</td></tr>
+    <tr><td><span class="path">cache/</span></td><td>统一 KV cache（schema cache、row cache、block cache）</td></tr>
+    <tr><td><span class="path">location_cache/</span></td><td>tablet/LS → server 的位置缓存与 RPC 探测</td></tr>
+    <tr><td><span class="path">io/</span></td><td>统一 IO 框架，分级 IO 调度</td></tr>
+    <tr><td><span class="path">change_stream/ ★</span></td><td>异步索引流水线（Fetcher / Dispatcher / Worker / Plugin）</td></tr>
+    <tr><td><span class="path">vector_index/ ★</span></td><td>HNSW / IVF 向量索引引擎适配层（接 VSAG）</td></tr>
+    <tr><td><span class="path">hybrid_search/ ★</span></td><td>JSON 风格混合查询入口（Pinecone-like API）</td></tr>
+    <tr><td><span class="path">ai_service/</span></td><td>外部 LLM/Embedding 模型代理（HTTP 调用 OpenAI 等）</td></tr>
+    <tr><td><span class="path">catalog/</span></td><td>外部数据源 catalog（Iceberg/Hive/外表）</td></tr>
+    <tr><td><span class="path">aggregate/ datum/</span></td><td>向量化执行所需的 datum、聚合算子原语</td></tr>
+    <tr><td><span class="path">ash/ index_usage/ longops_mgr/</span></td><td>ASH 活动会话、索引使用统计、长任务监控</td></tr>
+    <tr><td><span class="path">backup/</span></td><td>备份策略、备份目录</td></tr>
+    <tr><td><span class="path">compaction/</span></td><td>合并 schedule 配置 / 异常追踪</td></tr>
+    <tr><td><span class="path">deadlock/</span></td><td>分布式死锁检测器</td></tr>
+    <tr><td><span class="path">diagnosis/</span></td><td>诊断信息收集</td></tr>
+    <tr><td><span class="path">external_table/</span></td><td>外表（S3/CSV）读取</td></tr>
+    <tr><td><span class="path">allocator/</span></td><td>租户内存子分配器</td></tr>
+    <tr><td><span class="path">client_feedback/</span></td><td>给 OBProxy 的反馈信息（路由优化）</td></tr>
+    <tr><td><span class="path">config/</span></td><td>所有配置项注册中心</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="change-stream">
+<h2>十二、Change Stream 异步索引流水线 <span class="pill green">★ Agent 性能关键</span></h2>
+<p>位于 <span class="path">src/share/change_stream/</span>。这是 seekdb 区别于 OceanBase 的核心新增模块，
+也是「写路径不碰索引」、「查询永远只扫两层索引」得以成立的根因。</p>
+
+<h3>12.1 概念</h3>
+<p>普通 LSM 数据库写入时同步构建索引（向量/全文/物化视图），引起 P99 抖动；seekdb 让事务<b>只写 redo</b>，
+索引由独立流水线从 PALF 异步消费 redo 构建。</p>
+
+<div class="mermaid">
+flowchart LR
+  subgraph WRITE["写路径"]
+    DML["INSERT/UPDATE"] --> MT["Memtable + Tx"]
+    MT --> CLOG["PALF Redo Log"]
+    CLOG --> RET["Commit OK 立即返回"]
+  end
+  subgraph CS["Change Stream 异步流水线 · src/share/change_stream"]
+    direction LR
+    FET["ObCSFetcher<br>单线程，按 LSN 顺序消费 PALF"]
+    FET -- "已 commit 事务" --> RING["Ring Buffer<br>每事务一条 ObCSTxInfo"]
+    RING --> DIS["ObCSDispatcher<br>切片到 worker"]
+    DIS --> SUB["ObCSExecSubTask<br>按 heap_pk 切片"]
+    SUB --> EX["ObCSExecutor<br>LinkQueue 线程池"]
+    EX --> PLUG["ObCSPlugin 实例池<br>每 batch 创建"]
+    PLUG --> AIDX["Async Index Plugin<br>ob_cs_plugin_async_index"]
+    AIDX --> DELTA["Delta HNSW / FTS<br>内存增量索引"]
+  end
+  CLOG --> FET
+  DELTA --> Q[("查询路径合并")]
+</div>
+
+<h3>12.2 关键组件</h3>
+<table>
+  <thead><tr><th>类</th><th>线程模型</th><th>职责</th></tr></thead>
+  <tbody>
+    <tr><td><b>ObChangeStreamMgr</b></td><td>租户级 MTL 单例</td><td>持有 Fetcher / Dispatcher / Worker 生命周期</td></tr>
+    <tr><td><b>ObCSFetcher</b></td><td>单线程</td><td>从 PALF 顺序拉 redo，按 tx_id 组装；commit 时推入 ring buffer。事务级零拷贝，rollback to savepoint 用 [to_seq, from_seq) 区间裁剪</td></tr>
+    <tr><td><b>ObCSDispatcher</b></td><td>单线程消费</td><td>把单事务拆成多个 ObCSExecSubTask（按 heap_pk 切片，邻近行落到同一 worker）</td></tr>
+    <tr><td><b>ObCSWorker / ObCSExecutor</b></td><td>多线程 LinkQueue 池</td><td>并发执行子任务；自适应线程数</td></tr>
+    <tr><td><b>ObCSExecCtx</b></td><td>per-batch</td><td>共享事务句柄、refresh_scn、Plugin 实例集；任务结束统一回收</td></tr>
+    <tr><td><b>ObCSPlugin</b></td><td>per-batch 工厂创建</td><td>插件式接口：向量异步索引、未来可挂 FTS、Mview Refresh、自定义流</td></tr>
+    <tr><td><b>ObCSPluginAsyncIndex</b></td><td>—</td><td>把 redo 行写入 delta HNSW / IVF buckets</td></tr>
+  </tbody>
+</table>
+
+<h3>12.3 行可见性 / Rollback 支持</h3>
+<ul>
+  <li>每条 redo 携带 <code>stmt_seq_no</code>，与 tx 的 rollback 区间集合 <code>[to_seq, from_seq)</code> 比较；命中区间的行直接丢弃，避免把已回滚的写入构建到索引。</li>
+  <li>Fetcher 的 <code>min_dep_lsn / refresh_scn</code> 周期性写入全局表，使查询路径知道「索引追到了什么时间点」。</li>
+</ul>
+
+<h3>12.4 关键文件</h3>
+<table>
+  <tbody>
+    <tr><td><span class="path">ob_change_stream_mgr.{h,cpp}</span></td><td>租户级管理器，MTL 注入点</td></tr>
+    <tr><td><span class="path">ob_change_stream_fetcher.{h,cpp}</span></td><td>PALF 消费者，事务组装</td></tr>
+    <tr><td><span class="path">ob_change_stream_dispatcher.{h,cpp}</span></td><td>事务切片、可见性</td></tr>
+    <tr><td><span class="path">ob_change_stream_worker.{h,cpp}</span></td><td>LinkQueue 工人池</td></tr>
+    <tr><td><span class="path">ob_change_stream_plugin.{h,cpp}</span></td><td>Plugin 注册表</td></tr>
+    <tr><td><span class="path">ob_cs_plugin_async_index.{h,cpp}</span></td><td>异步索引插件实现</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="vector">
+<h2>十三、向量索引（两级 HNSW / IVF） <span class="pill green">★</span></h2>
+<p>实现位于 <span class="path">src/share/vector_index/</span> + <span class="path">src/storage/ddl/ob_hnsw_embedmgr.*</span> + <span class="path">sql/das/ob_vector_index_lookup_op.cpp</span>。底层算法库通过 <b>VSAG</b>（OceanBase 开源的向量索引内核）实现。</p>
+
+<h3>13.1 两级索引架构</h3>
+<div class="mermaid">
+flowchart LR
+  subgraph WR["写 / 异步构建"]
+    DML2["INSERT/UPSERT"] --> RDLOG["Redo"]
+    RDLOG --> CS2["Change Stream"]
+    CS2 --> DELTA2["Delta HNSW<br>in-memory，可立即查询"]
+  end
+  subgraph SP["周期性 Snapshot"]
+    DELTA2 -- rotate --> SNAP["Snapshot HNSW<br>持久化到 SSTable"]
+    DELTA2 -. 保留新增 .-> DELTA2
+  end
+  subgraph QRY["查询路径"]
+    Q["ANN Query"] --> DASOP["ObVectorIndexLookupOp"]
+    DASOP --> SDELTA["search delta HNSW"]
+    DASOP --> SSNAP["search snapshot HNSW"]
+    SDELTA --> MERGE["结果归并<br>+ scalar/FTS 过滤"]
+    SSNAP --> MERGE
+    MERGE --> ROW["回表取完整行"]
+  end
+</div>
+
+<div class="callout ok">
+  <b>为什么 P99 抖动只有 1.1×？</b><br>
+  • 索引<b>数量固定为 2</b>，并发查询永远只对两个索引各做一次 ANN，不会随写入累积膨胀的段数发散；<br/>
+  • Delta HNSW 内存常驻，并提供细粒度读锁，新写入毫秒级可见；<br/>
+  • Snapshot HNSW 通过 SSTable 落盘，重启可加载，不必重建。
+</div>
+
+<h3>13.2 关键类</h3>
+<table>
+  <thead><tr><th>类 / 文件</th><th>职责</th></tr></thead>
+  <tbody>
+    <tr><td><span class="path">ObPluginVectorIndexService</span></td><td>租户级向量索引服务总入口（vector_index/）</td></tr>
+    <tr><td><span class="path">ObPluginVectorIndexMgr</span></td><td>tablet → adapter 注册表</td></tr>
+    <tr><td><span class="path">ObPluginVectorIndexAdaptor</span></td><td>单 tablet 上 delta+snapshot 双 HNSW 的封装；FilterInterface 注入 bitmap 谓词下推</td></tr>
+    <tr><td><span class="path">ObVectorQueryAdaptorResultContext</span></td><td>查询请求 context（topK、ef、过滤位图）</td></tr>
+    <tr><td><span class="path">ObPluginVectorIndexScheduler</span></td><td>delta→snapshot 切换、合并的后台调度器</td></tr>
+    <tr><td><span class="path">ObVectorIndexIvfCacheMgr / ObIvfAsyncTaskExecutor</span></td><td>IVF 系列索引的缓存与异步构建</td></tr>
+    <tr><td><span class="path">ObVsagMemContext / ObVsagSearchAlloc</span></td><td>VSAG 内存子分配器</td></tr>
+    <tr><td><span class="path">ObVectorEmbeddingHandler</span></td><td>向量字段类型 / 编码 / 持久化 handler</td></tr>
+    <tr><td><span class="path">ObHnswEmbedMgr</span></td><td>位于 storage/ddl/，把 HNSW 段写成 SSTable</td></tr>
+    <tr><td><span class="path">ObHybridVectorRefreshTask</span></td><td>vector + 标量混合刷新任务</td></tr>
+    <tr><td><span class="path">ob_vector_index_lookup_op.cpp</span></td><td>SQL 执行端的 ANN lookup 算子</td></tr>
+  </tbody>
+</table>
+
+<h3>13.3 支持的索引参数</h3>
+<table>
+  <thead><tr><th>类型</th><th>常用参数</th></tr></thead>
+  <tbody>
+    <tr><td>HNSW</td><td>M (default 16)、ef_construction、ef_search、distance (l2/ip/cosine)、lib=vsag</td></tr>
+    <tr><td>IVF_FLAT / IVF_SQ8 / IVF_PQ</td><td>nlist、nprobe、训练样本数；通过 <span class="path">ob_vector_kmeans_ctx</span> 训练</td></tr>
+    <tr><td>BQ / HNSW_BQ</td><td>BinaryQuant 量化变体</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="fts">
+<h2>十四、全文检索（FTS）</h2>
+<p>分词器与查询入口分布在 <span class="path">src/storage/fts/</span> 与 <span class="path">share/ob_fts_index_builder_util.*</span>。</p>
+
+<div class="mermaid">
+flowchart TB
+  subgraph DDL_FTS["建索引 · ob_fts_index_builder_util"]
+    CRT["CREATE FULLTEXT INDEX ... WITH PARSER xxx"] --> BLD["FTS Builder"]
+    BLD --> TBLS["doc_id 倒排表 + doc_word 表 + fts_index 表"]
+  end
+  subgraph WR_FTS["写路径"]
+    INS["INSERT 文档"] --> MT2["Memtable"]
+    MT2 --> CSF["Change Stream<br>异步分词+倒排"]
+    CSF --> INVTBL[("倒排表 SSTable")]
+  end
+  subgraph QR_FTS["查询路径"]
+    MATCH["MATCH(content) AGAINST(...)"] --> TRET["ob_text_retrieval_op"]
+    TRET --> PARSE2["FT Parser<br>ik/ngram/beng/whitespace"]
+    PARSE2 --> SCAN["倒排扫描+评分 BM25"]
+    SCAN --> RET2["doc_id 列表"]
+  end
+</div>
+
+<h3>14.1 内置分词器</h3>
+<table>
+  <thead><tr><th>Parser</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td><b>ik</b></td><td>中文 IK 分词（细粒度+智能模式），位于 <span class="path">storage/fts/ik/</span></td></tr>
+    <tr><td><b>ngram / ngram2</b></td><td>n-gram 通用切分</td></tr>
+    <tr><td><b>beng</b></td><td>英文基础分词（小写化、停用词）</td></tr>
+    <tr><td><b>whitespace</b></td><td>纯空白切分（标记型场景）</td></tr>
+    <tr><td><b>plugin parsers</b></td><td>通过 plugin 框架挂入第三方分词</td></tr>
+  </tbody>
+</table>
+
+<h3>14.2 关键文件</h3>
+<table>
+  <tbody>
+    <tr><td><span class="path">ob_fts_plugin_helper.*</span></td><td>分词器插件统一接入（ObFTParser / ObFTParseHelper）</td></tr>
+    <tr><td><span class="path">ob_fts_struct.*</span></td><td>分词、文档结构定义</td></tr>
+    <tr><td><span class="path">ob_fts_stop_word.*</span></td><td>停用词管理</td></tr>
+    <tr><td><span class="path">share/ob_fts_index_builder_util.*</span></td><td>FTS 三个内部表的构建/重建</td></tr>
+    <tr><td><span class="path">sql/das/ob_text_retrieval_op.cpp</span></td><td>SQL 执行端倒排扫描算子</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="hybrid">
+<h2>十五、Hybrid Search 混合检索</h2>
+<p><span class="path">src/share/hybrid_search/</span> 提供了 Pinecone 风格的 JSON 查询入口，把 <b>向量 + 全文 + 标量</b> 翻译成一条 SQL Plan。</p>
+
+<div class="mermaid">
+flowchart LR
+  REQ2["JSON Hybrid Query"] --> PARSE3["ob_query_parse<br>解析"]
+  PARSE3 --> RQT["ObQueryRequest<br>结构体"]
+  RQT --> TRX2["ob_query_translator<br>翻译为 SQL"]
+  TRX2 --> SQL2[("SQL Plan")]
+  SQL2 --> EXEC2["ob_hybrid_search_executor"]
+  EXEC2 --> VEC["Vector Lookup"]
+  EXEC2 --> FTSO["FTS Retrieval"]
+  EXEC2 --> SCA["Scalar Filter / Sort"]
+  VEC --> MRG["执行计划内归并"]
+  FTSO --> MRG
+  SCA --> MRG
+  MRG --> OUT["结果集"]
+</div>
+
+<p>关键文件：<span class="path">ob_hybrid_search_executor.cpp</span>、<span class="path">ob_query_translator.cpp</span>、<span class="path">ob_query_parse.cpp</span>、<span class="path">ob_query_request.cpp</span>、<span class="path">ob_request_base.cpp</span>。</p>
+</section>
+
+<section id="fork">
+<h2>十六、FORK / MERGE COW 沙箱 <span class="pill green">★ Agent 探索安全网</span></h2>
+<p>实现位于 <span class="path">src/rootserver/fork_table/</span> + <span class="path">share/ob_fork_table_util.*</span> + <span class="path">storage/ddl/ob_tablet_fork_task.*</span>。这是 seekdb 区别于普通 DB 的另一个核心新特性。</p>
+
+<h3>16.1 概念</h3>
+<p>「FORK」并不真正复制数据；它在 schema 层为目标库/表创建新的 ID，并把所有 tablet 标记为
+<b>共享基线 + 写时复制 (Copy-on-Write)</b> 模式。Agent 在沙箱里读写时：</p>
+<ul>
+  <li>读 = 旧 tablet 数据 + 沙箱自有增量；</li>
+  <li>写 = 只落到沙箱独有的 memtable / SSTable；</li>
+  <li>主库完全不受影响。</li>
+</ul>
+
+<div class="mermaid">
+flowchart LR
+  subgraph BEFORE["Step 1 · FORK 之前"]
+    direction TB
+    MAIN1["main DB · agent_state"]
+    T1["tablet T1<br>SSTable基线"]
+    MAIN1 --> T1
+  end
+  subgraph FORKED["Step 2 · FORK DATABASE"]
+    direction TB
+    MAIN2["main DB"]
+    SB["sandbox_42"]
+    SHTAB["共享基线 SSTable<br>引用计数"]
+    MAIN2 --> SHTAB
+    SB --> SHTAB
+  end
+  subgraph WRITE["Step 3 · sandbox 写入"]
+    direction TB
+    MAIN3["main"]
+    SB3["sandbox_42"]
+    SHB["共享基线"]
+    SBN["sandbox 私有<br>memtable/SSTable"]
+    MAIN3 --> SHB
+    SB3 --> SHB
+    SB3 --> SBN
+  end
+  subgraph MERGE["Step 4 · MERGE / DROP"]
+    direction TB
+    MM["MERGE TABLE STRATEGY FAIL/THEIRS/OURS"]
+    DD["DROP DATABASE 直接丢弃"]
+    MM --> MAIN4["已更新 main"]
+    DD --> MAIN5["main 保持不变"]
+  end
+</div>
+
+<h3>16.2 执行流程</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant U as User SQL
+  participant RS as RootServer / ObDDLService
+  participant FK as fork_table service
+  participant SCH as Schema Service
+  participant LS as Storage / LS
+  U->>RS: FORK DATABASE src TO dst
+  RS->>FK: ObForkDatabaseService
+  FK->>SCH: 复制 schema：新 db + 新 table_id + tablet_id
+  FK->>LS: ObTabletForkTask 标记 tablet 为 COW 共享基线
+  LS->>LS: 引用计数 +1（不拷贝数据）
+  FK-->>U: OK（秒级返回）
+  Note over U,LS: sandbox 上的写入只生成新 memtable/SSTable
+  U->>RS: MERGE TABLE ... STRATEGY THEIRS
+  RS->>FK: 合并任务，按 strategy 解决冲突
+  FK->>LS: 把 sandbox 增量打回 main tablet
+</div>
+
+<h3>16.3 关键文件</h3>
+<table>
+  <tbody>
+    <tr><td><span class="path">rootserver/fork_table/ob_fork_database_service.cpp</span></td><td>FORK DATABASE 入口</td></tr>
+    <tr><td><span class="path">rootserver/fork_table/ob_fork_table_service.cpp</span></td><td>FORK TABLE 入口</td></tr>
+    <tr><td><span class="path">rootserver/fork_table/ob_fork_table_task.cpp</span></td><td>DDL Task：跨节点协调</td></tr>
+    <tr><td><span class="path">rootserver/fork_table/ob_fork_table_info_builder.cpp</span></td><td>构建 fork 后的 schema/tablet 映射</td></tr>
+    <tr><td><span class="path">rootserver/fork_table/ob_fork_table_helper.cpp</span></td><td>跨模块辅助：MERGE 策略 (FAIL/THEIRS/OURS)</td></tr>
+    <tr><td><span class="path">share/ob_fork_table_util.cpp</span></td><td>共享工具：可见性、版本判定</td></tr>
+    <tr><td><span class="path">storage/ddl/ob_tablet_fork_task.cpp</span></td><td>tablet 层的 COW 落地</td></tr>
+    <tr><td><span class="path">storage/ddl/ob_table_fork_info.cpp</span></td><td>tablet fork 元信息</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <b>MERGE STRATEGY 含义</b>：<br>
+  • <b>FAIL</b>：行冲突即报错，回滚整个 merge；<br/>
+  • <b>THEIRS</b>：以 sandbox 内容为准覆盖主库；<br/>
+  • <b>OURS</b>：以主库内容为准，sandbox 冲突行丢弃。
+</div>
+</section>
+
+<section id="plugin">
+<h2>十七、Plugin 框架</h2>
+<p><span class="path">src/plugin/</span> 提供动态加载机制（FT Parser、UDF、Storage engine 等）。</p>
+
+<div class="mermaid">
+flowchart LR
+  CFG["INSTALL PLUGIN xxx<br>plugin 表注册"] --> MGR["ObPluginMgr"]
+  MGR --> DLOPEN["ObPluginDlHandle<br>dlopen 动态库"]
+  DLOPEN --> ENT["ObPluginEntryHandle<br>读符号 entry"]
+  ENT --> ADP["Adaptor<br>plugin/adaptor"]
+  ADP --> IF["Interface<br>plugin/interface"]
+  IF --> CONS["内核消费者<br>FTS / UDF / Storage"]
+</div>
+
+<table>
+  <tbody>
+    <tr><td><span class="path">plugin/sys/</span></td><td>插件加载/卸载/管理器、handle 抽象</td></tr>
+    <tr><td><span class="path">plugin/interface/</span></td><td>各类插件的 C++ 接口契约</td></tr>
+    <tr><td><span class="path">plugin/adaptor/</span></td><td>把插件 API 适配给内核</td></tr>
+    <tr><td><span class="path">plugin/export/ include/</span></td><td>对外头文件、ABI</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section id="pl-objit">
+<h2>十八、PL 引擎 & ObJIT</h2>
+<div class="grid-2">
+  <div>
+    <h3>PL 引擎</h3>
+    <p>位于 <span class="path">src/pl/</span>。实现 MySQL/Oracle 兼容的存储过程、函数、Package、Trigger。</p>
+    <ul>
+      <li><span class="path">parser/</span> — PL 词法/语法</li>
+      <li><span class="path">ob_pl_resolver.*</span> — 语义分析</li>
+      <li><span class="path">ob_pl_compile.* / ob_pl_code_generator.*</span> — 编译为 PL 指令</li>
+      <li><span class="path">pl_cache/</span> — Routine/Package 缓存</li>
+      <li><span class="path">ob_pl_package_*.*</span> — Package 状态、依赖追踪</li>
+      <li><span class="path">sys_package/</span> — 内置系统包（DBMS_*、UTL_*）</li>
+      <li><span class="path">pl_recompile/</span> — 失效后重编译</li>
+      <li><span class="path">diagnosis/</span> — PL 诊断</li>
+    </ul>
+  </div>
+  <div>
+    <h3>ObJIT</h3>
+    <p>位于 <span class="path">src/objit/</span>，基于 LLVM 的 JIT 框架，把表达式、PL 字节码即时编译成本地指令，加速热点计算。</p>
+    <ul>
+      <li>独立 CMake 子项目，可单独打 rpm</li>
+      <li>提供给 SQL Expression、PL VM 调用</li>
+      <li>支持表达式 fold、循环 unroll</li>
+    </ul>
+    <h3>诊断</h3>
+    <p><span class="path">src/diagnose/</span> 提供 Lua 脚本环境，运行时可注入采样、追踪逻辑。</p>
+  </div>
+</div>
+</section>
+
+<section id="dataflow">
+<h2>十九、典型数据流</h2>
+
+<h3>19.1 流式写 + 立即可查（Agent Memory）</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant App as Agent App
+  participant MP as obmp_query / pyseekdb
+  participant SQL as SQL Engine
+  participant TX as TX + Memtable
+  participant PALF as PALF
+  participant CS as Change Stream
+  participant VEC as Vector Index Adaptor
+  App->>MP: INSERT INTO memory embedding,content VALUES ...
+  MP->>SQL: parse → plan
+  SQL->>TX: write → memtable
+  TX->>PALF: append redo
+  PALF-->>TX: majority commit
+  TX-->>App: OK（不等索引）
+  PALF->>CS: ObCSFetcher 拉取 redo
+  CS->>VEC: AsyncIndex Plugin 写 Delta HNSW
+  Note over App,VEC: 通常 ~ms 后即对 ANN 查询可见
+  App->>MP: SELECT ... ORDER BY l2_distance(...) APPROXIMATE
+  MP->>SQL: plan with vector_index_lookup
+  SQL->>VEC: query delta + snapshot HNSW
+  VEC-->>SQL: top-K
+  SQL-->>App: rows
+</div>
+
+<h3>19.2 混合检索一条 SQL 多模态下推</h3>
+<div class="mermaid">
+flowchart LR
+  Q3["SELECT id, title, l2_distance(emb, ?) dist<br>FROM docs<br>WHERE MATCH(content) AGAINST(quarterly report)<br>AND author_id = 42 AND created_at > 2026-01-01<br>ORDER BY dist APPROXIMATE LIMIT 10"]
+  Q3 --> OPT3["Optimizer 生成多模态计划"]
+  OPT3 --> VEC3["Vector ANN"]
+  OPT3 --> FTS3["FTS 倒排"]
+  OPT3 --> SCAL["标量索引/范围"]
+  VEC3 --> JOIN3["执行端内归并<br>(无客户端拼接)"]
+  FTS3 --> JOIN3
+  SCAL --> JOIN3
+  JOIN3 --> TOPK["Top-K + 回表"]
+</div>
+
+<h3>19.3 FORK / MERGE 沙箱生命周期</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant U as Agent
+  participant RS as RootServer
+  participant LS as Storage_tablets
+  U->>RS: FORK DATABASE agent_state TO sandbox_42
+  RS->>LS: 创建共享 tablet 引用，标记 COW
+  RS-->>U: OK（秒级）
+  U->>U: USE sandbox_42; 大量 INSERT / UPDATE
+  U->>RS: MERGE TABLE sandbox_42.memory INTO agent_state.memory STRATEGY THEIRS
+  RS->>LS: 把 sandbox 私有增量打回 main
+  RS-->>U: OK
+  Note over U,RS: 若失败：DROP DATABASE sandbox_42 即丢弃所有变更
+</div>
+</section>
+
+<section id="summary">
+<h2>二十、组件能力总表</h2>
+<table>
+  <thead><tr><th>组件</th><th>所在路径</th><th>核心能力</th><th>关键类 / 入口</th></tr></thead>
+  <tbody>
+    <tr><td>Observer (协议接入)</td><td><span class="path">src/observer/</span></td><td>MySQL 协议、嵌入 API、Worker</td><td>ObServer, obmp_query, ObSrvDeliver</td></tr>
+    <tr><td>OMT 多租户</td><td><span class="path">observer/omt/</span></td><td>租户隔离、线程池</td><td>ObMultiTenant, ObTenant, ObThWorker</td></tr>
+    <tr><td>SQL Engine</td><td><span class="path">src/sql/</span></td><td>Parse/Plan/Exec/Cache</td><td>ObSql, ObResultSet, ObDASRef</td></tr>
+    <tr><td>DAS</td><td><span class="path">sql/das/</span></td><td>跨存储/节点的统一数据访问</td><td>ObDataAccessService, ObDasScanOp</td></tr>
+    <tr><td>Storage</td><td><span class="path">src/storage/</span></td><td>LSM-Tree + MVCC</td><td>ObLS, ObTablet, ObMemtable, ObSSTable</td></tr>
+    <tr><td>事务 / GTS</td><td><span class="path">storage/tx/</span></td><td>2PC、MVCC、GTS</td><td>ObTransService, ObTimestampService</td></tr>
+    <tr><td>LogService PALF</td><td><span class="path">src/logservice/</span></td><td>Paxos 强一致复制日志</td><td>LogHandler, LogEngine, election/</td></tr>
+    <tr><td>RootServer</td><td><span class="path">src/rootserver/</span></td><td>DDL、负载、Schema</td><td>ObRootService, ObDDLService</td></tr>
+    <tr><td>Change Stream</td><td><span class="path">share/change_stream/</span></td><td><b>异步索引流水线 ★</b></td><td>ObChangeStreamMgr, ObCSFetcher, ObCSDispatcher</td></tr>
+    <tr><td>Vector Index</td><td><span class="path">share/vector_index/</span></td><td><b>两级 HNSW / IVF ★</b></td><td>ObPluginVectorIndexService, ObPluginVectorIndexAdaptor</td></tr>
+    <tr><td>FTS</td><td><span class="path">storage/fts/</span></td><td>多语种全文检索</td><td>ObFTParser, IK/ngram/beng</td></tr>
+    <tr><td>Hybrid Search</td><td><span class="path">share/hybrid_search/</span></td><td>JSON 多模态查询入口</td><td>ObHybridSearchExecutor</td></tr>
+    <tr><td>FORK / MERGE</td><td><span class="path">rootserver/fork_table/</span></td><td><b>COW 沙箱 ★</b></td><td>ObForkDatabaseService, ObTabletForkTask</td></tr>
+    <tr><td>Direct Load</td><td><span class="path">storage/direct_load/</span></td><td>旁路写大批量数据</td><td>ObDirectLoadMgr</td></tr>
+    <tr><td>Mview</td><td><span class="path">storage/mview/ rootserver/mview/</span></td><td>物化视图刷新</td><td>ObMviewService</td></tr>
+    <tr><td>Plugin</td><td><span class="path">src/plugin/</span></td><td>动态加载分词器/UDF</td><td>ObPluginMgr</td></tr>
+    <tr><td>AI Service</td><td><span class="path">share/ai_service/</span></td><td>外部 LLM/Embedding 代理</td><td>ObAIServiceExecutor</td></tr>
+    <tr><td>PL Engine</td><td><span class="path">src/pl/</span></td><td>存储过程 / 包</td><td>ObPL, ObPLPackage</td></tr>
+    <tr><td>ObJIT</td><td><span class="path">src/objit/</span></td><td>LLVM 表达式 JIT</td><td>ObJit</td></tr>
+    <tr><td>嵌入式 API</td><td><span class="path">observer/embed/</span></td><td>C/Python/JNI in-process API</td><td>seekdb.h, ob_embed_impl.cpp</td></tr>
+  </tbody>
+</table>
+
+<div class="callout ok">
+  <b>一句话总结 seekdb 架构</b>：在 <b>OceanBase 的 LSM-Tree + Paxos + 多租户 SQL</b>
+  内核之上，新增了三件「为 Agent 而生」的关键能力——<b>Change Stream 异步索引流水线</b>、
+  <b>两级 HNSW 向量索引</b>、<b>FORK/MERGE COW 沙箱</b>；
+  再通过 <b>嵌入式 C/Python API</b> 让它能像 SQLite 一样 in-process 运行，
+  也能在 Server / 分布式模式下水平扩展。
+</div>
+</section>
+
+<section id="deep-lsm">
+<h2>附 A · LSM-Tree 存储引擎深入</h2>
+
+<h3>A.1 一行数据的一生</h3>
+<div class="mermaid">
+flowchart LR
+  subgraph IN["写入路径"]
+    direction TB
+    DML["INSERT/UPDATE/DELETE"] --> CTX["ObStoreCtx<br>事务上下文 + snapshot_version"]
+    CTX --> KV["ObMTKVBuilder<br>构造 key/value"]
+    KV --> QE["ObQueryEngine<br>双索引 Hash + KeyBTree"]
+    QE --> ROW["ObMvccRow<br>版本链头节点"]
+    ROW --> NODE["ObMvccTransNode<br>新版本挂链头"]
+    NODE --> CLOG["redo: ObMemtableMutator"]
+  end
+  subgraph FREEZE["转储 / 冻结"]
+    direction TB
+    ACT["Active Memtable"] -->|freeze| FROZ["Frozen Memtable<br>只读"]
+    FROZ -->|dump dag| MINI["Mini SSTable"]
+  end
+  subgraph COMPACT["合并 Compaction"]
+    direction TB
+    MINI2["多个 Mini"] -->|Minor Merge| MINOR["Minor SSTable<br>仍多版本"]
+    MINOR -->|每日 Major Merge| MAJOR["Major SSTable<br>基线 单版本"]
+  end
+  IN --> FREEZE --> COMPACT
+</div>
+
+<h3>A.2 LSM 三层物理结构</h3>
+<table>
+  <thead><tr><th>层级</th><th>位置</th><th>形态</th><th>生命周期</th></tr></thead>
+  <tbody>
+    <tr><td>Active Memtable</td><td>内存</td><td>Hash 点查 + KeyBTree 范围 + 多版本链</td><td>写入直到 freeze 触发</td></tr>
+    <tr><td>Frozen Memtable</td><td>内存</td><td>同上但只读，等待 dump</td><td>转储后销毁</td></tr>
+    <tr><td>Mini SSTable</td><td>磁盘</td><td>Macro 2MB → Micro 16KB，行存或列存</td><td>等待 Minor Merge</td></tr>
+    <tr><td>Minor SSTable</td><td>磁盘</td><td>多版本合并，保留快照内活跃版本</td><td>下一次 Major Merge 前</td></tr>
+    <tr><td>Major SSTable (基线)</td><td>磁盘</td><td>单版本，每行保留 snapshot 可见的最新</td><td>下一轮 Major Merge</td></tr>
+  </tbody>
+</table>
+
+<h3>A.3 与 RocksDB 的差异</h3>
+<table>
+  <thead><tr><th>维度</th><th>RocksDB</th><th>seekdb / OB</th></tr></thead>
+  <tbody>
+    <tr><td>层级</td><td>L0..L6 七层 Leveled</td><td>仅 3 类：Memtable / Minor 增量 / Major 基线</td></tr>
+    <tr><td>写放大</td><td>10×+，每层都重写</td><td>"基线 + 累积增量"，写放大显著更低</td></tr>
+    <tr><td>合并触发</td><td>后台异步，时机不可控</td><td><b>每日全集群同步 Major Freeze</b>，所有分区在同一全局快照点合并</td></tr>
+    <tr><td>多版本标识</td><td>seq number</td><td><b>SCN (=GTS 时间戳)</b>，全局单调</td></tr>
+    <tr><td>读路径</td><td>L0..LN 逐层 Bloom 兜底</td><td>Memtable + Minor + Major 三段融合；Bloom + Row Cache + Block Cache 三级 cache</td></tr>
+    <tr><td>分区</td><td>无原生 partition</td><td>tablet 是物理分区单位，跨副本由 PALF Paxos 保证一致</td></tr>
+  </tbody>
+</table>
+
+<h3>A.4 Macro / Micro Block 物理布局</h3>
+<div class="mermaid">
+flowchart TB
+  subgraph MACRO["Macro Block · 默认 2MB"]
+    direction TB
+    HDR["Macro Header<br>checksum / 列描述 / micro index"]
+    M1["Micro Block 1<br>16KB"]
+    M2["Micro Block 2"]
+    M3["Micro Block N"]
+    IDXB["Micro Block Index<br>每微块首键 + offset"]
+    HDR --> M1 --> M2 --> M3 --> IDXB
+  end
+  subgraph SST["SSTable 由多个 Macro 组成 + 多级索引"]
+    direction LR
+    L1["L0 root index"] --> L2["L1 mid index"] --> L3["leaf macro"]
+  end
+</div>
+<ul>
+  <li><b>Micro Block</b> 16KB：解压/解码的最小单位，进 Block Cache。</li>
+  <li><b>列编码</b>（<span class="path">blocksstable/encoding</span>）：DICT、CONST、INTEGER、HEX_STRING、COLUMN_EQUAL、BIT_PACKING…每列独立选最优编码，含 AVX2/Neon 加速。</li>
+  <li><b>列存 Column Group</b>：分析查询只读必要列，I/O 极省。</li>
+  <li><b>Bloom Filter Cache</b>：每个宏块独立训练，过滤负命中。</li>
+  <li><b>多级 Index Block</b>：N 级 B+Tree-like 索引块，定位行只需 O(log N) 次 IO。</li>
+</ul>
+
+<h3>A.5 读路径的"行融合"</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant SQL as DAS scan
+  participant MEM as Active Memtable
+  participant FRZ as Frozen Memtable
+  participant MIN as Minor SST
+  participant MAJ as Major SST baseline
+  SQL->>MEM: get(key, snapshot_scn)
+  MEM-->>SQL: row v3
+  SQL->>FRZ: get(key, snapshot_scn)
+  FRZ-->>SQL: row v2
+  SQL->>MIN: get(key, snapshot_scn)
+  MIN-->>SQL: row v1
+  SQL->>MAJ: get(key)
+  MAJ-->>SQL: row v0 baseline
+  SQL->>SQL: ObRowFuse 按版本从新到旧融合<br>遇 DELETE 标记立即终止
+</div>
+<div class="callout">
+  「DELETE 实际是怎么落的？」<br>
+   写入只生成一个 <code>type=DELETE</code> 的 ObMvccTransNode（tombstone）；读路径融合到 tombstone 即终止；Major Merge 才真正物理回收。
+</div>
+</section>
+
+<section id="deep-mvcc">
+<h2>附 B · MVCC 实现深入</h2>
+
+<h3>B.1 三个核心数据结构</h3>
+<div class="mermaid">
+flowchart TB
+  subgraph MT["ObMemtable"]
+    direction TB
+    QE["ObQueryEngine<br>Hash + KeyBTree 双索引"]
+    QE --> R1["ObMvccRow key=A<br>list_head_ → 链头"]
+    QE --> R2["ObMvccRow key=B"]
+    R1 --> N1A["ObMvccTransNode v3<br>tx=T7 scn=120"]
+    N1A --> N1B["ObMvccTransNode v2<br>tx=T5 scn=110"]
+    N1B --> N1C["ObMvccTransNode v1<br>tx=T2 scn=100"]
+  end
+  TXC["ObMemtableCtx<br>本事务 callback list"]
+  TXC -. 反向引用 .-> N1A
+  TXC -. .-> R2
+</div>
+
+<table>
+  <thead><tr><th>对象</th><th>角色</th><th>关键字段</th></tr></thead>
+  <tbody>
+    <tr><td><b>ObQueryEngine</b></td><td>memtable 索引</td><td>KeyBTree (range scan) + ObMtHash (point get)</td></tr>
+    <tr><td><b>ObMvccRow</b></td><td>一行的版本链头</td><td>list_head_、latest_compact_node_、max_trans_version_、latch_（spin lock）</td></tr>
+    <tr><td><b>ObMvccTransNode</b></td><td>一个版本</td><td>tx_id_、trans_version_、scn_、seq_no_、prev_/next_、type_ = NORMAL/COMPACT/DELETE</td></tr>
+    <tr><td><b>ObMemtableCtx</b></td><td>事务级 ctx</td><td>callback_list_：commit/rollback 时回写所有挂在版本链上的节点</td></tr>
+    <tr><td><b>ObMvccAccCtx</b></td><td>访问 ctx</td><td>snapshot_version_、tx_id_、读写模式</td></tr>
+  </tbody>
+</table>
+
+<h3>B.2 写入：mvcc_write 的并发控制</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant T as Tx T 写入者
+  participant QE as QueryEngine
+  participant R as ObMvccRow
+  T->>QE: lookup(key)
+  QE-->>T: row 存在或新建
+  T->>R: 获取 latch_ (轻量 spin)
+  T->>R: 检查 WW 冲突<br>链头 tx_id != self 且仍 ACTIVE
+  alt 冲突
+    R-->>T: conflict_tx_id 返回
+    T->>T: 走 LockWaitMgr 排队等待
+  else 无冲突
+    T->>R: new ObMvccTransNode<br>tx_id=T, scn=MAX (未提交)
+    R->>R: 插入到 list_head_ 前
+    T->>T: callback 加入 ObMemtableCtx
+  end
+  T->>R: 释放 latch_
+</div>
+
+<div class="callout">
+  <b>关键点：写入时 scn = MAX</b>。这是「未提交版本」的标记，对所有其他事务的读都不可见（因为没有任何快照版本 ≥ MAX）。
+</div>
+
+<h3>B.3 提交：「延迟打版本号」</h3>
+<ol>
+  <li>事务 T 发起 commit；<b>从 GTS 拿到全局严格单调的 commit_version (SCN)</b>。</li>
+  <li>写 redo 到 PALF；多数派落盘后认定 commit 成功。</li>
+  <li>遍历 <code>ObMemtableCtx.callback_list_</code>：把所有该事务挂上去的 TransNode 的 <code>trans_version_</code> 从 MAX 改写为 commit_version。</li>
+  <li>从此该版本对所有 snapshot_version ≥ commit_version 的读可见。</li>
+</ol>
+
+<h3>B.4 回滚 / Rollback to Savepoint</h3>
+<ul>
+  <li><b>整事务 rollback</b>：遍历 callback_list_，把每个 TransNode 标记为 ABORTED 或直接从版本链摘除。</li>
+  <li><b>Rollback to Savepoint</b>：每条 DML 携带 <code>seq_no_</code>；rollback 给出区间 <code>[to_seq, from_seq)</code>，命中区间的节点不可见。Change Stream 也复用同一套区间判定。</li>
+</ul>
+
+<h3>B.5 读：可见性判定算法</h3>
+<div class="mermaid">
+flowchart TB
+  RQ["Read with snapshot_scn=S, reader_tx=R"] --> LOOK["QueryEngine lookup key"]
+  LOOK --> ROW["ObMvccRow"]
+  ROW --> ITER["从 list_head_ 向后遍历 TransNode"]
+  ITER --> JUDGE{"判定该 node"}
+  JUDGE -- "tx_id==R 且 seq_no 未 rollback" --> SEE["可见 (自己刚写的)"]
+  JUDGE -- "tx_id != R 且 trans_version_ <= S 且 COMMITTED" --> SEE
+  JUDGE -- "ACTIVE 或 trans_version_ > S" --> SKIP["跳过 → 看下一个"]
+  SKIP --> ITER
+  SEE --> RET["返回该版本数据 / 或 tombstone"]
+</div>
+
+<h3>B.6 并发原语</h3>
+<table>
+  <tbody>
+    <tr><td><b>ObRowLatch</b></td><td>per-row 自旋锁，纳秒级，仅在写入挂链/链头检查时持有</td></tr>
+    <tr><td><b>QSync / Hazard Pointer</b></td><td>KeyBTree 用 epoch-based reclaim，读不加锁也安全</td></tr>
+    <tr><td><b>ObLockWaitMgr</b></td><td>WW 冲突时挂等；不轮询；锁释放唤醒</td></tr>
+    <tr><td><b>分布式死锁</b></td><td><span class="path">share/deadlock/</span> 基于消息环检测</td></tr>
+  </tbody>
+</table>
+
+<h3>B.7 GTS：MVCC 的心脏</h3>
+<ul>
+  <li><b>GTS 服务</b>（<span class="path">storage/tx/ob_timestamp_service.cpp</span>）：sys 租户的 LS-1 是 GTS leader，提供单调递增的全局 SCN。</li>
+  <li><b>本地缓存</b>：每个 observer 把最近拿到的 GTS 缓存几毫秒，批量分发，避免每事务一次 RPC。</li>
+  <li><b>SCN ≈ HLC</b>：物理时间戳 + 逻辑计数器混合，保证「外部一致性」（Lamport happens-before）。</li>
+</ul>
+
+<h3>B.8 Compact Node（链路压缩）</h3>
+<p>当一行的版本链超过 <code>INDEX_TRIGGER_COUNT (=500)</code> 个节点，会异步在链上插入一个 <b>COMPACT 类型</b> TransNode，把若干历史版本压成一个完整的快照点，缩短后续读取路径。</p>
+
+<h3>B.9 ELR · Early Lock Release</h3>
+<p>OceanBase 的优化：commit 流程内一旦 redo 多数派落盘，<b>立即释放行锁</b>（甚至先于 callback 改写完所有 TransNode）。ObMvccRow 上的 <code>max_elr_trans_version_</code> 记录了 ELR 后的最大版本，避免脏读。</p>
+
+<div class="callout">
+  「为什么写不阻塞读？」三个理由：(1) 写新增链头 + 旧版本仍可见；(2) 读不申请行锁，只做版本比较；(3) latch_ 只在挂链瞬间持有，纳秒级，不与读冲突（读通过 RCU/Hazard 安全遍历）。
+</div>
+</section>
+
+<section id="deep-vector-arch">
+<h2>附 C · 向量索引层架构深入</h2>
+
+<h3>C.1 一个向量列在内核里到底有几张「表」？</h3>
+<p>看似一条 <code>VECTOR INDEX idx_vec (emb) WITH (TYPE=hnsw)</code>，seekdb 实际在内核创建 <b>5 张辅助 tablet</b>：</p>
+<table>
+  <thead><tr><th>tablet</th><th>角色</th><th>形态</th></tr></thead>
+  <tbody>
+    <tr><td><b>data_tablet</b></td><td>原表行存（用户表）</td><td>普通行存 SSTable</td></tr>
+    <tr><td><b>rowkey_vid</b></td><td>rowkey → vid 映射</td><td>普通二级索引</td></tr>
+    <tr><td><b>vid_rowkey (delta_buffer)</b></td><td>vid → 向量 + 行键的<b>增量缓冲</b></td><td>"delta" 部分，对应 <b>Delta HNSW</b> 的真身</td></tr>
+    <tr><td><b>vbitmap (vid bitmap)</b></td><td>已删除/活跃 vid 位图</td><td>支持过滤推下 + 删除标记</td></tr>
+    <tr><td><b>snapshot</b></td><td>"快照"索引数据</td><td>序列化后的 <b>Snapshot HNSW</b> 图结构，写到 SSTable</td></tr>
+  </tbody>
+</table>
+<p>这 5 张表绑定在一起，由 <span class="path">ObPluginVectorIndexAdaptor</span> 统一管理，对外只暴露「一个向量索引」概念。</p>
+
+<h3>C.2 Adaptor 把 5 张表黏成「两级 HNSW」</h3>
+<div class="mermaid">
+flowchart TB
+  USER["用户表<br>data_tablet"] -->|insert| RWK["rowkey_vid<br>分配 vid"]
+  RWK -->|新 vid + emb| DELTA["vid_rowkey delta_buffer<br>= Delta HNSW (内存图)"]
+  DELTA -. 周期 rotate .-> SNAP["snapshot<br>= Snapshot HNSW (持久化图)"]
+  DEL["DELETE 行"] --> BMAP["vbitmap<br>标 vid 失效"]
+  subgraph QUERY["查询"]
+    ANN["ANN(query_vec, K)"] --> SAD["search delta HNSW"]
+    ANN --> SAS["search snapshot HNSW"]
+    SAD --> FBM["filter by vbitmap<br>剔除已删 vid"]
+    SAS --> FBM
+    FBM --> MRG["合并 K + 距离重排"]
+    MRG --> LOOK["按 vid 回 rowkey_vid → 回 data_tablet 取行"]
+  end
+</div>
+
+<h3>C.3 关键对象</h3>
+<table>
+  <thead><tr><th>对象</th><th>作用</th></tr></thead>
+  <tbody>
+    <tr><td><b>ObPluginVectorIndexService</b></td><td>租户级单例 (MTL)；管理本租户全部向量索引的生命周期</td></tr>
+    <tr><td><b>ObPluginVectorIndexMgr</b></td><td>per-LS 管理器；持有 <code>tablet_id → Adapter</code> 的注册表</td></tr>
+    <tr><td><b>ObPluginVectorIndexAdaptor</b></td><td>一个向量索引实例；持有 5 个 tablet_id、delta/snapshot 句柄、写锁、引用计数</td></tr>
+    <tr><td><b>ObVectorQueryAdaptorResultContext</b></td><td>一次 ANN 查询的 ctx：topK / ef_search / 过滤 bitmap / 结果数组</td></tr>
+    <tr><td><b>ObVsagMemContext</b></td><td>VSAG 内存上下文，托管所有 HNSW 节点分配</td></tr>
+    <tr><td><b>ObVsagSearchAlloc</b></td><td>查询期独立 allocator，避免污染主分配器</td></tr>
+    <tr><td><b>ObHnswBitmapFilter</b></td><td>实现 VSAG 的 FilterInterface，把 SQL 标量谓词转成 bitmap 在 ANN 内部过滤</td></tr>
+    <tr><td><b>ObPluginVectorIndexScheduler</b></td><td>后台调度：delta 满 → snapshot 切换、HNSW 重建、合并</td></tr>
+    <tr><td><b>ObHnswEmbedMgr</b></td><td>位于 storage/ddl，把 HNSW 序列化字节流写成 SSTable 微块</td></tr>
+  </tbody>
+</table>
+
+<h3>C.4 写路径：从 INSERT 到 Delta HNSW 出现一个点</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant U as INSERT
+  participant TX as Tx + Memtable
+  participant PALF as PALF
+  participant CS as Change Stream
+  participant AD as VectorIndexAdaptor
+  participant DH as Delta HNSW
+  U->>TX: 写 data_tablet + rowkey_vid (vid 自增)
+  TX->>PALF: redo append
+  PALF-->>U: commit OK (返回客户端)
+  PALF->>CS: ObCSFetcher 拉 redo
+  CS->>AD: AsyncIndex 插件投递 (vid, emb_vector)
+  AD->>DH: add_node(vid, vec)<br>VSAG hnsw_index->add()
+  Note over DH: 该 vid 立刻对 ANN 可见
+</div>
+
+<h3>C.5 Delta → Snapshot 切换 (相当于向量索引的 minor freeze)</h3>
+<ul>
+  <li>触发：delta 节点数超阈值 / 内存超阈值 / 主动调用 <code>REFRESH INDEX</code>。</li>
+  <li>Scheduler 把当前 delta 「冻结」，新写入流向新的空 delta。</li>
+  <li>冻结 delta 与现有 snapshot 合并（直接增量插入或全量重建）→ 序列化 → 写 snapshot tablet 的 SSTable。</li>
+  <li>切换完成后，旧 delta 销毁，引用计数归零的 vsag 内存释放。</li>
+</ul>
+<div class="callout">
+  <b>查询永远只扫两个索引</b>：无论写了多少数据，活跃 HNSW 数量恒为 2 (delta + snapshot)。这是 P99 抖动 1.1× 的根因。
+</div>
+
+<h3>C.6 查询路径：Hybrid 过滤如何下推</h3>
+<div class="mermaid">
+flowchart LR
+  PLAN["SQL 计划<br>WHERE author=42 AND MATCH(...) ORDER BY l2(emb,?)"] --> DAS["ObVectorIndexLookupOp"]
+  DAS --> SCALAR["1) 先评估标量谓词<br>得到候选 rowkey 集合"]
+  SCALAR --> VID["2) 转成 vid bitmap"]
+  VID --> FILT["3) 注入 ObHnswBitmapFilter"]
+  FILT --> DELTA2["4) ANN @ delta HNSW (带 filter)"]
+  FILT --> SNAP2["4) ANN @ snapshot HNSW (带 filter)"]
+  DELTA2 --> MRG2["5) 合并 top-K"]
+  SNAP2 --> MRG2
+  MRG2 --> LOK2["6) 回 rowkey_vid 取 rowkey，回主表取整行"]
+</div>
+<p>关键：<b>filter 是下推到 HNSW 图遍历内部</b>的，而非 ANN 出 K 后再过滤——后者会因被过滤掉太多而出现「召回不足」需要放大 ef_search 的恶性循环。</p>
+
+<h3>C.7 支持的算法族</h3>
+<table>
+  <thead><tr><th>类型</th><th>调用引擎</th><th>关键参数</th></tr></thead>
+  <tbody>
+    <tr><td><b>HNSW</b></td><td>VSAG hnsw</td><td>M, ef_construction, ef_search</td></tr>
+    <tr><td><b>HNSW_BQ</b></td><td>VSAG hnsw + binary quant</td><td>同上 + bq 量化层</td></tr>
+    <tr><td><b>IVF_FLAT</b></td><td>seekdb 自管</td><td>nlist, nprobe；用 ObVectorKmeansCtx 训练</td></tr>
+    <tr><td><b>IVF_SQ8</b></td><td>同上 + 标量量化</td><td>nlist, nprobe</td></tr>
+    <tr><td><b>IVF_PQ</b></td><td>同上 + 乘积量化</td><td>nlist, m (子空间数), nbits</td></tr>
+  </tbody>
+</table>
+<p>IVF 系列的桶（centroid）数据走 <span class="path">ObVectorIndexIvfCacheMgr</span> + <span class="path">ObIvfAsyncTaskExecutor</span> 异步训练与刷新。</p>
+</section>
+
+<section id="deep-hnsw">
+<h2>附 D · HNSW 算法与工程实现</h2>
+
+<h3>D.1 算法直觉：跳表 + 邻居图</h3>
+<p>HNSW (Hierarchical Navigable Small World) 把 ANN 看作「在一张图上做最短路径搜索」：</p>
+<ul>
+  <li>把每个向量当作图的一个节点，节点之间通过<b>邻接边</b>相连；</li>
+  <li>由于 small-world 特性，从任何点出发，沿"距离 query 最近的邻居"贪心走，期望 O(log N) 步可到 query 的近邻；</li>
+  <li>为了避免一开始就被困在局部最优，引入<b>多层</b>：高层稀疏（节点少、边长），用作"高速公路"；底层稠密（节点全、边短），用作"精修"。</li>
+</ul>
+
+<h3>D.2 图的层次结构</h3>
+<div class="mermaid">
+flowchart TB
+  subgraph L2["Layer 2 · 最稀疏 (e.g. 1% 节点)"]
+    E["entry point"]
+    L2A["o"] --- L2B["o"]
+    E --- L2A
+  end
+  subgraph L1["Layer 1"]
+    L1A["o"] --- L1B["o"]
+    L1B --- L1C["o"]
+    L1A --- L1C
+  end
+  subgraph L0["Layer 0 · 全部节点 + 全部邻居 (M_max 条边)"]
+    A0["o"] --- B0["o"]
+    B0 --- C0["o"]
+    A0 --- D0["o"]
+    D0 --- C0
+  end
+  E -. 同一节点不同副本 .-> L1A
+  L1C -. .-> A0
+</div>
+
+<h3>D.3 关键参数</h3>
+<table>
+  <thead><tr><th>参数</th><th>含义</th><th>取值经验</th></tr></thead>
+  <tbody>
+    <tr><td><b>M</b></td><td>每个节点保留的双向邻居上限 (高层) </td><td>16（默认），越大召回越高、内存越大</td></tr>
+    <tr><td><b>M_max0</b></td><td>底层 Layer 0 的邻居上限</td><td>通常 2 × M</td></tr>
+    <tr><td><b>ef_construction</b></td><td>建图时的候选集大小</td><td>200–512，影响构图质量</td></tr>
+    <tr><td><b>ef_search</b></td><td>查询时维护的候选集大小</td><td>topK 的 2–10 倍；越大召回越高、延迟越大</td></tr>
+    <tr><td><b>mL (= 1 / ln(M))</b></td><td>新节点最高层的指数分布参数</td><td>由 M 决定，无需调</td></tr>
+  </tbody>
+</table>
+
+<h3>D.4 插入算法（伪流程）</h3>
+<div class="mermaid">
+sequenceDiagram
+  participant U as Insert(vec)
+  participant H as HNSW Index
+  U->>H: 随机一个最高层 l = floor(-ln(uniform()) * mL)
+  H->>H: 从 entry_point 在 layer L..l+1 贪心下行，每层只保留 1 个最近邻
+  H->>H: 在 layer l..0 上做 ef_construction 的 beam search 拿候选集
+  H->>H: 在候选中用启发式选 M 个邻居 (避免聚簇)
+  H->>H: 双向连边；若邻居超 M 上限则收缩
+  alt l > 当前最高层
+    H->>H: 更新 entry_point 为新节点
+  end
+</div>
+
+<h3>D.5 查询算法</h3>
+<ol>
+  <li>从 entry_point 出发，沿 layer L → 1 贪心下行：每层用 ef=1 的 best-first 搜索，找到该层离 query 最近的点。</li>
+  <li>到达 layer 0，把上一层的最近点作为起点，做 <code>ef_search</code> 大小的 best-first 搜索（维护两个堆：candidates 最小堆 + W 最大堆）。</li>
+  <li>循环：从 candidates 弹出最近点 c；若 dist(c, q) &gt; W 堆顶 → 提前停止；否则展开 c 的邻居，未访问过的点计算距离，放入 candidates 和 W。</li>
+  <li>最终返回 W 中的 top-K。</li>
+</ol>
+
+<div class="mermaid">
+flowchart LR
+  Q["query vec"] --> EP["entry_point @ Top Layer"]
+  EP --> G1["greedy descent<br>逐层只保留 1 近邻"]
+  G1 --> L0Q["到达 Layer 0"]
+  L0Q --> BFS["beam search<br>ef_search 大小候选集"]
+  BFS --> FLT["可选: BitmapFilter 跳过被过滤 vid"]
+  FLT --> OUT["top-K"]
+</div>
+
+<h3>D.6 seekdb 的工程化要点</h3>
+<table>
+  <thead><tr><th>问题</th><th>解决</th></tr></thead>
+  <tbody>
+    <tr><td><b>动态写入下 entry_point 失效</b></td><td>VSAG 内部用版本号；Adapter 同时维护 delta 与 snapshot，新写入只入 delta，避免破坏 snapshot 图结构</td></tr>
+    <tr><td><b>删除</b></td><td>HNSW 不支持删点；用 <b>vbitmap tablet</b> 标记软删除，查询时 FilterInterface 过滤；Major Merge 时随 Snapshot 重建</td></tr>
+    <tr><td><b>过滤后召回坍塌</b></td><td>不在 ANN 出 K 后过滤，而是用 <b>ObHnswBitmapFilter</b> 在 best-first 搜索<b>每次展开邻居时</b>就过滤；并自适应放大 ef_search</td></tr>
+    <tr><td><b>持久化</b></td><td>Snapshot HNSW 整图序列化为字节流，按 16KB micro block 切分，写到 snapshot tablet 的 SSTable；重启 mmap 加载</td></tr>
+    <tr><td><b>并发查询</b></td><td>整图只读时无锁；只有 add/refresh 期间 Adapter 持写锁，写时其他查询自动落到旧版本</td></tr>
+    <tr><td><b>内存隔离</b></td><td>ObVsagMemContext 把 VSAG 内部 alloc 全部托管到租户 MemoryContext，超限被熔断</td></tr>
+    <tr><td><b>距离函数</b></td><td>L2 / IP / Cosine 三选一；SIMD (AVX2/Neon) 内联</td></tr>
+  </tbody>
+</table>
+
+<h3>D.7 复杂度</h3>
+<table>
+  <tbody>
+    <tr><td>插入</td><td>期望 O(log N) × M 邻居筛选</td></tr>
+    <tr><td>查询</td><td>期望 O(log N + ef_search × M)</td></tr>
+    <tr><td>内存</td><td>每点 ~ M × 4 字节 邻居指针 × 层数；典型 384 维 + M=16 ≈ 1.6KB / 点</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  「为什么 ef_search 调大就慢、调小召回就低？」<br>
+  ef_search 是 best-first 的候选集大小：候选越大，越不容易陷入局部最优（召回↑），但每次都要计算距离并维护堆（延迟↑）。本质是图搜索的 beam width 调参。
+</div>
+
+<div class="callout warn">
+  <b>陷阱题</b>「HNSW 支持范围 + 向量混合查询吗？」<br>
+  HNSW 本身不支持。要么前过滤（pre-filter，先标量再 ANN，<b>seekdb 的做法</b>），要么后过滤（post-filter，召回多了再裁），要么用 IVF + 倒排（部分场景）。seekdb 把过滤位图传给 FilterInterface，所以是<b>带 filter 的图搜索</b>。
+</div>
+</section>
+
+<section id="deep-cs">
+<h2>附 E · Change Stream 正确性与背压</h2>
+
+<h3>E.1 为什么 Fetcher 是单线程</h3>
+<p>PALF 是顺序日志。索引构建必须保证<b>同一行的事件按顺序消费</b>：先 INSERT 后 UPDATE 必须按这个顺序进入 HNSW，否则最终状态错。所以 Fetcher 单线程顺序拉日志，并按 <code>tx_id</code> 聚合，只在事务 commit 时整事务下推。</p>
+
+<h3>E.2 同事务多 DML 的顺序</h3>
+<ul>
+  <li>每个 DML 携带 <code>stmt_seq_no</code> + <code>row_seq_no</code>。</li>
+  <li>Dispatcher 切片到 worker 时，<b>按 heap_pk 哈希</b>选 worker —— 同一主键永远落到同一 worker，保证同行多事件顺序执行；不同行允许并行（吞吐源）。</li>
+</ul>
+
+<h3>E.3 Rollback to Savepoint 的正确性</h3>
+<div class="mermaid">
+flowchart LR
+  TX["事务 T"] --> S1["INSERT a seq=10"]
+  S1 --> SP["SAVEPOINT sp1"]
+  SP --> S2["UPDATE b seq=20"]
+  S2 --> S3["DELETE a seq=30"]
+  S3 --> RB["ROLLBACK TO sp1<br>产生 rollback 区间"]
+  RB --> S4["COMMIT"]
+  S4 --> CS2["Change Stream 看到所有 redo + rollback 区间"]
+  CS2 --> SEL["对 seq_no 命中 rollback 区间的行跳过"]
+  SEL --> ONLY["最终只把 INSERT a 投到 HNSW"]
+</div>
+<p>这保证索引不会出现「曾发生又被回滚」的脏数据。</p>
+
+<h3>E.4 背压</h3>
+<table>
+  <tbody>
+    <tr><td>Fetcher → Dispatcher</td><td>固定容量 ring buffer；满则 Fetcher 暂停拉 PALF（PALF 自带保留期，不丢日志）</td></tr>
+    <tr><td>Dispatcher → Worker</td><td>LinkQueue 自适应线程数；Worker 慢则 Dispatcher 减速</td></tr>
+    <tr><td>Worker → 索引</td><td>VSAG 内存超限触发熔断 → 主动 freeze delta → 切 snapshot，腾空内存</td></tr>
+  </tbody>
+</table>
+
+<h3>E.5 refresh_scn 与可见性</h3>
+<ul>
+  <li>Fetcher 周期性把 <code>refresh_scn</code> 写入全局状态表。</li>
+  <li>查询路径调用 <code>refresh_index()</code> = 等待 <code>refresh_scn ≥ 用户期望 snapshot</code>。</li>
+  <li>嵌入式模式下 pyseekdb 的 <code>refresh_index()</code> 就是这个开关。</li>
+</ul>
+
+<div class="callout">
+  「索引落后数据多少？」<br>
+  正常 ~ ms 级；高写入压力下取决于 worker 数与向量维度。但<b>不会无限落后</b>——内存到上限就强制 freeze + snapshot 切换，把队列腾空。
+</div>
+</section>
+
+<section id="deep-write-path">
+<h2>附 F · 写路径全链路时序</h2>
+
+<div class="mermaid">
+sequenceDiagram
+  participant C as Client
+  participant OB as observer / OMT worker
+  participant SQL as ObSql Parser-Optimizer
+  participant DAS as DAS Insert Op
+  participant TX as TransService
+  participant MT as Memtable QueryEngine
+  participant PALF as PALF Paxos
+  participant CS as ChangeStream
+  participant VEC as Vector Adaptor
+  C->>OB: INSERT INTO t VALUES emb
+  OB->>SQL: parse + plan
+  SQL->>DAS: das_insert_op
+  DAS->>TX: trans_begin / join
+  DAS->>TX: get_store_ctx snapshot_scn
+  DAS->>MT: mvcc_write key,val
+  MT->>MT: 找/建 ObMvccRow
+  MT->>MT: 抢 latch_, 检查 WW 冲突
+  MT->>MT: 挂 ObMvccTransNode scn=MAX
+  MT->>TX: callback 入 ObMemtableCtx
+  TX->>PALF: append redo
+  PALF->>PALF: 多数派落盘
+  PALF-->>TX: on_commit scn=X
+  TX->>MT: 回填 callback 的 trans_version_ = X
+  TX-->>OB: end_trans_cb
+  OB-->>C: OK Packet ACK
+  Note over PALF,VEC: 以下完全异步，不阻塞客户端
+  PALF->>CS: ObCSFetcher 顺序拉 redo
+  CS->>CS: 按 tx_id 组装 + 等 commit
+  CS->>VEC: Dispatcher → Worker → AsyncIndex Plugin
+  VEC->>VEC: add_node vid,vec → Delta HNSW
+</div>
+
+<h3>F.1 关键耗时分解</h3>
+<table>
+  <thead><tr><th>阶段</th><th>典型耗时</th><th>说明</th></tr></thead>
+  <tbody>
+    <tr><td>SQL 解析 + plan</td><td>10–100 μs</td><td>命中 plan cache 可 &lt; 5 μs</td></tr>
+    <tr><td>mvcc_write 挂链</td><td>1–5 μs</td><td>latch 自旋 + 链头比较</td></tr>
+    <tr><td>PALF append 多数派</td><td>1–5 ms</td><td>跨节点 RTT 主导</td></tr>
+    <tr><td>客户端 ACK</td><td>1–6 ms</td><td>= 上面之和（SLA 关键）</td></tr>
+    <tr><td>异步索引落地</td><td>1–几十 ms</td><td>取决于负载与维度，<b>不阻塞客户端</b></td></tr>
+  </tbody>
+</table>
+
+<h3>F.2 嵌入式模式下的差异</h3>
+<ul>
+  <li>无网络栈，无 RPC：客户端 = 进程本身。</li>
+  <li>PALF 仍在跑（写本地磁盘），但只单副本，"多数派" = 自己。append 耗时 ~ 几百 μs。</li>
+  <li>Change Stream 同样运行，对应用透明。</li>
+</ul>
+</section>
+
+<section id="deep-interview">
+<h2>附 G · 常见问题回答</h2>
+
+<h3>Q1 · seekdb 怎么做到写入和查询并发还不抖动？</h3>
+<ol>
+  <li><b>写不碰索引</b>：DML 只写 memtable + PALF redo；索引由 Change Stream 异步消费。</li>
+  <li><b>索引层数恒为 2</b>：Delta + Snapshot；查询永远只对两个 HNSW 做 ANN，不会随写入累积膨胀。</li>
+  <li><b>读不加行锁</b>：MVCC 用版本链 + SCN 比较解决可见性，避免读写竞争。</li>
+  <li><b>资源隔离</b>：OMT 给每个租户独立 worker pool + memstore 配额。</li>
+</ol>
+
+<h3>Q2 · 刚 INSERT 完为什么 APPROXIMATE 查询有可能查不到？</h3>
+<p>因为向量索引是异步构建的。解法：</p>
+<ul>
+  <li>显式 <code>refresh_index()</code>（pyseekdb 提供）；</li>
+  <li>SQL 加 hint 等索引追平；</li>
+  <li>小表场景直接走精确扫描，不走 ANN。</li>
+</ul>
+
+<h3>Q3 · FORK DATABASE 怎么做到秒级、零拷贝？</h3>
+<ol>
+  <li>RootServer 在 schema 层创建新 db + 新 table_id + 新 tablet_id（纯元数据，秒级）。</li>
+  <li>每个新 tablet 标记 COW，引用原 tablet 的 SSTable 宏块，<b>仅引用计数 +1</b>，不复制数据。</li>
+  <li>沙箱写入只写沙箱自己的 memtable / SSTable。读时融合「共享基线 + 沙箱增量」。</li>
+  <li>MERGE 按 STRATEGY 解冲突（FAIL/THEIRS/OURS）打回主库；DROP 直接释放引用，引用计数归零时回收宏块。</li>
+</ol>
+
+<h3>Q4 · DELETE 一个向量，HNSW 里这点为什么不能立刻拿掉？</h3>
+<p>HNSW 是双向邻居图，删点会让邻居出现悬挂边，破坏 small-world 性质。所以 seekdb 用 <b>tombstone</b>：
+DELETE 时写一个 DELETE TransNode + 把 vid 设入 <span class="path">vbitmap</span>；查询时 FilterInterface 跳过；
+只有 Snapshot 重建 / Major Merge 时才物理去除节点。</p>
+
+<h3>Q5 · HNSW 的 M 调大有什么后果？</h3>
+<ul>
+  <li>召回↑（每点邻居更多，更难陷入局部最优）；</li>
+  <li>内存↑（线性增长）；</li>
+  <li>构图时间↑（每次插入更新更多邻居）；</li>
+  <li>查询延迟略↑（展开邻居更多次距离计算）。</li>
+</ul>
+<p>经验：M=16 通用够用；高维稀疏数据可调到 32–48。</p>
+
+<h3>Q6 · Hybrid 查询里标量过滤掉 90%，ANN 还能召回吗？</h3>
+<table>
+  <tbody>
+    <tr><td><b>后过滤 (post-filter)</b></td><td>先 ANN 取 topK，再过滤——容易召回崩溃（K 个候选可能全被过滤掉）</td></tr>
+    <tr><td><b>seekdb 做法 (内嵌过滤)</b></td><td>把谓词转 bitmap 注入 HNSW FilterInterface；图搜索每次邻居展开时即过滤；自适应放大 ef_search 直至找到 K 个真正有效结果</td></tr>
+  </tbody>
+</table>
+<p>因此即便选择率 ≤ 10%，召回率依然能保持。</p>
+
+<h3>Q7 · 事务 commit 之后，follower 还没重放完，从 follower 读会怎样？</h3>
+<ul>
+  <li>读请求要求 snapshot_scn 已被本节点重放到（applyservice/replayservice 维护进度）。</li>
+  <li>若 follower 没追上：(a) 在 follower 上等到追平再读，(b) 路由器把请求重定向到 leader。具体由读策略与 ObProxy 决定。</li>
+  <li>强一致读总是从 leader / 多数派读。</li>
+</ul>
+
+<h3>Q8 · seekdb 比 Milvus / ES 在 Streaming 场景快的本质？</h3>
+<ol>
+  <li><b>索引段数不发散</b>：Milvus 每次刷盘产生一个 segment，写久了几百段，并发查询时 N×M 段 × 线程争抢 CPU；seekdb 索引数永远是 2。</li>
+  <li><b>写路径与索引解耦</b>：seekdb 写 commit 不等索引；ES 的 refresh 是同步阻塞。</li>
+  <li><b>MVCC 不抢锁</b>：高并发下读完全无锁；ES 的 segment 锁、Milvus 的 growing segment lock 都会成为瓶颈。</li>
+  <li><b>同一存储 + 同一执行器</b>：标量、向量、全文用同一套 SQL 计划下推到存储，比客户端 N+1 拼接快一个数量级。</li>
+</ol>
+
+<h3>Q9 · GTS 挂了集群还能写吗？</h3>
+<ul>
+  <li>GTS leader 故障 → 触发 LS-1 选主，新 leader 接管（PALF 保证）；典型 RTO &lt; 8s。</li>
+  <li>切主期间事务拿不到 commit_version，会等待；不会读到旧版本（SCN 全局单调）。</li>
+  <li>容灾架构中可启用 standby_timestamp_service 减少 RTO。</li>
+</ul>
+
+<h3>Q10 · 一条 SQL 同时含 vector + fulltext + scalar 怎么执行？</h3>
+<p>Optimizer 生成<b>一个 plan</b>：</p>
+<ol>
+  <li>标量索引/范围查询先产生候选行集合 → 转 bitmap；</li>
+  <li>把 bitmap 注入 ANN 的 FilterInterface（前过滤），向量索引出 topK；</li>
+  <li>同时倒排表按词命中产生 doc_id 集合；</li>
+  <li>执行器内部按 SQL ORDER BY 合并打分（向量距离 + BM25 + 标量 score），最终 top-K 回主表取整行。</li>
+</ol>
+<p>关键：<b>所有过滤都在存储/索引层完成，结果集没有客户端拼接</b>，这是性能/正确性优势的核心。</p>
+
+<div class="callout ok">
+  你怎么验证一致性？答：(1) Major Merge 时做全局校验和 (column_checksum) 对比三副本；(2) ddl_checksum 保证 schema 变更后数据不丢；(3) PALF 自带 Paxos 多数派认定 commit；(4) ObLockWaitMgr + 分布式死锁检测器保证并发正确。
+</div>
+</section>
+
+</div>
+
+<footer>
+  Generated from seekdb source tree (~/Github/seekdb) · Mermaid diagrams render in-browser ·
+  Section anchors: #overview … #summary · #deep-lsm … #deep-interview
+</footer>
+
+</body>
+</html>
