@@ -422,7 +422,7 @@ sequenceDiagram
   participant MP as obmp_query
   participant SQL as ObSql
   participant RS as Resolver
-  participant OPT as Optimizer
+  participant OPTI as Optimizer
   participant EX as Executor
   participant DAS as DAS Layer
   participant ST as Storage
@@ -431,8 +431,8 @@ sequenceDiagram
   SQL->>SQL: Parse → ParseNode
   SQL->>RS: resolve
   RS->>SQL: stmt（逻辑 AST）
-  SQL->>OPT: rewrite + plan
-  OPT-->>SQL: Physical Plan
+  SQL->>OPTI: rewrite + plan
+  OPTI-->>SQL: Physical Plan
   SQL->>EX: open(plan)
   EX->>DAS: scan / dml ops
   DAS->>ST: 行级读写（含向量/FTS lookup）
@@ -1085,7 +1085,7 @@ sequenceDiagram
   U->>RS: FORK DATABASE agent_state TO sandbox_42
   RS->>LS: 创建共享 tablet 引用，标记 COW
   RS-->>U: OK（秒级）
-  U->>U: USE sandbox_42; 大量 INSERT / UPDATE
+  U->>U: USE sandbox_42； 大量 INSERT / UPDATE
   U->>RS: MERGE TABLE sandbox_42.memory INTO agent_state.memory STRATEGY THEIRS
   RS->>LS: 把 sandbox 私有增量打回 main
   RS-->>U: OK
@@ -1249,7 +1249,7 @@ flowchart TB
   end
   TXC["ObMemtableCtx<br>本事务 callback list"]
   TXC -. 反向引用 .-> N1A
-  TXC -. .-> R2
+  TXC -. 关联 .-> R2
 </div>
 
 <table>
@@ -1483,7 +1483,7 @@ flowchart TB
     D0 --- C0
   end
   E -. 同一节点不同副本 .-> L1A
-  L1C -. .-> A0
+  L1C -. 同一节点 .-> A0
 </div>
 
 <h3>D.3 关键参数</h3>
