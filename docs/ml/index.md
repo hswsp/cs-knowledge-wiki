@@ -21,7 +21,7 @@
 - [扩散模型 (Diffusion Models)](./foundations/diffusion-models)
 - [从规则到表示学习](./foundations/representation-learning)
 - [信息检索基础](./foundations/information-retrieval)
-- [从 KV Cache 到 AI 内存系统：大模型推理架构的演进](./从 KV Cache 到 AI 内存系统：大模型推理架构的演进)
+- [从 KV Cache 到 AI 内存系统：大模型推理架构的演进](<./从 KV Cache 到 AI 内存系统：大模型推理架构的演进>)
 
 ## Transformer 解读
 
