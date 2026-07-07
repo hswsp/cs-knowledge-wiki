@@ -9,21 +9,21 @@
 #### 计算密集型特征
 Prefill 阶段需要处理用户输入的完整提示（ Prompt ），计算所有 Token 的 Key 和 Value 向量，并执行完整的Self-Attention计算。这个阶段的核心特点是：
 
-1. **高计算密度**：需要计算输入序列中所有 Token 之间的 Attention 关系，计算复杂度为$ O(n²d) $，其中$ n $是序列长度，$ d $是模型维度。
+1. **高计算密度**：需要计算输入序列中所有 Token 之间的 Attention 关系，计算复杂度为$O(n²d)$，其中$n$是序列长度，$d$是模型维度。
 2. **并行性高**：由于所有输入 Token已知，可以采用高度并行的矩阵运算， GPU计算单元利用率接近饱和。
 3. **延迟敏感**： Prefill 阶段的延迟直接决定了**首 Token 时间（ Time To First Token,TTFT）**，这是用户体验的关键指标。
 
 #### 延迟分析
 Prefill延迟可以用以下公式近似表示：
 
-$ T_{\text{prefill}} \approx \frac{2 \times n \times d_{\text{model}}^2 + n^2 \times d_{\text{head}} \times n_{\text{layers}}}{\text{GPU\_FLOPS} \times \text{utilization}} $
+$T_{\text{prefill}} \approx \frac{2 \times n \times d_{\text{model}}^2 + n^2 \times d_{\text{head}} \times n_{\text{layers}}}{\text{GPU\_FLOPS} \times \text{utilization}}$
 
 其中：
 
-+ $ n $: 输入序列长度
-+ $ d_{model} $: 模型隐藏层维度
-+ $ d_{head} $: Attention 头维度 
-+ $ n_{layers} $: 模型层数
++ $n$: 输入序列长度
++ $d_{model}$: 模型隐藏层维度
++ $d_{head}$: Attention 头维度 
++ $n_{layers}$: 模型层数
 
 对于典型的Llama-2-70B模型（`d_model=8192`, `n_layers=80`, `n_heads=64`）：
 
@@ -41,9 +41,9 @@ Decode 阶段采用自回归方式逐 Token 生成输出，每次只处理一个
 #### 延迟分析
 Decode延迟主要**由内存访问决定**
 
-$ T_{\text{decode}} \approx \frac{\text{KV\_Cache\_Size} \times n_{\text{layers}}}{\text{Memory\_Bandwidth}} + \text{Compute\_Latency} 
+$T_{\text{decode}} \approx \frac{\text{KV\_Cache\_Size} \times n_{\text{layers}}}{\text{Memory\_Bandwidth}} + \text{Compute\_Latency} 
 \\
-\approx \frac{2 \times n_{\text{layers}} \times d_{\text{model}} \times \text{seq\_len} \times 2\ \text{bytes}}{\text{Memory\_Bandwidth}} $
+\approx \frac{2 \times n_{\text{layers}} \times d_{\text{model}} \times \text{seq\_len} \times 2\ \text{bytes}}{\text{Memory\_Bandwidth}}$
 
 对于Llama-2-70B在A100 GPU上：
 

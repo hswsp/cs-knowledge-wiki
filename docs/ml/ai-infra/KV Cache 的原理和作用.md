@@ -9,17 +9,17 @@ KV Cache是LLM推理优化的核心技术，它避免了在Decode阶段重复计
 ![](https://images.spumn.eu.cc/ml/ai-infra/1781594646074-ac6f4f7e-7cc1-4d7d-9292-9a8c92b5a4e4.svg)
 
 ### 数学原理
-在Self-Attention中，第 $ t $ 个token的输出：
+在Self-Attention中，第 $t$ 个token的输出：
 
-$ \text{Attention}(\mathbf{q}_t, \mathbf{K}{\leq t}, \mathbf{V}{\leq t}) =\text{softmax}\left(\frac{\mathbf{q}_t \mathbf{K}_{\leq t}^T}{\sqrt{d_k}}\right)\mathbf{V}_{\leq t} $
+$\text{Attention}(\mathbf{q}_t, \mathbf{K}{\leq t}, \mathbf{V}{\leq t}) =\text{softmax}\left(\frac{\mathbf{q}_t \mathbf{K}_{\leq t}^T}{\sqrt{d_k}}\right)\mathbf{V}_{\leq t}$
 
 其中：
 
-+ $ \mathbf{q}t $ 是当前 token 的 Query （需要实时计算）
-+ $ \mathbf{K}_{\leq t} =[\mathbf{K}1, \mathbf{K}_2, ..., \mathbf{K}_t] $ 是所有前面token的Key
-+ $ \mathbf{V}_{\leq t}= [\mathbf{V}_1, \mathbf{V}_2, ..., \mathbf{V}_t] $ 是所有前面token的Value
++ $\mathbf{q}t$ 是当前 token 的 Query （需要实时计算）
++ $\mathbf{K}_{\leq t} =[\mathbf{K}1, \mathbf{K}_2, ..., \mathbf{K}_t]$ 是所有前面token的Key
++ $\mathbf{V}_{\leq t}= [\mathbf{V}_1, \mathbf{V}_2, ..., \mathbf{V}_t]$ 是所有前面token的Value
 
-KV Cache存储的就是 $ \mathbf{K}_{\leq t} $ 和 $ \mathbf{V}_{\leq t} $。
+KV Cache存储的就是 $\mathbf{K}_{\leq t}$ 和 $\mathbf{V}_{\leq t}$。
 
 ## 2.5.2 KV Cache 内存占用计算
 KV Cache 的内存占用是推理系统设计的核心考量。
@@ -27,29 +27,29 @@ KV Cache 的内存占用是推理系统设计的核心考量。
 ### 计算公式
 对于单条请求：
 
-$ \text{KV Cache Size} = 2 \times \text{num_layers} \times \text{num_heads} \times d_{head} \times \text{seq_len} \times \text{bytes_per_element} $
+$\text{KV Cache Size} = 2 \times \text{num_layers} \times \text{num_heads} \times d_{head} \times \text{seq_len} \times \text{bytes_per_element}$
 
-简化公式（假设 $ d_{model} = \text{num_heads} \times d_{head} $）：
+简化公式（假设 $d_{model} = \text{num_heads} \times d_{head}$）：
 
-$ \text{KV Cache Size} = 2 \times L \times h \times d_h \times s \times \text{prec} = 2\times L \times d_{model} \times s \times \text{prec} $
+$\text{KV Cache Size} = 2 \times L \times h \times d_h \times s \times \text{prec} = 2\times L \times d_{model} \times s \times \text{prec}$
 
 其中：
 
-+ $ L $: 层数
-+ $ h $: 注意力头数
-+ $ d_h $: 每个头的维度
-+ $ s $: 序列长度
++ $L$: 层数
++ $h$: 注意力头数
++ $d_h$: 每个头的维度
++ $s$: 序列长度
 + prec: 精度字节数（FP16=2, FP32=4）
 
 ### 具体计算示例
 LLaMA-2 7B模型（ FP16）：
 
-+ 层数 $ L = 32 $
-+ 隐藏维度 $ d_{model} = 4096 $
-+ 序列长度$ s = 4096 $
++ 层数 $L = 32$
++ 隐藏维度 $d_{model} = 4096$
++ 序列长度$s = 4096$
 + 精度 = FP16 (2 bytes)
 
-$ \text{KV Cache} = 2 \times 32 \times 4096 \times 4096 \times 2 = 2,147,483,648 \text{bytes} = 2 \text{ GB} $
+$\text{KV Cache} = 2 \times 32 \times 4096 \times 4096 \times 2 = 2,147,483,648 \text{bytes} = 2 \text{ GB}$
 
 ### 不同模型的KV Cache占用：
 | 模型 | 参数量 | 层数 | 隐藏维度 | 4K序列 | 8K序列 | 32K序列 |
@@ -61,11 +61,11 @@ $ \text{KV Cache} = 2 \times 32 \times 4096 \times 4096 \times 2 = 2,147,483,648
 
 
 ### 批处理的KV Cache
-对于batch size为 $ b $ 的情况：
+对于batch size为 $b$ 的情况：
 
-$ \text{Total KV Cache} = b \times 2 \times L \times d_{model} \times s \times\text{prec} $
+$\text{Total KV Cache} = b \times 2 \times L \times d_{model} \times s \times\text{prec}$
 
-示例：batch_size=32，LLaMA-2 7B，4K序列 $ 32 \times 2 \text{ GB} = 64 \text{ GB} $
+示例：batch_size=32，LLaMA-2 7B，4K序列 $32 \times 2 \text{ GB} = 64 \text{ GB}$
 
 这已经接近A100的80GB显存上限！
 

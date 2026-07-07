@@ -21,19 +21,19 @@
 
 模型配置：
 
-+ 层数 $ L = 40 $
-+ 注意力头数 $ H = 40 $
-+ 每个头的维度 $ K = 128 $
++ 层数 $L = 40$
++ 注意力头数 $H = 40$
++ 每个头的维度 $K = 128$
 + 隐藏层维度 = 5120
 
 ### 单token的KV Cache计算：
-$ \begin{aligned} \text{KV Cache per token} \\
+$\begin{aligned} \text{KV Cache per token} \\
 &= 2 \times L \times H \times K \times D \\
 &= 2 \times 40 \times 40 \times 128 \times 2 \text{ (FP16)} 
 \\ &= 2 \times 40 \times 40\times 128 \times 2 
 \\ &= 819,200 \text{ bytes} 
 \\ &= 800 \text{ KB} 
-\\ &\approx 0.78 \text{MB} \end{aligned} $
+\\ &\approx 0.78 \text{MB} \end{aligned}$
 
 ### 不同序列长度的KV Cache占用
 | 序列长度 | KV Cache大小 (FP16) | KV Cache大小 (INT8) | KV Cache大小 (INT4) |
@@ -49,7 +49,7 @@ $ \begin{aligned} \text{KV Cache per token} \\
 ### 批处理的影响：
 对于batch_size=16，序列长度=4096：
 
-$ \text{KV Cache} = 16 \times 3.2 \text{ GB} = 51.2 \text{ GB} $
+$\text{KV Cache} = 16 \times 3.2 \text{ GB} = 51.2 \text{ GB}$
 
 这已经超过了单张A100 GPU的80GB显存容量的一半！
 
@@ -75,7 +75,7 @@ $ \text{KV Cache} = 16 \times 3.2 \text{ GB} = 51.2 \text{ GB} $
 长上下文带来的挑战：
 
 1. **显存瓶颈**：128K上下文需要10GB+的KV Cache，限制了batch size
-2. **计算效率**：注意力计算复杂度为 $ O(n^2) $，长序列计算开销大
+2. **计算效率**：注意力计算复杂度为 $O(n^2)$，长序列计算开销大
 3. **推理延迟**：需要加载大量KV Cache，增加首token延迟
 4. **内存碎片**：动态序列长度导致内存碎片问题
 
