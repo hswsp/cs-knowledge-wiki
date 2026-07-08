@@ -27,6 +27,10 @@
 
 - [进入 Learn CUDA From Scratch](./learn-cuda-from-scratch/)
 
+## Transformers 快速入门
+
+- [进入 Transformers 快速入门](./transformers-articles/)
+
 ## Transformer 解读
 
 - [概览](./transformer/)

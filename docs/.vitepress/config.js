@@ -380,6 +380,13 @@ export default defineConfig({
                 { text: '进入 Learn CUDA From Scratch', link: '/ml/learn-cuda-from-scratch/' },
               ],
             },
+            {
+              text: 'Transformers 快速入门',
+              collapsed: false,
+              items: [
+                { text: '进入 Transformers 快速入门', link: '/ml/transformers-articles/' },
+              ],
+            },
           ],
           '/ml/ai-infra/': [
             { text: 'AI Infra 入门到前沿', items: [
@@ -497,6 +504,54 @@ export default defineConfig({
               collapsed: true,
               items: [
                 { text: '术语表', link: '/ml/learn-cuda-from-scratch/glossary-术语表' },
+              ],
+            },
+          ],
+          '/ml/transformers-articles/': [
+            { text: 'Transformers 快速入门', items: [
+              { text: '概览', link: '/ml/transformers-articles/' },
+              { text: '← 返回机器学习', link: '/ml/' },
+            ] },
+            {
+              text: '基础篇',
+              collapsed: false,
+              items: [
+                { text: '00 Hello', link: '/ml/transformers-articles/00-Hello' },
+                { text: '01 自然语言处理', link: '/ml/transformers-articles/01-自然语言处理' },
+                { text: '02 Transformer模型', link: '/ml/transformers-articles/02-Transformer模型' },
+                { text: '03 注意力机制', link: '/ml/transformers-articles/03-注意力机制' },
+                { text: '04 开箱即用的pipelines', link: '/ml/transformers-articles/04-开箱即用的pipelines' },
+                { text: '05 模型与分词器', link: '/ml/transformers-articles/05-模型与分词器' },
+                { text: '06 必要的Pytorch知识', link: '/ml/transformers-articles/06-必要的Pytorch知识' },
+              ],
+            },
+            {
+              text: '实战篇',
+              collapsed: true,
+              items: [
+                { text: '07 微调预训练模型', link: '/ml/transformers-articles/07-微调预训练模型' },
+                { text: '08 快速分词器', link: '/ml/transformers-articles/08-快速分词器' },
+                { text: '09 序列标注任务', link: '/ml/transformers-articles/09-序列标注任务' },
+                { text: '10 翻译任务', link: '/ml/transformers-articles/10-翻译任务' },
+                { text: '11 文本摘要任务', link: '/ml/transformers-articles/11-文本摘要任务' },
+                { text: '12 抽取式问答', link: '/ml/transformers-articles/12-抽取式问答' },
+                { text: '13 Prompting情感分析', link: '/ml/transformers-articles/13-Prompting情感分析' },
+              ],
+            },
+            {
+              text: 'LLM 篇',
+              collapsed: true,
+              items: [
+                { text: '14 大语言模型技术简介', link: '/ml/transformers-articles/14-大语言模型技术简介' },
+                { text: '15 预训练大语言模型', link: '/ml/transformers-articles/15-预训练大语言模型' },
+                { text: '16 使用大语言模型', link: '/ml/transformers-articles/16-使用大语言模型' },
+              ],
+            },
+            {
+              text: '附录',
+              collapsed: true,
+              items: [
+                { text: 'A 信息论基本概念', link: '/ml/transformers-articles/A-信息论基本概念' },
               ],
             },
           ],
