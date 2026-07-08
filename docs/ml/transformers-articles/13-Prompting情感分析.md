@@ -7,7 +7,6 @@
 
 例如要判断标题“American Duo Wins Opening Beach Volleyball Match”的新闻类别，就可以应用模板“This is a $\texttt{[MASK]}$ News: ${x}$”将其转换为“This is a $\texttt{[MASK]}$ News: American Duo Wins Opening Beach Volleyball Match”，然后送入到包含 MLM (Mask Language Modeling) 预训练任务的模型中预测 $\texttt{[MASK]}$ 对应的词，最后将词映射到新闻类别（比如“Sports”对应“体育”类）。
 
-**
  
 如果你对 Prompting 概念不是很清楚，强烈建议先阅读一下[《Prompt 方法简介》](https://xiaosheng.blog/2022/09/10/what-is-prompt.html)。
 
@@ -221,7 +220,6 @@ class ChnSentiCorp(Dataset):
 ```
 
 
-**
  
 在实际应用场景下，模板的转换过程可能比文本中的要复杂得多（可能非常耗时），因此这里我们将其放置于数据集函数而不是 DataLoader 中，使得数据集返回的就是转换后的样本。
 
@@ -507,9 +505,7 @@ BertForPrompt(
 > 
 > **这两个步骤缺一不可！**否则运行时就会出现错误。这里我们判断如果采用虚拟 label word，就调整模型词表大小。
 
-**
- 
-注意**
+**注意**
 
  
 与之前相比，本次我们构建的 BertForPrompt 模型中增加了两个特殊的函数：`get_output_embeddings()` 和 `set_output_embeddings()`，负责调整模型的 MLM head。
@@ -703,9 +699,7 @@ Macro-F1: 43.02 Micro-F1: 43.37
 
 可以看到，得益于 Prompt 方法，不经微调的 BERT 模型也已经具有初步的情感分析能力，在测试集上的 Macro-F1 和 Micro-F1 值分别为 43.02 和 43.37。有趣的是，“积极”类别的召回率和“消极”类别的准确率都为 100%，这说明 BERT 对大部分样本都倾向于判断为“积极”类（可能预训练时看到的积极性文本更多吧）。
 
-**
- 
-注意**
+**注意**
 
  
 如果采用虚拟 label word（设置 `vtype = 'virtual'` ），模型是无法直接进行预测的。在扩展了词表之后，MLM head 的参数矩阵尺寸也会进行调整，新加入的参数都是随机初始化的，此时必须进行微调才能让 MLM head 正常工作。

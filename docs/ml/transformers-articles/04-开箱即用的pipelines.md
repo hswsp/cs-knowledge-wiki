@@ -80,7 +80,6 @@ pipeline 模型会自动完成以下三个步骤：
 
 pipeline 会自动选择合适的预训练模型来完成任务。例如对于情感分析，默认就会选择微调好的英文情感模型 *distilbert-base-uncased-finetuned-sst-2-english*。
 
-**
  
 Transformers 库会在创建对象时下载并且缓存模型，只有在首次加载模型时才会下载，后续会直接调用缓存好的模型。
 
@@ -413,7 +412,6 @@ print(inputs)
 
 可以看到，输出中包含两个键 `input_ids` 和 `attention_mask`，其中 `input_ids` 对应分词之后的 tokens 映射到的数字编号列表，而 `attention_mask` 则是用来标记哪些 tokens 是被填充的（这里“1”表示是原文，“0”表示是填充字符）。
 
-**
  
 先不要关注 `padding`、`truncation` 这些参数，以及 `attention_mask` 项，后面我们会详细介绍:)。
 
