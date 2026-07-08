@@ -4,7 +4,7 @@ export function mermaidMarkdown(md) {
     const token = tokens[idx]
     if (token.info.trim() !== 'mermaid') return defaultFence(tokens, idx, options, env, self)
 
-    const encoded = Buffer.from(token.content).toString('base64')
+    const encoded = encodeURIComponent(token.content)
     return `<Mermaid code="${encoded}"></Mermaid>`
   }
 }

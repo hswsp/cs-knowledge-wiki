@@ -12,7 +12,7 @@ onMounted(async () => {
   const { default: mermaid } = await import('mermaid')
   mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' })
 
-  const source = atob(props.code)
+  const source = decodeURIComponent(props.code)
   try {
     const { svg } = await mermaid.render('mermaid-' + Math.random().toString(36).slice(2), source)
     if (container.value) {
