@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 import securitySidebar from './securitySidebar.js'
 import practicalCryptographySidebar from './practicalCryptographySidebar.js'
 import aiInfraSidebar from './aiInfraSidebar.js'
@@ -6,7 +7,7 @@ import aiInfraSidebar from './aiInfraSidebar.js'
 // Shared social links / theme bits
 const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: 'CS Knowledge Wiki',
   description: 'A personal computer science knowledge base — math, algorithms, Java, C++, storage.',
   cleanUrls: true,
@@ -1618,4 +1619,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))
