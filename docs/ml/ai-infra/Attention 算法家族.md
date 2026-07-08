@@ -47,7 +47,7 @@ $\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
 ### 内存占用分析
 在推理过程中，KV Cache的存储需求为：
 
-$\text{Memory}{\text{KV}} = 2 \times n \times d_{\text{model}} \times \text{bytes}_{\text{dtype}} \times \text{num}_{\text{layers}}$
+$\text{Memory}_{\text{KV}} = 2 \times n \times d_{\text{model}} \times \text{bytes}_{\text{dtype}} \times \text{num}_{\text{layers}}$
 
 以LLaMA-2-70B为例（80层，$d_{\text{model}}=8192$，FP16）：
 
@@ -111,9 +111,8 @@ Online Softmax 允许增量计算。对于两个块的结果，设：
 
 合并后的统计量：
 
-$m = \max(m_1, m_2)$$$$\ell = e^{m_1 - m} \ell_1 + e^{m_2 - m} \ell_2$
+$m = \max(m_1, m_2)$，$\ell = e^{m_1 - m} \ell_1 + e^{m_2 - m} \ell_2$
 
-$\ell = e^{m_1 - m} \ell_1 + e^{m_2 - m} \ell_2$
 
 FlashAttention-1 伪代码
 
@@ -265,7 +264,7 @@ FlashDecoding 引入两种并行策略：
 + 局部和： $\ell_i =\sum \exp(qK_i^T - m_i)$
 + 局部输出：$o_i = \exp(qK_i^T - m_i)V_i / \ell_i$
 
-全局合并： $m = \max_i(m_i)$$$$\ell = \sum_i \exp(m_i - m) \ell_i$$$$o = \sum_i\exp(m_i - m) \ell_i o_i / \ell$
+全局合并： $m = \max_i(m_i)$，$\ell = \sum_i \exp(m_i - m) \ell_i$，$o = \sum_i\exp(m_i - m) \ell_i o_i / \ell$
 
 #### FlashDecoding 伪代码
 ```python

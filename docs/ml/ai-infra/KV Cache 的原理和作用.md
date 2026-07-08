@@ -11,12 +11,12 @@ KV Cache是LLM推理优化的核心技术，它避免了在Decode阶段重复计
 ### 数学原理
 在Self-Attention中，第 $t$ 个token的输出：
 
-$\text{Attention}(\mathbf{q}_t, \mathbf{K}{\leq t}, \mathbf{V}{\leq t}) =\text{softmax}\left(\frac{\mathbf{q}_t \mathbf{K}_{\leq t}^T}{\sqrt{d_k}}\right)\mathbf{V}_{\leq t}$
+$\text{Attention}(\mathbf{q}_t, \mathbf{K}_{\leq t}, \mathbf{V}_{\leq t}) =\text{softmax}\left(\frac{\mathbf{q}_t \mathbf{K}_{\leq t}^T}{\sqrt{d_k}}\right)\mathbf{V}_{\leq t}$
 
 其中：
 
-+ $\mathbf{q}t$ 是当前 token 的 Query （需要实时计算）
-+ $\mathbf{K}_{\leq t} =[\mathbf{K}1, \mathbf{K}_2, ..., \mathbf{K}_t]$ 是所有前面token的Key
++ $\mathbf{q}_t$ 是当前 token 的 Query （需要实时计算）
++ $\mathbf{K}_{\leq t} =[\mathbf{K}_1, \mathbf{K}_2, ..., \mathbf{K}_t]$ 是所有前面token的Key
 + $\mathbf{V}_{\leq t}= [\mathbf{V}_1, \mathbf{V}_2, ..., \mathbf{V}_t]$ 是所有前面token的Value
 
 KV Cache存储的就是 $\mathbf{K}_{\leq t}$ 和 $\mathbf{V}_{\leq t}$。

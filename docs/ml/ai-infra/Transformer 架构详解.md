@@ -222,8 +222,8 @@ $\mathrm{GELU}(x) = x \, \sigma\!\left( \sqrt{\frac{2}{\pi}} \, x + a x^3 \right
 
 ### 维度设置
 + 中间层维度：$d_{ff} = 4 \times d_{model}$（典型配置）
-+ $\mathbf{W}1: d{model} \times d_{ff}$
-+ $\mathbf{W}2: d{ff} \times d_{model}$
++ $\mathbf{W}_1: d_{model} \times d_{ff}$
++ $\mathbf{W}_2: d_{ff} \times d_{model}$
 
 ### FFN的计算量占比
 在标准Transformer中，**FFN贡献了约 2/3 的总参数量和约50% 的计算量**。
@@ -258,7 +258,7 @@ $\text{LayerNorm}(\mathbf{x}) = \gamma \odot \frac{\mathbf{x} - \mu}{\sqrt{\sigm
 其中：
 
 + $\mu = \frac{1}{d}\sum_{i=1}^{d} x_i$ （ 均值 ）
-+ $\sigma^2 = \frac{1}{d}\sum_{i=1}^{d}(x_i\mu)^2$ （方差）
++ $\sigma^2 = \frac{1}{d}\sum_{i=1}^{d}(x_i - \mu)^2$ （方差）
 + $\gamma, \beta$ 是可学习的缩放和平移参数 
 + $\epsilon$ 是数值稳定性的小常数（通常 $10^{-6}$）
 

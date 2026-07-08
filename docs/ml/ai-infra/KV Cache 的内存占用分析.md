@@ -27,13 +27,15 @@
 + 隐藏层维度 = 5120
 
 ### 单token的KV Cache计算：
-$\begin{aligned} \text{KV Cache per token} \\
+$$
+\begin{aligned} \text{KV Cache per token} \\
 &= 2 \times L \times H \times K \times D \\
 &= 2 \times 40 \times 40 \times 128 \times 2 \text{ (FP16)} 
 \\ &= 2 \times 40 \times 40\times 128 \times 2 
 \\ &= 819,200 \text{ bytes} 
 \\ &= 800 \text{ KB} 
-\\ &\approx 0.78 \text{MB} \end{aligned}$
+\\ &\approx 0.78 \text{MB} \end{aligned}
+$$
 
 ### 不同序列长度的KV Cache占用
 | 序列长度 | KV Cache大小 (FP16) | KV Cache大小 (INT8) | KV Cache大小 (INT4) |

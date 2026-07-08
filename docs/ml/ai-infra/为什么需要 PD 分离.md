@@ -41,9 +41,12 @@ Decode 阶段采用自回归方式逐 Token 生成输出，每次只处理一个
 #### 延迟分析
 Decode延迟主要**由内存访问决定**
 
-$T_{\text{decode}} \approx \frac{\text{KV\_Cache\_Size} \times n_{\text{layers}}}{\text{Memory\_Bandwidth}} + \text{Compute\_Latency} 
-\\
-\approx \frac{2 \times n_{\text{layers}} \times d_{\text{model}} \times \text{seq\_len} \times 2\ \text{bytes}}{\text{Memory\_Bandwidth}}$
+$$
+\begin{aligned}
+T_{\text{decode}} &\approx \frac{\text{KV\_Cache\_Size} \times n_{\text{layers}}}{\text{Memory\_Bandwidth}} + \text{Compute\_Latency} \\
+&\approx \frac{2 \times n_{\text{layers}} \times d_{\text{model}} \times \text{seq\_len} \times 2 \text{ bytes}}{\text{Memory\_Bandwidth}}
+\end{aligned}
+$$
 
 对于Llama-2-70B在A100 GPU上：
 

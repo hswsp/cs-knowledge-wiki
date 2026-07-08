@@ -63,11 +63,13 @@ Top-1 选择结果：
 
 计算 $P_i$
 
-$\begin{aligned}
+$$
+\begin{aligned}
 P_0 &= (0.80+0.10+0.20+0.90+0.25)/5 = \mathbf{0.45} \\
 P_1 &= (0.15+0.70+0.30+0.08+0.60)/5 = \mathbf{0.37} \\
 P_2 &= (0.05+0.20+0.50+0.02+0.15)/5 = \mathbf{0.18}
-\end{aligned}$
+\end{aligned}
+$$
 
 → 路由器认为专家0应得 **45%** 的注意力。
 
@@ -114,7 +116,7 @@ $g(x) = \text{Softmax}(W_g \cdot x)$
 其中 $W_g \in \mathbb{R}^{E \times d}$ 是路由权重矩阵，$E$ 是专家数量。
 
 ### Top-K选择
-$\text{TopK}(g(x), k) = {(i, g_i) \mid i \in \text{topk_indices}(g(x), k)}$
+$\text{TopK}(g(x), k) = \{(i, g_i) \mid i \in \text{topk_indices}(g(x), k)\}$
 
 ### 带噪声的Top-K
 为**<font style="color:#DF2A3F;">防止路由崩溃（所有token都路由到少数专家</font>**），引入噪声：
@@ -252,7 +254,7 @@ class CapacityLimitedRouter(TopKRouter):
 
 ## 7.5.1.3 辅助损失详解
 ### 总损失函数
-$\mathcal{L}{\text{total}} = \mathcal{L}{\text{LM}} + \lambda_1 \mathcal{L}{\text{load}} +\lambda_2 \mathcal{L}{\text{router_zloss}}$
+$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{LM}} + \lambda_1 \mathcal{L}_{\text{load}} +\lambda_2 \mathcal{L}_{\text{router_zloss}}$
 
 其中：
 
@@ -262,7 +264,7 @@ $\mathcal{L}{\text{total}} = \mathcal{L}{\text{LM}} + \lambda_1 \mathcal{L}{\tex
 
 **Router Z-Loss**
 
-$\mathcal{L}{\text{router_zloss}} = \frac{1}{B} \sum_{i=1}^{B} \left(\log \sum_{j=1}^{E}e^{z_{ij}}\right)^2$
+$\mathcal{L}_{\text{router_zloss}} = \frac{1}{B} \sum_{i=1}^{B} \left(\log \sum_{j=1}^{E}e^{z_{ij}}\right)^2$
 
 其中 $z_{ij}$ 是路由器logits，这个损失鼓励logits保持较小值，提高数值稳定性。
 
