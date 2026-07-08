@@ -373,6 +373,13 @@ export default defineConfig({
                 { text: '“预训练+微调”范式', link: '/ml/transformer/pretrain-finetune' },
               ],
             },
+            {
+              text: 'Learn CUDA From Scratch',
+              collapsed: false,
+              items: [
+                { text: '进入 Learn CUDA From Scratch', link: '/ml/learn-cuda-from-scratch/' },
+              ],
+            },
           ],
           '/ml/ai-infra/': [
             { text: 'AI Infra 入门到前沿', items: [
@@ -451,6 +458,45 @@ export default defineConfig({
                 { text: '运行时任务模型', link: '/ml/learn-claude-code/reference/s13a-runtime-task-model' },
                 { text: '队友-任务-车道模型', link: '/ml/learn-claude-code/reference/team-task-lane-model' },
                 { text: 'MCP 能力层地图', link: '/ml/learn-claude-code/reference/s19a-mcp-capability-layers' },
+              ],
+            },
+          ],
+          '/ml/learn-cuda-from-scratch/': [
+            { text: 'Learn CUDA From Scratch', items: [
+              { text: '概览', link: '/ml/learn-cuda-from-scratch/' },
+              { text: '← 返回机器学习', link: '/ml/' },
+            ] },
+            {
+              text: 'CUDA 编程基础',
+              collapsed: false,
+              items: [
+                { text: 'ch01 导论与环境', link: '/ml/learn-cuda-from-scratch/ch01-导论与环境' },
+                { text: 'ch02 Hello CUDA', link: '/ml/learn-cuda-from-scratch/ch02-Hello-CUDA' },
+                { text: 'ch03 线程模型与索引', link: '/ml/learn-cuda-from-scratch/ch03-线程模型与索引' },
+                { text: 'ch04 GPU硬件架构', link: '/ml/learn-cuda-from-scratch/ch04-GPU硬件架构' },
+                { text: 'ch05 内存层级', link: '/ml/learn-cuda-from-scratch/ch05-内存层级' },
+                { text: 'ch06 SharedMemory与Tile', link: '/ml/learn-cuda-from-scratch/ch06-SharedMemory与Tile' },
+                { text: 'ch07 Reduction与Scan', link: '/ml/learn-cuda-from-scratch/ch07-Reduction与Scan' },
+                { text: 'ch08 性能分析与异步', link: '/ml/learn-cuda-from-scratch/ch08-性能分析与异步' },
+              ],
+            },
+            {
+              text: 'CUDA 高级应用',
+              collapsed: true,
+              items: [
+                { text: 'ch09 GEMM深入', link: '/ml/learn-cuda-from-scratch/ch09-GEMM深入' },
+                { text: 'ch10 Softmax与Norm', link: '/ml/learn-cuda-from-scratch/ch10-Softmax与Norm' },
+                { text: 'ch11 Attention入门', link: '/ml/learn-cuda-from-scratch/ch11-Attention入门' },
+                { text: 'ch12 FlashAttention', link: '/ml/learn-cuda-from-scratch/ch12-FlashAttention' },
+                { text: 'ch13 LLM必备零件', link: '/ml/learn-cuda-from-scratch/ch13-LLM必备零件' },
+                { text: 'ch14 Capstone Mini-LLM', link: '/ml/learn-cuda-from-scratch/ch14-Capstone-Mini-LLM' },
+              ],
+            },
+            {
+              text: '附录',
+              collapsed: true,
+              items: [
+                { text: '术语表', link: '/ml/learn-cuda-from-scratch/glossary-术语表' },
               ],
             },
           ],

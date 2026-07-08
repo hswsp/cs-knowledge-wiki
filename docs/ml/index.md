@@ -23,6 +23,10 @@
 - [信息检索基础](./foundations/information-retrieval)
 - [从 KV Cache 到 AI 内存系统：大模型推理架构的演进](<./从 KV Cache 到 AI 内存系统：大模型推理架构的演进>)
 
+## Learn CUDA From Scratch
+
+- [进入 Learn CUDA From Scratch](./learn-cuda-from-scratch/)
+
 ## Transformer 解读
 
 - [概览](./transformer/)
