@@ -27,7 +27,7 @@ KV Cache 的内存占用是推理系统设计的核心考量。
 ### 计算公式
 对于单条请求：
 
-$\text{KV Cache Size} = 2 \times \text{num_layers} \times \text{num_heads} \times d_{head} \times \text{seq_len} \times \text{bytes_per_element}$
+$\text{KV Cache Size} = 2 \times \text{num\_layers} \times \text{num\_heads} \times d_{head} \times \text{seq\_len} \times \text{bytes\_per\_element}$
 
 简化公式（假设 $d_{model} = \text{num_heads} \times d_{head}$）：
 
