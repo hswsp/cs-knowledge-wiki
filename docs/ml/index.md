@@ -8,7 +8,9 @@
 
 ## AI Infra 入门到前沿
 
-- [进入 AI Infra 入门到前沿](./ai-infra/)：覆盖 AI 基础设施、LLM 训练与推理、PD 分离、KV Cache、Mooncake、AI Serving 与核心算法等内容。
+覆盖 AI 基础设施、LLM 训练与推理、PD 分离、KV Cache、Mooncake、AI Serving 与核心算法等内容。
+
+- [进入 AI Infra 入门到前沿](./ai-infra/)
 
 ## AI 基础理论
 
