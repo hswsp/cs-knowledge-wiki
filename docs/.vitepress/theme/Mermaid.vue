@@ -28,9 +28,13 @@ onMounted(async () => {
 
 <style>
 .mermaid-wrapper {
-  display: flex;
-  justify-content: center;
   margin: 1em 0;
   overflow-x: auto;
+}
+.mermaid-wrapper svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
 }
 </style>
