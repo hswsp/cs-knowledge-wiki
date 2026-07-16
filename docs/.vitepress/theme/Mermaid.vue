@@ -20,15 +20,8 @@ onMounted(async () => {
       requestAnimationFrame(() => {
         const svgEl = container.value?.querySelector('svg')
         if (!svgEl) return
-        const g = svgEl.querySelector('g')
-        if (!g) return
-        try {
-          const bbox = g.getBBox()
-          const padding = 10
-          const w = bbox.x + bbox.width + padding
-          const h = bbox.y + bbox.height + padding
-          svgEl.setAttribute('viewBox', `0 0 ${w} ${h}`)
-        } catch {}
+        fixForeignObjects(svgEl)
+        fixViewBox(svgEl)
       })
     }
   } catch (e) {
@@ -37,18 +30,52 @@ onMounted(async () => {
     }
   }
 })
+
+function fixForeignObjects(svgEl) {
+  svgEl.querySelectorAll('foreignObject').forEach(fo => {
+    const div = fo.querySelector('div')
+    if (!div || div.scrollHeight === 0) return
+    const needed = div.scrollHeight + 8
+    const node = fo.closest('.node, .cluster')
+    if (node) {
+      const rect = node.querySelector(':scope > rect')
+      const foH = parseFloat(fo.getAttribute('height') || '0')
+      if (foH < needed) {
+        const diff = needed - foH
+        fo.setAttribute('height', needed)
+        if (rect) {
+          rect.setAttribute('height', parseFloat(rect.getAttribute('height') || '0') + diff)
+        }
+      }
+    }
+  })
+}
+
+function fixViewBox(svgEl) {
+  const g = svgEl.querySelector('g')
+  if (!g) return
+  try {
+    const bbox = g.getBBox()
+    const padding = 10
+    const w = bbox.x + bbox.width + padding
+    const h = bbox.y + bbox.height + padding
+    svgEl.setAttribute('viewBox', `0 0 ${w} ${h}`)
+  } catch {}
+}
 </script>
 
 <style>
 .mermaid-wrapper {
   margin: 1em 0;
-  overflow-x: auto;
+  overflow: auto;
 }
 .mermaid-wrapper svg {
   display: block;
-  max-width: 100%;
-  height: auto;
   margin: 0 auto;
+}
+.mermaid-wrapper foreignObject,
+.mermaid-wrapper .node,
+.mermaid-wrapper .label {
   overflow: visible;
 }
 </style>
