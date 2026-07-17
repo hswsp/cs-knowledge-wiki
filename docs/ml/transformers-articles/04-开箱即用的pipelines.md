@@ -362,7 +362,8 @@ print(result)
 
  - 对模型的输出进行后处理 (postprocessing)，将其转换为人类方便阅读的格式。
 
-![](https://images.spumn.eu.cc/assets/img/transformers-note-1/full_nlp_pipeline.png)
+<p align="center"><img src="https://images.spumn.eu.cc/assets/img/transformers-note-1/full_nlp_pipeline.png" alt=""></p>
+
 
 ### 使用分词器进行预处理
 

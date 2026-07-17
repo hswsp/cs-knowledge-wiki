@@ -3,7 +3,8 @@
  
 
  
-![](https://images.spumn.eu.cc/assets/title.jpg)
+<p align="center"><img src="https://images.spumn.eu.cc/assets/title.jpg" alt=""></p>
+
 
 [Transformers](https://huggingface.co/docs/transformers/index) 是由 [Hugging Face](https://huggingface.co/) 开发的一个自然语言处理 （Natural Language Processing，NLP） 包，支持加载目前流行的各种预训练模型。随着 BERT、GPT 等语言模型的兴起，越来越多的公司和研究者采用 Transformers 库来构建 NLP 应用。
 
