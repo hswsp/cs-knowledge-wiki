@@ -2,15 +2,17 @@
 
 > 从经典机器学习到深度学习，理论与实践并重。
 
-## Learn Claude Code
+## Transformer 解读
 
-- [进入 Learn Claude Code](./learn-claude-code/)
-
-## AI Infra 入门到前沿
-
-覆盖 AI 基础设施、LLM 训练与推理、PD 分离、KV Cache、Mooncake、AI Serving 与核心算法等内容。
-
-- [进入 AI Infra 入门到前沿](./ai-infra/)
+- [概览](./transformer/)
+- [整体结构、数据流与实现思路](./transformer/overall-architecture)
+- [Embedding 层](./transformer/embedding)
+- [Multi-Head Attention 层](./transformer/multi-head-attention)
+- [LayerNorm 层](./transformer/layernorm)
+- [Encoder 组装](./transformer/encoder)
+- [Decoder 拼装](./transformer/decoder)
+- [Transformer 组装](./transformer/transformer-assembly)
+- [“预训练+微调”范式](./transformer/pretrain-finetune)
 
 ## AI 基础理论
 
@@ -25,6 +27,10 @@
 - [信息检索基础](./foundations/information-retrieval)
 - [从 KV Cache 到 AI 内存系统：大模型推理架构的演进](<./从 KV Cache 到 AI 内存系统：大模型推理架构的演进>)
 
+## Learn Claude Code
+
+- [进入 Learn Claude Code](./learn-claude-code/)
+
 ## Learn CUDA From Scratch
 
 - [进入 Learn CUDA From Scratch](./learn-cuda-from-scratch/)
@@ -33,14 +39,8 @@
 
 - [进入 Transformers 快速入门](./transformers-articles/)
 
-## Transformer 解读
+## AI Infra 入门到前沿
 
-- [概览](./transformer/)
-- [整体结构、数据流与实现思路](./transformer/overall-architecture)
-- [Embedding 层](./transformer/embedding)
-- [Multi-Head Attention 层](./transformer/multi-head-attention)
-- [LayerNorm 层](./transformer/layernorm)
-- [Encoder 组装](./transformer/encoder)
-- [Decoder 拼装](./transformer/decoder)
-- [Transformer 组装](./transformer/transformer-assembly)
-- [“预训练+微调”范式](./transformer/pretrain-finetune)
+覆盖 AI 基础设施、LLM 训练与推理、PD 分离、KV Cache、Mooncake、AI Serving 与核心算法等内容。
+
+- [进入 AI Infra 入门到前沿](./ai-infra/)
