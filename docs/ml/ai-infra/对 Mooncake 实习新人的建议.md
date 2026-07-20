@@ -1,9 +1,9 @@
 # 对 Mooncake 实习新人的建议
 
 ## 3.8.1 必读论文清单
-**核心必读（按优先级排序）： **
+**核心必读（按优先级排序）：**
 
-1. **Mooncake (FAST 2025) - 理解整个系统的架构和思想 **
+1. **Mooncake (FAST 2025) - 理解整个系统的架构和思想**
 2. **DistServe (arXiv 2024)** - 理解 PD 分离的理论基础 
 3. **Sarathi-Serve (OSDI 2024)** - 理解Chunked Prefill调度 
 4. **vLLM Paper + PagedAttention** - 理解KV Cache管理基础
@@ -26,12 +26,12 @@
 + 网络带宽对分离效果的影响
 3. **调度算法的核心指标** 
 + TTFT (Time To First Token) 
-+ **TPOT (Time Per Output Token) **
++ **TPOT (Time Per Output Token)**
 + TBT (Time Between Tokens) 
 + Goodput vs Throughput
 
 ## 3.8.3 代码实践建议
-1. **熟悉Mooncake代码库 **
+1. **熟悉Mooncake代码库**
 + Transfer Engine的RDMA传输实现 
 + Mooncake Store的分层存储逻辑 
 + 与vLLM/SGLang的集成接口

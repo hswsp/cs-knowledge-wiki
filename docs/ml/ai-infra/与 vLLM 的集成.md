@@ -201,5 +201,5 @@ Mooncake 与vLLM集成的性能表现：
 | 128K | 20 | 100 | +400% |
 
 
-**关键优化点： 1. PD分离**：Prefill和Decode不再竞争GPU资源 2**. KV Cache复用**：PrefixCaching 减少重复计算 3. **异步传输**： Transfer Engine 实现流水线化 4. **负载均衡**：Conductor优化请求分配
+**关键优化点：** 1. **PD分离**：Prefill和Decode不再竞争GPU资源 2. **KV Cache复用**：PrefixCaching 减少重复计算 3. **异步传输**： Transfer Engine 实现流水线化 4. **负载均衡**：Conductor优化请求分配
 

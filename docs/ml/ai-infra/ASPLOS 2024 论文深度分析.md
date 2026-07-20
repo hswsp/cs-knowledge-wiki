@@ -20,7 +20,7 @@ SpecInfer的核心创新是**Token Tree Verification**：
 ![](https://images.spumn.eu.cc/ml/ai-infra/1781601736983-b7967311-2a76-4dbf-a20b-f2df51144dd6.svg)
 
 ### 技术细节：
-1. **Speculative Sampling **
+1. **Speculative Sampling**
 + 使用多个drafter模型（可以是不同规模的LLM，也可以是专门的n-gram模型）
 + 每个drafter独立生成候选token序列 
 + 将多个序列合并成token tree

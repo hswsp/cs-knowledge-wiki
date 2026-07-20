@@ -19,7 +19,7 @@ $p^{(t)} = \text{softmax}(W \cdot x_t) = [p_1^{(t)}, p_2^{(t)}, \dots, p_E^{(t)}
 
 其中 $p_i^{(t)}$ 表示 token$t$ 分配给专家 $i$ 的概率，且 $\sum_i p_i^{(t)} = 1$。
 
-对**整批 **$T$** 个** token 取平均：
+对**整批** $T$ **个** token 取平均：
 
 $\boxed{P_i = \frac{1}{T}\sum_{t=1}^{T} p_i^{(t)}}$
 

@@ -14,10 +14,10 @@
 + 同 GPU上运行 prefill和 decode会相互影响 
 + 长 prompt的 prefill会阻塞decode的TBT延迟 
 + 高并发的decode会拖慢prefill的TTFT
-2. **GPU利用率不均衡 **
+2. **GPU利用率不均衡**
 + Prefill阶段：计算密集型， GPU计算单元饱和 
 + Decode阶段：内存密集型，GPU计算单元闲置 - 同构部署导致资源浪费
-3. **KV Cache管理低效 **
+3. **KV Cache管理低效**
 + 现有系统缺乏跨请求、跨实例的KV Cache复用 
 + 重复计算相同的prompt前缀造成资源浪费
 
@@ -30,10 +30,10 @@ Mooncake 提出了革命性的KVCache-centric Disaggregated Architecture：
 1. **Prefill-Decode分离** 
 + Prefill集群：专门处理计算密集型的prefill阶段 
 + Decode集群：专门处理延迟敏感的decode阶段 - 两阶段通过KV Cache传输解耦
-2. **全局KV Cache池 **
+2. **全局KV Cache池**
 + 利用集群中闲置的CPU、DRAM、SSD资源 
 + 构建分层的KV Cache存储池 - 支持跨请求的KV Cache复用（Prefix Caching）
-3. **KVCache-aware调度器 **
+3. **KVCache-aware调度器**
 + 全局视角的请求调度 
 + 考虑KV Cache位置、网络带宽、负载均衡 - 最大化整体吞吐量
 
@@ -138,9 +138,9 @@ Mooncake 已与多个主流推理引擎集成：
 ### 核心思想
 IMPRESS 针对 prefix KV 存储在磁盘时的 I/O 延迟问题，提出了**重要性感知的多层存储策略**：
 
-**关键洞察： **
+**关键洞察：**
 
-+ **当prefix KV需要存储到磁盘时，加载全部KV的I/O开销可能超过重新计算 **
++ **当prefix KV需要存储到磁盘时，加载全部KV的I/O开销可能超过重新计算**
 + 不同token的KV对推理结果的重要性差异很大 - 重要token的集合在不同attention head之间高度相似
 
 **技术方案**： 1. **I/O高效的重要KV识别算法**：通过分析attention模式识别关键token 2. **重要性感知的KV管理**：优先加载重要KV，延迟或跳过不重要KV 3. **精度-延迟权衡**：在保持可接受精度的前提下最小化I/O

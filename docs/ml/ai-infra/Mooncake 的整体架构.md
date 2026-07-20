@@ -15,7 +15,7 @@ Mooncake 架构包含三个核心组件：
 + 使用预计算的 KV Cache自回归生成输出 token 
 + 优化目标：最小化TPOT（Time Per Output Token） 
 + 特点：内存带宽密集型，需要高带宽显存
-3. **分布式 KV Cache 池 **
+3. **分布式 KV Cache 池**
 + 跨 GPU HBM 、 CPU DRAM 和 SSD 的分布式存储系统 
 + 通过RDMA实现高速数据传输 
 + 支持KV Cache的跨节点复用和共享
