@@ -64,6 +64,13 @@ export default defineConfig({
     ],
   },
   {
+    text: '域与 Galois 理论 (Morandi) →',
+    collapsed: false,
+    items: [
+      { text: 'Field and Galois Theory (GTM 167)', link: '/math/field-galois-theory/' },
+    ],
+  },
+  {
     text: 'Linear Algebra',
     collapsed: false,
     items: [
@@ -120,6 +127,76 @@ export default defineConfig({
                 { text: '第十节 单位根', link: '/math/abstract-algebra/galois-theory/10-单位根' },
                 { text: '第十一节 库默尔扩张', link: '/math/abstract-algebra/galois-theory/11-库默尔扩张' },
                 { text: '第十二节 五次方程', link: '/math/abstract-algebra/galois-theory/12-五次方程' },
+              ],
+            },
+          ],
+          '/math/field-galois-theory/': [
+            { text: 'Field and Galois Theory', items: [
+              { text: '概览', link: '/math/field-galois-theory/' },
+              { text: '← 返回数学', link: '/math/' },
+            ] },
+            {
+              text: 'I. Galois Theory',
+              collapsed: false,
+              items: [
+                { text: '1. Field Extensions 域扩张', link: '/math/field-galois-theory/01-field-extensions' },
+                { text: '2. Automorphisms 自同构', link: '/math/field-galois-theory/02-automorphisms' },
+                { text: '3. Normal Extensions 正规扩张', link: '/math/field-galois-theory/03-normal-extensions' },
+                { text: '4. Separable / Inseparable 可分与不可分', link: '/math/field-galois-theory/04-separable-inseparable-extensions' },
+                { text: '5. Fundamental Theorem 基本定理', link: '/math/field-galois-theory/05-fundamental-theorem' },
+              ],
+            },
+            {
+              text: 'II. Some Galois Extensions',
+              collapsed: false,
+              items: [
+                { text: '6. Finite Fields 有限域', link: '/math/field-galois-theory/06-finite-fields' },
+                { text: '7. Cyclotomic Extensions 分圆扩张', link: '/math/field-galois-theory/07-cyclotomic-extensions' },
+                { text: '8. Norms and Traces 范与迹', link: '/math/field-galois-theory/08-norms-and-traces' },
+                { text: '9. Cyclic Extensions 循环扩张', link: '/math/field-galois-theory/09-cyclic-extensions' },
+                { text: '10. Hilbert 90 & Group Cohomology', link: '/math/field-galois-theory/10-hilbert-90-cohomology' },
+                { text: '11. Kummer Extensions', link: '/math/field-galois-theory/11-kummer-extensions' },
+              ],
+            },
+            {
+              text: 'III. Applications',
+              collapsed: false,
+              items: [
+                { text: '12. Discriminants 判别式', link: '/math/field-galois-theory/12-discriminants' },
+                { text: '13. Polynomials of Degree 3 and 4', link: '/math/field-galois-theory/13-degree-3-4-polynomials' },
+                { text: '14. Transcendence of π and e', link: '/math/field-galois-theory/14-transcendence-pi-e' },
+                { text: '15. Ruler and Compass 尺规作图', link: '/math/field-galois-theory/15-ruler-compass' },
+                { text: '16. Solvability by Radicals 根式可解', link: '/math/field-galois-theory/16-solvability-by-radicals' },
+              ],
+            },
+            {
+              text: 'IV. Infinite Algebraic Extensions',
+              collapsed: true,
+              items: [
+                { text: '17. Infinite Galois Extensions', link: '/math/field-galois-theory/17-infinite-galois-extensions' },
+                { text: '18. Some Infinite Galois Extensions', link: '/math/field-galois-theory/18-some-infinite-galois-extensions' },
+              ],
+            },
+            {
+              text: 'V. Transcendental Extensions',
+              collapsed: true,
+              items: [
+                { text: '19. Transcendence Bases 超越基', link: '/math/field-galois-theory/19-transcendence-bases' },
+                { text: '20. Linear Disjointness 线性无交', link: '/math/field-galois-theory/20-linear-disjointness' },
+                { text: '21. Algebraic Varieties 代数簇', link: '/math/field-galois-theory/21-algebraic-varieties' },
+                { text: '22. Algebraic Function Fields', link: '/math/field-galois-theory/22-algebraic-function-fields' },
+                { text: '23. Derivations and Differentials', link: '/math/field-galois-theory/23-derivations-differentials' },
+              ],
+            },
+            {
+              text: 'Appendices',
+              collapsed: true,
+              items: [
+                { text: 'A. Ring Theory 环论', link: '/math/field-galois-theory/appendix-a-ring-theory' },
+                { text: 'B. Set Theory 集合论', link: '/math/field-galois-theory/appendix-b-set-theory' },
+                { text: 'C. Group Theory 群论', link: '/math/field-galois-theory/appendix-c-group-theory' },
+                { text: 'D. Vector Spaces 向量空间', link: '/math/field-galois-theory/appendix-d-vector-spaces' },
+                { text: 'E. Topology 拓扑', link: '/math/field-galois-theory/appendix-e-topology' },
               ],
             },
           ],

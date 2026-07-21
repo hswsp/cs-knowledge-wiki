@@ -24,6 +24,10 @@ description: "- [代数基础](代数基础)"
 - [四平方和定理](四平方和定理)
 - [单纯形算法求解线性规划](单纯形算法求解线性规划)
 
+## Field & Galois Theory
+
+- [Field and Galois Theory (Morandi, GTM 167)](./field-galois-theory/)
+
 ## Information Theory
 
 - [有限域算术: 从 AES 到 Reed-Solomon](有限域算术-从-aes-到-reed-solomon)
