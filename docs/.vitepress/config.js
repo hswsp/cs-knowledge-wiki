@@ -3,6 +3,7 @@ import securitySidebar from './securitySidebar.js'
 import practicalCryptographySidebar from './practicalCryptographySidebar.js'
 import aiInfraSidebar from './aiInfraSidebar.js'
 import { mermaidMarkdown } from './mermaidPlugin.js'
+import { mathMarkdown } from './mathPlugin.js'
 
 // Shared social links / theme bits
 const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
@@ -15,12 +16,33 @@ export default defineConfig({
   ignoreDeadLinks: true,
 
   markdown: {
-    math: true,
-    config: (md) => { mermaidMarkdown(md) },
+    config: (md) => {
+      mathMarkdown(md);
+      mermaidMarkdown(md);
+    },
   },
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
+    [
+      'script',
+      { id: 'MathJax-configuration' },
+      `window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+          displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
+          processEscapes: true,
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        },
+        startup: { typeset: true },
+      };`,
+    ],
+    [
+      'script',
+      { id: 'MathJax-script', async: true, src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js' },
+    ],
   ],
 
   themeConfig: {
