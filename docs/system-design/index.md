@@ -20,6 +20,7 @@
 - [etcd/raft（四）：Raft日志](./distributed-consensus/08-etcd-raft-4-log)
 - [etcd/raft（五）：Raft成员变更](./distributed-consensus/09-etcd-raft-5-membership)
 - [etcd/raft（六）：只读请求优化](./distributed-consensus/10-etcd-raft-6-readonly)
+- [Pompē：拜占庭有序共识协议详解](./distributed-consensus/11-pompe-ordered-consensus)
 
 ## 消息队列
 
