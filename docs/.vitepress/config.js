@@ -4,6 +4,37 @@ import practicalCryptographySidebar from './practicalCryptographySidebar.js'
 import aiInfraSidebar from './aiInfraSidebar.js'
 import { mermaidMarkdown } from './mermaidPlugin.js'
 import { mathMarkdown } from './mathPlugin.js'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve, join } from 'node:path'
+import { readFileSync, existsSync } from 'node:fs'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const DOCS_DIR = resolve(__dirname, '..')
+
+function sidebarFromIndex(baseDir) {
+  const file = join(DOCS_DIR, baseDir, 'index.md')
+  if (!existsSync(file)) return []
+  const content = readFileSync(file, 'utf-8')
+  const groups = []
+  let current = null
+  for (const line of content.split('\n')) {
+    const h2 = line.match(/^## (.+)/)
+    if (h2) {
+      if (current && current.items.length > 0) groups.push(current)
+      current = { text: h2[1], collapsed: true, items: [] }
+      continue
+    }
+    const link = line.match(/^- \[(.+?)\]\((.+?)\)/)
+    if (link && current) {
+      const p = link[2].replace(/[<>]/g, '')
+      let vpLink = '/' + join(baseDir, p.replace(/^\.\//, '')).replace(/\\/g, '/')
+      vpLink = vpLink.replace(/\.md$/, '')
+      current.items.push({ text: link[1], link: vpLink })
+    }
+  }
+  if (current && current.items.length > 0) groups.push(current)
+  return groups
+}
 
 // Shared social links / theme bits
 const GITHUB_URL = 'https://github.com/hswsp/cs-knowledge-wiki'
@@ -427,67 +458,8 @@ export default defineConfig({
           '/ml/': [
             { text: '机器学习', items: [
               { text: '概览', link: '/ml/' },
-              { text: 'Mamba 模型', link: '/ml/mamba-model' },
             ] },
-            {
-              text: 'Learn Claude Code',
-              collapsed: false,
-              items: [
-                { text: '进入 Learn Claude Code', link: '/ml/learn-claude-code/' },
-              ],
-            },
-            {
-              text: 'AI Infra 入门 →',
-              collapsed: false,
-              items: [
-                { text: '进入 AI Infra 入门到前沿', link: '/ml/ai-infra/' },
-              ],
-            },
-            {
-              text: 'AI 基础理论',
-              collapsed: true,
-              items: [
-                { text: '概览', link: '/ml/foundations/' },
-                { text: 'Transformer 架构', link: '/ml/foundations/transformer' },
-                { text: 'KV Cache 与推理优化', link: '/ml/foundations/kv-cache' },
-                { text: 'Mamba 与状态空间模型 (SSM)', link: '/ml/foundations/mamba-and-ssm' },
-                { text: 'Mamba 模型', link: '/ml/mamba-model' },
-                { text: '多模态 AI (Multimodal AI)', link: '/ml/foundations/multimodal-ai' },
-                { text: '扩散模型 (Diffusion Models)', link: '/ml/foundations/diffusion-models' },
-                { text: '从规则到表示学习', link: '/ml/foundations/representation-learning' },
-                { text: '信息检索基础', link: '/ml/foundations/information-retrieval' },
-                { text: '从 KV Cache 到 AI 内存系统：大模型推理架构的演进', link: '/ml/从 KV Cache 到 AI 内存系统：大模型推理架构的演进' },
-              ],
-            },
-            {
-              text: 'Transformer 解读',
-              collapsed: true,
-              items: [
-                { text: '概览', link: '/ml/transformer/' },
-                { text: '整体结构、数据流与实现思路', link: '/ml/transformer/overall-architecture' },
-                { text: 'Embedding 层', link: '/ml/transformer/embedding' },
-                { text: 'Multi-Head Attention 层', link: '/ml/transformer/multi-head-attention' },
-                { text: 'LayerNorm 层', link: '/ml/transformer/layernorm' },
-                { text: 'Encoder 组装', link: '/ml/transformer/encoder' },
-                { text: 'Decoder 拼装', link: '/ml/transformer/decoder' },
-                { text: 'Transformer 组装', link: '/ml/transformer/transformer-assembly' },
-                { text: '“预训练+微调”范式', link: '/ml/transformer/pretrain-finetune' },
-              ],
-            },
-            {
-              text: 'Learn CUDA From Scratch',
-              collapsed: false,
-              items: [
-                { text: '进入 Learn CUDA From Scratch', link: '/ml/learn-cuda-from-scratch/' },
-              ],
-            },
-            {
-              text: 'Transformers 快速入门',
-              collapsed: false,
-              items: [
-                { text: '进入 Transformers 快速入门', link: '/ml/transformers-articles/' },
-              ],
-            },
+            ...sidebarFromIndex('ml'),
           ],
           '/ml/ai-infra/': [
             { text: 'AI Infra 入门到前沿', items: [
@@ -660,41 +632,7 @@ export default defineConfig({
             { text: 'Java', items: [
                 { text: '概览', link: '/java/' },
             ] },
-            {
-              text: 'Java 基础',
-              collapsed: false,
-              items: [
-                { text: 'Java SPI 机制', link: '/java/basics/java-spi' },
-                { text: 'Json 与 JavaBean 匹配', link: '/java/basics/json-javabean' },
-              ],
-            },
-            {
-              text: 'JVM',
-              collapsed: false,
-              items: [
-                { text: '阅读 Java 字节码', link: '/java/jvm/java-bytecode' },
-                { text: 'JVM CPU 飙高排查', link: '/java/jvm/troubleshoot-high-cpu' },
-                { text: 'JVM 内存参数设置', link: '/java/jvm/JVM内存参数设置' },
-                { text: 'JVM Attach', link: '/java/jvm/JVM Attach' },
-                { text: 'Shallow heap 及 Retained heap', link: '/java/jvm/Shallow heap及Retained heap' },
-                { text: 'JVM GC 总结', link: '/java/jvm/JVM GC 总结' },
-                { text: 'JDK 11 ZGC', link: '/java/jvm/JDK 11  ZGC' },
-              ],
-            },
-            {
-              text: '并发编程',
-              collapsed: false,
-              items: [
-                { text: 'ThreadGroup', link: '/java/concurrent/thread-group' },
-              ],
-            },
-            {
-              text: 'Spring',
-              collapsed: false,
-              items: [
-                { text: 'Spring Cloud 简介', link: '/java/spring/spring-cloud-intro' },
-              ],
-            },
+            ...sidebarFromIndex('java'),
           ],'/cpp/': [
             { text: 'C++', items: [
                 { text: '概览', link: '/cpp/' },
@@ -836,13 +774,7 @@ export default defineConfig({
             { text: 'Rust', items: [
               { text: '概览', link: '/rust/' },
             ] },
-            {
-              text: 'Rust 编程实战 →',
-              collapsed: false,
-              items: [
-                { text: '进入Rust编程实战专题', link: '/rust/rust-programming-practice/' },
-              ],
-            },
+            ...sidebarFromIndex('rust'),
           ],
           '/rust/rust-programming-practice/': [
             { text: 'Rust 编程实战', items: [
@@ -1307,41 +1239,7 @@ export default defineConfig({
   { text: '存储', items: [
     { text: '概览', link: '/storage/' },
   ] },
-  {
-    text: '分布式存储',
-    collapsed: false,
-    items: [
-      { text: 'HDFS 简介', link: '/storage/distributed-storage/hdfs-intro' },
-      { text: 'OceanBase 架构图文档', link: '/storage/distributed-storage/oceanbase-architecture' },
-      { text: 'SeekDB Architecture', link: '/storage/distributed-storage/seekdb-architecture' },
-      { text: 'Lance Format vs Parquet 列式格式', link: '/storage/distributed-storage/lance-format-vs-parquet' },
-      { text: 'Lance 存储引擎架构解析', link: '/storage/distributed-storage/lance-storage-engine-architecture' },
-      { text: 'LanceDB 开源向量数据库实现解读', link: '/storage/distributed-storage/lancedb-implementation' },
-      { text: 'LanceDB 索引原理与实现解读', link: '/storage/distributed-storage/lancedb-indexing' },
-      { text: 'Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路', link: '/storage/distributed-storage/lance-distributed-fts-indexing' },
-    ],
-  },
-  {
-    text: 'Intro to Database System →',
-    collapsed: false,
-    items: [
-      { text: '进入 Intro to Database System', link: '/storage/cmu15-445/' },
-    ],
-  },
-  {
-    text: 'Vector Databases in Modern AI Applications →',
-    collapsed: false,
-    items: [
-      { text: '进入 Vector Databases in Modern AI Applications', link: '/storage/vector-database/' },
-    ],
-  },
-  {
-    text: 'LSM-Tree in a Week →',
-    collapsed: false,
-    items: [
-      { text: '进入 LSM-Tree in a Week', link: '/storage/lsm-tree/' },
-    ],
-  },
+  ...sidebarFromIndex('storage'),
 ],
           '/storage/cmu15-445/': [
             { text: 'Intro to Database System', items: [
@@ -1487,14 +1385,8 @@ export default defineConfig({
           '/tools/': [
             { text: '工具', items: [
                 { text: '概览', link: '/tools/' },
-                { text: 'Cherry-Pick', link: '/tools/git/cherry-pick' },
-                { text: 'git merge 三种操作', link: '/tools/git/git-merge' },
-                { text: 'GitHub 与 Gitee 共存', link: '/tools/git/github-gitee' },
-                { text: '在 GitHub 上找项目', link: '/tools/git/search-in-git' },
-                { text: 'Lucene 语法查询', link: '/tools/search/lucene-grammar' },
-                { text: 'GitHub Pages + Hexo', link: '/tools/blog/hexo-tutorial' },
-                { text: 'Hexo + Kaze + Gitee', link: '/tools/blog/hexo-kaze-gitee' },
             ] },
+            ...sidebarFromIndex('tools'),
           ],'/csapp/': [
             { text: '计算机系统', items: [
                 { text: '概览', link: '/csapp/' },

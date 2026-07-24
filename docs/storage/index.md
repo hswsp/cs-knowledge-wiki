@@ -12,6 +12,7 @@
 - [LanceDB 开源向量数据库实现解读](./distributed-storage/lancedb-implementation)
 - [LanceDB 索引原理与实现解读](./distributed-storage/lancedb-indexing)
 - [Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路](./distributed-storage/lance-distributed-fts-indexing)
+- [LanceDB GPU 索引](./distributed-storage/lancedb-gpu-indexing)
 
 ## 存储引擎
 
