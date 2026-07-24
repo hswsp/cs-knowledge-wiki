@@ -1308,6 +1308,20 @@ export default defineConfig({
     { text: '概览', link: '/storage/' },
   ] },
   {
+    text: '分布式存储',
+    collapsed: false,
+    items: [
+      { text: 'HDFS 简介', link: '/storage/distributed-storage/hdfs-intro' },
+      { text: 'OceanBase 架构图文档', link: '/storage/distributed-storage/oceanbase-architecture' },
+      { text: 'SeekDB Architecture', link: '/storage/distributed-storage/seekdb-architecture' },
+      { text: 'Lance Format vs Parquet 列式格式', link: '/storage/distributed-storage/lance-format-vs-parquet' },
+      { text: 'Lance 存储引擎架构解析', link: '/storage/distributed-storage/lance-storage-engine-architecture' },
+      { text: 'LanceDB 开源向量数据库实现解读', link: '/storage/distributed-storage/lancedb-implementation' },
+      { text: 'LanceDB 索引原理与实现解读', link: '/storage/distributed-storage/lancedb-indexing' },
+      { text: 'Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路', link: '/storage/distributed-storage/lance-distributed-fts-indexing' },
+    ],
+  },
+  {
     text: 'Intro to Database System →',
     collapsed: false,
     items: [
@@ -1407,11 +1421,6 @@ export default defineConfig({
                 { text: '06 - Advanced indexing', link: '/storage/vector-database/06-advanced-indexing' },
                 { text: '07 - Segmenting', link: '/storage/vector-database/07-segmenting' },
                 { text: '08 - Architecture', link: '/storage/vector-database/08-architecture' },
-                { text: '09 - Lance Format vs Parquet 列式格式', link: '/storage/vector-database/09-lance-format-vs-parquet' },
-                { text: '10 - Lance 存储引擎架构解析', link: '/storage/vector-database/10-lance-storage-engine-architecture' },
-                { text: '11 - LanceDB 开源向量数据库实现解读', link: '/storage/vector-database/11-lancedb-implementation' },
-                { text: '12 - LanceDB 索引原理与实现解读', link: '/storage/vector-database/12-lancedb-indexing' },
-                { text: '13 - Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路', link: '/storage/vector-database/13-lance-distributed-fts-indexing' },
               ],
             },
           ],

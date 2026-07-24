@@ -7,6 +7,11 @@
 - [HDFS 简介](./distributed-storage/hdfs-intro)
 - [OceanBase 架构图文档](./distributed-storage/oceanbase-architecture)
 - [SeekDB Architecture](./distributed-storage/seekdb-architecture)
+- [Lance Format vs Parquet 列式格式](./distributed-storage/lance-format-vs-parquet)
+- [Lance 存储引擎架构解析](./distributed-storage/lance-storage-engine-architecture)
+- [LanceDB 开源向量数据库实现解读](./distributed-storage/lancedb-implementation)
+- [LanceDB 索引原理与实现解读](./distributed-storage/lancedb-indexing)
+- [Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路](./distributed-storage/lance-distributed-fts-indexing)
 
 ## 存储引擎
 

@@ -12,8 +12,3 @@
 - [Advanced indexing](./06-advanced-indexing)
 - [Segmenting](./07-segmenting)
 - [Architecture](./08-architecture)
-- [Lance Format vs Parquet 列式格式](./09-lance-format-vs-parquet)
-- [Lance 存储引擎架构解析](./10-lance-storage-engine-architecture)
-- [LanceDB 开源向量数据库实现解读](./11-lancedb-implementation)
-- [LanceDB 索引原理与实现解读](./12-lancedb-indexing)
-- [Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路](./13-lance-distributed-fts-indexing)
