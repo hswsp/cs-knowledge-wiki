@@ -16,23 +16,66 @@ function sidebarFromIndex(baseDir) {
   if (!existsSync(file)) return []
   const content = readFileSync(file, 'utf-8')
   const groups = []
-  let current = null
-  for (const line of content.split('\n')) {
-    const h2 = line.match(/^## (.+)/)
-    if (h2) {
-      if (current && current.items.length > 0) groups.push(current)
-      current = { text: h2[1], collapsed: true, items: [] }
-      continue
-    }
-    const link = line.match(/^- \[(.+?)\]\((.+?)\)/)
-    if (link && current) {
-      const p = link[2].replace(/[<>]/g, '')
-      let vpLink = '/' + join(baseDir, p.replace(/^\.\//, '')).replace(/\\/g, '/')
-      vpLink = vpLink.replace(/\.md$/, '')
-      current.items.push({ text: link[1], link: vpLink })
+  const stack = []
+
+  function flushTo(level) {
+    while (stack.length > 0 && stack[stack.length - 1]._level > level) {
+      const done = stack.pop()
+      const parent = stack[stack.length - 1]
+      if (parent) {
+        parent.items.push(done)
+      } else {
+        groups.push(done)
+      }
     }
   }
-  if (current && current.items.length > 0) groups.push(current)
+
+  for (const line of content.split('\n')) {
+    const indent = (line.match(/^(\s*)/) || [''])[0].length
+
+    if (/^---/.test(line)) continue
+    if (line.trim() === '') continue
+
+    let m = line.match(/^## (.+)/)
+    if (m) {
+      flushTo(0)
+      stack.push({ text: m[1], collapsed: true, items: [], _level: 1 })
+      continue
+    }
+
+    if (stack.length === 0) continue
+
+    m = line.match(/^### (.+)/)
+    if (m) {
+      flushTo(1)
+      stack.push({ text: m[1], collapsed: true, items: [], _level: 2 })
+      continue
+    }
+
+    m = line.match(/^(\s*)-?\s*\*\*(.+?)\*\*\s*$/)
+    if (m) {
+      flushTo(2)
+      stack.push({ text: m[2], collapsed: true, items: [], _level: 3, _baseIndent: indent, _hasIndented: false })
+      continue
+    }
+
+    m = line.match(/^\s*- \[(.+?)\]\((.+?)\)/)
+    if (m) {
+      const top = stack[stack.length - 1]
+      if (top._level === 3 && top._hasIndented && indent <= top._baseIndent + 2) {
+        flushTo(stack.length - 1)
+      } else if (top._level === 3 && indent > top._baseIndent) {
+        top._hasIndented = true
+      }
+
+      const p = m[2].replace(/[<>]/g, '')
+      let vpLink = '/' + join(baseDir, p.replace(/^\.\//, '')).replace(/\\/g, '/')
+      vpLink = vpLink.replace(/\.md$/, '')
+      stack[stack.length - 1].items.push({ text: m[1], link: vpLink })
+    }
+  }
+
+  flushTo(0)
   return groups
 }
 
@@ -116,51 +159,7 @@ export default defineConfig({
       { text: '进入抽象代数专题', link: '/math/abstract-algebra/' },
     ],
   },
-  {
-    text: '域与 Galois 理论 (Morandi) →',
-    collapsed: false,
-    items: [
-      { text: 'Field and Galois Theory (GTM 167)', link: '/math/field-galois-theory/' },
-    ],
-  },
-  {
-    text: 'Linear Algebra',
-    collapsed: false,
-    items: [
-      { text: '向量空间', link: '/math/向量空间' },
-      { text: '直和', link: '/math/直和' },
-      {
-        text: '线性代数基本定理',
-        link: '/math/线性代数基本定理/',
-        items: [
-          { text: '矩阵四大子空间', link: '/math/线性代数基本定理/矩阵四大空间' },
-          { text: 'SVD 与伪逆', link: '/math/线性代数基本定理/svd-与伪逆' },
-        ],
-      },
-      { text: '矩阵分解详解', link: '/math/矩阵分解详解' },
-      { text: '线性代数与傅里叶级数', link: '/math/线性代数与傅里叶级数' },
-    ],
-  },
-  {
-    text: 'Algebra',
-    collapsed: false,
-    items: [
-      { text: '代数基础', link: '/math/代数基础' },
-      { text: '最大公约数', link: '/math/最大公约数' },
-      { text: 'Lucas定理求组合数', link: '/math/lucas定理求组合数' },
-      { text: '卡特兰数', link: '/math/卡特兰数' },
-      { text: '四平方和定理', link: '/math/四平方和定理' },
-      { text: '单纯形算法求解线性规划', link: '/math/单纯形算法求解线性规划' },
-    ],
-  },
-  {
-    text: 'Information Theory',
-    collapsed: false,
-    items: [
-      { text: '有限域算术——从 AES 到 Reed-Solomon', link: '/math/有限域算术-从-aes-到-reed-solomon' },
-      { text: 'RS 码原理及柯西优化', link: '/math/rs码原理及柯西优化' },
-    ],
-  },
+  ...sidebarFromIndex('math'),
 ],
           '/math/abstract-algebra/': [
             { text: '抽象代数', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: 'Galois 理论', link: '/math/abstract-algebra/galois-theory/' }, { text: '← 返回数学', link: '/math/' }] },
@@ -256,204 +255,8 @@ export default defineConfig({
           '/algorithm/': [
   { text: '算法', items: [
     { text: '概览', link: '/algorithm/' },
-    { text: '算法学习资源', link: '/algorithm/算法学习资源' },
   ] },
-  {
-    text: 'Analysis Techniques',
-    collapsed: true,
-    items: [
-      { text: 'Amortized Analysis', link: '/algorithm/amortized-analysis' },
-      { text: '递归算法的时间复杂度', link: '/algorithm/递归算法的时间复杂度' },
-    ],
-  },
-  {
-    text: 'Scientific Computing',
-    collapsed: true,
-    items: [
-      { text: '常用的位运算技巧', link: '/algorithm/常用的位运算技巧' },
-      { text: '位操作应用', link: '/algorithm/位操作应用' },
-      { text: '原地更新技巧', link: '/algorithm/原地更新技巧' },
-      { text: '有限状态机应用', link: '/algorithm/有限状态机应用' },
-      { text: '小数表示法(定点法、浮点法)', link: '/algorithm/小数表示法定点法浮点法' },
-    ],
-  },
-  {
-    text: 'Data Structures',
-    collapsed: true,
-    items: [
-      { text: 'Data Structures', link: '/algorithm/data-structures' },
-      { text: '复杂链表的复制', link: '/algorithm/复杂链表的复制' },
-      { text: '数据结构运用', link: '/algorithm/数据结构运用' },
-      { text: '双指针算法', link: '/algorithm/双指针算法' },
-      { text: '双向双指针', link: '/algorithm/双向双指针' },
-      { text: '滑动窗口基础', link: '/algorithm/滑动窗口基础' },
-      { text: '滑动窗口与桶排序', link: '/algorithm/滑动窗口与桶排序' },
-      { text: '单调栈', link: '/algorithm/单调栈' },
-      { text: '定长单调栈', link: '/algorithm/定长单调栈' },
-      { text: '单调栈的热门运用', link: '/algorithm/单调栈的热门运用' },
-      { text: '单调队列', link: '/algorithm/单调队列' },
-      {
-        text: '二叉树',
-        collapsed: true,
-        items: [
-          { text: '二叉树基础', link: '/algorithm/二叉树基础' },
-          { text: '二叉树后序遍历', link: '/algorithm/二叉树后序遍历' },
-          { text: '二叉树遍历顺序选择', link: '/algorithm/二叉树遍历顺序选择' },
-          { text: '二叉树最近公共祖先', link: '/algorithm/二叉树最近公共祖先' },
-          { text: '完全二叉树的节点数', link: '/algorithm/完全二叉树的节点数' },
-          { text: '二叉树的序列化与反序列化', link: '/algorithm/二叉树的序列化与反序列化' },
-          { text: '二叉树的构造', link: '/algorithm/二叉树的构造' },
-        ],
-      },
-      { text: '多叉树遍历', link: '/algorithm/多叉树遍历' },
-    ],
-  },
-  {
-    text: 'String Algorithm',
-    collapsed: true,
-    items: [
-      { text: 'KMP算法与字符串最长公共前后缀的长度', link: '/algorithm/kmp算法与字符串最长公共前后缀的长度' },
-      { text: '有限状态机实现 KMP 算法详解', link: '/algorithm/有限状态机实现-kmp-算法详解' },
-      { text: 'RABIN KARP 字符匹配算法', link: '/algorithm/rabin-karp-字符匹配算法' },
-      { text: '字符串中的DFS', link: '/algorithm/字符串中的dfs' },
-    ],
-  },
-  {
-    text: 'Sorting&Oder Statistics',
-    collapsed: true,
-    items: [
-      { text: '二分查找模板', link: '/algorithm/二分查找模板' },
-      { text: '二段性的拓展——二分以及为何能二分', link: '/algorithm/二段性的拓展-二分以及为何能二分' },
-      { text: '二分查找拓展', link: '/algorithm/二分查找拓展' },
-      { text: '众数与摩尔投票法', link: '/algorithm/众数与摩尔投票法' },
-      { text: '根据身高重建队列', link: '/algorithm/根据身高重建队列' },
-      { text: '二维矩阵查找', link: '/algorithm/二维矩阵查找' },
-      { text: '快速选择算法详解', link: '/algorithm/快速选择算法详解' },
-      { text: '快速选择算法拓展', link: '/algorithm/快速选择算法拓展' },
-      { text: '什么是计数排序？', link: '/algorithm/什么是计数排序' },
-      { text: '桶思想', link: '/algorithm/桶思想' },
-      { text: '摆动排序', link: '/algorithm/摆动排序' },
-      { text: '什么是基数排序？', link: '/algorithm/什么是基数排序' },
-      { text: '外部排序 - 基于堆排序(最大堆)+最大赢者树', link: '/algorithm/外部排序-基于堆排序最大堆-plus-最大赢者树' },
-      { text: '均匀分布、正态分布生成器', link: '/algorithm/均匀分布正态分布生成器' },
-      { text: '洗牌算法详解', link: '/algorithm/洗牌算法详解' },
-    ],
-  },
-  {
-    text: 'Advanced Data Structures',
-    collapsed: true,
-    items: [
-      { text: '并查集', link: '/algorithm/并查集' },
-      { text: '表达式求值与并查集', link: '/algorithm/表达式求值与并查集' },
-      { text: '跳表——有序数据快速查找', link: '/algorithm/跳表-有序数据快速查找' },
-      { text: '二叉搜索树', link: '/algorithm/二叉搜索树' },
-      { text: '二叉堆实现优先级队列', link: '/algorithm/二叉堆实现优先级队列' },
-      { text: '什么是AVL树？', link: '/algorithm/什么是avl树' },
-      { text: 'AVL树删除总结篇', link: '/algorithm/avl树删除总结篇' },
-      { text: '什么是红黑树？', link: '/algorithm/什么是红黑树' },
-      { text: '红黑树插入篇', link: '/algorithm/红黑树插入篇' },
-      { text: '红黑树删除篇', link: '/algorithm/红黑树删除篇' },
-      { text: '图解：什么是B树', link: '/algorithm/图解什么是b树' },
-      { text: 'B+树 概念篇', link: '/algorithm/b-plus-树-概念篇' },
-      { text: 'B+树 查找篇', link: '/algorithm/b-plus-树-查找篇' },
-      { text: 'B+树遍历', link: '/algorithm/b-plus-树遍历' },
-      { text: 'B+树 插入删除篇', link: '/algorithm/b-plus-树-插入删除篇' },
-    ],
-  },
-  {
-    text: 'Augmenting Data Structures',
-    collapsed: true,
-    items: [
-      { text: 'Trie树', link: '/algorithm/trie树' },
-      { text: 'Trie树应用', link: '/algorithm/trie树应用' },
-      { text: '漫画：什么是树状数组？', link: '/algorithm/漫画什么是树状数组' },
-      { text: '图解：什么是线段树？', link: '/algorithm/图解什么是线段树' },
-      { text: 'Interval Trees详解', link: '/algorithm/interval-trees详解' },
-      { text: '线段树应用', link: '/algorithm/线段树应用' },
-      { text: '扫描线应用', link: '/algorithm/扫描线应用' },
-      { text: '线段树优化最长递增子序列', link: '/algorithm/线段树优化最长递增子序列' },
-      { text: 'kd 树算法之详细篇', link: '/algorithm/kd-树算法之详细篇' },
-    ],
-  },
-  {
-    text: 'Graph Algorithms',
-    collapsed: true,
-    items: [
-      { text: '图论基础', link: '/algorithm/图论基础' },
-      { text: 'Kruskal 最小生成树算法', link: '/algorithm/kruskal-最小生成树算法' },
-      { text: '拓扑排序与名流问题', link: '/algorithm/拓扑排序与名流问题' },
-      { text: '拓扑排序与最小高度树', link: '/algorithm/拓扑排序与最小高度树' },
-      { text: 'Dijkstra 算法', link: '/algorithm/dijkstra-算法' },
-      { text: 'Dijkstra与BFS', link: '/algorithm/dijkstra与bfs' },
-      { text: '图解：最短路径之弗洛伊德算法', link: '/algorithm/图解最短路径之弗洛伊德算法' },
-      { text: 'Floyd Warshall Algorithm', link: '/algorithm/floyd-warshall-algorithm' },
-    ],
-  },
-  {
-    text: 'Divide and Conquer',
-    collapsed: true,
-    items: [
-      { text: '分治算法详解', link: '/algorithm/分治算法详解' },
-      { text: '递归思想：用锅铲给烧饼排序', link: '/algorithm/递归思想用锅铲给烧饼排序' },
-      { text: '递归反转链表：如何拆解复杂问题', link: '/algorithm/递归反转链表如何拆解复杂问题' },
-      { text: 'NSum问题', link: '/algorithm/nsum问题' },
-      { text: '多路归并技巧总结', link: '/algorithm/多路归并技巧总结' },
-      { text: '多路归并与逆序对', link: '/algorithm/多路归并与逆序对' },
-      { text: '递归与栈', link: '/algorithm/递归与栈' },
-      { text: 'BFS&DFS', link: '/algorithm/bfs-dfs' },
-    ],
-  },
-  {
-    text: 'Dynamic Programming',
-    collapsed: true,
-    items: [
-      { text: '动态规划详解', link: '/algorithm/动态规划详解' },
-      { text: 'base case 怎么定', link: '/algorithm/base-case-怎么定' },
-      { text: '序列 DP和线性 DP', link: '/algorithm/序列-dp和线性-dp' },
-      { text: '经典区间 DP 模板题', link: '/algorithm/经典区间-dp-模板题' },
-      { text: '0-1 背包问题', link: '/algorithm/0-1-背包问题' },
-      { text: '0-1 背包问题的变体', link: '/algorithm/0-1-背包问题的变体' },
-      { text: '完全背包问题', link: '/algorithm/完全背包问题' },
-      { text: '子序列解题模板', link: '/algorithm/子序列解题模板' },
-      { text: '最长回文子串', link: '/algorithm/最长回文子串' },
-      { text: '最小代价构造回文串', link: '/algorithm/最小代价构造回文串' },
-      { text: '编辑距离', link: '/algorithm/编辑距离' },
-      { text: '最长公共子序列', link: '/algorithm/最长公共子序列' },
-      { text: '最长递增子序列', link: '/algorithm/最长递增子序列' },
-      { text: '信封嵌套问题', link: '/algorithm/信封嵌套问题' },
-      { text: '最大子数组和', link: '/algorithm/最大子数组和' },
-      { text: '加权最短路径', link: '/algorithm/加权最短路径' },
-      { text: '最小路径和', link: '/algorithm/最小路径和' },
-      { text: '加权沿路最小', link: '/algorithm/加权沿路最小' },
-      { text: '打家劫舍系列问题', link: '/algorithm/打家劫舍系列问题' },
-      { text: '四键键盘', link: '/algorithm/四键键盘' },
-      { text: '正则表达', link: '/algorithm/正则表达' },
-      { text: '戳气球问题', link: '/algorithm/戳气球问题' },
-      { text: '高楼扔鸡蛋', link: '/algorithm/高楼扔鸡蛋' },
-      { text: '博弈问题', link: '/algorithm/博弈问题' },
-      { text: '博弈DP的核心框架', link: '/algorithm/博弈dp的核心框架' },
-      { text: '轮盘问题', link: '/algorithm/轮盘问题' },
-      { text: '股票买卖问题', link: '/algorithm/股票买卖问题' },
-      { text: '丑数问题:针对下标的DP', link: '/algorithm/丑数问题针对下标的dp' },
-      { text: '剪绳子问题', link: '/algorithm/剪绳子问题' },
-      { text: '数位dp', link: '/algorithm/数位dp' },
-    ],
-  },
-  {
-    text: 'Greedy Algorithm',
-    collapsed: true,
-    items: [
-      { text: '贪心算法详解', link: '/algorithm/贪心算法详解' },
-      { text: '自定义数组排序问题', link: '/algorithm/自定义数组排序问题' },
-      { text: '流水线作业调度问题', link: '/algorithm/流水线作业调度问题' },
-      { text: '跳跃游戏', link: '/algorithm/跳跃游戏' },
-      { text: '区间合并问题', link: '/algorithm/区间合并问题' },
-      { text: '活动选择问题', link: '/algorithm/活动选择问题' },
-      { text: '坐公交问题', link: '/algorithm/坐公交问题' },
-      { text: '视频拼接区间算法问题', link: '/algorithm/视频拼接区间算法问题' },
-      { text: '前缀和问题', link: '/algorithm/前缀和问题' },
-    ],
-  },
+  ...sidebarFromIndex('algorithm'),
 ],
           '/ml/': [
             { text: '机器学习', items: [
@@ -637,59 +440,7 @@ export default defineConfig({
             { text: 'C++', items: [
                 { text: '概览', link: '/cpp/' },
             ] },
-            {
-              text: '现代计算机图形学入门 →',
-              collapsed: false,
-              items: [
-                { text: '进入现代计算机图形学入门', link: '/cpp/computer-graphics/' },
-              ],
-            },
-            {
-              text: '基础语法',
-              collapsed: true,
-              items: [
-                { text: 'C++输入输出处理', link: '/cpp/c-plus-plus-输入输出处理' },
-                { text: 'C++11常用新特性（一）', link: '/cpp/c-plus-plus-11常用新特性一' },
-                { text: 'C++11常用新特性（二）', link: '/cpp/c-plus-plus-11常用新特性二' },
-                { text: 'C++ 正则表达式', link: '/cpp/c-plus-plus-正则表达式' },
-              ],
-            },
-            {
-              text: 'STL 容器与算法',
-              collapsed: true,
-              items: [
-                { text: 'C++ string', link: '/cpp/c-plus-plus-string' },
-                { text: 'C++ vector容器', link: '/cpp/c-plus-plus-vector容器' },
-                { text: 'C++ pair', link: '/cpp/c-plus-plus-pair' },
-                { text: 'C++ set', link: '/cpp/c-plus-plus-set' },
-                { text: 'C++ map', link: '/cpp/c-plus-plus-map' },
-                { text: 'C++ 关联容器排序', link: '/cpp/c-plus-plus-关联容器排序' },
-                { text: 'C++ 容器适配器', link: '/cpp/c-plus-plus-容器适配器' },
-                { text: 'C++ algorithm函数简介', link: '/cpp/c-plus-plus-algorithm函数简介' },
-                { text: 'C++ 查找与排序', link: '/cpp/c-plus-plus-查找与排序' },
-              ],
-            },
-            {
-              text: 'C++ 八股文',
-              collapsed: false,
-              items: [
-                { text: 'C++ 语⾔基础篇', link: '/cpp/C++ 语⾔基础篇' },
-                { text: '类和数据抽象', link: '/cpp/类和数据抽象' },
-                { text: 'STL 容器和算法', link: '/cpp/STL 容器和算法' },
-                { text: 'C++11 新特性', link: '/cpp/C++11 新特性' },
-                { text: '数据结构和算法', link: '/cpp/数据结构和算法' },
-                { text: '计算机⽹络', link: '/cpp/计算机⽹络' },
-                { text: '操作系统', link: '/cpp/操作系统' },
-                { text: '数据库', link: '/cpp/数据库' },
-                { text: '设计模式（设计和代码实现）', link: '/cpp/设计模式（设计和代码实现）' },
-                { text: '千字⻓⽂ 30 图解陪你⼿撕 STL', link: '/cpp/千字⻓⽂ 30 图解陪你⼿撕 STL' },
-                { text: '万字⻓⽂⼿撕 STL 迭代器源码', link: '/cpp/万字⻓⽂⼿撕 STL 迭代器源码' },
-                { text: '2 万字 20 图带你⼿撕 STL 序列', link: '/cpp/2 万字 20 图带你⼿撕 STL 序列' },
-                { text: '2 万字 10 图带你⼿撕 STL 关联', link: '/cpp/2 万字 10 图带你⼿撕 STL 关联' },
-                { text: '万字⻓⽂+ STL 算法总结', link: '/cpp/万字⻓⽂+ STL 算法总结' },
-                { text: 'Google ⾯试准备完全指南 && C++代码规范：', link: '/cpp/Google ⾯试准备完全指南 && C++代码规范：' },
-              ],
-            },
+            ...sidebarFromIndex('cpp'),
           ],
           '/cpp/computer-graphics/': [
             { text: '现代计算机图形学入门', items: [{ text: '概览', link: '/cpp/computer-graphics/' }, { text: '← 返回 C++', link: '/cpp/' }] },
@@ -1390,70 +1141,8 @@ export default defineConfig({
           ],'/csapp/': [
             { text: '计算机系统', items: [
                 { text: '概览', link: '/csapp/' },
-                { text: 'Linux PV/LV/VG', link: '/csapp/linux/linux-lvm' },
             ] },
-            {
-              text: '计算机网络',
-              collapsed: false,
-              items: [
-                { text: '网络拥塞指数退避算法详解', link: '/csapp/network/exponential-backoff' },
-                {
-                  text: 'Outline',
-                  collapsed: true,
-                  items: [
-                    { text: 'TCP/IP 网络模型', link: '/csapp/network/outline/tcp-ip-model' },
-                    { text: '键入网址到网页显示，期间发生了什么？', link: '/csapp/network/outline/url-to-page' },
-                    { text: 'Linux 系统是如何收发网络包的？', link: '/csapp/network/outline/linux-packet-rxtx' },
-                  ],
-                },
-                {
-                  text: 'HTTP 篇',
-                  collapsed: true,
-                  items: [
-                    { text: 'HTTP 总结', link: '/csapp/network/http/http-overview' },
-                    { text: 'HTTP/1.1 如何优化？', link: '/csapp/network/http/http1-1-optimization' },
-                    { text: 'HTTPS RSA 握手解析', link: '/csapp/network/http/https-rsa-handshake' },
-                    { text: 'HTTPS ECDHE 握手解析', link: '/csapp/network/http/https-ecdhe-handshake' },
-                    { text: 'HTTPS 如何优化？', link: '/csapp/network/http/https-optimization' },
-                    { text: 'HTTP/2 详解', link: '/csapp/network/http/http2' },
-                    { text: 'HTTP/3 强势来袭', link: '/csapp/network/http/http3' },
-                    { text: 'RPC 与 HTTP 协议', link: '/csapp/network/http/rpc-vs-http' },
-                  ],
-                },
-                {
-                  text: 'TCP 篇',
-                  collapsed: true,
-                  items: [
-                    { text: 'TCP 总结', link: '/csapp/network/tcp/tcp-overview' },
-                    { text: 'TCP 实战抓包分析', link: '/csapp/network/tcp/tcp-packet-capture' },
-                    { text: '如何理解 TCP 面向字节流协议？', link: '/csapp/network/tcp/tcp-byte-stream' },
-                    { text: 'TCP 可靠性保证', link: '/csapp/network/tcp/tcp-reliability' },
-                    { text: 'TCP 协议丢包的场景', link: '/csapp/network/tcp/tcp-packet-loss' },
-                    { text: 'TCP 是如何避免历史报文的？', link: '/csapp/network/tcp/tcp-historical-segment' },
-                    { text: 'TCP 协议有什么缺陷？', link: '/csapp/network/tcp/tcp-flaws' },
-                    { text: '如何优化 TCP？', link: '/csapp/network/tcp/tcp-optimization' },
-                    { text: '原来墙，是这么把我 TCP 连接干掉的！', link: '/csapp/network/tcp/tcp-firewall' },
-                  ],
-                },
-                {
-                  text: 'UDP 篇',
-                  collapsed: true,
-                  items: [
-                    { text: 'QUIC 协议详解', link: '/csapp/network/udp/quic-detail' },
-                    { text: '如何基于 UDP 协议实现可靠传输？', link: '/csapp/network/udp/udp-reliable-transport' },
-                    { text: '基于 UDP 的传输协议——QUIC', link: '/csapp/network/udp/quic-overview' },
-                  ],
-                },
-                {
-                  text: 'IP 篇',
-                  collapsed: true,
-                  items: [
-                    { text: 'IP 基础知识全家桶', link: '/csapp/network/ip/ip-essentials' },
-                    { text: 'ping 的工作原理', link: '/csapp/network/ip/ping' },
-                  ],
-                },
-              ],
-            },
+            ...sidebarFromIndex('csapp'),
             {
               text: 'CS 144 →',
               collapsed: false,
