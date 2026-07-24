@@ -271,6 +271,13 @@ export default defineConfig({
             ] },
             ...aiInfraSidebar,
           ],
+          '/ml/aios/': [
+            { text: 'AIOS: 从零构建 LLM 推理引擎', items: [
+              { text: '概览', link: '/ml/aios/' },
+              { text: '← 返回机器学习', link: '/ml/' },
+            ] },
+            ...sidebarFromIndex('ml/aios'),
+          ],
           '/ml/learn-claude-code/': [
             { text: 'Learn Claude Code', items: [
               { text: '概览', link: '/ml/learn-claude-code/' },
