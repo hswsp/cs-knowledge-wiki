@@ -30,5 +30,7 @@ description: "- [代数基础](代数基础)"
 
 ## Information Theory
 
+- [压缩即智能 Part 1：重新发明熵](压缩即智能-part1-重新发明熵)
+- [压缩即智能 Part 2：交叉熵是什么](压缩即智能-part2-交叉熵是什么)
 - [有限域算术: 从 AES 到 Reed-Solomon](有限域算术-从-aes-到-reed-solomon)
 - [RS码原理及柯西优化](rs码原理及柯西优化)
