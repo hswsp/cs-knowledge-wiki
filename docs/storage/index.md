@@ -13,6 +13,7 @@
 - [LanceDB 索引原理与实现解读](./distributed-storage/lancedb-indexing)
 - [Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路](./distributed-storage/lance-distributed-fts-indexing)
 - [LanceDB GPU 索引](./distributed-storage/lancedb-gpu-indexing)
+- [PolarDB-X 架构深度解读](./PolarDB-X-架构解读)
 
 ## 存储引擎
 
