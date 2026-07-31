@@ -57,10 +57,18 @@ function mathBlock(state, startLine, endLine, silent) {
     pos = state.bMarks[nextLine] + state.tShift[nextLine];
     max = state.eMarks[nextLine];
     const lineText = state.src.slice(pos, max);
-    if (lineText.trim().startsWith('$$')) {
-      // closing
-      const tail = lineText.trim().slice(2);
+    const trimmed = lineText.trim();
+    if (trimmed.startsWith('$$')) {
+      // closing on its own line (or starts with $$)
+      const tail = trimmed.slice(2);
       if (tail) lines.push(tail);
+      found = true;
+      nextLine++;
+      break;
+    }
+    if (trimmed.endsWith('$$') && trimmed.length > 2) {
+      // closing at end of a continuation line (e.g. "... formula.$$")
+      lines.push(trimmed.slice(0, -2));
       found = true;
       nextLine++;
       break;
