@@ -32,5 +32,8 @@ description: "- [代数基础](代数基础)"
 
 - [压缩即智能 Part 1：重新发明熵](压缩即智能-part1-重新发明熵)
 - [压缩即智能 Part 2：交叉熵是什么](压缩即智能-part2-交叉熵是什么)
-- [有限域算术: 从 AES 到 Reed-Solomon](有限域算术-从-aes-到-reed-solomon)
+- [有限域算术：从 AES 到 Reed-Solomon（1/4）数学基础与 GF(p) 素数域](./01-数学基础与-GF-p-素数域)
+- [有限域算术：从 AES 到 Reed-Solomon（2/4）扩展域 GF(2^n) 与 AES](./02-扩展域-GF-2-n-与-AES)
+- [有限域算术：从 AES 到 Reed-Solomon（3/4）Reed-Solomon 编解码与 C 实现](./03-Reed-Solomon-编解码与C实现)
+- [有限域算术：从 AES 到 Reed-Solomon（4/4）GHASH、Shamir 与工程实战](./04-GHASH-Shamir-与工程实战)
 - [RS码原理及柯西优化](rs码原理及柯西优化)
