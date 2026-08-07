@@ -276,13 +276,6 @@ export default defineConfig({
             ] },
             ...aiInfraSidebar,
           ],
-          '/ml/aios/': [
-            { text: 'AIOS: 从零构建 LLM 推理引擎', items: [
-              { text: '概览', link: '/ml/aios/' },
-              { text: '← 返回机器学习', link: '/ml/' },
-            ] },
-            ...sidebarFromIndex('ml/aios'),
-          ],
           '/java/': [
             { text: 'Java', items: [
                 { text: '概览', link: '/java/' },
