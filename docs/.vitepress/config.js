@@ -69,8 +69,13 @@ function sidebarFromIndex(baseDir) {
       }
 
       const p = m[2].replace(/[<>]/g, '')
-      let vpLink = '/' + join(baseDir, p.replace(/^\.\//, '')).replace(/\\/g, '/')
-      vpLink = vpLink.replace(/\.md$/, '')
+      let vpLink
+      if (/^https?:\/\//.test(p)) {
+        vpLink = p
+      } else {
+        vpLink = '/' + join(baseDir, p.replace(/^\.\//, '')).replace(/\\/g, '/')
+        vpLink = vpLink.replace(/\.md$/, '')
+      }
       stack[stack.length - 1].items.push({ text: m[1], link: vpLink })
     }
   }
@@ -277,166 +282,6 @@ export default defineConfig({
               { text: '← 返回机器学习', link: '/ml/' },
             ] },
             ...sidebarFromIndex('ml/aios'),
-          ],
-          '/ml/learn-claude-code/': [
-            { text: 'Learn Claude Code', items: [
-              { text: '概览', link: '/ml/learn-claude-code/' },
-              { text: '← 返回机器学习', link: '/ml/' },
-            ] },
-            {
-              text: '核心闭环',
-              collapsed: false,
-              items: [
-                { text: 's01 Agent 循环', link: '/ml/learn-claude-code/s01' },
-                { text: 's02 工具使用', link: '/ml/learn-claude-code/s02' },
-                { text: 's03 待办写入', link: '/ml/learn-claude-code/s03' },
-                { text: 's04 子代理', link: '/ml/learn-claude-code/s04' },
-                { text: 's05 技能系统', link: '/ml/learn-claude-code/s05' },
-                { text: 's06 上下文压缩', link: '/ml/learn-claude-code/s06' },
-              ],
-            },
-            {
-              text: '系统加固',
-              collapsed: true,
-              items: [
-                { text: 's07 权限系统', link: '/ml/learn-claude-code/s07' },
-                { text: 's08 Hook 系统', link: '/ml/learn-claude-code/s08' },
-                { text: 's09 记忆系统', link: '/ml/learn-claude-code/s09' },
-                { text: 's10 系统提示词', link: '/ml/learn-claude-code/s10' },
-                { text: 's11 错误恢复', link: '/ml/learn-claude-code/s11' },
-              ],
-            },
-            {
-              text: '任务运行时',
-              collapsed: true,
-              items: [
-                { text: 's12 任务系统', link: '/ml/learn-claude-code/s12' },
-                { text: 's13 后台任务', link: '/ml/learn-claude-code/s13' },
-                { text: 's14 定时调度', link: '/ml/learn-claude-code/s14' },
-              ],
-            },
-            {
-              text: '多 Agent 平台',
-              collapsed: true,
-              items: [
-                { text: 's15 Agent 团队', link: '/ml/learn-claude-code/s15' },
-                { text: 's16 团队协议', link: '/ml/learn-claude-code/s16' },
-                { text: 's17 自主代理', link: '/ml/learn-claude-code/s17' },
-                { text: 's18 Worktree 隔离', link: '/ml/learn-claude-code/s18' },
-                { text: 's19 MCP 与插件', link: '/ml/learn-claude-code/s19' },
-              ],
-            },
-            {
-              text: '参考资料',
-              collapsed: true,
-              items: [
-                { text: '参考资料索引', link: '/ml/learn-claude-code/reference/' },
-                { text: '系统全景总览', link: '/ml/learn-claude-code/reference/s00-architecture-overview' },
-                { text: '为什么这样安排章节顺序', link: '/ml/learn-claude-code/reference/s00d-chapter-order-rationale' },
-                { text: '本仓库代码阅读顺序', link: '/ml/learn-claude-code/reference/s00f-code-reading-order' },
-                { text: '参考仓库模块映射图', link: '/ml/learn-claude-code/reference/s00e-reference-module-map' },
-                { text: '教学范围与取舍', link: '/ml/learn-claude-code/reference/teaching-scope' },
-                { text: '术语表', link: '/ml/learn-claude-code/reference/glossary' },
-                { text: '关键数据结构地图', link: '/ml/learn-claude-code/reference/data-structures' },
-                { text: '对象与模块关系图', link: '/ml/learn-claude-code/reference/entity-map' },
-                { text: '查询控制平面', link: '/ml/learn-claude-code/reference/s00a-query-control-plane' },
-                { text: '一次请求生命周期', link: '/ml/learn-claude-code/reference/s00b-one-request-lifecycle' },
-                { text: 'Query 续行模型', link: '/ml/learn-claude-code/reference/s00c-query-transition-model' },
-                { text: '工具控制平面', link: '/ml/learn-claude-code/reference/s02a-tool-control-plane' },
-                { text: '工具执行运行时', link: '/ml/learn-claude-code/reference/s02b-tool-execution-runtime' },
-                { text: '消息与 Prompt 装配流水线', link: '/ml/learn-claude-code/reference/s10a-message-prompt-pipeline' },
-                { text: '运行时任务模型', link: '/ml/learn-claude-code/reference/s13a-runtime-task-model' },
-                { text: '队友-任务-车道模型', link: '/ml/learn-claude-code/reference/team-task-lane-model' },
-                { text: 'MCP 能力层地图', link: '/ml/learn-claude-code/reference/s19a-mcp-capability-layers' },
-              ],
-            },
-          ],
-          '/ml/learn-cuda-from-scratch/': [
-            { text: 'Learn CUDA From Scratch', items: [
-              { text: '概览', link: '/ml/learn-cuda-from-scratch/' },
-              { text: '← 返回机器学习', link: '/ml/' },
-            ] },
-            {
-              text: 'CUDA 编程基础',
-              collapsed: false,
-              items: [
-                { text: 'ch01 导论与环境', link: '/ml/learn-cuda-from-scratch/ch01-导论与环境' },
-                { text: 'ch02 Hello CUDA', link: '/ml/learn-cuda-from-scratch/ch02-Hello-CUDA' },
-                { text: 'ch03 线程模型与索引', link: '/ml/learn-cuda-from-scratch/ch03-线程模型与索引' },
-                { text: 'ch04 GPU硬件架构', link: '/ml/learn-cuda-from-scratch/ch04-GPU硬件架构' },
-                { text: 'ch05 内存层级', link: '/ml/learn-cuda-from-scratch/ch05-内存层级' },
-                { text: 'ch06 SharedMemory与Tile', link: '/ml/learn-cuda-from-scratch/ch06-SharedMemory与Tile' },
-                { text: 'ch07 Reduction与Scan', link: '/ml/learn-cuda-from-scratch/ch07-Reduction与Scan' },
-                { text: 'ch08 性能分析与异步', link: '/ml/learn-cuda-from-scratch/ch08-性能分析与异步' },
-              ],
-            },
-            {
-              text: 'CUDA 高级应用',
-              collapsed: true,
-              items: [
-                { text: 'ch09 GEMM深入', link: '/ml/learn-cuda-from-scratch/ch09-GEMM深入' },
-                { text: 'ch10 Softmax与Norm', link: '/ml/learn-cuda-from-scratch/ch10-Softmax与Norm' },
-                { text: 'ch11 Attention入门', link: '/ml/learn-cuda-from-scratch/ch11-Attention入门' },
-                { text: 'ch12 FlashAttention', link: '/ml/learn-cuda-from-scratch/ch12-FlashAttention' },
-                { text: 'ch13 LLM必备零件', link: '/ml/learn-cuda-from-scratch/ch13-LLM必备零件' },
-                { text: 'ch14 Capstone Mini-LLM', link: '/ml/learn-cuda-from-scratch/ch14-Capstone-Mini-LLM' },
-              ],
-            },
-            {
-              text: '附录',
-              collapsed: true,
-              items: [
-                { text: '术语表', link: '/ml/learn-cuda-from-scratch/glossary-术语表' },
-              ],
-            },
-          ],
-          '/ml/transformers-articles/': [
-            { text: 'Transformers 快速入门', items: [
-              { text: '概览', link: '/ml/transformers-articles/' },
-              { text: '← 返回机器学习', link: '/ml/' },
-            ] },
-            {
-              text: '基础篇',
-              collapsed: false,
-              items: [
-                { text: '00 Hello', link: '/ml/transformers-articles/00-Hello' },
-                { text: '01 自然语言处理', link: '/ml/transformers-articles/01-自然语言处理' },
-                { text: '02 Transformer模型', link: '/ml/transformers-articles/02-Transformer模型' },
-                { text: '03 注意力机制', link: '/ml/transformers-articles/03-注意力机制' },
-                { text: '04 开箱即用的pipelines', link: '/ml/transformers-articles/04-开箱即用的pipelines' },
-                { text: '05 模型与分词器', link: '/ml/transformers-articles/05-模型与分词器' },
-                { text: '06 必要的Pytorch知识', link: '/ml/transformers-articles/06-必要的Pytorch知识' },
-              ],
-            },
-            {
-              text: '实战篇',
-              collapsed: true,
-              items: [
-                { text: '07 微调预训练模型', link: '/ml/transformers-articles/07-微调预训练模型' },
-                { text: '08 快速分词器', link: '/ml/transformers-articles/08-快速分词器' },
-                { text: '09 序列标注任务', link: '/ml/transformers-articles/09-序列标注任务' },
-                { text: '10 翻译任务', link: '/ml/transformers-articles/10-翻译任务' },
-                { text: '11 文本摘要任务', link: '/ml/transformers-articles/11-文本摘要任务' },
-                { text: '12 抽取式问答', link: '/ml/transformers-articles/12-抽取式问答' },
-                { text: '13 Prompting情感分析', link: '/ml/transformers-articles/13-Prompting情感分析' },
-              ],
-            },
-            {
-              text: 'LLM 篇',
-              collapsed: true,
-              items: [
-                { text: '14 大语言模型技术简介', link: '/ml/transformers-articles/14-大语言模型技术简介' },
-                { text: '15 预训练大语言模型', link: '/ml/transformers-articles/15-预训练大语言模型' },
-                { text: '16 使用大语言模型', link: '/ml/transformers-articles/16-使用大语言模型' },
-              ],
-            },
-            {
-              text: '附录',
-              collapsed: true,
-              items: [
-                { text: 'A 信息论基本概念', link: '/ml/transformers-articles/A-信息论基本概念' },
-              ],
-            },
           ],
           '/java/': [
             { text: 'Java', items: [

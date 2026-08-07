@@ -29,15 +29,15 @@
 
 ## Learn Claude Code
 
-- [进入 Learn Claude Code](./learn-claude-code/)
+- [进入 Learn Claude Code](https://learn.shareai.run/zh/)
 
 ## Learn CUDA From Scratch
 
-- [进入 Learn CUDA From Scratch](./learn-cuda-from-scratch/)
+- [进入 Learn CUDA From Scratch](https://jwzheng96.github.io/learn-cuda-from-scratch/index.html)
 
 ## Transformers 快速入门
 
-- [进入 Transformers 快速入门](./transformers-articles/)
+- [进入 Transformers 快速入门](https://transformers.run/)
 
 ## AI Infra 入门到前沿
 
