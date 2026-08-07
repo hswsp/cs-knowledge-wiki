@@ -13,6 +13,7 @@
 - [Decoder 拼装](./transformer/decoder)
 - [Transformer 组装](./transformer/transformer-assembly)
 - [“预训练+微调”范式](./transformer/pretrain-finetune)
+- [Transformers 快速入门](https://transformers.run/)
 
 ## AI 基础理论
 
@@ -27,26 +28,12 @@
 - [信息检索基础](./foundations/information-retrieval)
 - [从 KV Cache 到 AI 内存系统：大模型推理架构的演进](<./从 KV Cache 到 AI 内存系统：大模型推理架构的演进>)
 
-## Learn Claude Code
+## AI应用
 
-- [进入 Learn Claude Code](https://learn.shareai.run/zh/)
+- [Learn Claude Code](https://learn.shareai.run/zh/)
 
-## Learn CUDA From Scratch
+## AI Infra
 
-- [进入 Learn CUDA From Scratch](https://jwzheng96.github.io/learn-cuda-from-scratch/index.html)
-
-## Transformers 快速入门
-
-- [进入 Transformers 快速入门](https://transformers.run/)
-
-## AI Infra 入门到前沿
-
-覆盖 AI 基础设施、LLM 训练与推理、PD 分离、KV Cache、Mooncake、AI Serving 与核心算法等内容。
-
-- [进入 AI Infra 入门到前沿](./ai-infra/)
-
-## AIOS: 从零构建 LLM 推理引擎
-
-从 LLM 基础到 CUDA Graphs，手把手带你从零手写一个 LLM 推理引擎（11 节课程）。
-
-- [进入 AIOS 专栏](./aios/)
+- [Learn CUDA From Scratch](https://jwzheng96.github.io/learn-cuda-from-scratch/index.html)
+- [AI Infra 入门到前沿](./ai-infra/)
+- [AIOS: 从零构建 LLM 推理引擎](./aios/)
