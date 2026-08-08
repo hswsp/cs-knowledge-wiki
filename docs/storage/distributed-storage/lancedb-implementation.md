@@ -4,8 +4,6 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/vshtvxe9xmq46c5d
 
 # LanceDB 开源向量数据库实现解读
 
-> 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/vshtvxe9xmq46c5d](https://www.yuque.com/yangguangfanxing/nmhuv1/vshtvxe9xmq46c5d)
-
 基于联网搜索、LanceDB 官方仓库/SDK 文档，以及本地源码阅读整理。本文重点分析开源 `lancedb/lancedb` 的本地/嵌入式实现，并补充 remote / namespace / cloud 相关抽象。
 
 - GitHub：[https://github.com/lancedb/lancedb](https://github.com/lancedb/lancedb)

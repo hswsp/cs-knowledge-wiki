@@ -4,9 +4,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/ee207e2ba594f1017d50899c27
 
 # Lance 存储引擎架构解析
 
-> 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/ee207e2ba594f1017d50899c276305e4](https://www.yuque.com/yangguangfanxing/nmhuv1/ee207e2ba594f1017d50899c276305e4)
-
-本文重点关注 Lance 作为存储引擎 / Lakehouse Format 的内部架构：文件格式、表格式、事务、读写路径、索引、I/O 与对象存储适配。
+> 本文重点关注 Lance 作为存储引擎 / Lakehouse Format 的内部架构：文件格式、表格式、事务、读写路径、索引、I/O 与对象存储适配。
 
 ## Lance 是什么：面向 AI Lakehouse 的列式存储引擎
 

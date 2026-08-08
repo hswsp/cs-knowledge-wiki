@@ -4,9 +4,7 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/dfudg7ka3q3ke7pr
 
 # Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路
 
-> 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/dfudg7ka3q3ke7pr](https://www.yuque.com/yangguangfanxing/nmhuv1/dfudg7ka3q3ke7pr)
-
-摘录自：[https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew](https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew)
+> 摘录自：[https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew](https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew)
 
 在AI和机器学习的浪潮中，Lance 数据处理的规模越来越大，单机全文索引构建逐渐遇到瓶颈。
 

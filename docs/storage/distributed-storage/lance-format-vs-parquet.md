@@ -4,8 +4,6 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/hxboo5fhcgt5sx6d
 
 # Lance Format vs Parquet 列式格式
 
-> 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/hxboo5fhcgt5sx6d](https://www.yuque.com/yangguangfanxing/nmhuv1/hxboo5fhcgt5sx6d)
-
 学习笔记：向量数据库存储格式对比
 
 ## Parquet：经典列式存储

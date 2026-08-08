@@ -4,8 +4,6 @@ source: https://www.yuque.com/yangguangfanxing/nmhuv1/axmhg405ffl8xwgp
 
 # LanceDB 索引原理与实现解读
 
-> 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/axmhg405ffl8xwgp](https://www.yuque.com/yangguangfanxing/nmhuv1/axmhg405ffl8xwgp)
-
 本文聚焦 LanceDB 支持的索引类型、查询原理、参数含义，以及 LanceDB 与底层 Lance / `lance-index` 之间的实现边界。
 
 ## 概览
