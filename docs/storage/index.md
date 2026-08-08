@@ -7,6 +7,7 @@
 - [HDFS 简介](./distributed-storage/hdfs-intro)
 - [OceanBase 架构图文档](./distributed-storage/oceanbase-architecture)
 - [OceanBase 分布式共识与存储架构深度笔记](./distributed-storage/oceanbase-paxos-log-stream-tablet)
+- [io_uring 如何重塑高性能存储的 I/O 边界](./distributed-storage/rustfs-io-uring-deep-dive)
 - [SeekDB Architecture](./distributed-storage/seekdb-architecture)
 - [Lance Format vs Parquet 列式格式](./distributed-storage/lance-format-vs-parquet)
 - [Lance 存储引擎架构解析](./distributed-storage/lance-storage-engine-architecture)
