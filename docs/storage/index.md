@@ -17,6 +17,7 @@
 - [LanceDB GPU 索引](./distributed-storage/lancedb-gpu-indexing)
 - [PolarDB-X 架构深度解读](./PolarDB-X-架构解读)
 - [Tair 架构详解](./Tair架构详解)
+- [Lustre 高性能分布式文件系统：从 0 级基础到精通](./Lustre架构详解)
 
 ## 存储引擎
 
