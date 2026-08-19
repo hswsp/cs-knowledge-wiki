@@ -26,6 +26,10 @@
 
 - [Kafka 两年踩过的非比寻常的坑](./messaging/kafka-practice)
 
+## 系统设计
+
+- [system-design-primer](https://guide.emcsp.top/system-design-primer/)
+
 ---
 
 *持续更新中...*
