@@ -18,6 +18,7 @@
 - [PolarDB-X 架构深度解读](./PolarDB-X-架构解读)
 - [Tair 架构详解](./Tair架构详解)
 - [Lustre 高性能分布式文件系统：从 0 级基础到精通](./Lustre架构详解)
+- [Alluxio 架构深度解读](./distributed-storage/alluxio-architecture)
 
 ## 存储引擎
 
