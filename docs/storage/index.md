@@ -22,6 +22,7 @@
 
 ## 存储引擎
 
+- [DuckDB 架构深度解析：查询引擎、存储引擎与 AI 时代的硬件适配](./duckdb-架构详解)
 - [LSM Tree：高性能海量数据写数据结构](./storage-engine/lsm-tree)
 - [LSM-Tree Compaction 策略全景：从 Leveled 到 Universal、FIFO 与工业界变体](./storage-engine/lsm-compaction)
 - [聊聊MySql事务,MVCC](./storage-engine/mvcc.md)
