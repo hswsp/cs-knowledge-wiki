@@ -81,11 +81,28 @@ MinIO 没有用传统环状一致性哈希，而是用**确定性哈希映射**�
 
 这种"算法库 + 宿主"分层的直接收益：
 
-- **确定性（Determinism）**：etcd/raft 把 Raft 建模为纯状态机，输入（消息/本地定时器）→ 输出 `{Messages, LogEntries, NextState}`。同一状态 + 同一输入 = 同一输出，便于 TLA+ 形式化验证和随机化测试。
+- **确定性（Determinism）**：etcd/raft 把 Raft 建模为纯状态机，输入（消息/本地定时器）→ 输出 `{Messages, LogEntries, NextState}`。同一状态 + 同一输入 = 同一输出，便于 [TLA+ 形式化验证](#31-tla-plus)和随机化测试。
 - **可移植**：同一种算法可被 etcd、Kubernetes、CockroachDB、TiDB、Flannel、Calico 等几十个系统复用；raft-rs 被 TiKV 及各 Rust 生态复用。
 - **性能后置**：算法核心不做 I/O 优化，宿主按需做批量、并行写盘等。
 
 理解这层后，再去读"选主优化""快照优化"，本质都是在**核心算法之上加工程糖衣**，而不是发明新共识。
+
+### 3.1 TLA+ 是什么 {#31-tla-plus}
+
+在讨论 Raft 工程实现时经常看到这个词（etcd-io/raft 仓库就有专门的 `tla/` 目录），先把它解释清楚。
+
+**TLA / TLA+**（Temporal Logic of Actions，动作时序逻辑）是图灵奖得主 **Leslie Lamport**（Paxos 算法与 LaTeX 的作者）设计的**形式化规格语言**，专门用来精确描述并发与分布式系统、并自动验证其正确性。它解决的核心痛点是：
+
+普通测试只能覆盖"走过的几条路径"，而分布式系统的问题几乎都出在**极端交错**上——两个节点同时投票、消息乱序、网络分区又恢复，这些组合数量爆炸，无法靠测试穷尽。TLA+ 换了一条路：
+
+1. **写规格（Specification）而不是代码**：用集合论 + 逻辑精确写出"系统允许做什么状态转移、哪些不变量永远不能违反"（如：任意时刻至多一个 Leader；已提交的日志不能再被覆盖）。
+2. **用工具自动穷举**：
+   - **TLC 模型检查器**：把系统所有可达状态和消息交错**自动穷举**，检查是否存在违反安全属性（Safety，坏情况绝不出错）或活性属性（Liveness，好事最终会发生）的执行路径。
+   - **TLAPS 证明系统**：对规模大到穷举不动的规格做数学证明。
+
+对 Raft 而言，TLA+ 的作用是**从数学上保证共识算法的安全性**：Raft 论文本身就以等效形式化描述呈现，而生产级实现（etcd-io/raft 的 `tla/` 目录、tikv/raft-rs 的 TLA 模型）会维护一份对应的 TLA+ 规格，用它验证选举、日志复制、成员变更不会出现"双主""日志冲突"等灾难。这也是为什么 §3 强调"确定性"——只有把 Raft 建模成纯状态机，才能把同构的 TLA+ 模型对齐到真实的工程实现上。
+
+> 一句话：**TLA+ = 用数学精确描述分布式算法，再用工具自动穷举所有可能的执行交错，提前发现测试抓不到的并发 bug。** 它是共识协议、分布式数据库等"高可靠系统"的行业标准验证手段（Chrome 的网页渲染、AWS 众多核心服务也用 TLA+ 验过）。
 
 ---
 
@@ -96,7 +113,10 @@ Raft 基础选主：Follower 超时未收到心跳 → 自增 term → 转 Candi
 ### 4.1 随机化选举超时 + 心跳租约
 
 - **随机化选举超时（Randomized Election Timeout）**：Raft 本就要求选举超时随机（如 `[T, 2T)`），保证几乎不会出现"平票/同时竞选"。工程上通过 `ElectionTick`（把时间抽象为 tick）实现，如 etcd/raft 默认 `ElectionTick=10, HeartbeatTick=1`。随机化让选主在多数派可用时能快速收敛到**恰好一个** Leader。
-- **心跳租约（Heartbeat-based lease / check quorum）**：Leader 定期发心跳，Follower 收到心跳即**刷新租约**。读操作用于**租约读（lease read）**——只要租约未过期，Follower 就能安全地在本节点读，不用每次都走 ReadIndex 与多数派交互，显著降低读延迟（这是"读优化"，也影响选主语义：租约超时即视为 Leader 失联）。
+- **心跳租约（Heartbeat-based lease / check quorum）**：Leader 定期发心跳，并通过 CheckQuorum 持续确认自己仍得到多数派响应，从而维持自己的 **Leader 租约（leader lease）**。租约有两个用途：
+  - **租约读（lease read）是 Leader 侧优化**：租约有效期内，Leader 确信"这段时间内不会有新 Leader 被选出来"，因此可以**在本地直接执行线性化读**——既不必把 read-index 条目写入 Raft 日志等 commit（`ReadOnlySafe` 路径），也不必每次与多数派交互确认。代价是信任所有节点时钟有界（etcd/raft 原文：*"this approach relies on the clock of the all the machines in raft group"*）。
+  - **Follower 不能本地读**：Follower 的本地状态可能落后于已提交日志，没有租约作安全前提；它要提供线性化读，必须**向 Leader 发送 MsgReadIndex 请求**，拿到安全水位后等自己的 `applied` 追上再在本节点执行（etcd/raft 原文：*"followers asks leader to get a safe read index before processing read-only queries"*），或干脆把读请求转发给 Leader。
+  - **选主语义**：租约超时即视为 Leader 失联，配合 CheckQuorum 可触发 Leader 主动降级（见 [§4.3](#43-checkquorum-与-leader-lease)）。
 
 ### 4.2 PreVote 预投票
 
@@ -128,7 +148,7 @@ Raft 原始设计中，Leader 只要自己认为还有能力就可能一直"当�
 一些工程实现进一步优化"当选者质量"：
 
 - **日志优先/投票检查**：RequestVote 里带上 `lastLogIndex/lastLogTerm`，Follower **只投给日志不更落后的候选人**（Raft 固有），保证当选者尽可能拥有最新日志，减少日志回退成本。
-- **候选人数限制 / 读租约保护**：部分实现限制同一任期内的并串行竞选，配合 CheckQuorum，避免全集群频繁抖动。
+- **候选人数限制 / 租约保护**：部分实现限制同一任期内的并串行竞选，配合 CheckQuorum 与 Leader 租约，避免全集群频繁抖动。
 - **打散选举热点（分区/分片）**：MultiRaft 在**每个 Region/Range 上独立计时**，随机化在不同 group 间天然错峰，避免所有分片在同一时刻触发选举（这属于工程上"把选主压力分散"）。
 
 ---
@@ -270,7 +290,7 @@ flowchart TD
 |------|--------------|
 | 选主抖动/无谓换主 | PreVote（预投票不升 term）、CheckQuorum 失活降级 |
 | 选举抢占不优 | 日志检查投票（只投给不落后的）、Leader Transfer 主动转移 |
-| 读放大/换主延迟 | 心跳租约（lease read）、秒级主动换主 |
+| 读延迟/换主延迟 | 领导者租约读（lease read，Leader 本地读省去 quorum 往返）、Follower 走 ReadIndex、秒级主动换主 |
 | 日志无限膨胀 | `maxUncommittedSize` 丢弃超额提案（etcd/raft、raft-rs） |
 | 日志被压缩后从节点落后 | **放弃逐条补，直接 InstallSnapshot 整体覆盖** |
 | 大快照传输 | 分片/流式块传输（Ratis chunk）、流控+限流、CockroachDB SST 灌入 |
