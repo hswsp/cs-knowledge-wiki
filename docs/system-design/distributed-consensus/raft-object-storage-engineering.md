@@ -1,7 +1,5 @@
 # Raft 一致性引擎的工程优化深度调研
 
-> ⏭️ **怎么读本文**：想快速了解全景 → §2 选型表 + §7 总览图；只想看**选主优化** → §4；只想看 **Snapshot 与日志堆积** → §5–§6。附录 A（MinIO 无主架构）与附录 B（TLA+）是名词解读，正文不依赖它们。
-
 ---
 
 ## 1. 为什么 AI 时代反而更需要 Raft
@@ -32,7 +30,8 @@ Raft 是一个共识组件，不是数据库：它是存储引擎**底座的一�
 
 - **Apache Ozone 是目前"最纯粹"的对象存储 + Raft 案例**：它用 Ratis（Raft）同时支撑 OzoneManager 的元数据共识，以及 Datanode 上的 Container 复制组（每个 Container 是一个 Raft group，负责对象数据分片的强一致复制），是"对象存储直接用 Raft 做数据复制"的教科书。
 - **TiKV / CockroachDB 是"存储引擎 + Raft"的深度范式**：它们证明 Raft 可以做到**分片（shard）级 MultiRaft**，把数据切成几万甚至几十万个 Region/Range，每个都是独立的 Raft group，借此把单一 Raft 的热点、瓶颈和恢复粒度都打散。**MultiRaft 本身就是一种超级工程优化**，它让"选主""快照""日志追赶"都发生在很小的粒度上。
-- **反例中最有价值的是 MinIO**：它靠 **EC 抗数据损坏 + 确定性哈希定位 + Gossip 传播拓扑** 实现了**完全无主（leaderless）**，不存在任何选主环节，自然也不需要 Raft。它的 Erasure Set / Pool 组织、读写流程与代价详见 [附录 A：MinIO 完全无主架构解读](#appendix-a-minio-完全无主架构解读)。MongoDB 则是"自研的类 Raft primary 选举"而非标准 Raft。这说明"Raft 不是唯一答案"，也帮我们理解 Raft 到底在解决什么、什么时候该用它。
+- **反例中最有价值的是 MinIO**：它靠 **EC 抗数据损坏 + 确定性哈希定位 + Gossip 传播拓扑** 实现了**完全无主（leaderless）**，不存在任何选主环节，自然也不需要 Raft。它的 Erasure Set / Pool 组织、读写流程与代价详见 [附录 A：MinIO 完全无主架构解读](#appendix-a-minio-完全无主架构解读)。
+- MongoDB 则是"自研的类 Raft primary 选举"而非标准 Raft。这说明"Raft 不是唯一答案"，也帮我们理解 Raft 到底在解决什么、什么时候该用它。
 
 > 结论：本文把"对象存储引擎"宽泛地理解为"承载对象/数据副本一致性"的存储底座，重点剖析 etcd、raft-rs（TiKV）、CockroachDB、Ozone/Ratis 的 Raft 工程实现。
 
@@ -42,7 +41,10 @@ Raft 是一个共识组件，不是数据库：它是存储引擎**底座的一�
 
 主流工程里，Raft 被拆成**两层**：
 
-1. **共识核心（Consensus Core）**：只实现纯算法，包括状态机、任期、投票、日志匹配、选主。**不含网络、不含磁盘、不含状态机应用**。这是 etcd-io/raft、tikv/raft-rs、Ratis 的定位。它们的共同哲学（etcd/raft README 原话）：*"most Raft implementations have a monolithic design... this library instead follows a minimalistic design philosophy by only implementing the core raft algorithm."*
+1. **共识核心（Consensus Core）**：只实现纯算法，包括状态机、任期、投票、日志匹配、选主。**不含网络、不含磁盘、不含状态机应用**。这是 etcd-io/raft、tikv/raft-rs、Ratis 的定位。
+
+   它们的共同哲学（etcd/raft README 原话）：*"most Raft implementations have a monolithic design... this library instead follows a minimalistic design philosophy by only implementing the core raft algorithm."*
+
 2. **宿主（Host/Storage）**：调用方必须自己实现四件套：
    - **Log**（Raft 日志的持久化，WAL）
    - **State Machine**（应用数据可持久化快照）
@@ -57,7 +59,7 @@ Raft 是一个共识组件，不是数据库：它是存储引擎**底座的一�
 
 理解这层后，再去读"选主优化""快照优化"，本质都是在**核心算法之上加工程糖衣**，而非发明新共识。
 
-> **名词速查**：「TLA+ 是什么」不占正文位置，见 [附录 B：TLA+ 是什么](#appendix-b-tla-是什么)。一句话版：用数学精确描述分布式算法、再用工具穷举所有执行交错的形式化验证语言（Leslie Lamport 设计）。
+> TLA+ 是用数学精确描述分布式算法、再用工具穷举所有执行交错的形式化验证语言（Leslie Lamport 设计）。
 
 ---
 
@@ -86,7 +88,7 @@ Raft 基础选主链路：Follower 超时未收到心跳 → 自增 term → 转
 
 ### 4.3 CheckQuorum 与 leader lease
 
-先澄清一个常见的误解：**标准 Raft（论文）并不是"Leader 只要自己认为有能力就能一直当选"**。论文明确规定了 Leader 失联时的两条机制：
+**标准 Raft（论文）并不是"Leader 只要自己认为有能力就能一直当选"**。论文明确规定了 Leader 失联时的两条机制：
 
 1. **任期（term）过期立即降级**：*"If a candidate or leader discovers that its term is out of date, it immediately reverts to follower state."*（论文 §5.1）。Leader 一旦收到更高 term 的消息（说明有别的节点发起了新选举或新 Leader 诞生），会立刻变回 Follower，不存在"拒绝新任期"。
 2. **与多数派失联主动退位**：客户端交互章节明确写道：*"a leader in Raft steps down if an election timeout elapses without a successful round of heartbeats to a majority of its cluster"*（论文 §6.1）。Leader 被分区、无法向多数派完成一轮心跳并持续超过一个 election timeout 时，**标准 Raft 就会让它主动退位**，允许客户端重试其他节点。
@@ -112,7 +114,7 @@ Raft 基础选主链路：Follower 超时未收到心跳 → 自增 term → 转
 一些工程实现进一步优化"当选者质量"：
 
 - **日志优先/投票检查**：RequestVote 里带上 `lastLogIndex/lastLogTerm`，Follower **只投给日志不更落后的候选人**（Raft 固有），保证当选者尽可能拥有最新日志，减少日志回退成本。
-- **候选人数限制 / 租约保护**：部分实现限制同一任期内的并串行竞选，配合 CheckQuorum 与 Leader 租约，避免全集群频繁抖动（展开见 [§4.5.1](#451-并串行竞选的工程抑制)）。
+- **候选人数限制 / 租约保护**：部分实现限制同一任期内的并/串行竞选，配合 CheckQuorum 与 Leader 租约，避免全集群频繁抖动（展开见 [§4.5.1](#451-并串行竞选的工程抑制)）。
 - **打散选举热点（分区/分片）**：MultiRaft 在**每个 Region/Range 上独立计时**，随机化在不同 group 间天然错峰，避免所有分片在同一时刻触发选举（这属于工程上"把选主压力分散"）。
 
 #### 4.5.1 并/串行竞选的工程抑制 {#451-并串行竞选的工程抑制}
@@ -206,9 +208,38 @@ if !force && inLease {
 **快照的双重角色**，既是"节省存储"，也是"恢复手段"：
 
 - 正常路径：提交并应用的日志 → 生成快照 → 截断日志，省磁盘、加快重启恢复。
-- **追赶路径**：当 Follower 落后太多，其需要的日志已被 Leader 压缩丢弃时，Leader 无法再通过 `AppendEntries` 逐条补齐，只能发 `InstallSnapshot`（安装快照）。这是"主从不一致难以收敛"场景的核心答案之一：**与其在"永不匹配"的日志缝隙里死磕，不如直接用快照把 Follower 的状态机整体覆盖到一致**（详见 [§6](#6-主从迟迟无法达成一致日志堆积怎么办)）。
+- **追赶路径**：当 Follower 落后太多，其需要的日志已被 Leader 压缩丢弃时，Leader 无法再通过 `AppendEntries` 逐条补齐，只能发 `InstallSnapshot`（安装快照）。
 
-以 **CockroachDB** 为例的极端工程版：它不把整个状态机序列化成字节流，而是**直接用 RocksDB 的 SST 文件 + RangeDelete 进行日志截断**，把不需要再重放的日志范围用 tombstone 标记，然后用 **addSSTable 批量灌入**。逻辑一致（把 follower 拉到 latest applied + 缺失日志），但**传输的是底层存储引擎的原生格式**，性能和网络带宽都远比逐条日志好。这就是"日志压缩"在真实引擎里的落地形态。
+一个 Raft 快照在磁盘上通常由两部分组成：
+
+1. **数据文件**：存放状态机的实际数据。
+2. **元数据文件**：存放快照的索引（`LastIncludedIndex`）、任期（`LastIncludedTerm`）和集群配置等信息。
+
+不同的 Raft 实现保存快照的方式各不相同，但核心思路都是将内存中的状态机数据**序列化**并**持久化**到磁盘：
+
+🐧 etcd：BoltDB + 独立元数据
+
+- **存储方式**：etcd 将快照拆分成两部分存储。
+  - **数据**：存放在 `member/snap/db` 文件中，这是一个 **BoltDB** 文件，以 B+ 树结构存储了所有 KV 数据。
+  - **元数据**：存放在 `member/snap` 目录下，以 `{term}-{index}.snap` 命名的独立文件中。其内容是经过 protobuf 序列化的结构体，包含 CRC 校验、元数据以及序列化后的完整状态机数据。
+- **特点**：etcd 的快照由每个节点**独立生成**。生成时会利用操作系统的 **COW（Copy-on-Write）** 技术，避免阻塞正常的读写请求。
+
+🚀 TiKV：RocksDB SST 文件集合
+
+- **存储方式**：TiKV 的快照是以 **SST（Sorted String Table）文件**集合的形式存在的。
+  - 它会为每个 **Column Family（列族）** 单独生成 SST 文件。
+  - 生成方式是利用 **RocksDB 的快照**功能遍历 KV，然后导出为 SST 文件。
+- **特点**：
+  - **传输**：发送快照时，会为每个 Region 创建独立网络连接，将 Snapshot 拆分为 **1MB** 的 Chunk 进行传输。
+  - **应用**：接收方通过 **Ingest（注入）** SST 文件的方式应用快照，比逐条写入要高效得多。
+
+🐊 CockroachDB：SST 文件 + 分层策略
+
+- **存储方式**：与 TiKV 类似，CockroachDB 也使用 **SST 文件**来存储快照。不把整个状态机序列化成字节流，而是**直接用 RocksDB 的 SST 文件 + RangeDelete 进行日志截断**，把不需要再重放的日志范围用 tombstone 标记，然后用 **addSSTable 批量灌入**。逻辑一致（把 follower 拉到 latest applied + 缺失日志），但**传输的是底层存储引擎的原生格式**，性能和网络带宽都远比逐条日志好。
+- **特点**：
+  - **动态策略**：它会根据快照大小选择不同的应用方式。
+    - **小快照（< 100KiB）**：作为 **WriteBatch（写入批处理）** 逐条应用。
+    - **大快照**：直接 **Ingest（注入）** SST 文件，以获得更高效率
 
 ### 5.2 大快照分片与流控
 
@@ -233,9 +264,9 @@ if !force && inLease {
 这意味着快照安装必须**原子的替换/覆盖本地状态**，同时保证不破坏"已提交但未应用"的日志边界。工程上通过：
 
 - **原子重命名**：快照先写到临时文件，全部就绪后 rename 替换（Ozone/Ratis 同此思路）。
-- **内存 RaftLog 指针迁移**：`RaftLog.restore(snapshot)` 会把 `committed/applied/unstable.offset` 重新定位到快照位置，丢弃所有已被快照覆盖的 unstable 日志。
+- **内存 RaftLog 指针迁移**：`RaftLog.restore(snapshot)` 会把 `committed/applied/unstable.offset` 重新定位到快照位置，丢弃所有已被快照覆盖的 unstable 日志（内存的`unstable`结构中）。
 
-> ⚠️ **易踩的坑**：快照覆盖前，磁盘上若还有 `index >= 快照位置` 的旧日志，必须在写入新快照时一并丢弃（论文与 etcd/raft README 都强调这一点），否则重启恢复时可能出现"日志与状态机不一致"。
+> ⚠️ **易踩的坑**：快照覆盖前，磁盘上若还有 `index <= 快照位置` 的旧日志，必须在写入新快照时一并丢弃（论文与 etcd/raft README 都强调这一点），否则重启恢复时可能出现"日志与状态机不一致"。
 
 ---
 
