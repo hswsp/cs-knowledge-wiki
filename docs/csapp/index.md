@@ -5,6 +5,7 @@
 ## 高性能计算
 
 - [CS149: Parallel Computing](./Stanford-CS149/)
+- [Triton 入门指南](./triton-intro)
 
 ## 计算机网络
 
