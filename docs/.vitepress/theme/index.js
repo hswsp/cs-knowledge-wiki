@@ -4,7 +4,14 @@ import { useRoute } from 'vitepress'
 import Mermaid from './Mermaid.vue'
 import './custom.css'
 
-// Trigger MathJax re-typeset after every route change (SPA navigation).
+// Trigger MathJax re-typeset after the initial load and on SPA route changes.
+//
+// IMPORTANT: do NOT observe the DOM with a MutationObserver here. MathJax's
+// typeset pass inserts its own measurement probes (<mjx-test>/<mjx-container>)
+// into the document; observing body mutations re-triggers typeset, which
+// re-inserts probes, and the two feed each other in an endless loop that grows
+// the DOM until the renderer runs out of memory and Chrome shows "Aw, Snap!".
+// Route changes are the only re-typeset trigger needed.
 function setupMathJax() {
   if (typeof window === 'undefined') return
   const typeset = () => {
@@ -12,15 +19,7 @@ function setupMathJax() {
       window.MathJax.typesetPromise().catch(() => {})
     }
   }
-  let scheduled = false
-  const schedule = () => {
-    if (scheduled) return
-    scheduled = true
-    requestAnimationFrame(() => {
-      setTimeout(() => { typeset(); scheduled = false }, 50)
-    })
-  }
-  // Initial typeset after MathJax loads
+  // Initial typeset after MathJax (async script) finishes loading.
   const tryInitial = () => {
     if (window.MathJax && window.MathJax.typesetPromise) {
       typeset()
@@ -29,9 +28,6 @@ function setupMathJax() {
     }
   }
   tryInitial()
-  // Observe DOM changes to catch route-swapped content
-  const obs = new MutationObserver(() => schedule())
-  obs.observe(document.body, { childList: true, subtree: true })
 }
 
 export default {
@@ -48,6 +44,12 @@ export default {
           }
         },
       })
+      // Re-typeset new page content after SPA navigation.
+      router.onAfterRouteChange = () => {
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise().catch(() => {})
+        }
+      }
     }
   },
 }
