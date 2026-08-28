@@ -128,7 +128,7 @@ CUDA 编程最费精力的是内存层级的管理（global → shared → regis
 
 - 数据在 GPU 上只有两种归宿：**DRAM（全局内存，容量大、慢）** 和 **SRAM（片上缓存，容量小、快）**；
 - `tl.load` 从 DRAM 读进**寄存器/SRAM**，`tl.store` 写回 DRAM；
-- **共享内存的分配、同步甚至异步拷贝（TMA）都由编译器自动插入**，程序员完全无感。
+- **共享内存的分配、同步甚至异步拷贝（**Tensor Memory Accelerator, TMA）都由编译器自动插入，程序员完全无感。
 
 编译器会自动应用一大串优化，官方 README/论文列的清单包括（能记住"这些不用你操心"即可）：
 
@@ -180,7 +180,7 @@ python -c "import triton; print(triton.__version__)"
 | AMD GPU | ROCm **6.2+** |
 | CPU | 官方后端开发中（`triton.language` 的 CPU 支持正在演进） |
 
-> ⚠️ 与老博客的区别：许多 2023 年左右的博客还写着"支持 Volta（CC 7.0）"，但在 Triton 3.x 时代 NVIDIA 侧已要求 **CC 8.0+**，V100（7.0）等更老架构不再受支持。
+> ⚠️ 在 Triton 3.x 时代 NVIDIA 侧已要求 **CC 8.0+**，V100（7.0）等更老架构不再受支持。
 
 ### 3.3 没有 GPU 怎么学？
 
@@ -407,6 +407,7 @@ def softmax_kernel(
     row_start = tl.program_id(0)
     row_step = tl.num_programs(0)
 
+    # 起始，结束，步长。常被设为 tl.num_programs(0)，即并行程序的总数，确保不同程序能均匀地“跳跃”式地处理数据
     for row_idx in tl.range(row_start, n_rows, row_step, num_stages=num_stages):
         # 本行首元素的绝对地址 = 基址 + 行号 × 行跨度
         row_start_ptr = input_ptr + row_idx * input_row_stride
@@ -461,7 +462,7 @@ denominator = tl.sum(numerator, axis=0)
 
 **③ `tl.range(..., num_stages=num_stages)`**
 
-`tl.range` 是内核内的循环构造（比 Python `range` 多了 `num_stages` 等流水线提示）。`tl.program_id(0)` + `tl.num_programs(0)` 让**固定数量的 program 循环处理所有行**（persistent kernel 思路：program 数量 = 机器容量决定的，而不是问题规模决定的），避免"每行一个 program"在行数巨大时产生过大的启动开销。官方教程还根据设备寄存器/共享内存算 occupancy，进一步把 program 数压到 `NUM_SM × occupancy`。
+`tl.range` 是内核内的循环构造（比 Python `range` 多了 `num_stages` 等流水线提示）。`tl.program_id(0)` + `tl.num_programs(0)` 让**固定数量的 program 循环处理所有行**（persistent kernel 思路：**program 数量 = 机器容量决定的**，而不是问题规模决定的），避免"每行一个 program"在行数巨大时产生过大的启动开销。官方教程还根据设备寄存器/共享内存算 occupancy，进一步把 program 数压到 `NUM_SM × occupancy`。
 
 ```mermaid
 graph TD
@@ -561,6 +562,18 @@ a_ptrs = a_ptr + (offs_am[:, None] * stride_am + offs_k[None, :] * stride_ak)
 b_ptrs = b_ptr + (offs_k[:, None] * stride_bk + offs_bn[None, :] * stride_bn)
 ```
 
+1. `pid_m` 是当前程序在“行方向”上的 ID（例如 `tl.program_id(0)`）。这个乘法计算出了当前块负责的**起始行坐标**。比如，`pid_m=2`，`BLOCK_SIZE_M=32`，则起始行为第 `64` 行。
+
+2. `offs_am` 用于构建指向 **全局内存（GMEM）** 的指针（比如 `a_ptr + offs_am[:, None] * stride_am`）
+
+3. **`stride_am` 绝对不是在 Kernel 内部凭空生成的，它必须由 CPU 端（Host）在调用内核时作为参数显式传递进来。**
+
+   绝大多数情况下，我们用 PyTorch 创建的连续（Contiguous）张量是**行优先（Row-major）**存储，此时 `stride_am = K`（即每行恰好有 K 个元素紧密排列）。**但步长必须传参而不是硬编码为 `K`，因为存在以下两种特殊情况：**
+
+   - **张量切片（Slice）**：如果你取的是矩阵的一个子区域（例如 `A[:, ::2]` 隔列采样），此时内存中一行数据的物理间隔不再是 1，而是 2。此时 `stride_ak` 会变为 2，而 `stride_am` 依然是原始矩阵的行间隔，可能与新的 `K` 不匹配。
+
+   - **转置（Transpose）**：如果你对矩阵做了转置 `A.T`，虽然逻辑上的行和列交换了，但底层物理内存并没有移动。此时 `stride_am` 会变成原矩阵的列步长（很可能变为 `1`），而 `stride_ak` 变成原矩阵的行步长。
+
 然后在 K 循环里**只平移指针，不重算**：
 
 ```python
@@ -618,7 +631,7 @@ tl.store(c_ptrs, c, mask=c_mask)
 
 ## 7. 自动调优与性能测量
 
-MatMul 教程的完整版用了一长串配置做 **autotune（自动调优）**：编译器会在启动时对候选配置逐一实测，选出当前形状+硬件上最快的一个。这正是 Triton "性能可移植"的关键机制——**同一份内核代码，在不同 GPU 上自动适配**。
+MatMul 教程的完整版用了一长串配置做 **autotune（自动调优）**：编译器会在启动时**对候选配置逐一实测，选出当前形状+硬件上最快的一个**。这正是 Triton "性能可移植"的关键机制——**同一份内核代码，在不同 GPU 上自动适配**。
 
 ### 7.1 `triton.autotune`
 
