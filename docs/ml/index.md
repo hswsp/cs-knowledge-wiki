@@ -37,3 +37,4 @@
 - [Learn CUDA From Scratch](https://jwzheng96.github.io/learn-cuda-from-scratch/index.html)
 - [AI Infra 入门到前沿](./ai-infra/)
 - [AIOS: 从零构建 LLM 推理引擎](https://guide.emcsp.top/aios/)
+- [nano-vLLM 交互式教程](https://lora-sys.github.io/nano-vllm-interactive-guide/)
