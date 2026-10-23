@@ -23,7 +23,8 @@
     "migrate": "node scripts/migrate-content.mjs",
     "predev": "node scripts/copy-doc-assets.mjs",
     "prebuild": "node scripts/copy-doc-assets.mjs",
-    "build:check": "astro-pure check && astro check && astro build"
+    "build:check": "astro-pure check && astro check && astro build",
+    "docs:build": "npm run assets && astro build && rm -rf docs/.vitepress/dist && mv dist docs/.vitepress/dist"
   },
   "dependencies": {
     "@astrojs/check": "0.9.8",
@@ -81,5 +82,8 @@
     "esbuild@0.27.7": true,
     "sharp@0.34.5": true,
     "fsevents@2.3.3": true
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
