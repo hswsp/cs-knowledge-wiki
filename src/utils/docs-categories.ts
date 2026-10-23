@@ -69,6 +69,8 @@ const DIR_TITLES: Record<string, string> = {
   protocols: '协议',
   'rust-programming-practice': 'Rust 编程实战',
   'practical-cryptography-for-developers': '实用密码学',
+  'stanford-cs149': 'Stanford CS149',
+  'cs144': 'CS 144',
   'security-attack-defense': '安全攻防',
   basics: '基础',
   concurrent: '并发',
@@ -123,6 +125,15 @@ export function categoryHref(path: string): string {
   return `/categories/${path.split('/').filter(Boolean).map(encodeURIComponent).join('/')}/`
 }
 
+function nodeLabel(segments: string[]): string {
+  if (segments.length === 1) return SECTION_META[segments[0]]?.title ?? dirLabel(segments[0])
+  if (segments.length === 2) {
+    const column = SUBKEY_LABELS.get(segments.slice(0, 2).join('/'))
+    if (column) return column
+  }
+  return dirLabel(segments.at(-1)!)
+}
+
 export type CategoryNode = {
   path: string
   label: string
@@ -139,7 +150,24 @@ function fileKey(doc: DocEntry): string {
   return p.replace(/^.*?src\/content\/docs\//, '')
 }
 
-/** 子路由前缀的显示名：优先取父级里指向它的那个分组标题。 */
+/** 这些分组名只是容器，不作为分类层级。 */
+const GENERIC_GROUP = /^(目录|概览|全部|索引|其他)$/
+
+/**
+ * 专栏名覆盖。
+ *
+ * 侧边栏首分组给的是「AI Infra 入门到前沿」，但这个专栏的正式名字来自
+ * 它的开篇文章「AI Infra (Memory Storage) 入门到前沿」，这里显式指定。
+ */
+const SUBKEY_LABEL_OVERRIDES: Record<string, string> = {
+  'ml/ai-infra': 'AI Infra (Memory Storage) 入门到前沿'
+}
+
+/**
+ * 子路由前缀的显示名（等于 VitePress 侧边栏里的专栏名）。
+ *
+ * 优先级：显式覆盖 → 该前缀自己的首个分组标题 → 父级里指向它的分组 → 目录名美化。
+ */
 function subKeyLabels(): Map<string, string> {
   const labels = new Map<string, string>()
 
@@ -156,21 +184,38 @@ function subKeyLabels(): Map<string, string> {
 
   for (const key of Object.keys(NAV)) {
     if (!key.includes('/')) continue
-    const section = key.split('/')[0]
-    let label: string | undefined
-    for (const group of NAV[section] ?? []) {
-      label = firstTitleFor(group, key)
-      if (label) break
+    const override = SUBKEY_LABEL_OVERRIDES[key]
+    if (override) {
+      labels.set(key, override)
+      continue
     }
-    labels.set(key, label ?? dirLabel(key.split('/').at(-1)!))
+    // 专栏自己的首个分组标题 —— 就是 VitePress 侧边栏里显示的那个名字
+    const own = NAV[key]?.map((g) => cleanTitle(g.title)).find((t) => t && !GENERIC_GROUP.test(t))
+    if (own) {
+      labels.set(key, own)
+      continue
+    }
+    // 退回父级分组标题
+    const section = key.split('/')[0]
+    let fromParent: string | undefined
+    for (const group of NAV[section] ?? []) {
+      fromParent = firstTitleFor(group, key)
+      if (fromParent) break
+    }
+    labels.set(key, fromParent ?? dirLabel(key.split('/').at(-1)!))
   }
   return labels
 }
 
 const SUBKEY_LABELS = subKeyLabels()
 
-/** 这些分组名只是容器，不作为分类层级。 */
-const GENERIC_GROUP = /^(目录|概览|全部|索引|其他)$/
+
+/** 分类节点在侧边栏里的出现顺序，用于排序（中文数字标题按字母排会乱）。 */
+const NODE_ORDER = new Map<string, number>()
+let orderCursor = 0
+function touchNode(path: string) {
+  if (!NODE_ORDER.has(path)) NODE_ORDER.set(path, orderCursor++)
+}
 
 /** 建立 文件路径 -> 所属分类路径 的映射，优先用侧边栏分组（含嵌套）。 */
 function buildPlacement(): Map<string, string[]> {
@@ -184,8 +229,13 @@ function buildPlacement(): Map<string, string[]> {
 
   const walk = (group: NavGroup, base: string[]) => {
     const title = cleanTitle(group.title)
-    const isGeneric = !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title)
+    // 分组名和专栏名相同（如 security-attack-defense 下的「安全攻防技能30讲」）
+    // 时不再多套一层，直接并进专栏本身。
+    const sameAsColumn = base.length > 1 && title === SUBKEY_LABELS.get(base.join('/'))
+    const isGeneric =
+      !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title) || sameAsColumn
     const here = isGeneric ? base : [...base, seg(title)]
+    if (!isGeneric) touchNode(here.join('/'))
     for (const doc of group.docs) {
       if (NAV_ONLY.test(doc.title)) continue
       setPath(doc.file, here)
@@ -196,10 +246,8 @@ function buildPlacement(): Map<string, string[]> {
   for (const [key, groups] of Object.entries(NAV)) {
     const keySegments = key.split('/')
     const section = keySegments[0]
-    const base =
-      keySegments.length === 1
-        ? [section]
-        : [section, seg(SUBKEY_LABELS.get(key) ?? dirLabel(keySegments.at(-1)!))]
+    // 路径必须用原始 key，显示名只用于 label；混用会让同一批文章被拆成两个分类
+    const base = keySegments.length === 1 ? [section] : keySegments
     for (const group of groups) walk(group, base)
   }
 
@@ -217,12 +265,7 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
     const segments = path.split('/')
     const node: CategoryNode = {
       path,
-      label:
-        segments.length === 1
-          ? (SECTION_META[segments[0]]?.title ?? dirLabel(segments[0]))
-          : (SUBKEY_LABELS.get(segments.slice(0, 2).join('/')) && segments.length === 2
-              ? SUBKEY_LABELS.get(segments.slice(0, 2).join('/'))!
-              : seg(segments.at(-1)!)),
+      label: nodeLabel(segments),
       desc: categoryDesc(path),
       depth: segments.length,
       docs: [],
@@ -265,7 +308,11 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
   for (const node of nodes.values()) if (node.depth === 1) computeTotal(node)
 
   for (const node of nodes.values()) {
-    node.children.sort((a, b) => a.localeCompare(b, 'zh'))
+    node.children.sort((a, b) => {
+      const oa = NODE_ORDER.get(a) ?? 9999
+      const ob = NODE_ORDER.get(b) ?? 9999
+      return oa - ob || a.localeCompare(b, 'zh')
+    })
     node.docs.sort(
       (a, b) =>
         (a.data.order ?? 999) - (b.data.order ?? 999) ||

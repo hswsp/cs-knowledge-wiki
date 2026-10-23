@@ -186,6 +186,13 @@ function toDocFile(link) {
 
   let p = link.replace(/^\/+/, '').replace(/[?#].*$/, '')
   p = p.replace(/\/+$/, '')
+  // 侧边栏里的链接是 URL 编码的（aiInfraSidebar 里全是 %20/%E7...），
+  // 不解码就永远匹配不到文件，整组分栏会被当成空的丢掉
+  try {
+    p = decodeURIComponent(p)
+  } catch {
+    // 非法编码就按原样处理
+  }
   let file = null
   if (!p) {
     file = null
