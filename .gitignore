@@ -2,3 +2,11 @@ node_modules
 .DS_Store
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+
+# 以下为 astro-iris 分支的构建产物。Git 切换分支不会删除未跟踪文件，
+# 这些目录会残留在工作区；不加规则的话 `git add -A` 会把它们（约 1.4GB）提交进来。
+.astro/
+dist/
+.npm-cache/
+.docassets-manifest.json
+public/docassets/
