@@ -31,11 +31,27 @@ npm run docs:build
 npm run docs:preview
 ```
 
+## 构建命令（按分支对照）
+
+同一套 Cloudflare Pages 项目在切换分支时，**必须同步修改构建命令和输出目录**，两者是配对的：
+
+| 分支 | 构建工具 | 构建命令 | 输出目录 | Node 版本 |
+| --- | --- | --- | --- | --- |
+| `main` | VitePress | `npm run docs:build` | `docs/.vitepress/dist` | 20+ |
+| `astro-iris` | Astro | `npm run build` | `dist` | 22.12+ |
+
+Cloudflare 的这两项是**项目级设置**（Settings → Build & deployments → Build configuration），不分分支，所以：
+
+- 生产分支是 `main` 时 → 用 VitePress 那一行
+- 把生产分支或预览切到 `astro-iris` 时 → 改成 Astro 那一行
+
+Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24）。如果 Cloudflare 项目里显式设了 `NODE_VERSION` 环境变量，它会覆盖 `.nvmrc`，需要一并修改。
+
 ## 部署到 Cloudflare Pages
 
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
 2. 选择 `cs-knowledge-wiki` 仓库，默认分支 `main`
-3. 构建设置：
+3. 构建设置（`main` 分支 / VitePress，完整对照见上一节）：
    - **Framework preset**: `None`
    - **Build command**: `npm run docs:build`
    - **Build output directory**: `docs/.vitepress/dist`
