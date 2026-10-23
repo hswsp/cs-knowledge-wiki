@@ -58,7 +58,34 @@ Cloudflare 的这两项是**项目级设置**（Settings → Build & deployments
 - 生产分支是 `main` 时 → 用 VitePress 那一行
 - 把生产分支或预览切到 `astro-iris` 时 → 改成 Astro 那一行
 
-Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24）。如果 Cloudflare 项目里显式设了 `NODE_VERSION` 环境变量，它会覆盖 `.nvmrc`，需要一并修改。
+### Node 版本（也是项目级设置，同样要跟着分支改）
+
+Cloudflare 决定 Node 版本的优先级，从高到低：
+
+| 来源 | 优先级 | 说明 |
+| --- | --- | --- |
+| 环境变量 `NODE_VERSION` | **最高** | Pages 项目 → Settings → Environment variables，Production 和 Preview **各有一份** |
+| 仓库里的 `.nvmrc` | 次之 | 两个分支都有，但会被上面的环境变量覆盖 |
+| `package.json` 的 `engines` | **完全不读** | Cloudflare v3 构建镜像明确不支持从 engines 检测版本，它只影响本地 `npm install` 的警告 |
+| 构建镜像默认值 | 最低 | v3 = 22.16.0，v2 = 18.17.1，v1 = 12.18.0 |
+
+两个分支的取值：
+
+| 分支 | `.nvmrc` | `NODE_VERSION` 应设为 | 为什么 |
+| --- | --- | --- | --- |
+| `main` | `20` | `20` | VitePress 只要求 Node ≥ 20 |
+| `astro-iris` | `24` | **`24`** | Astro 6 要求 Node ≥ 22.12.0，低于此版本会直接拒绝启动 |
+
+切到 `astro-iris` 时如果忘了改这个变量，构建会停在：
+
+```
+Node.js v20.20.0 is not supported by Astro!
+Please upgrade Node.js to a supported version: ">=22.12.0"
+```
+
+> ⚠️ **不要图省事直接删掉 `NODE_VERSION`**。删掉后会回落到构建镜像的默认版本：v3 镜像是 22.16.0（够用），但如果项目还在 v2 镜像（默认 18.17.1）就会失败。显式写死版本最稳妥。
+>
+> ⚠️ **`NODE_VERSION` 要改两处**：Production 和 Preview 是两个独立的环境变量集合。分支预览部署（如 `astro-iris`）读的是 Preview 那一份，只改 Production 不会生效。
 
 ## 部署到 Cloudflare Pages
 
@@ -68,7 +95,7 @@ Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24
    - **Framework preset**: `None`
    - **Build command**: `npm run docs:build`
    - **Build output directory**: `docs/.vitepress/dist`
-   - **Environment variables**: `NODE_VERSION = 20`
+   - **Environment variables**: `NODE_VERSION = 20`（Production 与 Preview 各一份；切到 `astro-iris` 时必须都改成 `24`，详见上一节）
 4. 部署完成后，**Custom domains** → 添加子域名 `cswiki.spumn.eu.cc`，Cloudflare 会自动签发 HTTPS
 
 > ⚠️ **注意**：Framework preset 必须选 `None`，不能选 `VitePress`，否则 Cloudflare 会覆盖构建命令导致构建失败。
