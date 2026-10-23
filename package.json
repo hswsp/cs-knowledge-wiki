@@ -21,9 +21,10 @@
     "cache:avatars": "tsx preset/scripts/cacheAvatars.ts",
     "assets": "node scripts/copy-doc-assets.mjs",
     "migrate": "node scripts/migrate-content.mjs",
-    "predev": "node scripts/copy-doc-assets.mjs",
-    "prebuild": "node scripts/copy-doc-assets.mjs",
-    "build:check": "astro-pure check && astro check && astro build"
+    "predev": "node scripts/build-nav.mjs && node scripts/copy-doc-assets.mjs",
+    "prebuild": "node scripts/build-nav.mjs && node scripts/copy-doc-assets.mjs",
+    "build:check": "astro-pure check && astro check && astro build",
+    "nav": "node scripts/build-nav.mjs"
   },
   "dependencies": {
     "@astrojs/check": "0.9.8",

@@ -1,18 +1,39 @@
 /**
- * Knowledge-base categories, derived from content paths the same way the theme
- * derives blog categories (see `content-paths.ts`).
+ * 知识库分类：目录结构 + VitePress 侧边栏分组，两个来源合并。
  *
- * `/categories`            -> 学科（大分类）
- * `/categories/<section>`  -> 二级分类 + 直接挂在该层的文章
- * `/categories/a/b`        -> 更深层
+ * 侧边栏分组（`src/data/docs-nav.json`，由 scripts/build-nav.mjs 生成）表达了
+ * 「哪些文章属于同一个专题」；目录结构补上侧边栏没覆盖到的部分。
+ *
+ * 放置规则（每篇文章都会落到某个子分类下）：
+ *   1. 侧边栏的子路由前缀（如 cpp/computer-graphics）→ 二级分类，其分组为三级
+ *   2. 学科根侧边栏里的分组（如 Fundamentals、C++ 八股文）→ 二级分类
+ *   3. 两者都没覆盖 → 按目录层级；正好在学科根下的归入「其他」
  */
 import type { CollectionEntry } from 'astro:content'
 
+import navData from '../data/docs-nav.json'
 import { SECTION_META } from '@/utils/sections'
 
 export type DocEntry = CollectionEntry<'docs'>
 
-/** 中文目录名。没列出的走 prettify（英文转词首大写，中文原样）。 */
+type NavDoc = { title: string; file: string }
+type NavGroup = { title: string; docs: NavDoc[]; children?: NavGroup[] }
+type NavMap = Record<string, NavGroup[]>
+
+const NAV = navData as unknown as NavMap
+
+/** 导航用的占位条目（概览、返回、专题入口），不算文章。 */
+const NAV_ONLY = /^(概览|←.*|进入.*|.*→)$/
+
+function cleanTitle(title: string): string {
+  return title.replace(/[→←]/g, '').trim()
+}
+
+/** URL 段落里不能出现斜杠。 */
+function seg(value: string): string {
+  return cleanTitle(value).replace(/[/\\]/g, '-').trim() || '其他'
+}
+
 const DIR_TITLES: Record<string, string> = {
   architecture: '架构',
   'ji-chu-jia-gou': '基础架构',
@@ -49,7 +70,6 @@ const DIR_TITLES: Record<string, string> = {
   'rust-programming-practice': 'Rust 编程实战',
   'practical-cryptography-for-developers': '实用密码学',
   'security-attack-defense': '安全攻防',
-  java: 'Java',
   basics: '基础',
   concurrent: '并发',
   jvm: 'JVM',
@@ -71,15 +91,21 @@ export function prettify(segment: string): string {
   return segment
     .split(/[-_]+/)
     .filter(Boolean)
-    .map((w) => (w.length <= 3 && /^[a-z]+$/.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)))
+    .map((w) =>
+      w.length <= 3 && /^[a-z]+$/.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)
+    )
     .join(' ')
+}
+
+function dirLabel(segment: string): string {
+  return DIR_TITLES[segment] ?? prettify(segment)
 }
 
 export function categoryLabel(path: string): string {
   const segments = path.split('/').filter(Boolean)
   const last = segments.at(-1) ?? path
-  if (segments.length === 1) return SECTION_META[last]?.title ?? DIR_TITLES[last] ?? prettify(last)
-  return DIR_TITLES[last] ?? prettify(last)
+  if (segments.length === 1) return SECTION_META[last]?.title ?? dirLabel(last)
+  return dirLabel(last)
 }
 
 export function categoryDesc(path: string): string {
@@ -92,25 +118,91 @@ export function docHref(doc: DocEntry): string {
   return `/docs/${doc.id}`
 }
 
-export function docCategory(doc: DocEntry): string | undefined {
-  const parts = doc.id.split('/')
-  if (parts.length < 2) return undefined
-  return parts.slice(0, -1).join('/')
-}
-
 export type CategoryNode = {
   path: string
-  name: string
   label: string
   desc: string
   depth: number
-  /** 直接挂在这一层的文章 */
   docs: DocEntry[]
-  /** 子分类路径 */
   children: string[]
-  /** 含所有后代文章的计数 */
   total: number
 }
+
+/** 内容集合的 filePath -> `cpp/xxx.md` 形式 */
+function fileKey(doc: DocEntry): string {
+  const p = doc.filePath ?? ''
+  return p.replace(/^.*?src\/content\/docs\//, '')
+}
+
+/** 子路由前缀的显示名：优先取父级里指向它的那个分组标题。 */
+function subKeyLabels(): Map<string, string> {
+  const labels = new Map<string, string>()
+
+  const firstTitleFor = (group: NavGroup, key: string): string | undefined => {
+    const title = cleanTitle(group.title)
+    const hasIt = group.docs.some((doc) => doc.file.startsWith(`${key}/`))
+    if (hasIt && title) return title
+    for (const child of group.children ?? []) {
+      const hit = firstTitleFor(child, key)
+      if (hit) return hit
+    }
+    return undefined
+  }
+
+  for (const key of Object.keys(NAV)) {
+    if (!key.includes('/')) continue
+    const section = key.split('/')[0]
+    let label: string | undefined
+    for (const group of NAV[section] ?? []) {
+      label = firstTitleFor(group, key)
+      if (label) break
+    }
+    labels.set(key, label ?? dirLabel(key.split('/').at(-1)!))
+  }
+  return labels
+}
+
+const SUBKEY_LABELS = subKeyLabels()
+
+/** 这些分组名只是容器，不作为分类层级。 */
+const GENERIC_GROUP = /^(目录|概览|全部|索引|其他)$/
+
+/** 建立 文件路径 -> 所属分类路径 的映射，优先用侧边栏分组（含嵌套）。 */
+function buildPlacement(): Map<string, string[]> {
+  const placement = new Map<string, string[]>()
+
+  const setPath = (file: string, segments: string[]) => {
+    // 更深的分类优先（子路由前缀比学科根更具体）
+    const existing = placement.get(file)
+    if (!existing || segments.length > existing.length) placement.set(file, segments)
+  }
+
+  const walk = (group: NavGroup, base: string[]) => {
+    const title = cleanTitle(group.title)
+    const isGeneric = !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title)
+    const here = isGeneric ? base : [...base, seg(title)]
+    for (const doc of group.docs) {
+      if (NAV_ONLY.test(doc.title)) continue
+      setPath(doc.file, here)
+    }
+    for (const child of group.children ?? []) walk(child, here)
+  }
+
+  for (const [key, groups] of Object.entries(NAV)) {
+    const keySegments = key.split('/')
+    const section = keySegments[0]
+    const base =
+      keySegments.length === 1
+        ? [section]
+        : [section, seg(SUBKEY_LABELS.get(key) ?? dirLabel(keySegments.at(-1)!))]
+    for (const group of groups) walk(group, base)
+  }
+
+  return placement
+}
+
+const PLACEMENT = buildPlacement()
+
 
 export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
   const nodes = new Map<string, CategoryNode>()
@@ -120,8 +212,12 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
     const segments = path.split('/')
     const node: CategoryNode = {
       path,
-      name: segments.at(-1)!,
-      label: categoryLabel(path),
+      label:
+        segments.length === 1
+          ? (SECTION_META[segments[0]]?.title ?? dirLabel(segments[0]))
+          : (SUBKEY_LABELS.get(segments.slice(0, 2).join('/')) && segments.length === 2
+              ? SUBKEY_LABELS.get(segments.slice(0, 2).join('/'))!
+              : seg(segments.at(-1)!)),
       desc: categoryDesc(path),
       depth: segments.length,
       docs: [],
@@ -137,38 +233,62 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
   }
 
   for (const doc of docs) {
-    const category = docCategory(doc)
-    if (!category) continue
-    ensure(category).docs.push(doc)
+    // 章节概览页（*/index.md）是导航入口，不作为文章列出。
+    // 注意：Astro 会把 index.md 的 id 剥成目录名，所以只能看 filePath。
+    if (/(^|\/)index\.md$/.test(fileKey(doc))) continue
+    const section = doc.id.split('/')[0]
+    ensure(section)
+
+    let path = PLACEMENT.get(fileKey(doc))?.join('/')
+    if (!path) {
+      // 侧边栏没覆盖：按目录层级
+      const parts = doc.id.split('/')
+      const dirs = parts.slice(1, -1)
+      path = dirs.length ? `${section}/${dirs.join('/')}` : `${section}/其他`
+    }
+    ensure(path).docs.push(doc)
   }
 
-  // total = 自身文章 + 所有后代
   const computeTotal = (node: CategoryNode): number => {
-    node.total = node.docs.length + node.children.reduce((sum, c) => sum + computeTotal(nodes.get(c)!), 0)
+    node.total =
+      node.docs.length + node.children.reduce((sum, c) => sum + computeTotal(nodes.get(c)!), 0)
     return node.total
   }
   for (const node of nodes.values()) if (node.depth === 1) computeTotal(node)
 
-  // 子分类按路径排序，文章按 order 排序
   for (const node of nodes.values()) {
     node.children.sort((a, b) => a.localeCompare(b, 'zh'))
     node.docs.sort(
       (a, b) =>
-        (a.data.order ?? 999) - (b.data.order ?? 999) || a.data.title.localeCompare(b.data.title, 'zh')
+        (a.data.order ?? 999) - (b.data.order ?? 999) ||
+        a.data.title.localeCompare(b.data.title, 'zh')
     )
   }
 
   return nodes
 }
 
-/** 顶层学科，按 sections.ts 里的顺序排。 */
+const TOP_ORDER = [
+  'math',
+  'algorithm',
+  'ml',
+  'java',
+  'cpp',
+  'storage',
+  'system-design',
+  'tools',
+  'csapp',
+  'security',
+  'rust',
+  'en'
+]
+
 export function topLevelCategories(nodes: Map<string, CategoryNode>): CategoryNode[] {
-  const order = ['math', 'algorithm', 'ml', 'java', 'cpp', 'storage', 'system-design', 'tools', 'csapp', 'security', 'rust', 'en']
   return [...nodes.values()]
     .filter((n) => n.depth === 1)
     .sort((a, b) => {
-      const ia = order.indexOf(a.path)
-      const ib = order.indexOf(b.path)
+      const ia = TOP_ORDER.indexOf(a.path)
+      const ib = TOP_ORDER.indexOf(b.path)
       return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib) || a.path.localeCompare(b.path)
     })
 }
