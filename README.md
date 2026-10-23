@@ -100,6 +100,53 @@ Please upgrade Node.js to a supported version: ">=22.12.0"
 
 > ⚠️ **注意**：Framework preset 必须选 `None`，不能选 `VitePress`，否则 Cloudflare 会覆盖构建命令导致构建失败。
 
+## 内容约定：新笔记怎么进入侧边栏
+
+侧边栏的分组来自 `docs/<学科>/index.md`，不是目录结构。想让一篇笔记出现在某个分组下，就在对应学科的 `index.md` 里加一行：
+
+```markdown
+## 分布式共识              <!-- 二级分组 -->
+
+- [Basic Paxos](./distributed-consensus/basic-paxos)
+- [Raft（一）领导者选举](./distributed-consensus/raft-1-leader-election)
+
+### 消息队列                <!-- 三级子分组（可选） -->
+
+  - [Kafka 两年踩过的坑](./messaging/kafka-practice)
+
+**加粗的标题**              <!-- 四级分组（可选） -->
+
+  - [某篇文章](./某篇文章)
+```
+
+支持的层级：`##` → 二级分组，`###` → 三级子分组，`**粗体**` → 四级分组，列表项 → 文章。
+
+链接写法：**相对路径、不带 `.md`**。同目录直接写文件名，子目录写 `./子目录/文件名`。
+
+### 没写进 index.md 会怎样
+
+页面仍然存在、URL 可以访问，但**不会出现在侧边栏**——只能靠搜索找到。所以新笔记记得补链接。
+
+### 三个例外：手写侧边栏
+
+这三个专题的侧边栏是手写文件，不走 `index.md`：
+
+| 专题 | 文件 |
+| --- | --- |
+| 安全攻防 | `docs/.vitepress/securitySidebar.js` |
+| 实用密码学 | `docs/.vitepress/practicalCryptographySidebar.js` |
+| AI 基础设施 | `docs/.vitepress/aiInfraSidebar.js` |
+
+改这三处即可，格式是普通的 `{ text, link, items }` 数组。
+
+### 改完之后
+
+```bash
+npm run docs:dev    # 本地就能看到侧边栏变化，不需要额外构建步骤
+```
+
+> 提示：`astro-iris` 分支上，这套 `index.md` 分组同样决定 `/categories` 的分类层级，那边的约定见该分支 README。
+
 ## 目录结构
 
 ```
