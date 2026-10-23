@@ -35,10 +35,23 @@ npm run docs:preview
 
 同一套 Cloudflare Pages 项目在切换分支时，**必须同步修改构建命令和输出目录**，两者是配对的：
 
-| 分支 | 构建工具 | 构建命令 | 输出目录 | Node 版本 |
+| 分支 | 构建工具 | **Build command** | **Build output directory** | Node 版本 |
 | --- | --- | --- | --- | --- |
 | `main` | VitePress | `npm run docs:build` | `docs/.vitepress/dist` | 20+ |
 | `astro-iris` | Astro | `npm run build` | `dist` | 22.12+ |
+
+**这两项是一对，必须同时改。** 只改一半的后果：
+
+| 只改了什么 | 结果 |
+| --- | --- |
+| 只改 Build command，输出目录仍是 `docs/.vitepress/dist` | 构建会「成功」，但 Cloudflare 在 `docs/.vitepress/dist` 里找不到文件，报 `No build output directory found`，或者部署出一个空站 |
+| 只改输出目录，命令仍是 `npm run docs:build` | 该脚本在 Astro 分支不存在，构建直接失败：`Missing script: "docs:build"` |
+| 两项都改 | ✓ 正常构建并部署 |
+
+为什么两个目录不一样——是各自工具的默认值，两个分支都没有改：
+
+- **VitePress**：输出相对于内容根目录 `docs/`，即 `docs/.vitepress/dist`
+- **Astro**：默认输出仓库根目录下的 `dist/`（`astro.config.ts` 里没有设置 `outDir`）
 
 Cloudflare 的这两项是**项目级设置**（Settings → Build & deployments → Build configuration），不分分支，所以：
 
