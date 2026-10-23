@@ -282,8 +282,7 @@ const TOP_ORDER = [
   'tools',
   'csapp',
   'security',
-  'rust',
-  'en'
+  'rust'
 ]
 
 export function topLevelCategories(nodes: Map<string, CategoryNode>): CategoryNode[] {

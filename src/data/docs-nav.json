@@ -4326,76 +4326,10 @@
       "children": []
     }
   ],
-  "en/math": [
-    {
-      "title": "Math",
-      "docs": [
-        {
-          "title": "Overview",
-          "file": "en/math/index.md"
-        }
-      ],
-      "children": []
-    }
-  ],
-  "en/algorithm": [
-    {
-      "title": "Algorithms",
-      "docs": [
-        {
-          "title": "Overview",
-          "file": "en/algorithm/index.md"
-        }
-      ],
-      "children": []
-    }
-  ],
-  "en/ml": [
-    {
-      "title": "Machine Learning",
-      "docs": [
-        {
-          "title": "Overview",
-          "file": "en/ml/index.md"
-        }
-      ],
-      "children": []
-    }
-  ],
-  "en/java": [
-    {
-      "title": "Java",
-      "docs": [
-        {
-          "title": "Overview",
-          "file": "en/java/index.md"
-        }
-      ],
-      "children": []
-    }
-  ],
-  "en/cpp": [
-    {
-      "title": "C++",
-      "docs": [
-        {
-          "title": "Overview",
-          "file": "en/cpp/index.md"
-        }
-      ],
-      "children": []
-    }
-  ],
-  "en/system-design": [
-    {
-      "title": "System Design",
-      "docs": [
-        {
-          "title": "Overview",
-          "file": "en/system-design/index.md"
-        }
-      ],
-      "children": []
-    }
-  ]
+  "en/math": [],
+  "en/algorithm": [],
+  "en/ml": [],
+  "en/java": [],
+  "en/cpp": [],
+  "en/system-design": []
 }
