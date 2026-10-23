@@ -7,11 +7,45 @@
 ## 快速开始
 
 ```bash
-npm install          # 需要 Node >= 20（开发时用 v24 验证）
+npm install          # 需要 Node >= 22.12（本分支 .nvmrc 为 24）
 npm run dev          # 自动先准备图片资源，再启动 http://localhost:4321
 npm run build        # 产出 dist/
 npm run preview      # 预览构建结果
 ```
+
+## 构建命令（按分支对照）
+
+本仓库有两个构建体系并存。Cloudflare Pages 的**构建命令和输出目录是项目级设置**（Settings → Build & deployments → Build configuration），不分分支，所以切换分支时**两项必须成对修改**：
+
+| 分支 | 构建工具 | 构建命令 | 输出目录 | Node 版本 |
+| --- | --- | --- | --- | --- |
+| `main` | VitePress | `npm run docs:build` | `docs/.vitepress/dist` | 20+ |
+| `astro-iris` | Astro | `npm run build` | `dist` | 22.12+ |
+
+Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24）。如果 Cloudflare 项目里显式设了 `NODE_VERSION` 环境变量，它会覆盖 `.nvmrc`，需要一并修改或删除。
+
+### 在 Cloudflare 上切到 Astro
+
+把这两项改成 Astro 那一行即可，其余不动：
+
+- **Build command**: `npm run build`
+- **Build output directory**: `dist`
+- **Framework preset**: `None`（务必不要选框架预设，否则 Cloudflare 会覆盖构建命令）
+- **NODE_VERSION**: 删除该环境变量，或设为 `24`
+
+### 兼容模式（不想改 dashboard 时）
+
+本分支的 `package.json` 额外保留了一个 `docs:build` 兼容脚本：
+
+```json
+"docs:build": "npm run assets && astro build && rm -rf docs/.vitepress/dist && mv dist docs/.vitepress/dist"
+```
+
+它会把 Astro 的产物搬回 VitePress 的输出目录，因此保持 Cloudflare 现有配置（`npm run docs:build` + `docs/.vitepress/dist`）也能构建成功。这是过渡期的兜底，**推荐改用上面干净的一套**，之后可以把这个脚本删掉。
+
+### 注意
+
+两个分支的依赖树不同（`node_modules` 不随分支切换）。从 `main` 切到本分支或反向切换后，务必重新 `npm install`。
 
 ## 目录结构
 
