@@ -15,26 +15,89 @@ npm run preview      # 预览构建结果
 
 ## 两套构建：Astro（主站）+ VitePress（备份）
 
-同一个分支里并存两个构建体系，内容只有一个来源 `docs/`：
+内容只有一个来源 `docs/`，两个构建体系各自从它派生：
 
-| 站点 | 构建命令 | 输出目录 | 说明 |
-| --- | --- | --- | --- |
-| **Astro（主站）** | `npm run build` | `dist` | 内容由 `npm run migrate` 从 `docs/` 生成到 `src/content/docs/` |
-| **VitePress（备份）** | `npm run docs:build` | `docs/.vitepress/dist` | 直接读 `docs/`，无需生成步骤 |
-
-两个命令互不干扰，`prebuild` 会先跑导航生成和内容迁移。
-
-### 部署：两个 Cloudflare Pages 项目，同一个分支
-
-| 项目 | Build command | Build output directory |
+| | Astro 版（主站） | VitePress 版（备份） |
 | --- | --- | --- |
-| 主站（如 `cswiki.spumn.eu.cc`） | `npm run build` | `dist` |
-| 备份（另一个域名） | `npm run docs:build` | `docs/.vitepress/dist` |
+| 构建命令 | `npm run build` | `npm run docs:build` |
+| 输出目录 | `dist` | `docs/.vitepress/dist` |
+| 内容来源 | `docs/` → 自动生成到 `src/content/docs/` | 直接读 `docs/`，无需生成 |
+| 需要 Node | ≥ 22.12 | ≥ 20 |
+| 本机构建耗时 | 约 2 分钟（1143 页） | 约 5 分钟 |
+| 产物大小 | 约 1.2 GB（含 788 MB 图片） | 约 300 MB |
 
-两项是配对的：只改命令不改输出目录，Cloudflare 会报 `No build output directory found`；只改目录不改命令，直接 `Missing script`。
+两个命令互不干扰：`npm run build` 会先跑 `prebuild`（生成导航 → 迁移内容 → 铺图片），
+`npm run docs:build` 不需要任何预处理。
 
-- **Framework preset** 必须选 `None`，否则 Cloudflare 会覆盖构建命令。
-- **Node 版本**：`.nvmrc` 已设为 `24`（Astro 6 要求 ≥22.12，VitePress 也兼容）。如果项目里显式设了 `NODE_VERSION` 环境变量，它会覆盖 `.nvmrc`——那个变量必须是 `24`，或干脆删掉。
+## 部署到 Cloudflare Pages
+
+两个项目，**同一个仓库、同一个 `main` 分支**，只有下面两项不同。逐字段照抄即可。
+
+| 设置项 | Astro 版（主站） | VitePress 版（备份） |
+| --- | --- | --- |
+| 关联仓库 | `hswsp/cs-knowledge-wiki` | `hswsp/cs-knowledge-wiki` |
+| 生产分支 | **`main`** | **`main`** |
+| **Framework preset** | **`None`** | **`None`** |
+| **Build command** | **`npm run build`** | **`npm run docs:build`** |
+| **Build output directory** | **`dist`** | **`docs/.vitepress/dist`** |
+| 环境变量 `NODE_VERSION` | `24`（或删掉该变量） | `24`（或删掉该变量） |
+| 开通后的自定义域名 | `cswiki.spumn.eu.cc` | 如 `old.cswiki.spumn.eu.cc` |
+
+> **`Framework preset` 必须选 `None`**。一旦选了 `Astro` 或 `VitePress`，Cloudflare 会用自己的默认命令覆盖你填的构建命令，构建必然失败。
+
+### 部署 Astro 版（主站）
+
+1. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
+2. 选择仓库 `cs-knowledge-wiki`，项目名如 `cs-wiki-astro`
+3. 构建设置：
+   - **Framework preset**：`None`
+   - **Build command**：`npm run build`
+   - **Build output directory**：`dist`
+4. **Environment variables**：`NODE_VERSION` 设为 `24`，或直接删掉这个变量（让 `.nvmrc` 生效）
+5. **Save and Deploy**
+6. 部署成功后 → **Custom domains** → 添加 `cswiki.spumn.eu.cc`
+
+构建日志正常长这样：先 `prebuild` 输出 `sidebar 路由前缀: 31` / `migrated 897 files` /
+`docassets: 1606 copied`，然后 `astro build` 输出 `1143 page(s) built`。
+
+### 部署 VitePress 版（备份）
+
+1. 同样 **Create** → **Pages** → **Connect to Git** → 选同一个仓库
+2. 项目名如 `cs-wiki-vitepress`（不能和上面重名）
+3. 构建设置：
+   - **Framework preset**：`None`
+   - **Build command**：`npm run docs:build`
+   - **Build output directory**：`docs/.vitepress/dist`
+4. **Environment variables**：同上一项目
+5. **Save and Deploy**
+6. 如需固定地址 → **Custom domains** 绑一个独立域名
+
+构建日志正常长这样：`vitepress v2.0.0-alpha.x` → `building client + server bundles` →
+`rendering pages...` → `build complete`。
+
+### 两个项目为什么都用 `main`
+
+`main` 上同时存在 `docs/`（VitePress 的内容与配置）和 `src/`（Astro 的应用），两者文件不重叠：
+
+- Astro 的改动只碰 `src/`、`astro.config.ts`、`scripts/`
+- VitePress 直接读 `docs/`，完全不看 `src/`
+
+所以同一次提交能让两个项目各自构建，**写一次内容，两边都更新**，不需要同步。
+
+### `vitepress` 分支是干什么的
+
+仓库里还有一个 `vitepress` 分支，它是纯 VitePress 的**冻结快照**——不含 Astro 任何文件。
+用途只有一个：万一 Astro 那套彻底出问题，把备份项目临时切到这个分支就能立刻回到旧站。
+日常不需要维护它，它也不会自动跟随 `main` 的内容更新。
+
+### 常见失败对照
+
+| 现象 | 原因 | 处理 |
+| --- | --- | --- |
+| `Missing script: "..."` | 命令写错，或选了错误的 Framework preset 导致命令被覆盖 | 确认 preset 是 `None`，命令逐字照抄上面的表 |
+| `No build output directory found` | 输出目录没跟着命令改 | 两项配对：`npm run build` → `dist`；`npm run docs:build` → `docs/.vitepress/dist` |
+| `Node.js v20.x is not supported by Astro!` | 项目环境变量 `NODE_VERSION` 是 20 | 改成 `24`；`scripts/astro-build.mjs` 也有一层兜底 |
+| 部署成功但页面 404 | 输出目录填成了上一级或下一级 | 用表格里的值，不要自己补斜杠 |
 
 ### Node 版本优先级
 
@@ -45,23 +108,16 @@ npm run preview      # 预览构建结果
 | `package.json` 的 `engines` | **完全不读** | Cloudflare v3 明确不支持从 engines 检测 |
 | 构建镜像默认值 | 最低 | v3 = 22.16.0 / v2 = 18.17.1 |
 
-### Node 版本兜底
+`npm run build` 还额外走了一层 `scripts/astro-build.mjs`：检测到 Node 低于 22.12 时，
+会自动用 `npx node@24` 重新执行 Astro，绕开环境变量。所以即使 `NODE_VERSION` 没改对，
+Astro 版也能构建成功（代价是每次多下载一次 Node）。
 
-`npm run build` 走的是 `scripts/astro-build.mjs`，不是直接 `astro build`。原因：Cloudflare 的
-`NODE_VERSION` 环境变量优先级高于 `.nvmrc`，一旦它被设成 20，Astro 6 会直接拒绝启动。
+### 从 Astro 回滚到 VitePress
 
-包装脚本会检查当前 Node 版本：
+不用改代码，两条路任选：
 
-- **≥ 22.12** → 直接构建（本地、正常配置的 CI 都走这条）
-- **< 22.12** → 自动改用 `npx node@24` 提供的二进制重新执行，绕开环境变量
-
-所以即使 dashboard 里那个变量没改对，构建也能成功。当然还是建议把 `NODE_VERSION` 改成 `24`，
-省掉每次构建多下载一次 Node 的开销。
-
-### 切换与回滚
-
-- **想临时回到 VitePress**：把主站项目的构建命令改成 `npm run docs:build`、输出改成 `docs/.vitepress/dist` 即可，代码不用动。
-- **VitePress 出问题不影响 Astro**：两套依赖、两套产物，互不引用。
+- **快**：把主站项目的 Build command 改成 `npm run docs:build`、输出改成 `docs/.vitepress/dist`，重新部署
+- **稳**：把主站项目的生产分支切到 `vitepress` 分支，重新部署（那边是纯 VitePress 快照）
 
 ## 目录结构
 
