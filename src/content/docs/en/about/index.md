@@ -1,8 +1,9 @@
 ---
 title: "About"
 description: "My name is Champagne. I'm a full-time full stack engineer and part-time photographer."
-tags: ["en"]
+tags: ["en", "about"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # About

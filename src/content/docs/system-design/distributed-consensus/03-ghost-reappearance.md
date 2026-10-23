@@ -1,8 +1,9 @@
 ---
 title: "如何解决分布式系统中的\"幽灵复现\"？"
 description: "\"幽灵复现\"的问题本质属于分布式系统的\"第三态\"问题，即在网络系统里面，对于一个请求都有三种返回结果：成功，失败，超时未知。对于超时未知，服务端对请求命令的处理结果可以是成功或者失败，但必须是两者中之一，不能出现前后不一致情况。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 9
+updatedDate: 2026-06-14
 draft: false
 ---
 # 如何解决分布式系统中的"幽灵复现"？

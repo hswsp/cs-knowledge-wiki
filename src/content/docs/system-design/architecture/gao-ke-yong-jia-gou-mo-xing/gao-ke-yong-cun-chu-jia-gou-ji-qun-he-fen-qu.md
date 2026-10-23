@@ -1,8 +1,9 @@
 ---
 title: "高可用存储架构：集群和分区"
 description: "上一期我讲了高可用存储架构中常见的双机架构，分别为主备复制、主从复制、双机切换和主主复制，并分析了每类架构的优缺点以及适应场景。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 高可用存储架构：集群和分区

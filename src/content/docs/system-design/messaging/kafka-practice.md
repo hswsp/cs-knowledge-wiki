@@ -1,8 +1,9 @@
 ---
 title: "kafka两年踩过的一些非比寻常的坑"
 description: "kafka-practice"
-tags: ["system-design"]
+tags: ["system-design", "messaging"]
 order: 19
+updatedDate: 2026-06-22
 draft: false
 ---
 > 本文章摘录自 [苏三说技术](https://mp.weixin.qq.com/s/YPkE3Tsu3RVbhfVZCBt1pQ)。汲取前人Kafaka使用经验！

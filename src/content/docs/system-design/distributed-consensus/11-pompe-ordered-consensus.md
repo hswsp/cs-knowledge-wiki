@@ -1,8 +1,9 @@
 ---
 title: "Pompē（Pompe）：拜占庭有序共识协议详解"
 description: "本文系统介绍 Pompē（OSDI 2020 Best Paper）如何解决传统 BFT SMR 中\"拜占庭寡头\"操纵交易顺序的问题，以及它背后的有序共识（Ordered Consensus）抽象。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 17
+updatedDate: 2026-07-22
 draft: false
 ---
 # Pompē（Pompe）：拜占庭有序共识协议详解

@@ -1,8 +1,9 @@
 ---
 title: "微内核架构详解"
 description: "微内核架构（Microkernel Architecture），也被称为插件化架构（Plug in Architecture），是一种面向功能进行拆分的可扩展性架构，通常用于实现基于产品（原文为 product based，指存在多个版本、需要下载安装才能使用，与 web based 相对应）的应用。例如 Eclip…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ke-kuo-zhan-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 微内核架构详解

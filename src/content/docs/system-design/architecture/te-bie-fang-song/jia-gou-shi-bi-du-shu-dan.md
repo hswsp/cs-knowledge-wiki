@@ -1,8 +1,9 @@
 ---
 title: "架构师必读书单"
 description: "我推荐的书是我从几百本中挑出来的，可以说是经典中的经典了，但这并不意味着只要看完这些书就够了，读书和技术提升是类似的，都是一个长期积累的过程，积累越多、收获越大。关于技术人员具体如何学习、如何提升，可以参考我之前在 InfoQ 上发表的文章《佛系程序员的月薪五万指南》。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "te-bie-fang-song"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构师必读书单

@@ -1,8 +1,9 @@
 ---
 title: "13 - Parallel Query Execution"
 description: "Previous discussions of query executions assumed that the queries executed with a single worker (i.e thread). However, in practice, queries are often executed…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 13 - Parallel Query Execution

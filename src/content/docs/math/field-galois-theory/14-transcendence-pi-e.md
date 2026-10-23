@@ -1,8 +1,9 @@
 ---
 title: "14. The Transcendence of π and e（π 与 e 的超越性）"
 description: "The two best known and most important nonrational real numbers are and . In this section, we will show that both of these numbers are transcendental over . In…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 14. The Transcendence of π and e（π 与 e 的超越性）

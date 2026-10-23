@@ -1,8 +1,9 @@
 ---
 title: "架构设计"
 description: "➡️ preface"
-tags: ["system-design"]
+tags: ["system-design", "architecture"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构设计

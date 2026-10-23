@@ -1,8 +1,9 @@
 ---
 title: "Crypto Hashes and Collisions"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/pzhssy4kbudfvveb"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Crypto Hashes and Collisions

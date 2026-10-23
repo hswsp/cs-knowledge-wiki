@@ -1,8 +1,9 @@
 ---
 title: "如何设计计算高可用架构？"
 description: "计算高可用的主要设计目标是当出现部分硬件损坏时，计算任务能够继续正常运行。因此计算高可用的本质是通过冗余来规避部分故障的风险，单台服务器是无论如何都达不到这个目标的。所以计算高可用的设计思想很简单：通过增加更多服务器来达到计算高可用。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 如何设计计算高可用架构？

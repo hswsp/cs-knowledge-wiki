@@ -1,8 +1,9 @@
 ---
 title: "Pseudo-Random Numbers - Examples"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/dnsyf4s53qlgaecg"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Pseudo-Random Numbers - Examples

@@ -1,8 +1,9 @@
 ---
 title: "vLLM Disaggregated Prefilling"
 description: "vLLM 作为最流行的开源 LLM 推理引擎，从 v0.6.0 版本开始正式支持 DisaggregatedPrefilling （分散式预填充）。这一功能使得 vLLM 可以与 Mooncake 等 PD 分离系统无缝集成。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
+updatedDate: 2026-06-19
 draft: false
 ---
 # vLLM Disaggregated Prefilling

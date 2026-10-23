@@ -1,8 +1,9 @@
 ---
 title: "多模态 AI (Multimodal AI)"
 description: "Transformer ：基于自注意力的序列模型，输入是 token 序列 → 详见 Tokenization ：将原始数据（文本、图像等）切分为模型可处理的离散单元（token） 自回归生成 ：逐 token 预测下一个，适用于离散序列（文本） → 详见 扩散模型 ：通过逐步去噪从噪声生成连续信号（图像/视频），当…"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 14
+updatedDate: 2026-06-13
 draft: false
 ---
 # 多模态 AI (Multimodal AI)

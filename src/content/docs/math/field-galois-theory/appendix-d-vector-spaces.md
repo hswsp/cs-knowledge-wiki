@@ -1,8 +1,9 @@
 ---
 title: "Appendix D. Vector Spaces（向量空间）"
 description: "The use of the theory of vector spaces is a key element in field theory. In this appendix, we review the concepts that we will need. For a more detailed accoun…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # Appendix D. Vector Spaces（向量空间）

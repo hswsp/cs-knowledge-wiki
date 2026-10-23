@@ -1,8 +1,9 @@
 ---
 title: "TCP 是如何避免历史报文的？"
 description: "ISN 随机化、PAWS 时间戳与端口复用安全。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 21
+updatedDate: 2026-06-17
 draft: false
 ---
 大家好，我是小林。

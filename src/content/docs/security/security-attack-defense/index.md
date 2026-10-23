@@ -1,8 +1,9 @@
 ---
 title: "安全攻防技能30讲"
 description: "信息安全专栏：安全基础、Web 安全、系统与应用安全、安全防御工具、业务安全。"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # 安全攻防技能30讲

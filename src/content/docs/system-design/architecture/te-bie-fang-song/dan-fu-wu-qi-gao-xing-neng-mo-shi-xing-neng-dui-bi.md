@@ -1,8 +1,9 @@
 ---
 title: "单服务器高性能模式性能对比"
 description: "我们架构课的第 18 讲和第 19 讲主题是单服务器高性能模式，"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "te-bie-fang-song"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 单服务器高性能模式性能对比

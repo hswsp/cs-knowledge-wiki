@@ -1,8 +1,9 @@
 ---
 title: "KV Cache 与推理优化"
 description: "自注意力机制 ：每个 token 通过 Q·K 点积计算与其他 token 的相关度，再对 V 加权求和 → 详见 自回归生成 ：每步预测下一个 token，追加到序列末尾，重复直到结束 → 详见 GQA/MQA ：多个 Q 头共用 KV 头，减少 KV 数量的注意力变体 → 详见 GPU 显存 (HBM) ：GPU…"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 11
+updatedDate: 2026-06-13
 draft: false
 ---
 # KV Cache 与推理优化

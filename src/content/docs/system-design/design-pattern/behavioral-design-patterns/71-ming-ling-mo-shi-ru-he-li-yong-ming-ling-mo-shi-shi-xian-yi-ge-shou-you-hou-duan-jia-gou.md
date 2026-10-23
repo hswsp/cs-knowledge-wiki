@@ -1,8 +1,9 @@
 ---
 title: "71 | 命令模式：如何利用命令模式实现一个手游后端架构？"
 description: "设计模式模块已经接近尾声了，现在我们只剩下 3 个模式还没有学习，它们分别是：命令模式、解释器模式、中介模式。这 3 个模式使用频率低、理解难度大，只在非常特定的应用场景下才会用到，所以，不是我们学习的重点，你只需要稍微了解，见了能认识就可以了。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 71 | 命令模式：如何利用命令模式实现一个手游后端架构？

@@ -1,8 +1,9 @@
 ---
 title: "Lecture 06: Programming for Performance II"
 description: "Lecture 06: Programming for Performance II"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 06: Program Optimization 2: Locality and Communication

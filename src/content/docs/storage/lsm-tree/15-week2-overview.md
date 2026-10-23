@@ -1,8 +1,9 @@
 ---
 title: "Week 2 Overview: Compaction and Persistence"
 description: "In the last week, you have implemented all necessary structures for an LSM storage engine, and your storage engine already supports read and write interfaces.…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Week 2 Overview: Compaction and Persistence

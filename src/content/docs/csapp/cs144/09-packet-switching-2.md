@@ -1,8 +1,9 @@
 ---
 title: "Packet Switching 2"
 description: "Logistics"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Packet Switching 2

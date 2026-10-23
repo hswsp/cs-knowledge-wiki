@@ -1,8 +1,9 @@
 ---
 title: "TLS"
 description: "Security Properties: Integrity, Confidentiality, Authenticity ,and authenticity is necessary for confidentiality"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # TLS

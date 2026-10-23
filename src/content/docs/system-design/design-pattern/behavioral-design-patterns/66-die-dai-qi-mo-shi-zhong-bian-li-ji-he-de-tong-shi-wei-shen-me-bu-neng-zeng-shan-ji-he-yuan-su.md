@@ -1,8 +1,9 @@
 ---
 title: "66 | 迭代器模式（中）：遍历集合的同时，为什么不能增删集合元素？"
 description: "上一节课中，我们通过给 ArrayList、LinkedList 容器实现迭代器，学习了迭代器模式的原理、实现和设计意图。迭代器模式主要作用是解耦容器代码和遍历代码，这也印证了我们前面多次讲过的应用设计模式的主要目的是解耦。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 66 | 迭代器模式（中）：遍历集合的同时，为什么不能增删集合元素？

@@ -1,8 +1,9 @@
 ---
 title: "26|实战二（下）：如何实现一个支持各种统计规则的性能计数器？"
 description: "在上一节课中，我们对计数器框架做了需求分析和粗略的模块划分。今天这节课，我们利用面向对象设计、实现方法，并结合之前学过的设计思想、设计原则来看一下，如何编写灵活、可扩展的、高质量的代码实现。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "design-principles"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 26|实战二（下）：如何实现一个支持各种统计规则的性能计数器？

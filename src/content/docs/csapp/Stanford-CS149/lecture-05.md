@@ -1,8 +1,9 @@
 ---
 title: "Lecture 05: Programming for Performance I"
 description: "Lecture 05: Programming for Performance I"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 05: Program Optimization 1: Work Distribution and Scheduling

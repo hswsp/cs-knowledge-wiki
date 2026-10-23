@@ -1,8 +1,9 @@
 ---
 title: "85 | 开源实战四（中）：剖析Spring框架中用来支持扩展的两种设计模式"
 description: "上一节课中，我们学习了 Spring 框架背后蕴藏的一些经典设计思想，比如约定优于配置、低侵入松耦合、模块化轻量级等等。我们可以将这些设计思想借鉴到其他框架开发中，在大的设计层面提高框架的代码质量。这也是我们在专栏中讲解这部分内容的原因。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 85 | 开源实战四（中）：剖析Spring框架中用来支持扩展的两种设计模式

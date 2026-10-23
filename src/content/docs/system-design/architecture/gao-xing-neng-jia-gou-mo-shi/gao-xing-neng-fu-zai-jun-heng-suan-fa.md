@@ -1,8 +1,9 @@
 ---
 title: "高性能负载均衡：算法"
 description: "负载均衡算法数量较多，而且可以根据一些业务特性进行定制开发，抛开细节上的差异，根据算法期望达到的目的，大体上可以分为下面几类。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 高性能负载均衡：算法

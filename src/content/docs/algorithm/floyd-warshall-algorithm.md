@@ -3,6 +3,7 @@ title: "Floyd算法介绍"
 description: "和Dijkstra算法一样，弗洛伊德(Floyd)算法也是一种用于寻找给定的加权图中顶点间最短路径的算法。该算法名称以创始人之一、1978年图灵奖获得者、斯坦福大学计算机科学系教授罗伯特·弗洛伊德命名。"
 tags: ["algorithm"]
 order: 999
+updatedDate: 2026-06-21
 draft: false
 ---
 > 参考文档：[Floyd Warshall Algorithm | DP-16](https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/)

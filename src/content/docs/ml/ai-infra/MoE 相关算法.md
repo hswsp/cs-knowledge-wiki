@@ -1,7 +1,7 @@
 ---
 title: "MoE 相关算法"
 description: "混合专家模型（ Mixture of Experts, MoE ）通过条件计算实现 模型容量的扩展 ，而不显著增加推理成本。DeepSeek V2/V3、Mixtral等模型都采用了MoE架构，使其成为当前大模型的重要技术路线。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

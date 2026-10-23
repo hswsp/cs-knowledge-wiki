@@ -1,8 +1,9 @@
 ---
 title: "Lecture 01: Efficiency"
 description: "Lecture 01: Efficiency"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 01: Why Parallelism? Why Efficiency?

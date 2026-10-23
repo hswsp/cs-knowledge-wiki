@@ -1,8 +1,9 @@
 ---
 title: "History of home networking 1"
 description: "USB (universal serial bus)"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # History of home networking 1

@@ -1,7 +1,7 @@
 ---
 title: "20 | WAF：如何为漏洞百出的Web应用保驾护航？"
 description: "你好，我是何为舟。 如果你细心观察的话，应该会发现，随着 Web应用越来越多，黑客的攻击目标也逐渐转向了针对 Web安全的攻击。传统的防火墙主要专注于网络层的攻击防御，对 Web安全的防御能力相对欠缺。因此，WAF（Web Application Firewall，Web应用防护系统）的概念也就被提了出来。WAF说白…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

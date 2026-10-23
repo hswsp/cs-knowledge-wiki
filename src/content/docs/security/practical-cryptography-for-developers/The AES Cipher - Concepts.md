@@ -1,8 +1,9 @@
 ---
 title: "The AES Cipher - Concepts"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/oxgrbrb0vvz6v04k"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # The AES Cipher - Concepts

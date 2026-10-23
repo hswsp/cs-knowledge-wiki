@@ -1,8 +1,9 @@
 ---
 title: "The RSA Cryptosystem - Concepts"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/rv90tmw2hhllv4uf"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # The RSA Cryptosystem - Concepts

@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（六）：Decoder 拼装"
 description: "在前面几篇文章中，我们系统梳理了词向量位置编码Embedding层，注意力机制Multi Head Attention层，归一化LayerNorm层，信息编码器Encoder层。本章将重要阐述Decoder部分内容。由于Decoder的masked self attention,cross attention,FFN…"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 6
+updatedDate: 2026-06-16
 draft: false
 ---
 # 手搓 Transformer（六）：Decoder 拼装

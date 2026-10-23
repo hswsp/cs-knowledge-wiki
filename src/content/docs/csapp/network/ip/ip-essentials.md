@@ -1,8 +1,9 @@
 ---
 title: "IP 基础知识全家桶"
 description: "IPv4/IPv6、子网、CIDR、NAT、路由协议总览。"
-tags: ["csapp"]
+tags: ["csapp", "network", "ip"]
 order: 28
+updatedDate: 2026-06-22
 draft: false
 ---
 前段时间，有读者希望我写一篇关于 IP 分类地址、子网划分等的文章，他反馈常常混淆，摸不着头脑。

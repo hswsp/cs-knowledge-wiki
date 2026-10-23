@@ -1,8 +1,9 @@
 ---
 title: "聊聊MySql事务,MVCC"
 description: "事务是什么？"
-tags: ["storage"]
+tags: ["storage", "storage-engine"]
 order: 999
+updatedDate: 2026-06-12
 draft: false
 ---
 # 聊聊MySql事务,MVCC

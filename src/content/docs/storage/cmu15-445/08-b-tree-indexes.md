@@ -1,8 +1,9 @@
 ---
 title: "08 - B+Tree Indexes"
 description: "There are a number of different data structures one can use inside of a database system for purposes such as internal meta data, core data storage, temporary d…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 08 - B+Tree Indexes

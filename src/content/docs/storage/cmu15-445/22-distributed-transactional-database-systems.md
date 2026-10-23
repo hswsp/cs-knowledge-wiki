@@ -1,8 +1,9 @@
 ---
 title: "22 - Distributed Transactional Database Systems"
 description: "• Short lived read/write transactions."
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 22 - Distributed Transactional Database Systems

@@ -1,8 +1,9 @@
 ---
 title: "Lecture 07: GPU Architecture"
 description: "Lecture 07: GPU Architecture"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 07: GPU Architecture and CUDA Programming

@@ -1,8 +1,9 @@
 ---
 title: "单服务器高性能模式：PPC与TPC"
 description: "高性能是每个程序员的追求，无论我们是做一个系统还是写一行代码，都希望能够达到高性能的效果，而高性能又是最复杂的一环，磁盘、操作系统、CPU、内存、缓存、网络、编程语言、架构等，每个都有可能影响系统达到高性能，一行不恰当的 debug 日志，就可能将服务器的性能从 TPS 30000 降低到 8000；一个 tcp\\…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 单服务器高性能模式：PPC与TPC

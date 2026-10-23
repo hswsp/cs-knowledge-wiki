@@ -1,8 +1,9 @@
 ---
 title: "如何高效地学习开源项目"
 description: "得益于开源运动的蓬勃发展，众多技术顶尖的公司、团队或者个人通过开源的方式向技术社区贡献了许多优秀的开源项目，一方面大大促进了整体技术的发展，另一方面大大减轻了中小公司和团队在技术方面的投入压力，让团队能够更加聚焦于业务。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "te-bie-fang-song"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 如何高效地学习开源项目

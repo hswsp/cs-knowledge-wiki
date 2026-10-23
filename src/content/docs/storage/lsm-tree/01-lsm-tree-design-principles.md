@@ -1,8 +1,9 @@
 ---
 title: "存储系统中的算法：LSM 树设计原理"
 description: "在文章kafka 和 pulsar 的架构设计中介绍了 Pulsar 存算分离的架构，其中 broker 只负责计算，由 BookKeeper 负责底层的存储，我还画了这样一张图说明 BookKeeper 读写分离的设计："
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # 存储系统中的算法：LSM 树设计原理

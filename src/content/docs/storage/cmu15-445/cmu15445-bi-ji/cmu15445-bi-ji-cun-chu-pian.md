@@ -1,8 +1,9 @@
 ---
 title: "CMU15-445笔记-存储篇"
 description: "在关系代数中，一个数据集合可以被组织为table、tuple和attribute，这三个层级自上而下互相包含。而这只是逻辑上的划分，如何在真正磁盘和内存中有效的组织这些数据，这便是本篇文章所要介绍的主要内容。"
-tags: ["storage"]
+tags: ["storage", "cmu15-445", "cmu15445-bi-ji"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # CMU15-445笔记-存储篇

@@ -1,8 +1,9 @@
 ---
 title: "架构重构内功心法第一式：有的放矢"
 description: "在专栏第 8 期“架构设计三原则”中的演化原则部分，我提到了系统的架构是不断演化的，少部分架构演化可能需要推倒重来进行重写，但绝大部分的架构演化都是通过架构重构来实现的。相比全新的架构设计来说，架构重构对架构师的要求更高，主要体现在："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "jia-gou-shi-zhan"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构重构内功心法第一式：有的放矢

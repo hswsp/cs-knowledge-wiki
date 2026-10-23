@@ -1,8 +1,9 @@
 ---
 title: "Timestamp Key Encoding + Refactor"
 description: "In this chapter, you will: Refactor your implementation to use representation. Make your code compile with the new key representation."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Timestamp Key Encoding + Refactor

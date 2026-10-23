@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（五）：Encoder组装"
 description: "在前几篇文章中，我们已经分别实现了 Transformer 的核心组件，Embedding，Multi Head Attention，LayerNorm，但这些只是零件。通过本篇文章，我们将把这些零件真正组装成Encoder，也就是论文 Attention Is All You Need 中的这一部分"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 5
+updatedDate: 2026-06-16
 draft: false
 ---
 # 手搓 Transformer（五）：Encoder组装

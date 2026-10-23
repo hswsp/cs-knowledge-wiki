@@ -1,8 +1,9 @@
 ---
 title: "Read Path"
 description: "In this chapter, you will: Integrate SST into the LSM read path. Implement LSM read path with SSTs. Implement LSM read path with SSTs."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Read Path

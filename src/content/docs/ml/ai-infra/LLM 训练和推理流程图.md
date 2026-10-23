@@ -1,7 +1,7 @@
 ---
 title: "LLM 训练和推理流程图"
 description: "LLM 训练和推理流程图"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

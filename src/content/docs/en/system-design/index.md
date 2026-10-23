@@ -1,8 +1,9 @@
 ---
 title: "System Design"
 description: "Distributed systems, microservices, and high availability architecture."
-tags: ["en"]
+tags: ["en", "system-design"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # System Design

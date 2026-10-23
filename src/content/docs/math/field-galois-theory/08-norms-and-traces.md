@@ -1,8 +1,9 @@
 ---
 title: "8. Norms and Traces（范与迹）"
 description: "In this section, we define the norm and trace of a finite extension of fields and prove their basic properties. To help motivate these concepts, in Examples 7.…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 8. Norms and Traces（范与迹）

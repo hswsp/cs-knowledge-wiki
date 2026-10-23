@@ -1,8 +1,9 @@
 ---
 title: "NAS各种协议"
 description: "随着智能化互联时代的来临，家中的智能设备越来越多：电视机、平板、游戏主机、电脑、手机等遍及家中各个角落，同时设备之间共享数据的需求变的越来越强烈。比如同步、备份手机上的照片和视频，在电视机上观看电脑中下载的影片、手机拍摄的视频，存储高清电影、音乐、VLOG 素材等。"
-tags: ["storage"]
+tags: ["storage", "protocols"]
 order: 20
+updatedDate: 2026-06-22
 draft: false
 ---
 <!-- more -->

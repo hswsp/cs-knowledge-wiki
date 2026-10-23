@@ -1,8 +1,9 @@
 ---
 title: "51 | 适配器模式：代理、适配器、桥接、装饰，这四个模式有何区别？"
 description: "前面几节课我们学习了代理模式、桥接模式、装饰器模式，今天，我们再来学习一个比较常用的结构型模式：适配器模式。这个模式相对来说还是比较简单、好理解的，应用场景也很具体，总体上来讲比较好掌握。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 51 | 适配器模式：代理、适配器、桥接、装饰，这四个模式有何区别？

@@ -1,8 +1,9 @@
 ---
 title: "复杂度来源：低成本、安全、规模"
 description: "关于复杂度来源，前面的专栏已经讲了高性能、高可用和可扩展性，今天我来聊聊复杂度另外三个来源 低成本、安全和规模 。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 复杂度来源：低成本、安全、规模

@@ -1,8 +1,9 @@
 ---
 title: "Proof-of-Work Hash Functions"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/wf5ymnbay35hv66u"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Proof-of-Work Hash Functions

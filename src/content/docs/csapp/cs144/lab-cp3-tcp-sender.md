@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 3: the TCP sender"
 description: "TCPSender：填窗口、维护 outstanding、按 RTO 指数退避重传。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 **Collaboration Policy**: Same as checkpoint 0. Please do not look at other students’ code or solutions to past versions of these assignments. Please fully disclose any collaborators or any gray areas in your writeup—disclosure is the best policy.

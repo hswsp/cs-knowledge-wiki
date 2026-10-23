@@ -1,8 +1,9 @@
 ---
 title: "Assignment 5: Make the World's Fastest CUDA Kernels"
 description: "This assignment is an open ended assignment that is a bit different than your prior programming assignments in CS149. Really we want you to think about it as a…"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Assignment 5: Make the World's Fastest CUDA Kernels

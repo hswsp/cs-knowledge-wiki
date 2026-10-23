@@ -1,8 +1,9 @@
 ---
 title: "87 | 开源实战五（上）：MyBatis如何权衡易用性、性能和灵活性？"
 description: "上几节课我们讲到了 Spring 框架，剖析了背后蕴含的一些通用设计思想，以及用到的十几种设计模式。从今天开始，我们再剖析另外一个 Java 项目开发中经常用到的框架：MyBatis。因为内容比较多，同样，我们也分三节课来讲解。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 87 | 开源实战五（上）：MyBatis如何权衡易用性、性能和灵活性？

@@ -1,8 +1,9 @@
 ---
 title: "HTTPS 如何优化？"
 description: "会话复用、OCSP Stapling、TLS1.3 等性能优化点。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 12
+updatedDate: 2026-06-22
 draft: false
 ---
 由裸数据传输的 HTTP 协议转成加密数据传输的 HTTPS 协议，给应用数据套了个「保护伞」，提高安全性的同时也带来了性能消耗。

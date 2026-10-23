@@ -1,7 +1,7 @@
 ---
 title: "ECC Encryption / Decryption"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/ax7c44gghhe9eit7"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
 draft: false
 ---

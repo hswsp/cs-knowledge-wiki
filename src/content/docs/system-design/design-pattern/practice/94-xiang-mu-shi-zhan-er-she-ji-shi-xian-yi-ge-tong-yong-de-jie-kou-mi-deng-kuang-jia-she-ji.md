@@ -1,8 +1,9 @@
 ---
 title: "94 | 项目实战二：设计实现一个通用的接口幂等框架（设计）"
 description: "上一节课，我们介绍了幂等框架的一个重要需求场景，接口超时重试。为了避免同一业务被多次重复执行，接口需要支持幂等特性。同时，我们还对功能性需求和非功能性需求做了梳理。今天，我们来讲解幂等框架的设计思路。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 94 | 项目实战二：设计实现一个通用的接口幂等框架（设计）

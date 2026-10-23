@@ -1,7 +1,7 @@
 ---
 title: "为什么需要 PD 分离"
 description: "大语言模型（LLM）的推理过程可以清晰地划分为两个截然不同的阶段：Prefill阶段（也称为提示处理阶段或上下文编码阶段）和Decode阶段（也称为Token生成阶段）。理解这两个阶段的本质差异，是掌握PD分离技术的基石。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

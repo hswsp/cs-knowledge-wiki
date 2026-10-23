@@ -1,7 +1,7 @@
 ---
 title: "AI Infra (Memory Storage) 入门到前沿"
 description: "AI+Infra+(Memory+Storage)入门到前沿.pdf"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

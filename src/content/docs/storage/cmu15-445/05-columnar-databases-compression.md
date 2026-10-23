@@ -1,8 +1,9 @@
 ---
 title: "05 - Columnar Databases & Compression"
 description: "An OLTP workload is characterized by fast, short running operations, simple queries that operate on single entity at a time, and repetitive operations. An OLTP…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 05 - Columnar Databases & Compression

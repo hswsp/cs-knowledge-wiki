@@ -1,8 +1,9 @@
 ---
 title: "75 | 在实际的项目开发中，如何避免过度设计？又如何避免设计不足？"
 description: "设计模式的理论部分已经全部学习完了。现在，你可能已经蠢蠢欲动，想要赶紧实践一把，把这些理论应用到自己的项目中。不过，这里我要给你提个醒了，千万别手里拿着锤子就看什么都是钉子啊。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "summary-1"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 75 | 在实际的项目开发中，如何避免过度设计？又如何避免设计不足？

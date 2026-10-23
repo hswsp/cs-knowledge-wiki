@@ -1,7 +1,7 @@
 ---
 title: "ASPLOS 2024 论文深度分析"
 description: "+ 标题：SpecInfer: Accelerating Large Language Model Serving with Tree basedSpeculative Inference and Verification + 作者：Xupeng Miao et al. (CMU, Tsinghua, SJTU, P…"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

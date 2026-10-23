@@ -1,7 +1,7 @@
 ---
 title: "线性代数基本定理"
 description: "线性代数基本定理、矩阵四大子空间、SVD、最小二乘与伪逆的几何理解。"
-tags: ["math"]
+tags: ["math", "线性代数基本定理"]
 order: 999
 draft: false
 ---

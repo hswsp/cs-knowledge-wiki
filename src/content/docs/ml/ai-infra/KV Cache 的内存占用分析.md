@@ -1,7 +1,7 @@
 ---
 title: "KV Cache 的内存占用分析"
 description: "下表展示了主流开源模型的 KV Cache 配置和内存占用估算（假设 batch size=1,seq len=4096, fp16精度）："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

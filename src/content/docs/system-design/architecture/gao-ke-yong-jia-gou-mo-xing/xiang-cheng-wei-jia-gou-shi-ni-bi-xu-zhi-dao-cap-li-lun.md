@@ -1,8 +1,9 @@
 ---
 title: "想成为架构师，你必须知道CAP理论"
 description: "CAP 定理（CAP theorem）又被称作布鲁尔定理（Brewer's theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在 2000 年的 ACM PODC 上提出的一个猜想。2002 年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 想成为架构师，你必须知道CAP理论

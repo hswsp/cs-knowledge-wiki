@@ -1,8 +1,9 @@
 ---
 title: "“预训练+微调”范式"
 description: "GPT 1学习笔记：“预训练+微调”范式"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 8
+updatedDate: 2026-06-16
 draft: false
 ---
 # “预训练+微调”范式

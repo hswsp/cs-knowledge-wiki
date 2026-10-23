@@ -1,8 +1,9 @@
 ---
 title: "CMU15-445笔记-执行篇"
 description: "向上通过声明式的语言SQL暴露统一的接口，屏蔽底层的实现，我想这应该是关系型数据库的关键成功要素之一了。但是SQL语句在底层是如何进行执行的呢？这是由执行器来完成的。"
-tags: ["storage"]
+tags: ["storage", "cmu15-445", "cmu15445-bi-ji"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # CMU15-445笔记-执行篇

@@ -1,8 +1,9 @@
 ---
 title: "63 | 职责链模式（下）：框架中常用的过滤器、拦截器是如何实现的？"
 description: "上一节课，我们学习职责链模式的原理与实现，并且通过一个敏感词过滤框架的例子，展示了职责链模式的设计意图。本质上来说，它跟大部分设计模式一样，都是为了解耦代码，应对代码的复杂性，让代码满足开闭原则，提高代码的可扩展性。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 63 | 职责链模式（下）：框架中常用的过滤器、拦截器是如何实现的？

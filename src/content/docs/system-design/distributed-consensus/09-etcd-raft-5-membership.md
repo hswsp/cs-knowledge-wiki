@@ -1,8 +1,9 @@
 ---
 title: "etcd/raft（五）：Raft成员变更"
 description: "本文会对etcd/raft中Raft成员变更算法的实现与优化进行分析。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 15
+updatedDate: 2026-06-22
 draft: false
 ---
 # etcd/raft（五）：Raft成员变更

@@ -1,8 +1,9 @@
 ---
 title: "90 | 项目实战一：设计实现一个支持各种算法的限流框架（分析）"
 description: "结束了开源实战，从今天开始我们正式进入项目实战模块。在开源实战中，我带你一块剖析了几个著名的开源项目，比如 Spring、MyBatis、Google Guava 等，剖析了它们背后蕴含的设计思想、原则和模式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 90 | 项目实战一：设计实现一个支持各种算法的限流框架（分析）

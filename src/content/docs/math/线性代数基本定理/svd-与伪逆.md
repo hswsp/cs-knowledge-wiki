@@ -1,7 +1,7 @@
 ---
 title: "SVD 与伪逆"
 description: "SVD 分解、Moore–Penrose 伪逆、正交投影与最小二乘的几何理解。"
-tags: ["math"]
+tags: ["math", "线性代数基本定理"]
 order: 999
 draft: false
 ---

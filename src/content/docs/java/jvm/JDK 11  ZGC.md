@@ -1,8 +1,9 @@
 ---
 title: "JDK 11 ZGC"
 description: "来源12 张图带你彻底理解 ZGC"
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 #  JDK 11  ZGC

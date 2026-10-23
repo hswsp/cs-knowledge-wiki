@@ -1,8 +1,9 @@
 ---
 title: "JVM Attach"
 description: "JVM（Java虚拟机）的Attach机制是一种允许外部工具连接到正在运行的Java进程的机制。它为开发者提供了一种方法来监控、诊断和调试Java应用程序，以及执行各种操作，例如生成线程转储、堆转储或动态加载Java代理。以下是对JVM Attach机制的详细解读："
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # JVM Attach

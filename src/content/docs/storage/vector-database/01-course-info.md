@@ -1,8 +1,9 @@
 ---
 title: "Course Info"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/epx2p7udbh53koga"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Course Info

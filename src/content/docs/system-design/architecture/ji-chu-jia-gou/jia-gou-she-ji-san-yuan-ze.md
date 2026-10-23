@@ -1,8 +1,9 @@
 ---
 title: "架构设计三原则"
 description: "前面几期专栏，我跟你系统的聊了架构设计的主要目的是为了解决软件系统复杂度带来的问题，并分析了复杂度的来源。从今天开始，我会分两期讲讲架构设计的 3 个原则，以及架构设计原则的案例。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构设计三原则

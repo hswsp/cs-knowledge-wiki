@@ -1,7 +1,7 @@
 ---
 title: "KV Cache 管理图"
 description: "KV Cache 管理图"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

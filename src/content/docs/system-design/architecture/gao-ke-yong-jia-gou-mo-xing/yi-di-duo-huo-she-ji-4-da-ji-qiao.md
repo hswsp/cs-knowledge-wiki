@@ -1,8 +1,9 @@
 ---
 title: "异地多活设计4大技巧"
 description: "专栏上一期我介绍了三种不同类型的异地多活架构，复习一下每个架构的关键点："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 异地多活设计4大技巧

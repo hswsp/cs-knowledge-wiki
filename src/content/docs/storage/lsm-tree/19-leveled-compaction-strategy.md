@@ -1,8 +1,9 @@
 ---
 title: "Leveled Compaction Strategy"
 description: "In this chapter, you will: Implement a leveled compaction strategy and simulate it on the compaction simulator. Incorporate leveled compaction strategy into th…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Leveled Compaction Strategy

@@ -1,8 +1,9 @@
 ---
 title: "Cherry-Pick的使用"
 description: "Cherry-Pick"
-tags: ["tools"]
+tags: ["tools", "git"]
 order: 1
+updatedDate: 2026-06-22
 draft: false
 ---
 # Cherry-Pick的作用

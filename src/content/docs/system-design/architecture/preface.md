@@ -1,8 +1,9 @@
 ---
 title: "Preface"
 description: "每个程序员心中都有一个成为架构师的梦想，梦想是美好的，但道路是曲折的。"
-tags: ["system-design"]
+tags: ["system-design", "architecture"]
 order: 1
+updatedDate: 2026-06-11
 draft: false
 ---
 # Preface

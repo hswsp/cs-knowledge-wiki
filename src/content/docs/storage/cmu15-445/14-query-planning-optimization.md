@@ -1,8 +1,9 @@
 ---
 title: "14 - Query Planning & Optimization"
 description: "Because SQL is declarative, the query only tells the DBMS what to compute, but not how to compute it. Thus, the DBMS needs to translate a SQL statement into an…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 14 - Query Planning & Optimization

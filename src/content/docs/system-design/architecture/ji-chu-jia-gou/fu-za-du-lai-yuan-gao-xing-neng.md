@@ -1,8 +1,9 @@
 ---
 title: "复杂度来源：高性能"
 description: "周四，我为你讲了架构设计的主要目的是为了解决软件系统复杂度带来的问题。那么从今天开始，我将为你深入分析复杂度的 6 个来源，先来聊聊复杂度的来源之一高性能。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 复杂度来源：高性能

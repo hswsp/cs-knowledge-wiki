@@ -1,8 +1,9 @@
 ---
 title: "3. Normal Extensions（正规扩张）"
 description: "In the last section, we saw that there are two ways for the field extension to fail to be Galois: if does not have all its roots in or if has repeated roots. T…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 3. Normal Extensions（正规扩张）

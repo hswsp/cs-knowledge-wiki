@@ -1,8 +1,9 @@
 ---
 title: "高性能数据库集群：分库分表"
 description: "上期我讲了“读写分离”，读写分离分散了数据库读写操作的压力，但没有分散存储压力，当数据量达到千万甚至上亿条的时候，单台数据库服务器的存储能力会成为系统的瓶颈，主要体现在这几个方面："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 高性能数据库集群：分库分表

@@ -1,8 +1,9 @@
 ---
 title: "Service abstractions, stacks, and reliability"
 description: "Last week: best effort datagram IP implementation"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Service abstractions, stacks, and reliability

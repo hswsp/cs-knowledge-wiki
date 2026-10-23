@@ -1,8 +1,9 @@
 ---
 title: "27|理论一：什么情况下要重构？到底重构什么？又该如何重构？"
 description: "“重构”这个词对于大部分工程师来说都不陌生。不过，据我了解，大部分人都只是“听得多做得少”，真正进行过代码重构的人不多，而把持续重构作为开发的一部分的人，就更是少之又少了。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 27|理论一：什么情况下要重构？到底重构什么？又该如何重构？

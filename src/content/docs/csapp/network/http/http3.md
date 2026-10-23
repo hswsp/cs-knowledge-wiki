@@ -1,8 +1,9 @@
 ---
 title: "HTTP/3 强势来袭"
 description: "基于 QUIC 的 HTTP/3，解决队头阻塞与连接迁移。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 14
+updatedDate: 2026-06-22
 draft: false
 ---
 HTTP/3 现在还没正式推出，不过自 2017 年起， HTTP/3 已经更新到 34 个草案了，基本的特性已经确定下来了，对于包格式可能后续会有变化。

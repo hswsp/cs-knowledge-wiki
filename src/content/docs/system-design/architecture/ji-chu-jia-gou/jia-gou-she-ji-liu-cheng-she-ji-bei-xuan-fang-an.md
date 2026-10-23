@@ -1,8 +1,9 @@
 ---
 title: "架构设计流程：设计备选方案"
 description: "上一期我讲了架构设计流程第 1 步识别复杂度，确定了系统面临的主要复杂度问题后，方案设计就有了明确的目标，我们就可以开始真正进行架构方案设计了。今天我来讲讲架构设计流程第 2 步：设计备选方案，同样还会结合上期“前浪微博”的场景，谈谈消息队列设计备选方案的实战。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构设计流程：设计备选方案

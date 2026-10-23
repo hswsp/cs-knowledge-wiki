@@ -1,8 +1,9 @@
 ---
 title: "Hexo+Kaze+Gitee Pages 搭建静态博客网站"
 description: "Hexo 详解"
-tags: ["tools"]
+tags: ["tools", "blog"]
 order: 7
+updatedDate: 2026-06-22
 draft: false
 ---
 # 前言

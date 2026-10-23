@@ -1,8 +1,9 @@
 ---
 title: "19. Transcendence Bases（超越基）"
 description: "In this chapter, we study field extensions that are not algebraic. In the first two sections, we give the main properties of these extensions. In the remaining…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 19. Transcendence Bases（超越基）

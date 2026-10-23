@@ -1,8 +1,9 @@
 ---
 title: "AI Infra 入门到前沿"
 description: "面向工程师的 AI 基础设施学习笔记：从 GPU/网络/存储基础，到 LLM 训练与推理、PD 分离、KV Cache、Mooncake 与 AI Serving Stack、核心算法与技术图表。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
+updatedDate: 2026-06-19
 draft: false
 ---
 # AI Infra 入门到前沿

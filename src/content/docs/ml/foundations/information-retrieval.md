@@ -1,8 +1,9 @@
 ---
 title: "信息检索基础"
 description: "词嵌入 (Embedding) ：将文本映射为高维向量，语义相近的文本在向量空间中距离近 → 详见 余弦相似度 ：衡量两个向量之间的角度差异，不受向量长度影响，适合文本嵌入的相似度计算 RAG (检索增强生成) ：从外部知识库检索相关文档，注入 LLM 上下文以减少幻觉 → 详见"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 17
+updatedDate: 2026-07-07
 draft: false
 ---
 # 信息检索基础

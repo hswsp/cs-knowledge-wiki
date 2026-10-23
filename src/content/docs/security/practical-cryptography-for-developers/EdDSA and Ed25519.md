@@ -1,8 +1,9 @@
 ---
 title: "EdDSA and Ed25519"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/hfglaguv1exubq58"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # EdDSA and Ed25519

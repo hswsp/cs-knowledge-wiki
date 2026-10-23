@@ -1,8 +1,9 @@
 ---
 title: "HTTP/1.1 如何优化？"
 description: "减少请求次数、缓存、连接复用与压缩等手段。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 9
+updatedDate: 2026-06-22
 draft: false
 ---
 问你一句：「**你知道 HTTP/1.1 该如何优化吗？**」

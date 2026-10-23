@@ -1,8 +1,9 @@
 ---
 title: "PROJECT #1 - BUFFER POOL"
 description: "Do not post your project on a public Github repository."
-tags: ["storage"]
+tags: ["storage", "cmu15-445", "cmu-db"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # PROJECT #1 - BUFFER POOL

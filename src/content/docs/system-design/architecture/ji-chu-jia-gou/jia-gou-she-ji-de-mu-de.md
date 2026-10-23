@@ -1,8 +1,9 @@
 ---
 title: "架构设计的目的"
 description: "周二，我们聊了架构出现的历史背景和推动因素。以史为鉴，对我们了解架构设计的目的很有帮助。谈到架构设计，相信每个技术人员都是耳熟能详，但如果深入探讨一下，“为何要做架构设计？”或者“ ”类似的问题，大部分人可能从来没有思考过，或者即使有思考，也没有太明确可信的答案。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构设计的目的

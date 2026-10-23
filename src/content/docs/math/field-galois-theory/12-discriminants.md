@@ -1,8 +1,9 @@
 ---
 title: "12. Discriminants（判别式）"
 description: "Now that we have developed Galois theory and have investigated a number of types of field extensions, we can put our knowledge to use to answer some of the mos…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 12. Discriminants（判别式）

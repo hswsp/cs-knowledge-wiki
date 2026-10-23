@@ -1,8 +1,9 @@
 ---
 title: "More Cryptographic Concepts"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/gkcx8uyamvur349x"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # More Cryptographic Concepts

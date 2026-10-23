@@ -1,8 +1,9 @@
 ---
 title: "Routing Basics"
 description: "Routers forward a packet for one hop by looking at the IP address。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Routing Basics

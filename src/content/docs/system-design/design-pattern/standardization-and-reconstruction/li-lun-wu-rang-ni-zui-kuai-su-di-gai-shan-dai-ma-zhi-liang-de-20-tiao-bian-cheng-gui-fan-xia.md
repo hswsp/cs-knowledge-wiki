@@ -1,8 +1,9 @@
 ---
 title: "33|理论五：让你最快速地改善代码质量的20条编程规范（下）"
 description: "上两节课，我们讲了命名和注释、代码风格，今天我们来讲一些比较实用的编程技巧，帮你切实地提高代码可读性。这部分技巧比较琐碎，也很难罗列全面，我仅仅总结了一些我认为比较关键的，更多的技巧需要你在实践中自己慢慢总结、积累。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 33|理论五：让你最快速地改善代码质量的20条编程规范（下）

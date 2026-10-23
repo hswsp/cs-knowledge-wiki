@@ -1,8 +1,9 @@
 ---
 title: "07 - Hash Tables"
 description: "A DBMS uses various data structures for many different parts of the system internals. Some examples include:"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 07 - Hash Tables

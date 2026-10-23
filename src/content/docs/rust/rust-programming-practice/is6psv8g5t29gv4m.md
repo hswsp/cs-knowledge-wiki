@@ -1,8 +1,9 @@
 ---
 title: "环境准备"
 description: "在 macOS 上安装 Rust 可以通过以下步骤进行："
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 环境准备

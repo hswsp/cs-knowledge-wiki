@@ -1,8 +1,9 @@
 ---
 title: "同一电脑上同时使用GitHub和Gitee"
 description: "有些教程说并需要清空全局用户名和邮箱。这是错的！！！！"
-tags: ["tools"]
+tags: ["tools", "git"]
 order: 3
+updatedDate: 2026-06-22
 draft: false
 ---
 > **ℹ️ 信息**

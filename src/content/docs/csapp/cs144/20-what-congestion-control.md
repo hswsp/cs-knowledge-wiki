@@ -1,8 +1,9 @@
 ---
 title: "What congestion control"
 description: "For multiple flows sharing the same link, who allocate the link resource to those flows? (Not a single router, or chromecast) Say two flows share 10 Mbits/s. T…"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # What congestion control

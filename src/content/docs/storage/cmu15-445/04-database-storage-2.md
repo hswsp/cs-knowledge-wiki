@@ -1,8 +1,9 @@
 ---
 title: "04 - Database Storage 2"
 description: "Some problems associated with the Slotted Page Design are:"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 04 - Database Storage 2

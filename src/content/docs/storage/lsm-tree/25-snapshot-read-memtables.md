@@ -1,8 +1,9 @@
 ---
 title: "Snapshot Read - Memtables and Timestamps"
 description: "In this chapter, you will: Refactor your memtable/WAL to store multiple versions of a key. Implement the new engine write path to assign each key a timestamp.…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Snapshot Read - Memtables and Timestamps

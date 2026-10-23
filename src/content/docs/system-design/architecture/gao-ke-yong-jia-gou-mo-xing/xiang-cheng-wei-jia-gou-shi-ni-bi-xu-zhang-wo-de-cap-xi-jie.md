@@ -1,8 +1,9 @@
 ---
 title: "想成为架构师，你必须掌握的CAP细节"
 description: "理论的优点在于清晰简洁、易于理解，但缺点就是高度抽象化，省略了很多细节，导致在将理论应用到实践时，由于各种复杂情况，可能出现误解和偏差，CAP 理论也不例外。如果我们没有意识到这些关键的细节点，那么在实践中应用 CAP 理论时，就可能发现方案很难落地。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 想成为架构师，你必须掌握的CAP细节

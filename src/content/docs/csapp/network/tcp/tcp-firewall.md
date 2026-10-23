@@ -1,8 +1,9 @@
 ---
 title: "原来墙，是这么把我 TCP 连接干掉的！"
 description: "防火墙/中间盒如何用 RST、SYN 阻断 TCP 连接。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 24
+updatedDate: 2026-06-22
 draft: false
 ---
 就不聊太硬核的技术了，今天聊一个比较轻松的问题：**如何关闭一个 TCP 连接？**

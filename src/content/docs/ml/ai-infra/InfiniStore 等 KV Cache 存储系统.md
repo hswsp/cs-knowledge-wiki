@@ -1,7 +1,7 @@
 ---
 title: "InfiniStore 等 KV Cache 存储系统"
 description: "InfiniStore是字节跳动开发的分布式KV Cache存储系统，专为大规模LLM推理优化。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

@@ -1,8 +1,9 @@
 ---
 title: "21. Algebraic Varieties（代数簇）"
 description: "Field extensions that are finitely generated but not algebraic arise naturally in algebraic geometry. In this section, we discuss some of the basic ideas of al…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 21. Algebraic Varieties（代数簇）

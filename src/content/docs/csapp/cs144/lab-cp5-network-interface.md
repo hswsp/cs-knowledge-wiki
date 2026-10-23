@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 5: down the stack (the network interface)"
 description: "实现 NetworkInterface：IP 数据报与 Ethernet 帧之间的 ARP 桥。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Overview

@@ -1,8 +1,9 @@
 ---
 title: "The Rest of Your Life (TBD)"
 description: "This is an advanced part that deep dives into optimizations and applications of the LSM storage engine and will make your implementation more production ready.…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # The Rest of Your Life (TBD)

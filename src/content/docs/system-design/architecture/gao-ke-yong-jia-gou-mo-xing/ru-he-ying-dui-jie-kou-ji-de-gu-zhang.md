@@ -1,8 +1,9 @@
 ---
 title: "如何应对接口级的故障？"
 description: "异地多活方案主要应对系统级的故障，例如，机器宕机、机房故障、网络故障等问题，这些系统级的故障虽然影响很大，但发生概率较小。在实际业务运行过程中，还有另外一种故障影响可能没有系统级那么大，但发生的概率较高，这就是今天我要与你聊的如何应对接口级的故障。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 如何应对接口级的故障？

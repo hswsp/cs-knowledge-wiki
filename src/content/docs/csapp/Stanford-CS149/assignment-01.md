@@ -1,8 +1,9 @@
 ---
 title: "Assignment 1: Analyzing Parallel Program Performance on a Q…"
 description: "This assignment is intended to help you develop an understanding of the two primary forms of parallel execution present in a modern multi core CPU:"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Assignment 1: Analyzing Parallel Program Performance on a Quad-Core CPU

@@ -1,7 +1,7 @@
 ---
 title: "Mooncake 的 PD 分离实现"
 description: "Mooncake是月之暗面（Moonshot AI）开发的开源LLM服务平台，其PD分离实现代表了业界领先水平。理解Mooncake的设计对于即将加入团队的新人至关重要。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

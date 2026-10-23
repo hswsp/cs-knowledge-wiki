@@ -1,8 +1,9 @@
 ---
 title: "JVM CPU 使用率飙高问题的排查过程"
 description: "How to Troubleshoot High Java CPU Usage Issues"
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 4
+updatedDate: 2026-06-22
 draft: false
 ---
 # 问题现象

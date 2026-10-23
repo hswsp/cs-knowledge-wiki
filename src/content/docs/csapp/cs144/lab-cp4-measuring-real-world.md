@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 4: measuring the real world"
 description: "用 ping 测量真实世界 Internet 路径的丢包率、RTT 与吞吐。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Overview

@@ -1,8 +1,9 @@
 ---
 title: "81 | 开源实战三（上）：借Google Guava学习发现和开发通用功能模块"
 description: "上几节课，我们拿 Unix 这个超级大型开源软件的开发作为引子，从代码设计编写和研发管理两个角度，讲了如何应对大型复杂项目的开发。接下来，我们再讲一下 Google 开源的 Java 开发库 Google Guava。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 81 | 开源实战三（上）：借Google Guava学习发现和开发通用功能模块

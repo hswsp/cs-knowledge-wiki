@@ -1,8 +1,9 @@
 ---
 title: "LanceDB 开源向量数据库实现解读"
 description: "基于联网搜索、LanceDB 官方仓库/SDK 文档，以及本地源码阅读整理。本文重点分析开源 的本地/嵌入式实现，并补充 remote / namespace / cloud 相关抽象。"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 8
+updatedDate: 2026-08-08
 draft: false
 ---
 # LanceDB 开源向量数据库实现解读

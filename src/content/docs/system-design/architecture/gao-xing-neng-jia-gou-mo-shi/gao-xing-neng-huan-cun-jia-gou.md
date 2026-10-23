@@ -1,8 +1,9 @@
 ---
 title: "高性能缓存架构"
 description: "虽然我们可以通过各种手段来提升存储系统的性能，但在某些复杂的业务场景下，单纯依靠存储系统的性能提升不够的，典型的场景有："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 高性能缓存架构

@@ -1,8 +1,9 @@
 ---
 title: "Lecture 18: Transactional Memory II"
 description: "Lecture 18: Transactional Memory II"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 18: Transactional Memory (Part II)

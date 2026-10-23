@@ -1,8 +1,9 @@
 ---
 title: "07 | 所有权：值的生杀大权到底在谁手上？"
 description: "你好，我是陈天。 完成了上周的“get hands dirty”挑战，相信你对 Rust 的魅力已经有了感性的认知，是不是开始信心爆棚地尝试写小项目了。 但当你写的代码变多，编译器似乎开始和自己作对了，一些感觉没有问题的代码，编译器却总是莫名其妙报错。 那么从今天起我们重归理性，一起来研究 Rust 学习过程中最难啃…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 07 | 所有权：值的生杀大权到底在谁手上？

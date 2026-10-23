@@ -1,8 +1,9 @@
 ---
 title: "Machine Learning"
 description: "From classic ML to deep learning — theory and practice."
-tags: ["en"]
+tags: ["en", "ml"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # Machine Learning

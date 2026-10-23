@@ -1,8 +1,9 @@
 ---
 title: "etcd/raft（二）：etcd/raft总体设计"
 description: "etcd/raft将Raft算法的实现分为了3个模块：Raft状态机、存储模块、传输模块。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 12
+updatedDate: 2026-06-22
 draft: false
 ---
 # etcd/raft（二）：etcd/raft总体设计

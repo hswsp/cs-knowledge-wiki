@@ -1,8 +1,9 @@
 ---
 title: "17. Infinite Galois Extensions（无限 Galois 扩张）"
 description: "In this chapter, we investigate infinite Galois extensions and prove an analog of the fundamental theorem of Galois theory for infinite extensions. The key ide…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 17. Infinite Galois Extensions（无限 Galois 扩张）

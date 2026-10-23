@@ -1,8 +1,9 @@
 ---
 title: "Write Path"
 description: "In this chapter, you will: Implement the LSM write path with L0 flush. Implement the logic to correctly update the LSM state."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Write Path

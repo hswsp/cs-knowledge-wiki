@@ -1,8 +1,9 @@
 ---
 title: "22. Algebraic Function Fields（代数函数域）"
 description: "In this section, we study one of the most important classes of field extensions, those arising from algebraic geometry. We will continue to use the notation de…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 22. Algebraic Function Fields（代数函数域）

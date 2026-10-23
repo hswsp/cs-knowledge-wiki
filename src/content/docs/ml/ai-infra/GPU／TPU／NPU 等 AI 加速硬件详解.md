@@ -1,7 +1,7 @@
 ---
 title: "GPU／TPU／NPU 等 AI 加速硬件详解"
 description: "在深入 GPU 架构之前，先理解一个关键问题： 为什么不能只用普通 CPU 来训练 AI 模型？"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

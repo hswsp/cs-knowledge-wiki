@@ -1,8 +1,9 @@
 ---
 title: "Architecture"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/dqnzk9areuc1s1nd"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Architecture

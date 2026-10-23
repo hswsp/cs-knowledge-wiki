@@ -1,7 +1,7 @@
 ---
 title: "PD 分离架构对比图"
 description: "PD 分离架构对比图"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

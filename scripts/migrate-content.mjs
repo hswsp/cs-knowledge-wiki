@@ -13,6 +13,7 @@
  *  - skips code fences so nothing above touches code
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, rmSync, existsSync } from 'node:fs'
+import { execSync } from 'node:child_process'
 import { dirname, join, relative, extname } from 'node:path'
 
 const ROOT = process.cwd()
@@ -187,6 +188,8 @@ function transformBody(body, srcRel = '') {
     if (inFence) return line
     let l = line.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
     l = rewriteLinks(l)
+    // VitePress 的 CSS 变量在 Astro 里不存在，iframe 边框会失效
+    l = l.replaceAll('var(--vp-c-divider)', 'hsl(var(--border))')
     // Relative images live next to the source file; they are copied into
     // public/docassets at build time so the repo does not duplicate ~800MB.
     l = l.replace(/!\[([^\]]*)\]\((?!https?:|\/|data:)([^)]+)\)/g, (_m, alt, target) => {
@@ -240,6 +243,38 @@ function buildOrderMap() {
 }
 
 const orderMap = buildOrderMap()
+
+/**
+ * 每篇笔记的最后提交时间，供 /archives 使用。
+ * 一次 git log 取全量，避免逐文件调用。
+ */
+function buildDateMap() {
+  const dates = new Map()
+  try {
+    const out = execSync("git log --format='@@%ct' --name-only -- docs", {
+      cwd: ROOT,
+      encoding: 'utf8',
+      maxBuffer: 64 * 1024 * 1024
+    })
+    let current = null
+    for (const line of out.split('\n')) {
+      if (line.startsWith('@@')) {
+        current = Number(line.slice(2))
+        continue
+      }
+      const file = line.trim()
+      if (!file || !current || !file.endsWith('.md')) continue
+      const rel = file.replace(/^docs\//, '')
+      // git log 是最新在前，首次出现即最后一次修改
+      if (!dates.has(rel)) dates.set(rel, new Date(current * 1000).toISOString().slice(0, 10))
+    }
+  } catch {
+    // 没有 git 历史时静默跳过
+  }
+  return dates
+}
+
+const dateMap = buildDateMap()
 
 // VitePress home page is replaced by the Astro index page.
 // `about/` is not a knowledge-base section: it becomes the site's own /about page.
@@ -303,9 +338,11 @@ for (const file of files) {
   }
   description = clip(description, DESC_MAX)
 
-  const firstSegment = rel.includes('/') ? rel.split('/')[0] : 'root'
+  // 标签 = 学科 + 中间各层目录，这样 /tags 是一张扁平索引
+  const segments = rel.split('/').slice(0, -1)
+  const derivedTags = segments.length ? segments : ['root']
   let tags = data.tags
-  if (!Array.isArray(tags) || !tags.length) tags = [firstSegment]
+  if (!Array.isArray(tags) || !tags.length) tags = derivedTags
   tags = [...new Set(tags.map((t) => String(t).toLowerCase()))]
 
   const relId = rel.replace(/\.md$/i, '')
@@ -316,12 +353,14 @@ for (const file of files) {
   const outFile = join(OUT, outRel)
   mkdirSync(dirname(outFile), { recursive: true })
 
+  const updatedDate = dateMap.get(rel)
   const fm = [
     '---',
     `title: ${yamlQuote(title)}`,
     `description: ${yamlQuote(description)}`,
     `tags: [${tags.map(yamlQuote).join(', ')}]`,
     `order: ${order}`,
+    ...(updatedDate ? [`updatedDate: ${updatedDate}`] : []),
     'draft: false',
     '---',
     ''

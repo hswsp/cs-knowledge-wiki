@@ -1,8 +1,9 @@
 ---
 title: "43 | 单例模式（下）：如何设计实现一个集群环境下的分布式单例模式？"
 description: "上两节课中，我们针对单例模式，讲解了单例的应用场景、几种常见的代码实现和存在的问题，并粗略给出了替换单例模式的方法，比如工厂模式、IOC 容器。今天，我们再进一步扩展延伸一下，一块讨论一下下面这几个问题："
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 43 | 单例模式（下）：如何设计实现一个集群环境下的分布式单例模式？

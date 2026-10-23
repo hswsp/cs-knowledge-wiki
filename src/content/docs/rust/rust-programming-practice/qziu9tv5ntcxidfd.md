@@ -1,8 +1,9 @@
 ---
 title: "24 | 类型系统：如何在实战中使用trait object？"
 description: "你好，我是陈天。 今天我们来看看 trait object 是如何在实战中使用的。 照例先来回顾一下 trait object。当我们在运行时想让某个具体类型，只表现出某个 trait 的行为，可以通过将其赋值给一个 ，无论是 ，还是 ，还是 ，都可以，这里， 是当前数据类型实现的某个 trait。此时，原有的类型被…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 24 | 类型系统：如何在实战中使用trait object？

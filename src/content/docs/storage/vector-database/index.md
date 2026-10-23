@@ -1,8 +1,9 @@
 ---
 title: "Vector Databases in Modern AI Applications"
 description: "来自多伦多大学 CSC2233 Topics in Storage Systems: Vector Databases in Modern AI Applications 的向量数据库课程笔记。"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-07-24
 draft: false
 ---
 # Vector Databases in Modern AI Applications

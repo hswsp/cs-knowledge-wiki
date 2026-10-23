@@ -1,8 +1,9 @@
 ---
 title: "微服务架构最佳实践 - 基础设施篇"
 description: "每项微服务基础设施都是一个平台、一个系统、一个解决方案，如果要自己实现，其过程和做业务系统类似，都需要经过需求分析、架构设计、开发、测试、部署上线等步骤，专栏里我来简单介绍一下每个基础设施的主要作用，更多详细设计你可以参考 Spring Cloud 的相关资料（https://projects.spring.io/s…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ke-kuo-zhan-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 微服务架构最佳实践 - 基础设施篇

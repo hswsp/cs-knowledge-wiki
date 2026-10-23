@@ -1,8 +1,9 @@
 ---
 title: "Lance Format vs Parquet 列式格式"
 description: "学习笔记：向量数据库存储格式对比"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 6
+updatedDate: 2026-08-08
 draft: false
 ---
 # Lance Format vs Parquet 列式格式

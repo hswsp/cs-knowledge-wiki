@@ -1,8 +1,9 @@
 ---
 title: "36 | 阶段实操（4）：构建一个简单的KV server-网络处理"
 description: "你好，我是陈天。 经历了基础篇和进阶篇中两讲的构建和优化，到现在，我们的KV server 核心功能已经比较完善了。不知道你有没有注意，之前一直在使用一个神秘的 async prost 库，我们神奇地完成了TCP frame 的封包和解包。是怎么完成的呢？ async prost 是我仿照 Jonhoo 的 asyn…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 36 | 阶段实操（4）：构建一个简单的KV server-网络处理

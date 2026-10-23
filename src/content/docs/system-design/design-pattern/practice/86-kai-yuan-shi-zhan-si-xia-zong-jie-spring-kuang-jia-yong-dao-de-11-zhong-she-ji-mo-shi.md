@@ -1,8 +1,9 @@
 ---
 title: "86 | 开源实战四（下）：总结Spring框架用到的11种设计模式"
 description: "上一节课，我们讲解了 Spring 中支持扩展功能的两种设计模式：观察者模式和模板模式。这两种模式能够帮助我们创建扩展点，让框架的使用者在不修改源码的情况下，基于扩展点定制化框架功能。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 86 | 开源实战四（下）：总结Spring框架用到的11种设计模式

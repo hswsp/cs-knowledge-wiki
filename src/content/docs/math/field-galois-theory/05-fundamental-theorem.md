@@ -1,8 +1,9 @@
 ---
 title: "5. The Fundamental Theorem of Galois Theory（Galois 理论基本定理）"
 description: "We are now in the position to prove the fundamental theorem of Galois theory, which describes the intermediate fields of a Galois extension in terms of the sub…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 5. The Fundamental Theorem of Galois Theory（Galois 理论基本定理）

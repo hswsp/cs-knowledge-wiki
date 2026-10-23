@@ -1,8 +1,9 @@
 ---
 title: "Batch Write and Checksums"
 description: "In the previous chapter, you already built a full LSM based storage engine. At the end of this week, we will implement some easy but important optimizations of…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Batch Write and Checksums

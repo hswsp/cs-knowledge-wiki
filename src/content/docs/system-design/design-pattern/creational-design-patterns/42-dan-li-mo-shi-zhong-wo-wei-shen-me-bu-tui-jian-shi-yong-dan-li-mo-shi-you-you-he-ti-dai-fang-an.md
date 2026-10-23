@@ -1,8 +1,9 @@
 ---
 title: "42 | 单例模式（中）：我为什么不推荐使用单例模式？又有何替代方案？"
 description: "上一节课中，我们通过两个实战案例，讲解了单例模式的一些应用场景，比如，避免资源访问冲突、表示业务概念上的全局唯一类。除此之外，我们还学习了 Java 语言中，单例模式的几种实现方法。如果你熟悉的是其他编程语言，不知道你课后有没有自己去对照着实现一下呢？"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 42 | 单例模式（中）：我为什么不推荐使用单例模式？又有何替代方案？

@@ -1,8 +1,9 @@
 ---
 title: "The Link Layer aka Physical Layer"
 description: "Last Time: How naming works? (How names are assigned and discovered?)"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # The Link Layer aka Physical Layer

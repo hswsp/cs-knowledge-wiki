@@ -1,8 +1,9 @@
 ---
 title: "2. Automorphisms（自同构）"
 description: "The main idea of Galois was to associate to any polynomial a group of permutations of the roots of . In this section, we define and study this group and give s…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 2. Automorphisms（自同构）

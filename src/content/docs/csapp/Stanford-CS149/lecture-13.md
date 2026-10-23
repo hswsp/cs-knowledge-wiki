@@ -1,8 +1,9 @@
 ---
 title: "Lecture 13: Auto-Optimization"
 description: "Lecture 13: Auto-Optimization"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 13: Domain-Specific Programming Systems and AI-Driven Performance Optimization

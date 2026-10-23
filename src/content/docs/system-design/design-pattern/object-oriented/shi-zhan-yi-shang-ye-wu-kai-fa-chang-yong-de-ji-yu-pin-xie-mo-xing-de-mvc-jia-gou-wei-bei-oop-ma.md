@@ -1,8 +1,9 @@
 ---
 title: "11|实战一（上）：业务开发常用的基于贫血模型的MVC架构违背OOP吗？"
 description: "在前面几节课中，我们学习了面向对象的一些理论知识，比如，面向对象四大特性、接口和抽象类、面向对象和面向过程编程风格、基于接口而非实现编程和多用组合少用继承设计思想等等。接下来，我们再用四节课的时间，通过两个更加贴近实战的项目来进一步学习，如何将这些理论应用到实际的软件开发中。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "object-oriented"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 11|实战一（上）：业务开发常用的基于贫血模型的MVC架构违背OOP吗？

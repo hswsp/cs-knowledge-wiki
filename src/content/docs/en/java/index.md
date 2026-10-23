@@ -1,8 +1,9 @@
 ---
 title: "Java"
 description: "Java core, concurrency, JVM, and the Spring ecosystem."
-tags: ["en"]
+tags: ["en", "java"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # Java

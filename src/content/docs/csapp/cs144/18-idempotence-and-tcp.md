@@ -1,8 +1,9 @@
 ---
 title: "Idempotence and TCP"
 description: "Last time: “best effort” delivery as the service abstraction"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Idempotence and TCP

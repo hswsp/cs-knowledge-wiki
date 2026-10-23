@@ -1,8 +1,9 @@
 ---
 title: "高性能负载均衡：分类及架构"
 description: "单服务器无论如何优化，无论采用多好的硬件，总会有一个性能天花板，当单服务器的性能无法满足业务需求时，就需要设计高性能集群来提升系统整体的处理性能。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 高性能负载均衡：分类及架构

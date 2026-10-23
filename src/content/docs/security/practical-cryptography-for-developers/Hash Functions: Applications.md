@@ -1,8 +1,9 @@
 ---
 title: "Hash Functions: Applications"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/dnmhghrvqq1tpg2q"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Hash Functions: Applications

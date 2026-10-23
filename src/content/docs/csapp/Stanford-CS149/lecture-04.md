@@ -1,8 +1,9 @@
 ---
 title: "Lecture 04: Programming Basics"
 description: "Lecture 04: Programming Basics"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 04: Parallelizing Code: An Example Thought Process

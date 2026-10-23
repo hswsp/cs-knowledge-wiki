@@ -1,8 +1,9 @@
 ---
 title: "27 | 生态系统：有哪些常有的Rust库可以为我所用？"
 description: "你好，我是陈天。 一门编程语言的能力，语言本身的设计占了四成，围绕着语言打造的生态系统占了六成。 [之前]我们对比过 Golang 和 Rust，在我看来，Golang 是一门优点和缺点同样突出的语言，Golang 的某些缺点甚至是很严重的，然而，在 Google 的大力加持下，借助微服务和云原生的春风，Golang…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 27 | 生态系统：有哪些常有的Rust库可以为我所用？

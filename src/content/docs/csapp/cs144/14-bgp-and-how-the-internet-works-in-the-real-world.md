@@ -1,8 +1,9 @@
 ---
 title: "BGP and How the Internet works in the real world"
 description: "Each ISP would have [公式] routers. Companies also put servers within IXPs, (though IXPs at the beginning were there for housing routers)"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # BGP and How the Internet works in the real world

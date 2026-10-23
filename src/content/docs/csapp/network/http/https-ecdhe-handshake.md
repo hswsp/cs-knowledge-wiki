@@ -1,8 +1,9 @@
 ---
 title: "HTTPS ECDHE 握手解析"
 description: "基于 ECDHE 的前向安全握手流程与抓包分析。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 11
+updatedDate: 2026-06-22
 draft: false
 ---
 HTTPS 常用的密钥交换算法有两种，分别是 RSA 和 ECDHE 算法。

@@ -1,7 +1,7 @@
 ---
 title: "Transformer 架构详解"
 description: "Transformer架构由 Vaswani等人在 2017年的论文《 Attention Is All You Need》中首次提出，它彻底改变了自然语言处理领域，成为现代大语言模型的基石。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

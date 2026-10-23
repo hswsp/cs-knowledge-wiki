@@ -1,8 +1,9 @@
 ---
 title: "34|实战一（上）：通过一段ID生成器代码，学习如何发现代码质量问题"
 description: "在前面几节课中，我们讲了一些跟重构相关的理论知识，比如：持续重构、单元测试、代码的可测试性、解耦、编码规范。用一句话总结一下，重构就是发现代码质量问题，并且对其进行优化的过程。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 34|实战一（上）：通过一段ID生成器代码，学习如何发现代码质量问题

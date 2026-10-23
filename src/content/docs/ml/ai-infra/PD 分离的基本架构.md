@@ -1,7 +1,7 @@
 ---
 title: "4.2.1 系统整体架构"
 description: "分离系统由三个核心组件构成： Prefill Cluster、Decode Cluster和全局调度器 。这种架构实现了计算和内存资源的专门化，使得每个集群可以根据其工作负载特性进行优化。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

@@ -1,8 +1,9 @@
 ---
 title: "CMU15-445笔记-索引篇"
 description: "面对海量数据，如何快速的找到我们想要的数据？为了解决这个问题，数据库中引入了一个新的数据结构：索引。它可以使得我们通过部分attribute的值快速定位到整个tuple，让查询速度变得更快。但代价是每次写tuple的时候，都需要同时更新索引。"
-tags: ["storage"]
+tags: ["storage", "cmu15-445", "cmu15445-bi-ji"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # CMU15-445笔记-索引篇

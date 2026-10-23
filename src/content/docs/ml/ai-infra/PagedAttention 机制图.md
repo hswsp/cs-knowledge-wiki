@@ -1,7 +1,7 @@
 ---
 title: "PagedAttention 机制图"
 description: "PagedAttention 机制图"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

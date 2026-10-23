@@ -1,8 +1,9 @@
 ---
 title: "06 | get hands dirty：SQL查询工具怎么一鱼多吃？"
 description: "你好，我是陈天。 通过 HTTPie 和 Thumbor 的例子，相信你对 Rust 的能力和代码风格有了比较直观的了解。之前我们说过Rust的应用范围非常广，但是这两个例子体现得还不是太明显。 有同学想看看，在实际工作中有大量生命周期标注的代码的样子；有同学对 Rust 的宏好奇；有同学对 Rust 和其它语言的互…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 06 | get hands dirty：SQL查询工具怎么一鱼多吃？

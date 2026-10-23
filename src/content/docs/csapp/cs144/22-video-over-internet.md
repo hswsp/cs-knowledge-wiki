@@ -1,8 +1,9 @@
 ---
 title: "Video over Internet"
 description: "“Isochronous” transmission: transmit a continuous data over the Internet"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Video over Internet

@@ -1,8 +1,9 @@
 ---
 title: "10|理论七：为何说要多用组合少用继承？如何决定该用组合还是继承？"
 description: "在面向对象编程中，有一条非常经典的设计原则，那就是："
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "object-oriented"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 10|理论七：为何说要多用组合少用继承？如何决定该用组合还是继承？

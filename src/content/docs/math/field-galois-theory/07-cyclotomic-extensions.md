@@ -1,8 +1,9 @@
 ---
 title: "7. Cyclotomic Extensions（分圆扩张）"
 description: "An th root of unity is an element of a field with . For instance, the complex number is an th root of unity. We have seen roots of unity arise in various examp…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 7. Cyclotomic Extensions（分圆扩张）

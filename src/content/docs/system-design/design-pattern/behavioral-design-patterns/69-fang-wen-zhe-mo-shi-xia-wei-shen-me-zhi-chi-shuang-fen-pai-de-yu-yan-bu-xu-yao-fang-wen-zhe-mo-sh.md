@@ -1,8 +1,9 @@
 ---
 title: "69 | 访问者模式（下）：为什么支持双分派的语言不需要访问者模式？"
 description: "上一节课中，我们学习了访问者模式的原理和实现，并且还原了访问者模式诞生的思维过程。总体上来讲，这个模式的代码实现比较难，所以应用场景并不多。从应用开发的角度来说，它的确不是我们学习的重点。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 69 | 访问者模式（下）：为什么支持双分派的语言不需要访问者模式？

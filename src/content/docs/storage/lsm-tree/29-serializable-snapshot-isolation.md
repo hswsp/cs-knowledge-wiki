@@ -1,8 +1,9 @@
 ---
 title: "Serializable Snapshot Isolation"
 description: "Now, we are going to add a conflict detection algorithm at the transaction commit time, so as to make the engine to have some level of serializable."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Serializable Snapshot Isolation

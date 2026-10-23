@@ -1,8 +1,9 @@
 ---
 title: "Snack Time: SST Optimizations"
 description: "In the previous chapter, you already built a storage engine with get/scan/put support. At the end of this week, we will implement some easy but important optim…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Snack Time: SST Optimizations

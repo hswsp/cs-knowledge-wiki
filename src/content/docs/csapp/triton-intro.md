@@ -3,6 +3,7 @@ title: "Triton 入门指南"
 description: "用 Python 编写高性能 GPU 内核：编程模型、向量加法、融合 Softmax、MatMul、自动调优与编译管线。"
 tags: ["csapp"]
 order: 2
+updatedDate: 2026-08-28
 draft: false
 ---
 # Triton 入门指南：用 Python 编写高性能 GPU 内核

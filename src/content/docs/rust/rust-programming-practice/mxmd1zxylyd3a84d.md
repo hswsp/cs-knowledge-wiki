@@ -1,8 +1,9 @@
 ---
 title: "19 | 闭包：FnOnce、FnMut和Fn，为什么有这么多类型？"
 description: "你好，我是陈天。 在现代编程语言中，闭包是一个很重要的工具，可以让我们很方便地以函数式编程的方式来撰写代码。因为闭包可以作为参数传递给函数，可以作为返回值被函数返回，也可以为它实现某个 trait，使其能表现出其他行为，而不仅仅是作为函数被调用。 这些都是怎么做到的？这就和 Rust 里闭包的本质有关了，我们今天就来…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 19 | 闭包：FnOnce、FnMut和Fn，为什么有这么多类型？

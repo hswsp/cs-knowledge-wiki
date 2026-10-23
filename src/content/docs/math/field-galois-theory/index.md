@@ -1,8 +1,9 @@
 ---
 title: "Field and Galois Theory"
 description: "Patrick Morandi《Field and Galois Theory》(GTM 167, Springer, 1996) 学习笔记"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # Field and Galois Theory

@@ -1,8 +1,9 @@
 ---
 title: "Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路"
 description: "摘录自：https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 10
+updatedDate: 2026-08-08
 draft: false
 ---
 # Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路

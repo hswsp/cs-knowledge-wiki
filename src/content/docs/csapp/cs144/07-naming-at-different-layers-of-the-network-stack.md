@@ -1,8 +1,9 @@
 ---
 title: "Naming at different layers of the network stack"
 description: "Hypertext people would care that the link always goes to somewhere"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Naming at different layers of the network stack

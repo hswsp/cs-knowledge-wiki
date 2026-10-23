@@ -1,8 +1,9 @@
 ---
 title: "6.824 Lab 2 - Raft"
 description: "MIT 6.824 Lab 2 - Raft"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 6
+updatedDate: 2026-06-22
 draft: false
 ---
 > **The source code of this Lab is [Here](https://github.com/hswsp/MIT-6.824/tree/main/Lab%202-Raft)**

@@ -1,8 +1,9 @@
 ---
 title: "04 | get hands dirty：来写个实用的CLI小工具"
 description: "你好，我是陈天。 在上一讲里，我们已经接触了 Rust 的基本语法。你是不是已经按捺不住自己的洪荒之力，想马上用 Rust 写点什么练练手，但是又发现自己好像有点“拔剑四顾心茫然”呢？ 那这周我们就来玩个新花样， 做一周“learning by example”的挑战 ，来尝试用 Rust 写三个非常有实际价值的小应…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 04 | get hands dirty：来写个实用的CLI小工具

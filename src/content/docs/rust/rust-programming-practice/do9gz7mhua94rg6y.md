@@ -1,8 +1,9 @@
 ---
 title: "35 | 实操项目：如何实现一个基本的MPSC channel？"
 description: "你好，我是陈天。 通过上两讲的学习，相信你已经意识到，虽然并发原语看上去是很底层、很神秘的东西，但实现起来也并不像想象中的那么困难，尤其是在 Rust 下，在[第 33 讲]中，我们用了几十行代码就实现了一个简单的 SpinLock。 你也许会觉得不太过瘾，而且 SpinLock 也不是经常使用的并发原语，那么今天，…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 35 | 实操项目：如何实现一个基本的MPSC channel？

@@ -1,8 +1,9 @@
 ---
 title: "TCP 可靠性保证"
 description: "序列号/确认号、重传、流控、拥塞控制总览。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 19
+updatedDate: 2026-06-22
 draft: false
 ---
 TCP **巨复杂**，它为了保证可靠性，用了巨多的机制来保证，真是个「伟大」的协议，写着写着发现这水太深了。。。

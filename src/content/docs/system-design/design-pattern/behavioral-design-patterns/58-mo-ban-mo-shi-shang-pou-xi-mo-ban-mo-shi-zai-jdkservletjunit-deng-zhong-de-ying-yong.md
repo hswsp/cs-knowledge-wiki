@@ -1,8 +1,9 @@
 ---
 title: "58 | 模板模式（上）：剖析模板模式在JDK、Servlet、JUnit等中的应用"
 description: "上两节课我们学习了第一个行为型设计模式，观察者模式。针对不同的应用场景，我们讲解了不同的实现方式，有同步阻塞、异步非阻塞的实现方式，也有进程内、进程间的实现方式。除此之外，我还带你手把手实现了一个简单的 EventBus 框架。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 58 | 模板模式（上）：剖析模板模式在JDK、Servlet、JUnit等中的应用

@@ -1,8 +1,9 @@
 ---
 title: "67 | 迭代器模式（下）：如何设计实现一个支持“快照”功能的iterator？"
 description: "上两节课，我们学习了迭代器模式的原理、实现，并且分析了在遍历集合的同时增删集合元素，产生不可预期结果的原因以及应对策略。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 67 | 迭代器模式（下）：如何设计实现一个支持“快照”功能的iterator？

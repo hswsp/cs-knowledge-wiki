@@ -1,8 +1,9 @@
 ---
 title: "23 | 类型系统：如何在实战中使用泛型编程？"
 description: "你好，我是陈天。 从这一讲开始，我们就到进阶篇了。在进阶篇中，我们会先进一步夯实对类型系统的理解，然后再展开网络处理、Unsafe Rust、FFI 等主题。 为什么要把类型系统作为进阶篇的基石？之前讲解 rgrep 的代码时你可以看到，当要构建可读性更强、更加灵活、更加可测试的系统时，我们都要或多或少使用 trai…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 23 | 类型系统：如何在实战中使用泛型编程？

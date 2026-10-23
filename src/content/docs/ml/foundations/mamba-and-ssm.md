@@ -1,8 +1,9 @@
 ---
 title: "Mamba 与状态空间模型 (SSM)"
 description: "Transformer 自注意力 ：O(n²) 复杂度，每个 token 看所有历史 token → 详见 KV Cache ：自回归推理时缓存历史 K/V 向量，显存随序列长度线性增长 → 详见 RNN (循环神经网络) ：按时间步顺序处理序列，用隐状态传递历史信息，训练无法并行 离散化 ：将连续时间的微分方程转换…"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 12
+updatedDate: 2026-06-13
 draft: false
 ---
 # Mamba 与状态空间模型 (SSM)

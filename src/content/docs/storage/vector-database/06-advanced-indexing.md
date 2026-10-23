@@ -1,8 +1,9 @@
 ---
 title: "Advanced indexing"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/ffox3o473ky0yud9"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Advanced indexing

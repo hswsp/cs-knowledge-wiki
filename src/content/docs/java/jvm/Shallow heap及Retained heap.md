@@ -1,7 +1,7 @@
 ---
 title: "Shallow heap及Retained heap"
 description: "本篇文章由一文多发平台ArtiPub自动发布"
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 999
 draft: false
 ---

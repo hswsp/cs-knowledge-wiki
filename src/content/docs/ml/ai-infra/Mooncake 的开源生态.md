@@ -1,7 +1,7 @@
 ---
 title: "Mooncake 的开源生态"
 description: "Mooncake 项目采用模块化设计，主要组件分布在多个仓库中："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

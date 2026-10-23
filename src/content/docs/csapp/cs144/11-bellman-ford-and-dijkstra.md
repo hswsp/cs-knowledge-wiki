@@ -1,8 +1,9 @@
 ---
 title: "Bellman Ford and Dijkstra"
 description: "Last time: flooding, source routing and distributed algorithms"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Bellman Ford and Dijkstra

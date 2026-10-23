@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（二）：Embedding 层"
 description: "现在我们开始手搓transformer的Embedding层，默认输入是若干句子，形状是 .B 表示句子个数(batch size),L 表示句子长度，也就是token的个数(seq len)。Embedding层包含两层，TokenEmbedding是把每一个token id嵌入为一个d model(超参数)的词向…"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 2
+updatedDate: 2026-06-16
 draft: false
 ---
 # 手搓 Transformer（二）：Embedding 层

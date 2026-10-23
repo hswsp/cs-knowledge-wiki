@@ -1,8 +1,9 @@
 ---
 title: "Algorithms"
 description: "Data structures and algorithms, from fundamentals to LeetCode practice."
-tags: ["en"]
+tags: ["en", "algorithm"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # Algorithms

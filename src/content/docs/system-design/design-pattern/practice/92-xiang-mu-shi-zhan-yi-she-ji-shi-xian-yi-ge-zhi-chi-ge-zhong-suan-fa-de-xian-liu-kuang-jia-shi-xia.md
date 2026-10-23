@@ -1,8 +1,9 @@
 ---
 title: "92 | 项目实战一：设计实现一个支持各种算法的限流框架（实现）"
 description: "上一节课，我们介绍了如何通过合理的设计，来实现功能性需求的同时，满足易用、易扩展、灵活、低延迟、高容错等非功能性需求。在设计的过程中，我们也借鉴了之前讲过的一些开源项目的设计思想。比如，我们借鉴了 Spring 的低侵入松耦合、约定优于配置等设计思想，还借鉴了 MyBatis 通过 MyBatis Spring 类库…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 92 | 项目实战一：设计实现一个支持各种算法的限流框架（实现）

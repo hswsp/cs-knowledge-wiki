@@ -3,6 +3,7 @@ title: "类型转换"
 description: "标准库定义了三种类型字符串流：istringstream,ostringstream,stringstream，看名字就知道这几种类型和iostream中的几个非常类似，分别可以读、写以及读和写string类型，它们也确实是从iostrea"
 tags: ["cpp"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 标准库定义了三种类型字符串流：`istringstream`,`ostringstream`,`stringstream`，看名字就知道这几种类型和iostream中的几个非常类似，分别可以**读、写以及读和写string类型**，它们也确实是从iostream类型派生而来的。要使用它们需要包含sstream头文件。

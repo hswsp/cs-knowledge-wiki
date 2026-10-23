@@ -1,8 +1,9 @@
 ---
 title: "64 | 状态模式：游戏、工作流引擎中常用的状态机是如何实现的？"
 description: "从今天起，我们开始学习状态模式。在实际的软件开发中，状态模式并不是很常用，但是在能够用到的场景里，它可以发挥很大的作用。从这一点上来看，它有点像我们之前讲到的组合模式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 64 | 状态模式：游戏、工作流引擎中常用的状态机是如何实现的？

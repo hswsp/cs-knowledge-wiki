@@ -1,8 +1,9 @@
 ---
 title: "18 - Multi-Version Concurrency Control MVCC"
 description: "Multi Version Concurrency Control (MVCC) is a larger concept than just a concurrency control protocol. It involves all aspects of the DBMS’s design and impleme…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 18 - Multi-Version Concurrency Control MVCC

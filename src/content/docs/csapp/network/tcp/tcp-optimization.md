@@ -1,8 +1,9 @@
 ---
 title: "如何优化 TCP？"
 description: "三次握手优化、TCP Fast Open、缓冲区与拥塞算法调优。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 23
+updatedDate: 2026-06-22
 draft: false
 ---
 TCP 性能的提升不仅考察 TCP 的理论知识，还考察了对于操作系统提供的内核参数的理解与应用。

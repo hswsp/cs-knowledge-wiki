@@ -1,8 +1,9 @@
 ---
 title: "73 | 中介模式：什么时候用中介模式？什么时候用观察者模式？"
 description: "今天，我们来学习 23 种经典设计模式中的最后一个，中介模式。跟前面刚刚讲过的命令模式、解释器模式类似，中介模式也属于不怎么常用的模式，应用场景比较特殊、有限，但是，跟它俩不同的是，中介模式理解起来并不难，代码实现也非常简单，学习难度要小很多。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 73 | 中介模式：什么时候用中介模式？什么时候用观察者模式？

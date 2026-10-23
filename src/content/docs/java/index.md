@@ -3,6 +3,7 @@ title: "Java"
 description: "Java 基础、并发、JVM、Spring 全家桶。"
 tags: ["java"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Java

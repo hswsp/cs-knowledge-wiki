@@ -1,8 +1,9 @@
 ---
 title: "复杂度来源：可扩展性"
 description: "复杂度来源前面已经讲了高性能和高可用，今天来聊聊可扩展性。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 复杂度来源：可扩展性

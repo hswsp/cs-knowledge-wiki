@@ -1,8 +1,9 @@
 ---
 title: "Lecture 11: Specialized Hardware Programming"
 description: "Lecture 11: Specialized Hardware Programming"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 11: Programming Systems for Specialized Hardware

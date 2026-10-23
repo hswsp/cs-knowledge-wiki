@@ -1,7 +1,7 @@
 ---
 title: "14 | 网络安全：和别人共用Wi-Fi时，你的信息会被窃取吗？"
 description: "你好，我是何为舟。 你平时使用手机连接无线网络的时候，一定看到过这样的安全提示：不要连接陌生的Wi Fi。也一定看过很多这样的报道：某先生 / 女士因为使用了陌生的Wi Fi，信息遭到泄漏，不仅账号被盗用，还造成了经济损失。 看到这些提示和报道之后，你就要产生警惕了，当你连入一个陌生的 Wi Fi时，这个 Wi Fi…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

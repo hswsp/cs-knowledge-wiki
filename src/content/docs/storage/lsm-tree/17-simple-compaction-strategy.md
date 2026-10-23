@@ -1,8 +1,9 @@
 ---
 title: "Simple Compaction Strategy"
 description: "In this chapter, you will: Implement a simple leveled compaction strategy and simulate it on the compaction simulator. Start compaction as a background task an…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Simple Compaction Strategy

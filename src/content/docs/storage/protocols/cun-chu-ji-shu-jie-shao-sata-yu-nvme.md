@@ -1,8 +1,9 @@
 ---
 title: "存储技术介绍：SATA与NVMe"
 description: "固态驱动器（SSD） 是一种计算机存储设备。与 依靠旋转盘片 的 传统硬盘驱动器（HDD）不同，SSD使用半导体芯片来存储和检索内存。没有任何移动部件，但访问数据比HDD 快得多。"
-tags: ["storage"]
+tags: ["storage", "protocols"]
 order: 21
+updatedDate: 2026-06-22
 draft: false
 ---
 <!-- more -->

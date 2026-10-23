@@ -1,8 +1,9 @@
 ---
 title: "Write-Ahead Log (WAL)"
 description: "In this chapter, you will: Implement encoding and decoding of the write ahead log file. Recover memtables from the WALs when the system restarts."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Write-Ahead Log (WAL)

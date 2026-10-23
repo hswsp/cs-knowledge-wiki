@@ -1,8 +1,9 @@
 ---
 title: "82 | 开源实战三（中）：剖析Google Guava中用到的几种设计模式"
 description: "上一节课，我们通过 Google Guava 这样一个优秀的开源类库，讲解了如何在业务开发中，发现跟业务无关、可以复用的通用功能模块，并将它们从业务代码中抽离出来，设计开发成独立的类库、框架或功能组件。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 82 | 开源实战三（中）：剖析Google Guava中用到的几种设计模式

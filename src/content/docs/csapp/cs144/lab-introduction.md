@@ -1,8 +1,9 @@
 ---
 title: "Lab Introduction"
 description: "CS144 lab 总览、协作政策与开发环境准备。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 [**Welcome to CS144: Introduction to Computer Networking. **](https://cs144.github.io/)

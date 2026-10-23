@@ -1,8 +1,9 @@
 ---
 title: "44 | 工厂模式（上）：我为什么说没事不要随便用工厂模式创建对象？"
 description: "上几节课我们讲了单例模式，今天我们再来讲另外一个比较常用的创建型模式：工厂模式（Factory Design Pattern）。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 44 | 工厂模式（上）：我为什么说没事不要随便用工厂模式创建对象？

@@ -1,8 +1,9 @@
 ---
 title: "33 | 并发处理（上）：从atomics到Channel，Rust都提供了什么工具？"
 description: "你好，我是陈天。 不知不觉我们已经并肩作战三十多讲了，希望你通过这段时间的学习，有一种“我成为更好的程序员啦！”这样的感觉。这是我想通过介绍 Rust 的思想、处理问题的思路、设计接口的理念等等传递给你的。如今，我们终于来到了备受期待的并发和异步的篇章。 很多人分不清并发和并行的概念，Rob Pike，Golang…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 33 | 并发处理（上）：从atomics到Channel，Rust都提供了什么工具？

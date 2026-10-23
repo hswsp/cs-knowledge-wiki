@@ -1,8 +1,9 @@
 ---
 title: "21 | 阶段实操（1）：构建一个简单的KV server-基本流程"
 description: "你好，我是陈天。 从第七讲开始，我们一路过关斩将，和所有权、生命周期死磕，跟类型系统和 trait 反复拉锯，为的是啥？就是为了能够读懂别人写的代码，进而让自己也能写出越来越复杂且优雅的代码。 今天就到检验自身实力的时候了，毕竟talk is cheap，知识点掌握得再多，自己写不出来也白搭，所以我们把之前学的知识都…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 21 | 阶段实操（1）：构建一个简单的KV server-基本流程

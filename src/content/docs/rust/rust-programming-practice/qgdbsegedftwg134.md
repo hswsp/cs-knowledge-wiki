@@ -1,8 +1,9 @@
 ---
 title: "31 | FFI：Rust如何和你的语言架起沟通桥梁？"
 description: "你好，我是陈天。 FFI（Foreign Function Interface），也就是外部函数接口，或者说语言交互接口，对于大部分开发者来说，是一个神秘的存在，平时可能几乎不会接触到它，更别说撰写 FFI 代码了。 其实你用的语言生态有很大一部分是由 FFI 构建的。比如你在 Python 下使用着 NumPy 愉…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 31 | FFI：Rust如何和你的语言架起沟通桥梁？

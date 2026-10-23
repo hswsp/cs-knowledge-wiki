@@ -1,8 +1,9 @@
 ---
 title: "架构师应该如何判断技术演进的方向？"
 description: "互联网的出现不但改变了普通人的生活方式，同时也促进了技术圈的快速发展和开放。在开源和分享两股力量的推动下，最近 10 多年的技术发展可以说是目不暇接，你方唱罢我登场，大的方面有大数据、云计算、人工智能等，细分的领域有 NoSQL、Node.js、Docker 容器化等。各个大公司也乐于将自己的技术分享出来，以此来提升…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "jia-gou-shi-zhan"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构师应该如何判断技术演进的方向？

@@ -1,8 +1,9 @@
 ---
 title: "C++"
 description: "C++ language core, STL, modern features, and performance."
-tags: ["en"]
+tags: ["en", "cpp"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # C++

@@ -1,8 +1,9 @@
 ---
 title: "Basic Indexing"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/he56c9w42hccceo5"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Basic Indexing

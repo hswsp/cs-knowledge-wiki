@@ -1,8 +1,9 @@
 ---
 title: "Linux Devkit"
 description: "在非 Linux 环境用 Docker + Clang/CMake 搭建 CS144 实验环境。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 在非 linux 操作系统完成本项目，需要搭建一个 docker 环境。编写一个 `Dockerfile`，基于 `ubuntu:latest`，安装了 LLVM、Clang、CMake，支持 C++20/23（C++21 标准尚未正式发布），并配置了 OpenSSH 服务器

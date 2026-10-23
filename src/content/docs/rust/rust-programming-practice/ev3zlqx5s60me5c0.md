@@ -1,8 +1,9 @@
 ---
 title: "03 | 初窥门径：从你的第一个Rust程序开始！"
 description: "你好，我是陈天。储备好前置知识之后，今天我们就正式开始 Rust 语言本身的学习。 学语言最好的捷径就是把自己置身于语言的环境中，而且我们程序员讲究 “get hands dirty”，直接从代码开始学能带来最直观的体验。所以从这一讲开始，你就要在电脑上设置好 Rust 环境了。 今天会讲到很多 Rust 的基础知识…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 03 | 初窥门径：从你的第一个Rust程序开始！

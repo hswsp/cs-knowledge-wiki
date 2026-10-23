@@ -1,8 +1,9 @@
 ---
 title: "你会在github上找项目吗？"
 description: "how to search in git"
-tags: ["tools"]
+tags: ["tools", "git"]
 order: 4
+updatedDate: 2026-06-22
 draft: false
 ---
 很多的小伙伴，经常会有这样的困惑，我看了很多技术的学习文档、书籍、甚至视频，我想动手实践，于是我打开了GitHub，想找个开源项目，进行学习，获取项目实战经验。这个时候很多小伙伴就会面临这样的问题：“我不会搜啊，我该怎么找呀？”，最终只能放弃。

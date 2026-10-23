@@ -1,8 +1,9 @@
 ---
 title: "Week 3 Overview: Multi-Version Concurrency Control"
 description: "In this part, you will implement MVCC over the LSM engine that you have built in the previous two weeks. We will add timestamp encoding in the keys to maintain…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Week 3 Overview: Multi-Version Concurrency Control

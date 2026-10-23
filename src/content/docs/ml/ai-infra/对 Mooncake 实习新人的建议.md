@@ -1,7 +1,7 @@
 ---
 title: "对 Mooncake 实习新人的建议"
 description: "核心必读（按优先级排序）："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

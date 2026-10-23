@@ -1,8 +1,9 @@
 ---
 title: "10. Hilbert Theorem 90 and Group Cohomology（Hilbert 定理 90 与…"
 description: "In this section, we change gears. Instead of investigating Galois extensions with certain types of Galois groups, we investigate some deep ideas that arise in…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 10. Hilbert Theorem 90 and Group Cohomology（Hilbert 定理 90 与群上同调）

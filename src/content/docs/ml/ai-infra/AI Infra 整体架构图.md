@@ -1,7 +1,7 @@
 ---
 title: "AI Infra 整体架构图"
 description: "AI Infra 整体架构包含四个核心层次："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

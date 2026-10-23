@@ -1,8 +1,9 @@
 ---
 title: "CMU15-445笔记-优化篇"
 description: "由于SQL语句是以声明式的方式给出要求，所以在执行的过程中有很多的优化空间。对于查询计划的优化被Andy称为数据库中最难的部分，而在445课程中，对于具体的优化也只是介绍了大概，更具体可能需要在721中见到了。"
-tags: ["storage"]
+tags: ["storage", "cmu15-445", "cmu15445-bi-ji"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # CMU15-445笔记-优化篇

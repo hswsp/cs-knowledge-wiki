@@ -1,8 +1,9 @@
 ---
 title: "Raft 协议（三）—— 集群成员变更"
 description: "Raft集群成员变更"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 5
+updatedDate: 2026-06-22
 draft: false
 ---
 ![Raft 协议实战系列（五）—— 集群成员变更与日志压缩](https://images.spumn.eu.cc/blog/28cb380877f15f9e.webp)

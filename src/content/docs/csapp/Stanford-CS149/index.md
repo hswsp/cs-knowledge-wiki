@@ -1,8 +1,9 @@
 ---
 title: "CS149: Parallel Computing"
 description: "Stanford CS149 并行计算课程笔记，包含课程讲义和作业。"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # CS149: Parallel Computing

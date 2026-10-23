@@ -1,8 +1,9 @@
 ---
 title: "80 | 开源实战二（下）：从Unix开源开发学习应对大型复杂项目开发"
 description: "上两节课，我们分别从代码编写、研发管理的角度，学习了如何应对大型复杂软件开发。在研发管理这一部分，我们又讲到比较重要的几点，它们分别是编码规范、单元测试、持续重构和 Code Review。其中，前三点在专栏的理论部分都有比较详细的讲解，而唯独 Code Review 我们还没有讲过，所以，今天我就借机会和你补充一下…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 80 | 开源实战二（下）：从Unix开源开发学习应对大型复杂项目开发

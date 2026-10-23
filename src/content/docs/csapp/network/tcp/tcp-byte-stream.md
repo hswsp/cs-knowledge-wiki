@@ -1,8 +1,9 @@
 ---
 title: "如何理解 TCP 面向字节流协议？"
 description: "为什么 TCP 是字节流，粘包/拆包的本质。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 18
+updatedDate: 2026-06-22
 draft: false
 ---
 有个读者问我，这么个问题：

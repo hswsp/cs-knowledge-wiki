@@ -1,8 +1,9 @@
 ---
 title: "Assignment 4: Fused Conv+MaxPool on the Trainium2 Accelerat…"
 description: "In this assignment, you will learn how to implement and optimize kernels for the AWS Trainium2 architecture, which features multiple tensor oriented accelerate…"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Assignment 4: Fused Conv+MaxPool on the Trainium2 Accelerator

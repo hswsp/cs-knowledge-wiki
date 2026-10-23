@@ -1,8 +1,9 @@
 ---
 title: "Transformer 解读"
 description: "从整体结构到核心组件实现，系统梳理 Transformer 的数据流、关键模块与预训练微调范式。"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Transformer 解读

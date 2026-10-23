@@ -3,6 +3,7 @@ title: "什么是摊还分析？"
 description: "摊还分析其实就是评价某一个操作的代价，方法就是求某数据结构中一系列操作的平均时间。"
 tags: ["algorithm"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 什么是摊还分析？

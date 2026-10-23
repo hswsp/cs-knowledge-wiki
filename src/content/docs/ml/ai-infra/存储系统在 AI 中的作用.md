@@ -1,7 +1,7 @@
 ---
 title: "存储系统在 AI 中的作用"
 description: "AI 工作负载对存储系统有独特的需求。不同层级的存储对应不同的数据热度："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

@@ -1,8 +1,9 @@
 ---
 title: "70 | 备忘录模式：对于大对象的备份和恢复，如何优化内存和时间的消耗？"
 description: "上两节课，我们学习了访问者模式。在 23 种设计模式中，访问者模式的原理和实现可以说是最难理解的了，特别是它的代码实现。其中，用 Single Dispatch 来模拟 Double Dispatch 的实现思路尤其不好理解。不知道你有没有将它拿下呢？如果还没有弄得很清楚，那就要多看几遍、多自己动脑经琢磨一下。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 70 | 备忘录模式：对于大对象的备份和恢复，如何优化内存和时间的消耗？

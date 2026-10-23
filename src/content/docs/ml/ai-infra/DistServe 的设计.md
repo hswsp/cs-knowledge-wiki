@@ -1,7 +1,7 @@
 ---
 title: "DistServe 的设计"
 description: "DistServe是清华大学和月之暗面联合研发的PD分离服务系统，专注于在线服务的延迟优化和资源效率。它在Mooncake的基础上进一步引入了准入控制和KV Sharing机制。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

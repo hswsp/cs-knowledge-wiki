@@ -1,8 +1,9 @@
 ---
 title: "53 | 组合模式：如何设计实现支持递归遍历的文件系统目录树结构？"
 description: "结构型设计模式就快要讲完了，还剩下两个不那么常用的：组合模式和享元模式。今天，我们来讲一下组合模式（ Composite Design Pattern ）。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 53 | 组合模式：如何设计实现支持递归遍历的文件系统目录树结构？

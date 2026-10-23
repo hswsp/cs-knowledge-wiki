@@ -1,8 +1,9 @@
 ---
 title: "TCP 实战抓包分析"
 description: "通过 wireshark 抓包剖析 TCP 报文与状态变化。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 17
+updatedDate: 2026-06-22
 draft: false
 ---
 为了让大家更容易「看得见」 TCP，我搭建不少测试环境，并且数据包抓很多次，花费了不少时间，才抓到比较容易分析的数据包。

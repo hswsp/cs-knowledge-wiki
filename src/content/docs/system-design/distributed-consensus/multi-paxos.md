@@ -1,8 +1,9 @@
 ---
 title: "Multi-decree Paxos"
 description: "理解分布式一致性:Paxos协议之Multi-Paxos"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 2
+updatedDate: 2026-06-22
 draft: false
 ---
 > 转载自[理解分布式一致性:Paxos协议之Multi-Paxos](https://juejin.cn/post/6891459638546399245)

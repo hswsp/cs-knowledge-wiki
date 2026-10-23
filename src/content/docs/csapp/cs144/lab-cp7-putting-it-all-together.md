@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 7: putting it all together"
 description: "把前 6 个 checkpoint 串起来与同学的实现端到端互通。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Overview

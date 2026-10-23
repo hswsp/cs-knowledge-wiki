@@ -1,8 +1,9 @@
 ---
 title: "52 | 门面模式：如何设计合理的接口粒度以兼顾接口的易用性和通用性？"
 description: "前面我们已经学习了代理模式、桥接模式、装饰器模式、适配器模式，这 4 种结构型设计模式。今天，我们再来学习一种新的结构型模式：门面模式。门面模式原理和实现都特别简单，应用场景也比较明确，主要在 接口设计方面使用 。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 52 | 门面模式：如何设计合理的接口粒度以兼顾接口的易用性和通用性？

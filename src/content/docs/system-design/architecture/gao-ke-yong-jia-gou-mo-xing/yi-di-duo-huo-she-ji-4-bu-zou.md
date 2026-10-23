@@ -1,8 +1,9 @@
 ---
 title: "异地多活设计4步走"
 description: "上一期，基于异地多活架构设计复杂度最高的“跨城异地”，我结合自己的经验总结了异地多活设计的 4 个技巧及其核心思想，我认为掌握这些技巧是进入具体设计步骤的前提。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-ke-yong-jia-gou-mo-xing"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 异地多活设计4步走

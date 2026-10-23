@@ -1,8 +1,9 @@
 ---
 title: "Alluxio 架构深度解读"
 description: "Alluxio（原名 Tachyon ）是一个 开源的数据编排层（Data Orchestration Layer） ，它横跨在 计算框架 （Spark / Presto / Trino / Flink / TensorFlow / PyTorch 等）与 底层存储 （HDFS / S3 / OSS / COS /…"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 15
+updatedDate: 2026-08-21
 draft: false
 ---
 # Alluxio 架构深度解读

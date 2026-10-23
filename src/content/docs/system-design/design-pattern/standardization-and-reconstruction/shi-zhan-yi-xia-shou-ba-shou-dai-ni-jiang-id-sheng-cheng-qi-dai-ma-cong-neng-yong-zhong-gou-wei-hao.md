@@ -1,8 +1,9 @@
 ---
 title: "35|实战一（下）：手把手带你将ID生成器代码从“能用”重构为“好用”"
 description: "上一节课中，我们结合 ID 生成器代码讲解了如何发现代码质量问题。虽然 ID 生成器的需求非常简单，代码行数也不多，但看似非常简单的代码，实际上还是有很多优化的空间。综合评价一下的话，小王的代码也只能算是“能用”、勉强及格。我们大部分人写出来的代码都能达到这个程度。如果想要在团队中脱颖而出，我们就不能只满足于这个 6…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 35|实战一（下）：手把手带你将ID生成器代码从“能用”重构为“好用”

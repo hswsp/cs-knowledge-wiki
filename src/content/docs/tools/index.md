@@ -3,6 +3,7 @@ title: "工具"
 description: "日常开发中常用的工具与配置：Git、搜索、博客。"
 tags: ["tools"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 工具

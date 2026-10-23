@@ -1,8 +1,9 @@
 ---
 title: "37 | 阶段实操（5）：构建一个简单的KV server-网络安全"
 description: "你好，我是陈天。 上一讲我们完成了KV server整个网络部分的构建。而安全是和网络密不可分的组成部分，在构建应用程序的时候，一定要把网络安全也考虑进去。当然，如果不考虑极致的性能，我们可以使用诸如 gRPC 这样的系统，在提供良好性能的基础上，它还通过 TLS 保证了安全性。 那么，当我们的应用架构在 TCP 上…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 37 | 阶段实操（5）：构建一个简单的KV server-网络安全

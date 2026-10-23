@@ -1,8 +1,9 @@
 ---
 title: "Rust 特性"
 description: "Rust 不是 一门传统的面向对象编程（OOP）语言，但它 支持面向对象的特性 ，如封装、抽象和多态。Rust 更倾向于 面向数据（data oriented）和函数式编程（functional programming） 的范式，但它提供了一些 OOP 的工具，允许开发者以面向对象的方式组织代码。"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Rust 特性

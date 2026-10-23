@@ -1,8 +1,9 @@
 ---
 title: "Course intro"
 description: "Course intro"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Course intro

@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（三）：Multi-Head Attention层"
 description: "在完成Embedding层的coding后，我们便开始学习Transformer最核心的设计——Multi Head Attention，多头注意力。在前面的章节中，我们已经把输入表示为 的张量。接下来要解决的问题是 如何让每个token感知整个序列的信息 。这也是Transformer架构与传统的CNN类模型主要的…"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 3
+updatedDate: 2026-07-07
 draft: false
 ---
 # 手搓 Transformer（三）：Multi-Head Attention层

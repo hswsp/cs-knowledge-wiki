@@ -1,8 +1,9 @@
 ---
 title: "97 | 项目实战三：设计实现一个支持自定义规则的灰度发布组件（设计）"
 description: "上一节课，我们介绍了灰度组件的一个需求场景，将公共服务平台的 RPC 接口，灰度替换为新的 RESTful 接口，通过灰度逐步放量，支持快速回滚等手段，来规避代码质量问题带来的不确定性风险。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 97 | 项目实战三：设计实现一个支持自定义规则的灰度发布组件（设计）

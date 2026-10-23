@@ -1,8 +1,9 @@
 ---
 title: "59 | 模板模式（下）：模板模式与Callback回调函数有何区别和联系？"
 description: "上一节课中，我们学习了模板模式的原理、实现和应用。它常用在框架开发中，通过提供功能扩展点，让框架用户在不修改框架源码的情况下，基于扩展点定制化框架的功能。除此之外，模板模式还可以起到代码复用的作用。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 59 | 模板模式（下）：模板模式与Callback回调函数有何区别和联系？

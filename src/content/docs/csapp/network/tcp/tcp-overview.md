@@ -1,8 +1,9 @@
 ---
 title: "TCP 总结"
 description: "TCP 三次握手、四次挥手、状态机全景。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 16
+updatedDate: 2026-06-22
 draft: false
 ---
 **任 TCP 虐我千百遍，我仍待 TCP 如初恋。**

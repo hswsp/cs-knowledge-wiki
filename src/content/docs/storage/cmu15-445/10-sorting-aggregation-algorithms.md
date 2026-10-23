@@ -1,8 +1,9 @@
 ---
 title: "10 - Sorting & Aggregation Algorithms"
 description: "DBMSs need to sort data because tuples in a table have no specific order under the relation model. Sorting is (potentially) used in , , , and operators. If the…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 10 - Sorting & Aggregation Algorithms

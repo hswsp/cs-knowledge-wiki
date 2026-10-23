@@ -1,8 +1,9 @@
 ---
 title: "Lecture 03: Multicore and ISPC"
 description: "Lecture 03: Multicore and ISPC"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 03: Modern Multi-Core Architecture (Part II) + ISPC Programming Abstractions

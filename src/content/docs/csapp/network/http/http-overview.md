@@ -1,8 +1,9 @@
 ---
 title: "HTTP 总结"
 description: "HTTP 报文、方法、状态码、常见字段全景。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 8
+updatedDate: 2026-06-22
 draft: false
 ---
 在面试过程中，HTTP 被提问的概率还是比较高的。

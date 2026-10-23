@@ -1,8 +1,9 @@
 ---
 title: "LSM 存储引擎中 KV 分离的实现"
 description: "常见的 LSM 存储引擎，如 LevelDB 和 RocksDB，将用户写入的一组的 key 和 value 存放在一起，按顺序写入 SST。 在 compaction 过程中，引擎将上层的 SST 与下层 SST 合并 ，产生新的 SST 文件。这一过程中，SST 里面的 key 和 value 都会被重写一遍，带…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # LSM 存储引擎中 KV 分离的实现

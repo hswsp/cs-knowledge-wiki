@@ -1,8 +1,9 @@
 ---
 title: "CS 144"
 description: "Stanford CS144: Introduction to Computer Networking 课程笔记。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-17
 draft: false
 ---
 # CS 144

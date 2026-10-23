@@ -1,7 +1,7 @@
 ---
 title: "LMCache 的设计"
 description: "LMCache是伯克利大学SkyComputing实验室开发的开源KV Cache管理系统。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

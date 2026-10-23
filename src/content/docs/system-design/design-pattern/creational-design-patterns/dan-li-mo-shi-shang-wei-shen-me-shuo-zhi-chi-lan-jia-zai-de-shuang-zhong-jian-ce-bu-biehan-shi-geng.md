@@ -1,8 +1,9 @@
 ---
 title: "41 |单例模式（上）：为什么说支持懒加载的双重检测不比饿汉式更优？"
 description: "从今天开始，我们正式进入到设计模式的学习。我们知道，经典的设计模式有 23 种。其中，常用的并不是很多。据我的工作经验来看，常用的可能都不到一半。如果随便抓一个程序员，让他说一说最熟悉的 3 种设计模式，那其中肯定会包含今天要讲的单例模式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 41 |单例模式（上）：为什么说支持懒加载的双重检测不比饿汉式更优？

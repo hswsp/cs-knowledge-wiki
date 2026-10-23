@@ -1,8 +1,9 @@
 ---
 title: "18. Some Infinite Galois Extensions（若干无限 Galois 扩张）"
 description: "In this section, we describe some examples of infinite Galois extensions. Some of these extensions will arise from group theoretic properties of infinite Galoi…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 18. Some Infinite Galois Extensions（若干无限 Galois 扩张）

@@ -1,8 +1,9 @@
 ---
 title: "架构到底是指什么？"
 description: "对于技术人员来说，“架构”是一个再常见不过的词了。我们会对新员工培训整个系统的架构，参加架构设计评审，学习业界开源系统（例如，MySQL、Hadoop）的架构，研究大公司的架构实现（例如，微信架构、淘宝架构）……虽然“架构”这个词常见，但如果深究一下 “架构”到底指什么 ，大部分人也许并不一定能够准确地回答。例如："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构到底是指什么？

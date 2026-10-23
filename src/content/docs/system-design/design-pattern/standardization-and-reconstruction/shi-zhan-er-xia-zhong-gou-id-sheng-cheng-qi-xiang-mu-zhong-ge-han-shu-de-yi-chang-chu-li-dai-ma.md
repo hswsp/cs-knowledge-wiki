@@ -1,8 +1,9 @@
 ---
 title: "37|实战二（下）：重构ID生成器项目中各函数的异常处理代码"
 description: "平时进行软件设计开发的时候，我们除了要保证正常情况下的逻辑运行正确之外，还需要编写大量额外的代码，来处理有可能出现的异常情况，以保证代码在任何情况下，都在我们的掌控之内，不会出现非预期的运行结果。程序的 bug 往往都出现在一些边界条件和异常情况下，所以说，异常处理得好坏直接影响了代码的健壮性。全面、合理地处理各种异…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 37|实战二（下）：重构ID生成器项目中各函数的异常处理代码

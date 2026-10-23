@@ -1,8 +1,9 @@
 ---
 title: "HTTP/2 详解"
 description: "二进制分帧、多路复用、Server Push、HPACK 头压缩。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 13
+updatedDate: 2026-06-22
 draft: false
 ---
 不多 BB 了，直接发车！

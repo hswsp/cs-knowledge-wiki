@@ -1,8 +1,9 @@
 ---
 title: "13. Polynomials of Degree 3 and 4（三次与四次多项式）"
 description: "In this section, we show how to determine the Galois group and the roots of an irreducible polynomial of degree 2, 3, or 4. We assume throughout that our polyn…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 13. Polynomials of Degree 3 and 4（三次与四次多项式）

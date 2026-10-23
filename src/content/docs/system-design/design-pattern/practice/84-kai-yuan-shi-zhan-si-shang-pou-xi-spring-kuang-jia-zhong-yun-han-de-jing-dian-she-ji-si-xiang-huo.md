@@ -1,8 +1,9 @@
 ---
 title: "84 | 开源实战四（上）：剖析Spring框架中蕴含的经典设计思想或原则"
 description: "在 Java 世界里，Spring 框架已经几乎成为项目开发的必备框架。作为如此优秀和受欢迎的开源项目，它是我们源码阅读的首选材料之一，不管是设计思想，还是代码实现，都有很多值得我们学习的地方。接下来，我们就详细讲讲 Spring 框架中蕴含的设计思想、原则和模式。因为内容比较多，我分三部分来讲解。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 84 | 开源实战四（上）：剖析Spring框架中蕴含的经典设计思想或原则

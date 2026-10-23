@@ -1,8 +1,9 @@
 ---
 title: "Lecture 16: Fine-Grained Locking"
 description: "Lecture 16: Fine-Grained Locking"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 16: Fine-Grained Locking and Lock-Free Programming

@@ -1,8 +1,9 @@
 ---
 title: "How the Internet works(in brief)"
 description: "How the Internet works(in brief)"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # How the Internet works(in brief)

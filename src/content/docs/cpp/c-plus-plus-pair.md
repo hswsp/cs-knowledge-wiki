@@ -3,6 +3,7 @@ title: "pair类型"
 description: "在开始介绍关联容器之前，我们有必要了解一种与之相关的标准库类型–pair类型。"
 tags: ["cpp"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # pair类型

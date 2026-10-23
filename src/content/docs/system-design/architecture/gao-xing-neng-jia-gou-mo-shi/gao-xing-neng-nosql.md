@@ -1,8 +1,9 @@
 ---
 title: "高性能NoSQL"
 description: "关系数据库经过几十年的发展后已经非常成熟，强大的 SQL 功能和 ACID 的属性，使得关系数据库广泛应用于各式各样的系统中，但这并不意味着关系数据库是完美的，关系数据库存在如下缺点。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 高性能NoSQL

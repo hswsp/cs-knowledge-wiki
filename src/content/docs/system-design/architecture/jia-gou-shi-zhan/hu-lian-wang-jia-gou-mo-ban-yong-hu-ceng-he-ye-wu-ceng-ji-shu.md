@@ -1,8 +1,9 @@
 ---
 title: "互联网架构模板：“用户层”和“业务层”技术"
 description: "上一期，我从计算机网络层的角度谈了应对“高性能”和“高可用”的整体架构设计。今天，我将从“用户层”和“业务层”的角度谈谈常见的应用场景和关键技术。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "jia-gou-shi-zhan"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 互联网架构模板：“用户层”和“业务层”技术

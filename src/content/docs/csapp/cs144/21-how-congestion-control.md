@@ -1,8 +1,9 @@
 ---
 title: "How congestion control"
 description: "“Empirical RTT” vs “RTT”: the former would include queueing delay along the path"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # How congestion control

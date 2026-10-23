@@ -1,8 +1,9 @@
 ---
 title: "46 | 建造者模式：详解构造函数、set方法、建造者模式三种对象创建方式"
 description: "上两节课中，我们学习了工厂模式，讲了工厂模式的应用场景，并带你实现了一个简单的 DI 容器。今天，我们再来学习另外一个比较常用的创建型设计模式， Builder 模式 ，中文翻译为建造者模式或者构建者模式，也有人叫它生成器模式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 46 | 建造者模式：详解构造函数、set方法、建造者模式三种对象创建方式

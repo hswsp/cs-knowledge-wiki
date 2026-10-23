@@ -1,8 +1,9 @@
 ---
 title: "HDFS简介"
 description: "Intro to HDFS"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 1
+updatedDate: 2026-06-22
 draft: false
 ---
 # **相关背景资料**

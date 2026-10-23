@@ -1,8 +1,9 @@
 ---
 title: "Snack Time: Compaction Filters"
 description: "Congratulations! You made it there! In the previous chapter, you made your LSM engine multi version capable, and the users can use transaction APIs to interact…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Snack Time: Compaction Filters

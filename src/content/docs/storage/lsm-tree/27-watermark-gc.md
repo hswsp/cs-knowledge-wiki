@@ -1,8 +1,9 @@
 ---
 title: "Watermark and Garbage Collection"
 description: "In this chapter, you will implement necessary structures to track the lowest read timestamp being used by the user, and collect unused versions from SSTs when…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Watermark and Garbage Collection

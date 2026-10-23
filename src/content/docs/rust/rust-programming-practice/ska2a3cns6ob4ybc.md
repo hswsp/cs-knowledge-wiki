@@ -1,8 +1,9 @@
 ---
 title: "38 | 异步处理：Future是什么？它和asyncawait是什么关系？"
 description: "你好，我是陈天。 通过前几讲的学习，我们对并发处理，尤其是常用的并发原语，有了一个比较清晰的认识。并发原语是并发任务之间同步的手段，今天我们要学习的 Future 以及在更高层次上处理 Future 的 async/await，是 产生和运行并发任务 的手段。 不过产生和运行并发任务的手段有很多，async/awai…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 38 | 异步处理：Future是什么？它和async_await是什么关系？

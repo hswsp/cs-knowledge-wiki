@@ -1,7 +1,7 @@
 ---
 title: "JVM GC 总结"
 description: "Java 虚拟机（JVM）通过垃圾回收（GC）自动管理堆内存。理解 GC，需要从两个层面入手："
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 999
 draft: false
 ---

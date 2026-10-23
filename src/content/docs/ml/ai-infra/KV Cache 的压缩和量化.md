@@ -1,7 +1,7 @@
 ---
 title: "KV Cache 的压缩和量化"
 description: "KV Cache 量化是减少内存占用的有效手段，通过 降低精度来节省存储空间 。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

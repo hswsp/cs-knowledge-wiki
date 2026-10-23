@@ -1,8 +1,9 @@
 ---
 title: "Physical Layer Abstraction"
 description: "Last time: Physical layer clock synchronization and Shannon’s capacity"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Physical Layer Abstraction

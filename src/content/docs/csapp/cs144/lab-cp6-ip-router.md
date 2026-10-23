@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 6: building an IP router"
 description: "用最长前缀匹配实现 IP Router，把数据报转发到下一跳。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Overview

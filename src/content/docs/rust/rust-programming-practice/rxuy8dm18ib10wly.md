@@ -1,8 +1,9 @@
 ---
 title: "05 | get hands dirty：做一个图片服务器有多难？"
 description: "你好，我是陈天。 上一讲我们只用了百来行代码就写出了 HTTPie 这个小工具，你是不是有点意犹未尽，今天我们就来再写一个实用的小例子，看看Rust还能怎么玩。 再说明一下，代码看不太懂完全没有关系，先不要强求理解，跟着我的节奏一行行写就好， 先让自己的代码跑起来，感受 Rust 和自己常用语言的区别，看看代码风格是…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 05 | get hands dirty：做一个图片服务器有多难？

@@ -1,8 +1,9 @@
 ---
 title: "PROJECT #3 - QUERY EXECUTION"
 description: "Do not post your project on a public GitHub repository."
-tags: ["storage"]
+tags: ["storage", "cmu15-445", "cmu-db"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # PROJECT #3 - QUERY EXECUTION

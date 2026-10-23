@@ -1,8 +1,9 @@
 ---
 title: "Sorted String Table (SST)"
 description: "In this chapter, you will: Implement SST encoding and metadata encoding. Implement SST decoding and iterator."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Sorted String Table (SST)

@@ -1,8 +1,9 @@
 ---
 title: "39 | 异步处理：asyncawait内部是怎么实现的？"
 description: "你好，我是陈天。 学完上一讲，我们对 Future 和 async/await 的基本概念有一个比较扎实的理解了，知道在什么情况下该使用 Future、什么情况下该使用 Thread，以及 executor 和 reactor 是怎么联动最终让 Future 得到了一个结果。 然而，我们并不清楚为什么 async f…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 39 | 异步处理：async_await内部是怎么实现的？

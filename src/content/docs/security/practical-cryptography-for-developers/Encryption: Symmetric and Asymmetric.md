@@ -1,8 +1,9 @@
 ---
 title: "Encryption: Symmetric and Asymmetric"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/odqob1qaoe1nuvm2"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Encryption: Symmetric and Asymmetric

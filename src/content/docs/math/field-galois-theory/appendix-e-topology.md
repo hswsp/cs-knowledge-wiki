@@ -1,8 +1,9 @@
 ---
 title: "Appendix E. Topology（拓扑）"
 description: "In Section 17 and in the sections that deal with algebraic geometry, we need to use some notions from topology. In this appendix, we give a brief description o…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # Appendix E. Topology（拓扑）

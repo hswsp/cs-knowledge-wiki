@@ -1,8 +1,9 @@
 ---
 title: "可能是史上最完整的 LSM-Tree 存储课程"
 description: "TL;DR, 时隔一年多，总算填完了 Mini LSM 系列教程的坑。在这个课程中，你可以学习如何用 Rust 语言从零造一个基于 LSM 树的存储引擎。"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # 可能是史上最完整的 LSM-Tree 存储课程

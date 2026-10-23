@@ -1,8 +1,9 @@
 ---
 title: "16. Solvability by Radicals（根式可解性）"
 description: "In this section, we address one of the driving forces of mathematics for hundreds of years, the solvability of polynomial equations. As we saw in Section 13, f…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 16. Solvability by Radicals（根式可解性）

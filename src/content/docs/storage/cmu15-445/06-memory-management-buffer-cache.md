@@ -1,8 +1,9 @@
 ---
 title: "06 - Memory Management + Buffer Cache"
 description: "The DBMS is responsible for managing its memory and moving data back and forth from the disk. Since, for the most part, data cannot be directly operated on in…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 06 - Memory Management + Buffer Cache

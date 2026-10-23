@@ -1,8 +1,9 @@
 ---
 title: "25 | 类型系统：如何围绕trait来设计和架构系统？"
 description: "你好，我是陈天。 Trait，trait，trait，怎么又是 trait？how old are you? 希望你还没有厌倦我们没完没了地聊关于 trait 的话题。因为 trait 在 Rust 开发中的地位，怎么吹都不为过。 其实不光是 Rust 中的 trait，任何一门语言，和接口处理相关的概念，都是那门语…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 25 | 类型系统：如何围绕trait来设计和架构系统？

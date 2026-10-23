@@ -1,7 +1,7 @@
 ---
 title: "Mooncake 架构图"
 description: "Mooncake 架构图"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

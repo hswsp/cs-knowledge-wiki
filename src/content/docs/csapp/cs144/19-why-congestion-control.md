@@ -1,8 +1,9 @@
 ---
 title: "Why congestion control"
 description: "Congestion control is resource management: assigning limited resources of link rate to flows"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Why congestion control

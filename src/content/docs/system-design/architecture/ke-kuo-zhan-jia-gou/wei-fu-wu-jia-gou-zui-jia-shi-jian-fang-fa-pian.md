@@ -1,8 +1,9 @@
 ---
 title: "微服务架构最佳实践 - 方法篇"
 description: "专栏上一期，我谈了实施微服务需要避免踩的陷阱，简单提炼为："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ke-kuo-zhan-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 微服务架构最佳实践 - 方法篇

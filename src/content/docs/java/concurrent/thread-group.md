@@ -1,8 +1,9 @@
 ---
 title: "Java ThreadGroup"
 description: "thread-group"
-tags: ["java"]
+tags: ["java", "concurrent"]
 order: 10
+updatedDate: 2026-06-22
 draft: false
 ---
 # 线程组概念理解

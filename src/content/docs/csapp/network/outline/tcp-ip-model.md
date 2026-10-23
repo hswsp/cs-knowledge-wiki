@@ -1,8 +1,9 @@
 ---
 title: "TCP/IP 网络模型"
 description: "OSI 7 层 vs TCP/IP 4 层模型，及各层 PDU、协议示例。"
-tags: ["csapp"]
+tags: ["csapp", "network", "outline"]
 order: 5
+updatedDate: 2026-06-22
 draft: false
 ---
 问大家，为什么要有 TCP/IP 网络模型？

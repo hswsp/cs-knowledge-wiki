@@ -1,7 +1,7 @@
 ---
 title: "08 | CSRF/SSRF：为什么避免了XSS，还是\"被发送\"了一条微博？"
 description: "你好，我是何为舟。 前面我们讲了 2 种常见的 Web 攻击：XSS 和 SQL注入。它们分别篡改了原始的 HTML 和 SQL逻辑，从而使得黑客能够执行自定义的功能。那么除了对代码逻辑进行篡改，黑客还能通过什么方式发起Web 攻击呢？ 我们还是先来看一个例子。在平常使用浏览器访问各种网页的时候，是否遇到过，自己的银…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

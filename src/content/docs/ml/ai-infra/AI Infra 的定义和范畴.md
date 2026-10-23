@@ -1,7 +1,7 @@
 ---
 title: "AI Infra 的定义和范畴"
 description: "AI 基础设施 （AI Infrastructure，简称 AI Infra ）是支撑人工智能应用从研发到部署全流程的底层技术体系。 如果说 AI 模型 是“大脑”，那么 AI Infra 就是支撑这个大脑运转的： “神经系统” “血液循环系统” “骨骼肌肉系统” 想象你要建造一座摩天大楼，也就是一个 AI 应用：…"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

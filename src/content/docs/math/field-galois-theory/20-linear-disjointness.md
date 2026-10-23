@@ -1,8 +1,9 @@
 ---
 title: "20. Linear Disjointness（线性无交）"
 description: "In this section, we study linear disjointness, a technical condition but one with many applications. One way that we use this concept is to extend the definiti…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 20. Linear Disjointness（线性无交）

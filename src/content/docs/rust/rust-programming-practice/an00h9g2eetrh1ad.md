@@ -1,8 +1,9 @@
 ---
 title: "加餐 期中测试：参考实现讲解"
 description: "你好，我是陈天。 上一讲给你布置了一份简单的期中考试习题，不知道你完成的怎么样。今天我们来简单讲一讲实现，供你参考。 支持 grep 并不是一件复杂的事情，相信你在使用了 clap、glob、rayon 和 regex 后，都能写出类似的代码（伪代码）： 这个代码撰写的感觉和 Python 差不多，除了阅读几个依赖花…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 加餐 期中测试：参考实现讲解

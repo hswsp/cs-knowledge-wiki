@@ -1,7 +1,7 @@
 ---
 title: "KV Cache 的基本原理"
 description: "KV Cache （Key Value Cache）是大语言模型（LLM）推理过程中的核心优化技术。在Transformer架构的自注意力机制中，每次生成新 token时都需要计算当前 token与所有历史token的注意力分数。如果没有缓存机制，每次生成都需要重新计算所有历史token的Key和Value向量，这将…"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

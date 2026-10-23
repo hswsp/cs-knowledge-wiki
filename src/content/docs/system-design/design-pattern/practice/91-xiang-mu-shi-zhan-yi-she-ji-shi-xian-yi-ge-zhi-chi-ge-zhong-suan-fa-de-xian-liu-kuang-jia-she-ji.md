@@ -1,8 +1,9 @@
 ---
 title: "91 | 项目实战一：设计实现一个支持各种算法的限流框架（设计）"
 description: "上一节课，我们介绍了限流框架产生的项目背景，并且对需求做了分析，这其中包括功能性需求和非功能性需求，算是在正式开始设计之前的一个铺垫。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 91 | 项目实战一：设计实现一个支持各种算法的限流框架（设计）

@@ -1,8 +1,9 @@
 ---
 title: "Appendix C. Group Theory（群论）"
 description: "There are a number of results from group theory that we will need in Galois theory. This section gives a brief survey of these results. For a more complete tre…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # Appendix C. Group Theory（群论）

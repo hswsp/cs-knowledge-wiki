@@ -1,8 +1,9 @@
 ---
 title: "Lecture 09: DNN Evaluation"
 description: "Lecture 09: DNN Evaluation"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 09: Efficiently Evaluating DNNs on GPUs: Transformers and ConvNets

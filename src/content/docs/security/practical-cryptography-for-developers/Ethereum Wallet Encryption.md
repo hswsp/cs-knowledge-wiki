@@ -1,8 +1,9 @@
 ---
 title: "Ethereum Wallet Encryption"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/dumdplx13g4fna0t"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Ethereum Wallet Encryption

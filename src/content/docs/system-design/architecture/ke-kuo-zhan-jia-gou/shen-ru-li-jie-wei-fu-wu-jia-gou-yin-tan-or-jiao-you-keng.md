@@ -1,8 +1,9 @@
 ---
 title: "深入理解微服务架构：银弹 or 焦油坑？"
 description: "微服务是近几年非常火热的架构设计理念，大部分人认为是 Martin Fowler 提出了微服务概念，但事实上微服务概念的历史要早得多，也不是 Martin Fowler 创造出来的，Martin 只是将微服务进行了系统的阐述（原文链接：https://martinfowler.com/articles/microse…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ke-kuo-zhan-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 深入理解微服务架构：银弹 or 焦油坑？

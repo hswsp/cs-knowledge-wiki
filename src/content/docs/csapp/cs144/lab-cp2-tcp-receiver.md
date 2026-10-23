@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 2: The TCP receiver"
 description: "32 位 seqno 与 64 位 absolute seqno 的换算，实现 TCPReceiver。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Overview

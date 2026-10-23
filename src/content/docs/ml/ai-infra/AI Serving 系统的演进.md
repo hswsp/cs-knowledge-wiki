@@ -1,7 +1,7 @@
 ---
 title: "AI Serving 系统的演进"
 description: "AI Serving 系统经历了从简单单体服务，到模型服务器，再到面向大模型的分离式推理架构的演进。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

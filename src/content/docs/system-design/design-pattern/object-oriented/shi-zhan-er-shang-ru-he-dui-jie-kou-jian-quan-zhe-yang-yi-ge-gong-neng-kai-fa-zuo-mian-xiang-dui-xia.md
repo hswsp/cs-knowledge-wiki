@@ -1,8 +1,9 @@
 ---
 title: "13|实战二（上）：如何对接口鉴权这样一个功能开发做面向对象分析？"
 description: "面向对象分析（OOA）、面向对象设计（OOD）、面向对象编程（OOP），是面向对象开发的三个主要环节。在前面的章节中，我对三者的讲解比较偏理论、偏概括性，目的是让你先有一个宏观的了解，知道什么是 OOA、OOD、OOP。不过，光知道“是什么”是不够的，我们更重要的还是要知道“如何做”，也就是，如何进行面向对象分析、设…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "object-oriented"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 13|实战二（上）：如何对接口鉴权这样一个功能开发做面向对象分析？

@@ -1,8 +1,9 @@
 ---
 title: "Raft协议概览"
 description: "Raft是一个用来管理多副本日志（replicated log）的共识算法。想象一下，一个木筏（Raft）是由多根整齐一致的原木（Log）组成的，而原木又是由木质材料组成，所以你可以认为日志是由多条日志项（Log entry）组成的，如果把日志比喻成原木，那么日志项就是木质材料。故而算法起名为Raft，可以看到Raf…"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 7
+updatedDate: 2026-06-22
 draft: false
 ---
 # Raft协议概览

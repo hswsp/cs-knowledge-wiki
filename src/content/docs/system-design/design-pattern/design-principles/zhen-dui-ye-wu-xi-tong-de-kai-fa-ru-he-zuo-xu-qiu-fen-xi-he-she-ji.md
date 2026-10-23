@@ -1,8 +1,9 @@
 ---
 title: "23|实战一（上）：针对业务系统的开发，如何做需求分析和设计？"
 description: "对于一个工程师来说，如果要追求长远发展，你就不能一直只把自己放在执行者的角色，不能只是一个代码实现者，你还要有独立负责一个系统的能力，能端到端（end to end）开发一个完整的系统。这其中的工作就包括：前期的需求沟通分析、中期的代码设计实现、后期的系统上线维护等。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "design-principles"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 23|实战一（上）：针对业务系统的开发，如何做需求分析和设计？

@@ -1,8 +1,9 @@
 ---
 title: "11. Kummer Extensions（Kummer 扩张）"
 description: "In Section 9, we described Galois extensions with cyclic Galois groups under certain restrictions on the base field. We use the results proved there together w…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 11. Kummer Extensions（Kummer 扩张）

@@ -1,8 +1,9 @@
 ---
 title: "The Bad-Attitude Guide to Computer Security"
 description: "OCB mode"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # The Bad-Attitude Guide to Computer Security

@@ -1,8 +1,9 @@
 ---
 title: "55 | 享元模式（下）：剖析享元模式在Java Integer、String中的应用"
 description: "上一节课，我们通过棋牌游戏和文本编辑器这样两个实际的例子，学习了享元模式的原理、实现以及应用场景。用一句话总结一下，享元模式中的“享元”指被共享的单元。享元模式通过复用对象，以达到节省内存的目的。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 55 | 享元模式（下）：剖析享元模式在Java Integer、String中的应用

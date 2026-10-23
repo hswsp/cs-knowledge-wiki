@@ -1,8 +1,9 @@
 ---
 title: "Lance 存储引擎架构解析"
 description: "本文重点关注 Lance 作为存储引擎 / Lakehouse Format 的内部架构：文件格式、表格式、事务、读写路径、索引、I/O 与对象存储适配。"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 7
+updatedDate: 2026-08-08
 draft: false
 ---
 # Lance 存储引擎架构解析

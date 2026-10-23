@@ -1,8 +1,9 @@
 ---
 title: "RPC 与 HTTP 协议"
 description: "RPC 与 HTTP 的差异、典型实现与选型权衡。"
-tags: ["csapp"]
+tags: ["csapp", "network", "http"]
 order: 15
+updatedDate: 2026-06-22
 draft: false
 ---
 我想起了我刚工作的时候，第一次接触RPC协议，当时就很懵，**我HTTP协议用的好好的，为什么还要用RPC协议？**

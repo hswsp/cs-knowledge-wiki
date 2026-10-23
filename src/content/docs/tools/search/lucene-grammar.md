@@ -1,8 +1,9 @@
 ---
 title: "Kibana使用之Lucene的语法查询"
 description: "Grammar of Lucene"
-tags: ["tools"]
+tags: ["tools", "search"]
 order: 5
+updatedDate: 2026-06-22
 draft: false
 ---
 Kibana使用的查询语法是Lucene的查询语法，下面了解下Lucene的查询语法，了解了Lucene的查询语法也就知道了改如何使用Kibana的使用方式。

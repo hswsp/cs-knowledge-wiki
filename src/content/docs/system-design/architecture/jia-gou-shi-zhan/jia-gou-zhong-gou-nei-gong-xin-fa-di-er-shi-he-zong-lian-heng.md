@@ -1,8 +1,9 @@
 ---
 title: "架构重构内功心法第二式：合纵连横"
 description: "上一期我给你讲了我的架构重构内功心法的第一式：有的放矢，需要架构师透过问题表象看到问题本质，找出真正需要通过架构重构解决的核心问题，而不是想着通过一次重构解决所有问题。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "jia-gou-shi-zhan"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构重构内功心法第二式：合纵连横

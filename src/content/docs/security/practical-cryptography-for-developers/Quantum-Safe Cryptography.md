@@ -1,8 +1,9 @@
 ---
 title: "Quantum-Safe Cryptography"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/doz2o28ugzyki34o"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Quantum-Safe Cryptography

@@ -1,8 +1,9 @@
 ---
 title: "Merge Iterator"
 description: "In this chapter, you will: Implement memtable iterator. Implement merge iterator. Implement LSM read path for memtables."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Merge Iterator

@@ -1,8 +1,9 @@
 ---
 title: "CMake简单入门"
 description: "CMake 变量，引入头文件，链接库"
-tags: ["cpp"]
+tags: ["cpp", "build"]
 order: 1
+updatedDate: 2026-06-22
 draft: false
 ---
 # 新建项目

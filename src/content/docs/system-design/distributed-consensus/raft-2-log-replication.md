@@ -1,8 +1,9 @@
 ---
 title: "Raft 协议（二）—— 日志复制与日志压缩"
 description: "Raft日志复制，日志压缩与安全性问题"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 4
+updatedDate: 2026-06-22
 draft: false
 ---
 > 摘录自[Q的博客](https://juejin.cn/post/6899464146719342605)

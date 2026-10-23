@@ -1,8 +1,9 @@
 ---
 title: "48 | 代理模式：代理在RPC、缓存、监控等场景中的应用"
 description: "前面几节，我们学习了设计模式中的创建型模式。创建型模式主要解决对象的创建问题，封装复杂的创建过程，解耦对象的创建代码和使用代码。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 48 | 代理模式：代理在RPC、缓存、监控等场景中的应用

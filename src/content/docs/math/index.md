@@ -3,6 +3,7 @@ title: "数学"
 description: "- [代数基础](代数基础)"
 tags: ["math"]
 order: 999
+updatedDate: 2026-08-09
 draft: false
 ---
 # 数学

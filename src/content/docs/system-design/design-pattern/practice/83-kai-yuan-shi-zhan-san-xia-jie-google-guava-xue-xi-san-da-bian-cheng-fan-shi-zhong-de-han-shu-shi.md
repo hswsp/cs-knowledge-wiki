@@ -1,8 +1,9 @@
 ---
 title: "83 | 开源实战三（下）：借Google Guava学习三大编程范式中的函数式编程"
 description: "现在主流的编程范式主要有三种，面向过程、面向对象和函数式编程。在理论部分，我们已经详细讲过前两种了。今天，我们再借机会讲讲剩下的一种，函数式编程。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 83 | 开源实战三（下）：借Google Guava学习三大编程范式中的函数式编程

@@ -1,7 +1,7 @@
 ---
 title: "7.1 Attention算法家族"
 description: "Attention机制是Transformer架构的核心组件，也是大模型推理中最耗时的操作之一。本节深入分析从标准Self Attention到各种优化变体的演进过程。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

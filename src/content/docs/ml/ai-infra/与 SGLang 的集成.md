@@ -1,7 +1,7 @@
 ---
 title: "与 SGLang 的集成"
 description: "SGLang 是由LMSYS组织开发的开源LLM推理框架，以其 高效的结构化生成能力 而闻名："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

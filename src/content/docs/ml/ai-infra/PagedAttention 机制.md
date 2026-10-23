@@ -1,7 +1,7 @@
 ---
 title: "PagedAttention 机制"
 description: "PagedAttention 是 vLLM 提出的核心创新，灵感来源于操作系统中的虚拟内存和分页机制。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

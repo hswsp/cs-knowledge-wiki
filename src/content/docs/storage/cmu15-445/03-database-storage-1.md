@@ -1,8 +1,9 @@
 ---
 title: "03 - Database Storage 1"
 description: "We will focus on a “disk oriented” DBMS architecture that assumes that the primary storage location of the database is on non volatile disk(s)."
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 03 - Database Storage 1

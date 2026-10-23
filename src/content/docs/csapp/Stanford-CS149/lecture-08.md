@@ -1,8 +1,9 @@
 ---
 title: "Lecture 08: Data Parallelism"
 description: "Lecture 08: Data Parallelism"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 08: Data-Parallel Thinking

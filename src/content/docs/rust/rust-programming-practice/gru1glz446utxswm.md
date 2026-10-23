@@ -1,8 +1,9 @@
 ---
 title: "40 | 异步处理：如何处理异步IO？"
 description: "你好，我是陈天。 前面两讲我们学习了异步处理基本的功能和原理（Future/async/await），但是还没有正式介绍在具体场合下该用哪些工具来处理异步 IO。不过之前讲 trait 的时候，已经了解和使用过一些处理同步 IO 的结构和 trait。 今天我们就对比同步 IO 来学习异步 IO。毕竟在学习某个新知识…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 40 | 异步处理：如何处理异步IO？

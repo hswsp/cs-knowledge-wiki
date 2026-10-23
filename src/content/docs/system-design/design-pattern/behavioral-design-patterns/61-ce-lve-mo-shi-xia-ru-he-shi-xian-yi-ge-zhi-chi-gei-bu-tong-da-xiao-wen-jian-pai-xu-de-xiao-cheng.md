@@ -1,8 +1,9 @@
 ---
 title: "61 | 策略模式（下）：如何实现一个支持给不同大小文件排序的小程序？"
 description: "上一节课，我们主要介绍了策略模式的原理和实现，以及如何利用策略模式来移除 if else 或者 switch case 分支判断逻辑。今天，我们结合“给文件排序”这样一个具体的例子，来详细讲一讲策略模式的设计意图和应用场景。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 61 | 策略模式（下）：如何实现一个支持给不同大小文件排序的小程序？

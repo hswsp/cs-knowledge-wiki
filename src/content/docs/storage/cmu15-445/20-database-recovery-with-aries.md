@@ -1,8 +1,9 @@
 ---
 title: "20 - Database Recovery with ARIES"
 description: "The DBMS relies on its recovery algorithms to ensure database consistency, transaction atomicity, and durability despite failures. Each recovery algorithm is c…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 20 - Database Recovery with ARIES

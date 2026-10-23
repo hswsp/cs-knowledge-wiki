@@ -1,8 +1,9 @@
 ---
 title: "Mini-LSM Course Overview"
 description: "We have 3 parts (weeks) for this tutorial. In the first week, we will focus on the storage structure and the storage format of an LSM storage engine. In the se…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Mini-LSM Course Overview

@@ -1,8 +1,9 @@
 ---
 title: "76 | 开源实战一（上）：通过剖析Java JDK源码学习灵活应用设计模式"
 description: "从今天开始，我们就正式地进入到实战环节。实战环节包括两部分，一部分是开源项目实战，另一部分是项目实战。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 76 | 开源实战一（上）：通过剖析Java JDK源码学习灵活应用设计模式

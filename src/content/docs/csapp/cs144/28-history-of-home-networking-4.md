@@ -1,8 +1,9 @@
 ---
 title: "History of Home Networking 4"
 description: "“cone” NAPT rule"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # History of Home Networking 4

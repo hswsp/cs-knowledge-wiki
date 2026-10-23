@@ -1,8 +1,9 @@
 ---
 title: "15|理论一：对于单一职责原则，如何判定某个类的职责是否够“单一”？"
 description: "上几节课中，我们介绍了面向对象相关的知识。从今天起，我们开始学习一些经典的设计原则，其中包括，SOLID、KISS、YAGNI、DRY、LOD 等。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "design-principles"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 15|理论一：对于单一职责原则，如何判定某个类的职责是否够“单一”？

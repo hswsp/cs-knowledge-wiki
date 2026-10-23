@@ -1,8 +1,9 @@
 ---
 title: "08 | 所有权：值的借用是如何工作的？"
 description: "你好，我是陈天。 上一讲我们学习了 Rust 所有权的基本规则，在 Rust 下，值有单一的所有者。 当我们进行变量赋值、传参和函数返回时，如果涉及的数据结构没有实现 Copy trait，就会默认使用 Move 语义转移值的所有权，失去所有权的变量将无法继续访问原来的数据；如果数据结构实现了 Copy trait，…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 08 | 所有权：值的借用是如何工作的？

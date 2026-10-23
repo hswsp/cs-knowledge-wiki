@@ -1,8 +1,9 @@
 ---
 title: "扩散模型 (Diffusion Models)"
 description: "概率分布与采样 ：从给定分布中抽取随机样本的过程，生成模型的核心操作 神经网络作为函数逼近器 ：用参数化网络拟合任意复杂函数（这里是去噪函数） Transformer ：可作为扩散模型的骨干网络（如 DiT），替代传统 U Net → 详见 多模态 AI ：文本/图像/音频/视频的 tokenization 与跨模态…"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 15
+updatedDate: 2026-06-13
 draft: false
 ---
 # 扩散模型 (Diffusion Models)

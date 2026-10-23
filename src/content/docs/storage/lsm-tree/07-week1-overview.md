@@ -1,8 +1,9 @@
 ---
 title: "Week 1 Overview: Mini-LSM"
 description: "In the first week of the tutorial, you will build necessary storage formats for the storage engine, the read path and the write path of the system, and have a…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Week 1 Overview: Mini-LSM

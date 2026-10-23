@@ -1,8 +1,9 @@
 ---
 title: "复杂度来源：高可用"
 description: "今天，我们聊聊复杂度的第二个来源 高可用 。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 复杂度来源：高可用

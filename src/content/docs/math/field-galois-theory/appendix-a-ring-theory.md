@@ -1,8 +1,9 @@
 ---
 title: "Appendix A. Ring Theory（环论）"
 description: "The following appendices present some of the background material used in this book. In this appendix, we present the aspects of ring theory that we need in thi…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # Appendix A. Ring Theory（环论）

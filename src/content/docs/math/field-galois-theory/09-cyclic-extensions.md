@@ -1,8 +1,9 @@
 ---
 title: "9. Cyclic Extensions（循环扩张）"
 description: "We resume our investigation of special types of Galois extensions. In this section, we study Galois extensions with cyclic Galois group. Section 11 will study…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 9. Cyclic Extensions（循环扩张）

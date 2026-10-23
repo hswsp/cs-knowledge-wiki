@@ -1,8 +1,9 @@
 ---
 title: "Gossip 协议详解"
 description: "说到共识算法，大家首先想到的应该都是 Raft、Paxos、Zab 算法这类理解起来比较困难的强一致性算法。但是还有一个弱一致性的共识算法比较好理解，Gossip 协议。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 10
+updatedDate: 2026-06-22
 draft: false
 ---
 # Gossip 协议详解

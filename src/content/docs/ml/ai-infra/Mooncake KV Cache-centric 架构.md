@@ -1,7 +1,7 @@
 ---
 title: "Mooncake KV Cache-centric 架构"
 description: "Mooncake是月之暗面（Moonshot AI）开发的高性能LLM推理系统，其核心设计理念是以KV Cache为中心的架构。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

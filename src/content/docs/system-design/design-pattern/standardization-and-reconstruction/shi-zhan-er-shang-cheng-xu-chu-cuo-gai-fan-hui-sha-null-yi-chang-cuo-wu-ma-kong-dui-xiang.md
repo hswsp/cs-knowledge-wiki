@@ -1,8 +1,9 @@
 ---
 title: "36|实战二（上）：程序出错该返回啥？NULL、异常、错误码、空对象？"
 description: "我们可以把函数的运行结果分为两类。一类是预期的结果，也就是函数在正常情况下输出的结果。一类是非预期的结果，也就是函数在异常（或叫出错）情况下输出的结果。比如，在上一节课中，获取本机名的函数，在正常情况下，函数返回字符串格式的本机名；在异常情况下，获取本机名失败，函数返回 UnknownHostException 异常…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 36|实战二（上）：程序出错该返回啥？NULL、异常、错误码、空对象？

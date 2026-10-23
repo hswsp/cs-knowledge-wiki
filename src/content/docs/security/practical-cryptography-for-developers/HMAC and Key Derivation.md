@@ -1,8 +1,9 @@
 ---
 title: "HMAC and Key Derivation"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/vgqqwhf8y0on8guf"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # HMAC and Key Derivation

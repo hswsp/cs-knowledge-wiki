@@ -1,8 +1,9 @@
 ---
 title: "19 - Database Logging & Shadow Paging"
 description: "Recovery algorithms are techniques to ensure database consistency, transaction atomicity, and durability despite failures. When a crash occurs, all the data in…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 19 - Database Logging & Shadow Paging

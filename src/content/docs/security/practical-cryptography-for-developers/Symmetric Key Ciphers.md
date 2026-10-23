@@ -1,8 +1,9 @@
 ---
 title: "Symmetric Key Ciphers"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/qgcr2fho4ttyomy2"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Symmetric Key Ciphers

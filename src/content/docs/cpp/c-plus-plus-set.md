@@ -3,6 +3,7 @@ title: "set"
 description: "和vector、list不同，set、map都是关联式容器。set内部是基于红黑树实现的。插入和删除操作效率较高，因为只需要修改相关指针而不用进行数据的移动。"
 tags: ["cpp"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # set

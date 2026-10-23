@@ -1,7 +1,7 @@
 ---
 title: "24 | SDL：怎样才能写出更\"安全\"的代码？"
 description: "你好，我是何为舟。 安全漏洞的源头是开发，只有当开发人员写出了包含安全漏洞的代码，黑客才有可乘之机。因此，如何保障开发写出更&quot;安全&quot;的代码，是安全防护工作中最关键的一环。 2004 年，微软提出了 SDL（Security DevelopmentLifecycle，安全开发生命周期）。因为对安全和…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

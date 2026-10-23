@@ -1,8 +1,9 @@
 ---
 title: "21|重复的代码就一定违背DRY吗？如何提高代码的复用性？"
 description: "在上一节课中，我们讲了 KISS 原则和 YAGNI 原则，KISS 原则可以说是人尽皆知。今天，我们再学习一个你肯定听过的原则，那就是 DRY 原则。它的英文描述为： Don’t Repeat Yourself 。中文直译为：不要重复自己。将它应用在编程中，可以理解为：不要写重复的代码。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "design-principles"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 21|重复的代码就一定违背DRY吗？如何提高代码的复用性？

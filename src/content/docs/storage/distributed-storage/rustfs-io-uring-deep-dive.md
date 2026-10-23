@@ -1,8 +1,9 @@
 ---
 title: "iouring 如何重塑高性能存储的 I/O 边界"
 description: "在理解 RustFS 的选择之前，我们先得搞清楚传统 Linux I/O 模型的问题。 假设你要从磁盘读一个 4KB 的数据块，最朴素的做法是： 这里发生了什么？ 1. 用户态 → 内核态 ： 系统调用触发上下文切换 2. 内核态 → 块层 ：VFS → 文件系统 → 块层 → 设备驱动 3. 等待 DMA 完成 ：…"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 4
+updatedDate: 2026-08-08
 draft: false
 ---
 # io_uring 如何重塑高性能存储的 I/O 边界

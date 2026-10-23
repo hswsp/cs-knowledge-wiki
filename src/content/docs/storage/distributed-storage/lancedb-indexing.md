@@ -1,8 +1,9 @@
 ---
 title: "LanceDB 索引原理与实现解读"
 description: "本文聚焦 LanceDB 支持的索引类型、查询原理、参数含义，以及 LanceDB 与底层 Lance / 之间的实现边界。"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 9
+updatedDate: 2026-08-08
 draft: false
 ---
 # LanceDB 索引原理与实现解读

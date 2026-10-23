@@ -1,8 +1,9 @@
 ---
 title: "基于 UDP 的传输协议——QUIC"
 description: "QUIC 的设计动机、关键特性与与 TCP/HTTP 的关系。"
-tags: ["csapp"]
+tags: ["csapp", "network", "udp"]
 order: 27
+updatedDate: 2026-06-22
 draft: false
 ---
 QUIC协议是一个新的通讯协议，基于 UDP 的传输协议并希望最终取代所有基于TCP的HTTP请求。熟悉 UDP 的人都应该清楚为什么要使用 QUIC。UDP 是的特点是不可靠、数据包经常丢失、重新排序、重复等等。UDP 不包括任何更高级别协议（如 HTTP）严格要求的 TCP 的可靠性和顺序保证，这就是 QUIC 的用武之地。

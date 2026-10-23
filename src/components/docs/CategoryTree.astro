@@ -1,0 +1,124 @@
+---
+/**
+ * 递归渲染分类树（与 /categories 共用同一套 CategoryNode 数据）。
+ * 通过 Astro.self 递归，子分类可折叠。
+ */
+import { Icon } from 'astro-pure/user'
+import { type CategoryNode, docHref, type DocEntry } from '@/utils/docs-categories'
+
+interface Props {
+  node: CategoryNode
+  nodes: Map<string, CategoryNode>
+  currentId?: string
+  depth?: number
+}
+
+const { node, nodes, currentId, depth = 0 } = Astro.props
+
+const children = node.children.map((c) => nodes.get(c)!).filter(Boolean)
+
+const isOpen = (child: CategoryNode): boolean =>
+  !!currentId && currentId.startsWith(`${child.path}/`)
+---
+
+{
+  (children.length > 0 || node.docs.length > 0) && (
+    <ul class='cat-tree' data-depth={depth}>
+      {children.map((child) => (
+        <li>
+          <details open={isOpen(child)} class='cat-dir'>
+            <summary class='cat-label'>
+              <Icon name='chevronRight' class='cat-chevron size-3' />
+              <span class='cat-text'>{child.label}</span>
+              <span class='cat-count'>{child.total}</span>
+            </summary>
+            <Astro.self node={child} nodes={nodes} currentId={currentId} depth={depth + 1} />
+          </details>
+        </li>
+      ))}
+      {node.docs.map((doc: DocEntry) => (
+        <li>
+          <a
+            href={docHref(doc)}
+            class='cat-doc'
+            aria-current={doc.id === currentId ? 'page' : undefined}
+          >
+            <Icon name='document' class='size-3 opacity-50' />
+            <span class='cat-text'>{doc.data.title}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .cat-tree {
+    list-style: none;
+    margin: 0.1rem 0 0 0;
+    padding: 0 0 0 0.5rem;
+    border-left: 1px solid hsl(var(--border) / 0.7);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .cat-tree[data-depth='0'] {
+    border-left: none;
+    padding-left: 0;
+  }
+  .cat-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem;
+    font-weight: 600;
+    list-style: none;
+  }
+  .cat-label::-webkit-details-marker {
+    display: none;
+  }
+  .cat-label:hover {
+    background-color: hsl(var(--muted) / 0.5);
+  }
+  .cat-chevron {
+    transition: transform 0.15s ease;
+  }
+  details[open] > summary > .cat-chevron {
+    transform: rotate(90deg);
+  }
+  .cat-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cat-count {
+    font-size: 0.7rem;
+    opacity: 0.55;
+    font-variant-numeric: tabular-nums;
+  }
+  .cat-doc {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 0.6rem;
+    padding: 0.35rem 0.55rem;
+    color: hsl(var(--foreground) / 0.78);
+    text-decoration: none;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .cat-doc:hover {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--muted) / 0.6);
+  }
+  .cat-doc[aria-current='page'] {
+    color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.1);
+    font-weight: 600;
+  }
+</style>

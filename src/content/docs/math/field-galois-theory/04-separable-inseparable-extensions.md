@@ -1,8 +1,9 @@
 ---
 title: "4. Separable and Inseparable Extensions（可分与不可分扩张）"
 description: "Recall from Corollary 2.17 that an algebraic extension fails to be Galois if either does not split over or if has repeated roots. In the previous section, we i…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 4. Separable and Inseparable Extensions（可分与不可分扩张）

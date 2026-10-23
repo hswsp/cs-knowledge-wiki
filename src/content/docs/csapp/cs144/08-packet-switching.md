@@ -1,8 +1,9 @@
 ---
 title: "Packet Switching"
 description: "1000 byte = 8000 bits"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Packet Switching

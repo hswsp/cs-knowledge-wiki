@@ -1,7 +1,7 @@
 ---
 title: "FAST 2025 最佳论文：Mooncake 深度解析"
 description: "+ 标题：Mooncake: Trading More Storage for Less Computation — A KVCache centricArchitecture for Serving LLM Chatbot + 作者：Ruoyu Qin, Zheming Li, Weiran He, Jialei…"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

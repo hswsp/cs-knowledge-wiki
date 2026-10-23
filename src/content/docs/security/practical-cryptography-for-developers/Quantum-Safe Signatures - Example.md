@@ -1,8 +1,9 @@
 ---
 title: "Quantum-Safe Signatures - Example"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/okm7xfkd4314a0rm"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Quantum-Safe Signatures - Example

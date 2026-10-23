@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（四）：LayerNorm层"
 description: "在前面的文章中，我们已经实现了Embedding层和Multi Head Attention层。但还有一个看起来简单，实际上非常关键的模块——LayerNorm模块还未实现。在这篇文章中，我们会比较BatchNorm和LayerNorm的主要区别，分析Transformer为什么使用LayerNorm，以及手写实现一…"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 4
+updatedDate: 2026-06-16
 draft: false
 ---
 # 手搓 Transformer（四）：LayerNorm层

@@ -1,8 +1,9 @@
 ---
 title: "再谈开源项目：如何选择、使用以及二次开发？"
 description: "我在专栏特别放送第 3 期谈了如何高效地学习开源项目，主要聊了我在学习开源项目的一些看法和步骤。今天我们再聊开源项目，谈谈如何选择、使用以及二次开发。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "jia-gou-shi-zhan"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 再谈开源项目：如何选择、使用以及二次开发？

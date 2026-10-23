@@ -1,7 +1,7 @@
 ---
 title: "RSA Encrypt / Decrypt - Examples"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/wkq8tvnmasitr3ul"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
 draft: false
 ---

@@ -1,8 +1,9 @@
 ---
 title: "30 | Unsafe Rust：如何用C++的方式打开Rust？"
 description: "你好，我是陈天。 到目前为止，我们撰写的代码都在 Rust 精心构造的内存安全的国度里做一个守法好公民。通过遵循所有权、借用检查、生命周期等规则，我们自己的代码一旦编译通过，就相当于信心满满地向全世界宣布：这个代码是安全的！ 然而，安全的 Rust 并不能适应所有的使用场景。 首先， 为了内存安全，Rust 所做的这…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 30 | Unsafe Rust：如何用C++的方式打开Rust？

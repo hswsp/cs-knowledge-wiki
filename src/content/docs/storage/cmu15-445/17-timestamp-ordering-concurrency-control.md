@@ -1,8 +1,9 @@
 ---
 title: "17 - Timestamp-Ordering Concurrency Control"
 description: "Timestamp ordering (T/O) is an optimistic class of concurrency control protocols where the DBMS assumes that transaction conflicts are rare. Instead of requiri…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 17 - Timestamp-Ordering Concurrency Control

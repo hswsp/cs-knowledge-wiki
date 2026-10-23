@@ -1,8 +1,9 @@
 ---
 title: "45 | 阶段实操（8）：构建一个简单的KV server-配置测试监控CICD"
 description: "你好，我是陈天。 终于来到了我们这个 KV server 系列的终章。其实原本 KV server 我只计划了 4 讲，但现在 8 讲似乎都还有些意犹未尽。虽然这是一个“简单”的 KV server，它没有复杂的性能优化 —— 我们只用了一句 unsafe；也没有复杂的生命周期处理 —— 只有零星 ‘static 标…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 45 | 阶段实操（8）：构建一个简单的KV server-配置_测试_监控_CI_CD

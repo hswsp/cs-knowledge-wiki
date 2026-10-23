@@ -1,8 +1,9 @@
 ---
 title: "54 | 享元模式（上）：如何利用享元模式优化文本编辑器的内存占用？"
 description: "上一节课中，我们讲了组合模式。组合模式并不常用，主要用在数据能表示成树形结构、能通过树的遍历算法来解决的场景中。今天，我们再来学习一个不那么常用的模式，享元模式（ Flyweight Design Pattern ）。这也是我们要学习的最后一个结构型模式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 54 | 享元模式（上）：如何利用享元模式优化文本编辑器的内存占用？

@@ -1,8 +1,9 @@
 ---
 title: "11 - Join Algorithms"
 description: "The goal of a good database design is to minimize the amount of information repetition. This is why tables are composed based on normalization theory. Joins ar…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 11 - Join Algorithms

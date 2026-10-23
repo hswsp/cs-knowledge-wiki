@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（七）：Transformer组装"
 description: "本文是手搓 Transformer系列的第七篇。前面六篇我们逐一实现了 TokenEmbedding、PositionEmbedding、Multi Head Attention、LayerNorm、Encoder 和 Decoder，现在终于到了最激动人心的环节——把所有模块组装成一个完整的 Transformer…"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 7
+updatedDate: 2026-06-16
 draft: false
 ---
 # 手搓 Transformer（七）：Transformer组装

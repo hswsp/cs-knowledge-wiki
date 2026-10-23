@@ -1,8 +1,9 @@
 ---
 title: "29|理论三：什么是代码的可测试性？如何写出可测试性好的代码？"
 description: "在上一节课中，我们对单元测试做了介绍，讲了“什么是单元测试？为什么要编写单元测试？如何编写单元测试？实践中单元测试为什么难贯彻执行？”这样几个问题。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 29|理论三：什么是代码的可测试性？如何写出可测试性好的代码？

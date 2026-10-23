@@ -1,8 +1,9 @@
 ---
 title: "24 - Embedded Database Logic"
 description: "Until now, we have assumed that all of the logic for an application is located in the application itself. Most applications interact with the DBMS using a “con…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 24 - Embedded Database Logic

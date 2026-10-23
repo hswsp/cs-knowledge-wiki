@@ -1,8 +1,9 @@
 ---
 title: "Secure Random Generators (CSPRNG)"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/vcuc4ttqicwoqwbh"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Secure Random Generators (CSPRNG)

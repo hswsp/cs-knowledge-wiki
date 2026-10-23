@@ -1,8 +1,9 @@
 ---
 title: "40 | 运用学过的设计原则和思想完善之前讲的性能计数器项目（下）"
 description: "一节课中，我们针对版本 1 存在的问题（特别是 Aggregator 类、ConsoleReporter 和 EmailReporter 类）进行了重构优化。经过重构之后，代码结构更加清晰、合理、有逻辑性。不过，在细节方面还是存在一些问题，比如 ConsoleReporter、EmailReporter 类仍然存在代…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "summary"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 40 | 运用学过的设计原则和思想完善之前讲的性能计数器项目（下）

@@ -1,8 +1,9 @@
 ---
 title: "16|理论二：如何做到“对扩展开放、修改关闭”？扩展和修改各指什么？"
 description: "在上一节课中，我们学习了单一职责原则。今天，我们来学习 SOLID 中的第二个原则： 开闭原则 。我个人觉得，开闭原则是 SOLID 中最难理解、最难掌握，同时也是最有用的一条原则。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "design-principles"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 16|理论二：如何做到“对扩展开放、修改关闭”？扩展和修改各指什么？

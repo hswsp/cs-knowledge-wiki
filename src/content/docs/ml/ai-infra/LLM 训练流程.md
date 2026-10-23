@@ -1,7 +1,7 @@
 ---
 title: "LLM 训练流程"
 description: "大语言模型的训练通常分为三个阶段：预训练（Pre training）、 监督微调（SFT） 和基于人类反馈的强化学习（RLHF）。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

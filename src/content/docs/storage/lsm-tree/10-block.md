@@ -1,8 +1,9 @@
 ---
 title: "Block"
 description: "In this chapter, you will: Implement SST block encoding. Implement SST block decoding and block iterator."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Block

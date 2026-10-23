@@ -1,8 +1,9 @@
 ---
 title: "Brief Introduction To Spring Cloud"
 description: "spring-cloud-intro"
-tags: ["java"]
+tags: ["java", "spring"]
 order: 11
+updatedDate: 2026-06-22
 draft: false
 ---
 提起微服务，不得不提 Spring Cloud 全家桶系列，Spring Cloud 是一个服务治理平台，是若干个框架的集合（A lightweight event-driven **microservices** framework），提供了全套的分布式系统解决方案。包含了：服务注册与发现、配置中心、服务网关、智能路由、负载均衡、断路器、监控跟踪、分布式消息队列等等。

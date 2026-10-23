@@ -1,8 +1,9 @@
 ---
 title: "键入网址到网页显示，期间发生了什么？"
 description: "从 DNS 解析到 ARP/IP/TCP/HTTP 全链路过程拆解。"
-tags: ["csapp"]
+tags: ["csapp", "network", "outline"]
 order: 6
+updatedDate: 2026-06-22
 draft: false
 ---
 想必不少小伙伴面试过程中，会遇到「**当键入网址后，到网页显示，其间发生了什么**」的面试题。

@@ -1,8 +1,9 @@
 ---
 title: "Assignment 3: A Circle Renderer in CUDA"
 description: "In this assignment you will write a parallel renderer in CUDA that draws colored circles. While this renderer is very simple, parallelizing the renderer will r…"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Assignment 3: A Simple CUDA Renderer

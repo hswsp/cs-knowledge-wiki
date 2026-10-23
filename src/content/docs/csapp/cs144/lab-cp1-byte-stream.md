@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 1: Stitching substrings into a byte stream"
 description: "把任意顺序到达的字节子串拼回完整字节流：实现 Reassembler。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Overview

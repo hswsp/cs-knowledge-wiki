@@ -1,8 +1,9 @@
 ---
 title: "01 - Relational Model & Relational Algebra"
 description: "A database is an organized collection of inter related data that models some aspect of the real world (e.g., modeling the students in a class or a digital musi…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 01 - Relational Model & Relational Algebra

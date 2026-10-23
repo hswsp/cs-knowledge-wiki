@@ -1,8 +1,9 @@
 ---
 title: "1. Field Extensions（域扩张）"
 description: "In this chapter, we develop the machinery of Galois theory. The first four sections constitute the technical heart of Galois theory, and Section 5 presents the…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 1. Field Extensions（域扩张）

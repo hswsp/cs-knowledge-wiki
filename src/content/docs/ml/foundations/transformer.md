@@ -1,8 +1,9 @@
 ---
 title: "Transformer 架构"
 description: "词嵌入 (Embedding) ：将离散 token 映射为连续向量，使神经网络能处理文本 → Word2Vec 论文 残差连接 (Residual Connection) ：跳跃连接让梯度直接回传，解决深层网络训练困难 → ResNet 论文 Softmax ：将任意实数向量归一化为概率分布（所有值 ∈ (0,1)…"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 10
+updatedDate: 2026-07-07
 draft: false
 ---
 # Transformer 架构

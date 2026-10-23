@@ -1,8 +1,9 @@
 ---
 title: "34 | 并发处理（下）：从atomics到Channel，Rust都提供了什么工具？"
 description: "你好，我是陈天。 对于并发状态下这三种常见的工作模式：自由竞争模式、map/reduce 模式、DAG 模式，我们的难点是如何在这些并发的任务中进行同步。atomic/Mutex 解决了自由竞争模式下并发任务的同步问题，也能够很好地解决 map/reduce 模式下的同步问题，因为此时同步只发生在 map 和 red…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 34 | 并发处理（下）：从atomics到Channel，Rust都提供了什么工具？

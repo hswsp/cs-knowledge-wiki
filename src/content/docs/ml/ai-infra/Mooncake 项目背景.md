@@ -1,7 +1,7 @@
 ---
 title: "Mooncake 项目背景"
 description: "月之暗面（Moonshot AI）是一家成立于2023年3月的创新型人工智能企业，总部位于北京。公司由杨植麟博士联合创立，创始团队拥有深厚的学术背景和产业经验。杨植麟博士毕业于清华大学和卡内基梅隆大学，曾在 Google Brain和 Meta AI Research实习，是Transformer XL和XLNet等…"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

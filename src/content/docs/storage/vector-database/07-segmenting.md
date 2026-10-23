@@ -1,8 +1,9 @@
 ---
 title: "Segmenting"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/wi8sesq43m5npm2q"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # Segmenting

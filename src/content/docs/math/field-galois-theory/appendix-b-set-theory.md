@@ -1,8 +1,9 @@
 ---
 title: "Appendix B. Set Theory（集合论）"
 description: "In this appendix, we discuss Zorn's lemma and cardinal arithmetic. For more information on these topics, see Enderton [8] or Stoll [26]."
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # Appendix B. Set Theory（集合论）

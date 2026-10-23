@@ -1,8 +1,9 @@
 ---
 title: "从规则到表示学习"
 description: "特征 (Feature) ：描述数据的属性维度，如像素值、词频、边缘方向等，是模型决策的输入 监督学习 ：给定输入 输出对 (x, y)，学习从 x 到 y 的映射函数 深度神经网络 ：多层非线性变换的堆叠，层数越多能提取的抽象层次越高"
-tags: ["ml"]
+tags: ["ml", "foundations"]
 order: 16
+updatedDate: 2026-06-13
 draft: false
 ---
 # 从规则到表示学习

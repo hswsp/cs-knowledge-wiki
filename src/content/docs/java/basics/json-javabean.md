@@ -1,8 +1,9 @@
 ---
 title: "Json字符串属性名和JavaBean中的属性名匹配"
 description: "目的：都是为了解决json字符串的某些属性名和JavaBean中的属性名匹配不上的问题。"
-tags: ["java"]
+tags: ["java", "basics"]
 order: 2
+updatedDate: 2026-06-22
 draft: false
 ---
 目的：都是为了解决json字符串的某些属性名和JavaBean中的属性名匹配不上的问题。

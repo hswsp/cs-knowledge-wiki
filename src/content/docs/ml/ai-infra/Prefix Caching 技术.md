@@ -1,7 +1,7 @@
 ---
 title: "Prefix Caching 技术"
 description: "Prefix Caching 是一种利用 请求间 KV Cache共享的技术，特别适用于具有共同前缀的场景。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

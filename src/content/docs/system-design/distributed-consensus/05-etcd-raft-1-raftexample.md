@@ -1,8 +1,9 @@
 ---
 title: "etcd/raft（一）：raftexample"
 description: "在深入学习etcd中raft的源码之前，首先应该学会使用etcd的raft模块。幸运的是，etcd官方提供了一个基于etcd/raft的简单kvstore的实现，该实现在etcd/contrib/raftexample下。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 11
+updatedDate: 2026-06-22
 draft: false
 ---
 # etcd/raft（一）：raftexample

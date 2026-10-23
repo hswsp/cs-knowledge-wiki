@@ -3,6 +3,7 @@ title: "存储 / Storage"
 description: "数据库内核、分布式存储、存储引擎、CMU 15 445 课程笔记、存储协议与硬件介绍。"
 tags: ["storage"]
 order: 999
+updatedDate: 2026-08-21
 draft: false
 ---
 # 存储 / Storage

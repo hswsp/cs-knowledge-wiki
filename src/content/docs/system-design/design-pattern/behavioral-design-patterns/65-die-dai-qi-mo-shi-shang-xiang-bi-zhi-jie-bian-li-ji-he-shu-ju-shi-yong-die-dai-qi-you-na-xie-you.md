@@ -1,8 +1,9 @@
 ---
 title: "65 | 迭代器模式（上）：相比直接遍历集合数据，使用迭代器有哪些优势？"
 description: "上一节课，我们学习了状态模式。状态模式是状态机的一种实现方法。它通过将事件触发的状态转移和动作执行，拆分到不同的状态类中，以此来避免状态机类中的分支判断逻辑，应对状态机类代码的复杂性。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 65 | 迭代器模式（上）：相比直接遍历集合数据，使用迭代器有哪些优势？

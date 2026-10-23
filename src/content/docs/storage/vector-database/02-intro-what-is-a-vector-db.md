@@ -1,8 +1,9 @@
 ---
 title: "Intro-What is a Vector DB"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/xwep8spkdtwnkluw"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Intro-What is a Vector DB

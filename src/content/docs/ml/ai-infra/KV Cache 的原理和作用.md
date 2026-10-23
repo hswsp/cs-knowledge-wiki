@@ -1,7 +1,7 @@
 ---
 title: "KV Cache 的原理和作用"
 description: "KV Cache是LLM推理优化的核心技术，它避免了在Decode阶段重复计算历史token的Key和Value。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

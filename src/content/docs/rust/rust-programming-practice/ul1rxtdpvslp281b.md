@@ -1,8 +1,9 @@
 ---
 title: "28 | 网络开发（上）：如何使用Rust处理网络请求？"
 description: "你好，我是陈天。今天我们学习如何使用 Rust 做网络开发。 在互联网时代，谈到网络开发，我们想到的首先是 Web 开发以及涉及的部分 HTTP 协议和 WebSocket 协议。 之所以说部分，是因为很多协议考虑到的部分，比如更新时的并发控制，大多数 Web 开发者并不知道。当谈论到 gRPC 时，很多人就会认为这…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 28 | 网络开发（上）：如何使用Rust处理网络请求？

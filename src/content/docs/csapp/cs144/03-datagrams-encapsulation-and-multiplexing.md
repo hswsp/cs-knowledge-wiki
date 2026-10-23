@@ -1,8 +1,9 @@
 ---
 title: "Datagrams, encapsulation, and multiplexing"
 description: "Lab 0 logistics: run for small updates"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # Datagrams, encapsulation, and multiplexing

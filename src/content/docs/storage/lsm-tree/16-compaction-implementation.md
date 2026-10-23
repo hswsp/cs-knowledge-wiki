@@ -1,8 +1,9 @@
 ---
 title: "Compaction Implementation"
 description: "In this chapter, you will: Implement the compaction logic that combines some files and produces new files. Implement the logic to update the LSM states and man…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Compaction Implementation

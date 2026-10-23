@@ -3,6 +3,7 @@ title: "系统设计"
 description: "分布式系统、分布式共识、消息队列、微服务、高可用架构。"
 tags: ["system-design"]
 order: 999
+updatedDate: 2026-08-25
 draft: false
 ---
 # 系统设计

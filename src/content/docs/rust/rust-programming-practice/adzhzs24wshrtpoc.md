@@ -1,8 +1,9 @@
 ---
 title: "12 | 类型系统：Rust的类型系统有什么特点？"
 description: "你好，我是陈天。今天我们就开始类型系统的学习。 如果你用 C/Golang 这样不支持泛型的静态语言，或者用 Python/Ruby/JavaScript 这样的动态语言，这个部分可能是个难点，希望你做好要转换思维的准备；如果你用 C++/Java/Swift 等支持泛型的静态语言，可以比较一下 Rust 和它们的异…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 12 | 类型系统：Rust的类型系统有什么特点？

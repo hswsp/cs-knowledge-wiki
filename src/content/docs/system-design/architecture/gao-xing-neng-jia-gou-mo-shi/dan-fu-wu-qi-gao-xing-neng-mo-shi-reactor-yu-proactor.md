@@ -1,8 +1,9 @@
 ---
 title: "单服务器高性能模式：Reactor与Proactor"
 description: "专栏上一期我介绍了单服务器高性能的 PPC 和 TPC 模式，它们的优点是实现简单，缺点是都无法支撑高并发的场景，尤其是互联网发展到现在，各种海量用户业务的出现，PPC 和 TPC 完全无能为力。今天我将介绍可以应对 高并发场景的单服务器高性能架构模式：Reactor 和 Proactor。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "gao-xing-neng-jia-gou-mo-shi"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 单服务器高性能模式：Reactor与Proactor

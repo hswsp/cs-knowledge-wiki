@@ -1,8 +1,9 @@
 ---
 title: "12 - Query Execution 1"
 description: "Defensive Programming How to profile a C program with Valgrind/Callgrind"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 12 - Query Execution 1

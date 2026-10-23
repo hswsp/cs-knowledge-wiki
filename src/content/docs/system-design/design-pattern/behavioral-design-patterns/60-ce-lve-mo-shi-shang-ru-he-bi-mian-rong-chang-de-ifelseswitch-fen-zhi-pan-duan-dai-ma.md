@@ -1,8 +1,9 @@
 ---
 title: "60 | 策略模式（上）：如何避免冗长的if-else/switch分支判断代码？"
 description: "上两节课中，我们学习了模板模式。 模板模式主要起到代码复用和扩展的作用 。除此之外，我们还讲到了回调，它跟模板模式的作用类似，但使用起来更加灵活。它们之间的主要区别在于代码实现，模板模式基于继承来实现，回调基于组合来实现。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 60 | 策略模式（上）：如何避免冗长的if-else/switch分支判断代码？

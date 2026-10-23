@@ -1,8 +1,9 @@
 ---
 title: "Lecture 15: Memory Consistency"
 description: "Lecture 15: Memory Consistency"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Lecture 15: Implementing Synchronization + Memory Consistency

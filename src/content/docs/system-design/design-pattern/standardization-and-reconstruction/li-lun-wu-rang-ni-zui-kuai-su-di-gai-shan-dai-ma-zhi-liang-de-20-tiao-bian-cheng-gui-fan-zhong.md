@@ -1,8 +1,9 @@
 ---
 title: "32|理论五：让你最快速地改善代码质量的20条编程规范（中）"
 description: "上一节课中我们讲了命名和注释，这一节课我们来讲一下代码风格（Code Style）。说起代码风格，我们其实很难说哪种风格更好。最重要的，也是最需要我们做到的，是在团队、项目中保持风格统一，让代码像同一个人写出来的，整齐划一。这样能减少阅读干扰，提高代码的可读性。这才是我们在实际工作中想要实现的目标。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 32|理论五：让你最快速地改善代码质量的20条编程规范（中）

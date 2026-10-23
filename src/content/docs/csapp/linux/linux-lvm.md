@@ -1,8 +1,9 @@
 ---
 title: "Linux 物理卷(PV)、逻辑卷(LV)、卷组(VG)管理"
 description: "Linux 物理卷(PV)、逻辑卷(LV)、卷组(VG)管理"
-tags: ["csapp"]
+tags: ["csapp", "linux"]
 order: 30
+updatedDate: 2026-06-22
 draft: false
 ---
 # **相关概念**

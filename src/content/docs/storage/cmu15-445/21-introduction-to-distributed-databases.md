@@ -1,8 +1,9 @@
 ---
 title: "21 - Introduction to Distributed Databases"
 description: "A distributed DBMS divides a single logical database across multiple physical resources. The application is (usually) unaware that data is split across separat…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 21 - Introduction to Distributed Databases

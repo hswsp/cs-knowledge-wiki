@@ -1,8 +1,9 @@
 ---
 title: "git merge的三种操作"
 description: "git merge的三种操作merge, squash merge, 和rebase merge"
-tags: ["tools"]
+tags: ["tools", "git"]
 order: 2
+updatedDate: 2026-06-11
 draft: false
 ---
 `git merge`的三种操作`merge`, `squash merge`, 和`rebase merge`

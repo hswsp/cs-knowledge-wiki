@@ -1,8 +1,9 @@
 ---
 title: "Environment Setup"
 description: "The starter code and reference solution is available at https://github.com/skyzh/mini lsm."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Environment Setup

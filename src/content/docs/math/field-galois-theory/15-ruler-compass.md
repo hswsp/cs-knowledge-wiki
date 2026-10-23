@@ -1,8 +1,9 @@
 ---
 title: "15. Ruler and Compass Constructions（尺规作图）"
 description: "In the days of the ancient Greeks, some of the major mathematical questions involved constructions with ruler and compass. In spite of the ability of many gift…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 15. Ruler and Compass Constructions（尺规作图）

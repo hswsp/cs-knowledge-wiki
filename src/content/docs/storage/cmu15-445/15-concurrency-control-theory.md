@@ -1,8 +1,9 @@
 ---
 title: "15 - Concurrency Control Theory"
 description: "Lost Update Problem ( Concurrency Control ): How can we avoid race conditions when updating records at the same time? Durability Problem ( Recovery ): How can…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 15 - Concurrency Control Theory

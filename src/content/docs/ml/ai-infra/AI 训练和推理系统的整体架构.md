@@ -1,7 +1,7 @@
 ---
 title: "AI 训练和推理系统的整体架构"
 description: "一个典型的 AI 训练系统由以下核心组件构成："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

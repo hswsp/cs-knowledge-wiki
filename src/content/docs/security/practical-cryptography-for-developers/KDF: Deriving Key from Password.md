@@ -1,8 +1,9 @@
 ---
 title: "KDF: Deriving Key from Password"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/uhihuhs0xzp3ofu5"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # KDF: Deriving Key from Password

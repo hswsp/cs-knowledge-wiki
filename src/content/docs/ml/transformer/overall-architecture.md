@@ -1,8 +1,9 @@
 ---
 title: "手搓 Transformer（一）：整体结构、数据流与实现思路"
 description: "手搓transformer（一）：整体结构、数据流与实现思路"
-tags: ["ml"]
+tags: ["ml", "transformer"]
 order: 1
+updatedDate: 2026-06-16
 draft: false
 ---
 # 手搓 Transformer（一）：整体结构、数据流与实现思路

@@ -1,8 +1,9 @@
 ---
 title: "23 - Distributed Analytical Database Systems"
 description: "For a read only OLAP database, it is common to have a bifurcated environment, where there are multiple instances of OLTP databases that ingest information from…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 23 - Distributed Analytical Database Systems

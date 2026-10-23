@@ -1,8 +1,9 @@
 ---
 title: "45 | 工厂模式（下）：如何设计实现一个Dependency Injection框架？"
 description: "在上一节课我们讲到，当创建对象是一个“大工程”的时候，我们一般会选择使用工厂模式，来封装对象复杂的创建过程，将对象的创建和使用分离，让代码更加清晰。那何为“大工程”呢？上一节课中我们讲了两种情况，一种是创建过程涉及复杂的 if else 分支判断，另一种是对象创建需要组装多个其他类对象或者需要复杂的初始化过程。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 45 | 工厂模式（下）：如何设计实现一个Dependency Injection框架？

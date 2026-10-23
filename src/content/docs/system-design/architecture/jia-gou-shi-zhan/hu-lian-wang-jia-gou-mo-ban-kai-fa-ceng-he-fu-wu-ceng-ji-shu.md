@@ -1,8 +1,9 @@
 ---
 title: "互联网架构模板：“开发层”和“服务层”技术"
 description: "上一期，我介绍了互联网架构模板中的存储层技术。关于这部分内容，我将逐层介绍每个技术点的产生背景、应用场景和关键技术，希望让你可以对整体的技术架构有一个全貌认知。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "jia-gou-shi-zhan"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 互联网架构模板：“开发层”和“服务层”技术

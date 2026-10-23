@@ -1,8 +1,9 @@
 ---
 title: "57 | 观察者模式（下）：如何实现一个异步非阻塞的EventBus框架？"
 description: "上一节课中，我们学习了观察者模式的原理、实现、应用场景，重点介绍了不同应用场景下，几种不同的实现方式，包括：同步阻塞、异步非阻塞、进程内、进程间的实现方式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 57 | 观察者模式（下）：如何实现一个异步非阻塞的EventBus框架？

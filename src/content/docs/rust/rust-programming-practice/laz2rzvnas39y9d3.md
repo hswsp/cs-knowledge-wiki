@@ -1,8 +1,9 @@
 ---
 title: "20 | 4 Steps ：如何更好地阅读Rust源码？"
 description: "你好，我是陈天。 到目前为止，Rust 的基础知识我们就学得差不多了。这倒不是说已经像用筛子一样，把基础知识仔细筛了一遍，毕竟我只能给你提供学习Rust的思路，扫清入门障碍。老话说得好，师傅领进门修行靠个人，在 Rust 世界里打怪升级，还要靠你自己去探索、去努力。 虽然不能帮你打怪，但是打怪的基本技巧可以聊一聊。所…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 20 | 4 Steps ：如何更好地阅读Rust源码？

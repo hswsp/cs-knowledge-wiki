@@ -1,8 +1,9 @@
 ---
 title: "etcd/raft（四）：Raft日志"
 description: "本文会对etcd/raft中Raft日志复制算法的实现与优化进行分析。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 14
+updatedDate: 2026-06-22
 draft: false
 ---
 # etcd/raft（四）：Raft日志

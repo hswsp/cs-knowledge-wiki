@@ -1,8 +1,9 @@
 ---
 title: "23. Derivations and Differentials（导子与微分）"
 description: "In this section, we discuss algebraic notions of derivation and differential, and we use these concepts to continue our study of finitely generated field exten…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 23. Derivations and Differentials（导子与微分）

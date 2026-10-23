@@ -1,8 +1,9 @@
 ---
 title: "28|理论二：为了保证重构不出错，有哪些非常能落地的技术手段？"
 description: "上一节课中，我们对“为什么要重构、到底重构什么、什么时候重构、该如何重构”，做了概括性介绍，强调了重构的重要性，希望你建立持续重构意识，将重构作为开发的一部分来执行。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "standardization-and-reconstruction"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 28|理论二：为了保证重构不出错，有哪些非常能落地的技术手段？

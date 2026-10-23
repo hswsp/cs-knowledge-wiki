@@ -1,8 +1,9 @@
 ---
 title: "History of home networking 2"
 description: "Last time: level 5 home subnetwork"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # History of home networking 2

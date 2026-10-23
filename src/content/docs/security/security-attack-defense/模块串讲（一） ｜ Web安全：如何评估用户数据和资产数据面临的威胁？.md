@@ -1,7 +1,7 @@
 ---
 title: "模块串讲（一） | Web安全：如何评估用户数据和资产数据面临的威胁？"
 description: "你好，我是何为舟。&quot;Web安全&quot;模块已经结束了，今天我会通过一篇串讲，带你回顾这一模块的知识，帮你复习巩固，更好地掌握和应用这些内容。 有同学留言说：&quot;老师，讲了这么多漏洞的防护知识，有没有什么好的记忆方法呀？&quot;首先，我们要明确一点，不管学什么知识，想要学好，在前期，一定需要时…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

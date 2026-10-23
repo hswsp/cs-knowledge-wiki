@@ -1,8 +1,9 @@
 ---
 title: "88 | 开源实战五（中）：如何利用职责链与代理模式实现MyBatis Plugin？"
 description: "上节课，我们对 MyBatis 框架做了简单的背景介绍，并且通过对比各种 ORM 框架，学习了代码的易用性、性能、灵活性之间的关系。一般来讲，框架提供的高级功能越多，那性能损耗就会越大；框架用起来越简单，提供越简化的使用方式，那灵活性也就越低。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "practice"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 88 | 开源实战五（中）：如何利用职责链与代理模式实现MyBatis Plugin？

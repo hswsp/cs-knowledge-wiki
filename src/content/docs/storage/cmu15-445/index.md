@@ -1,8 +1,9 @@
 ---
 title: "Intro to Database System"
 description: "CMU 15 445 / 15 645 数据库系统课程笔记、中文整理与 CMU DB 项目实验。"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Intro to Database System

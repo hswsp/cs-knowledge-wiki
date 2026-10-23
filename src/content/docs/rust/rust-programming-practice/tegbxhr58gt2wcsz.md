@@ -1,8 +1,9 @@
 ---
 title: "加餐 宏编程（下）：用 synquote 优雅地构建宏"
 description: "你好，我是陈天。 上堂课我们用最原始的方式构建了一个 RawBuilder 派生宏，本质就是从 TokenStream 中抽取需要的数据，然后生成包含目标代码的字符串，最后再把字符串转换成 TokenStream。 说到解析 TokenStream 是个苦力活，那么必然会有人做更好的工具。 syn/quote 这两个…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 加餐 宏编程（下）：用 syn_quote 优雅地构建宏

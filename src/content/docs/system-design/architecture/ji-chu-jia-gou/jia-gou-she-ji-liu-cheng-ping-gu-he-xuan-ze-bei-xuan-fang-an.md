@@ -1,8 +1,9 @@
 ---
 title: "架构设计流程：评估和选择备选方案"
 description: "上一期我讲了设计备选方案，在完成备选方案设计后，如何挑选出最终的方案也是一个很大的挑战，主要原因有："
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构设计流程：评估和选择备选方案

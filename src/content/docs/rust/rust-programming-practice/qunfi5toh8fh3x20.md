@@ -1,8 +1,9 @@
 ---
 title: "41 | 阶段实操（6）：构建一个简单的KV server-异步处理"
 description: "你好，我是陈天。 到目前为止，我们已经一起完成了一个相对完善的 KV server。还记得是怎么一步步构建这个服务的么？ 基础篇学完，我们搭好了KV server 的基础功能（[21讲]、[22讲]），构造了客户端和服务器间交互的 protobuf，然后设计了 CommandService trait 和 Stora…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 41 | 阶段实操（6）：构建一个简单的KV server-异步处理

@@ -1,8 +1,9 @@
 ---
 title: "用github pages + hexo搭建博客详细教程"
 description: "Hexo 是一个博客框架。它把本地文件里的信息生成一个网页。"
-tags: ["tools"]
+tags: ["tools", "blog"]
 order: 6
+updatedDate: 2026-06-22
 draft: false
 ---
 # Github Pages

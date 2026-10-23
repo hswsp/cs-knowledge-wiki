@@ -1,8 +1,9 @@
 ---
 title: "Transaction and Optimistic Concurrency Control"
 description: "In this chapter, you will implement all interfaces of . Your implementation will maintain a private workspace for modifications inside a transaction, and commi…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Transaction and Optimistic Concurrency Control

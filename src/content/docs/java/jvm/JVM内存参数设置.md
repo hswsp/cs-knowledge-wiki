@@ -1,7 +1,7 @@
 ---
 title: "JVM内存参数设置"
 description: ", , 和 是用于配置 Java 虚拟机 (JVM) 的不同内存参数："
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 5
 draft: false
 ---

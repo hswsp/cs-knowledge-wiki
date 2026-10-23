@@ -1,7 +1,7 @@
 ---
 title: "LLM 推理的两个阶段"
 description: "LLM推理过程可以分为两个截然不同的阶段：Prefill阶段和Decode阶段。理解这两个阶段的特性对于推理优化至关重要。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

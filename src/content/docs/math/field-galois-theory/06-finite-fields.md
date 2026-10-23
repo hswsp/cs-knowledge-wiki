@@ -1,8 +1,9 @@
 ---
 title: "6. Finite Fields（有限域）"
 description: "Now that we have developed the machinery of Galois theory, we apply it in this chapter to study special classes of field extensions. Sections 9 and 11 are good…"
-tags: ["math"]
+tags: ["math", "field-galois-theory"]
 order: 999
+updatedDate: 2026-07-21
 draft: false
 ---
 # 6. Finite Fields（有限域）

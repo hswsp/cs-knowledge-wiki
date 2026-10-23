@@ -1,8 +1,9 @@
 ---
 title: "TCP 协议丢包的场景"
 description: "超时重传、快速重传、SACK 与丢包原因诊断。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 20
+updatedDate: 2026-06-22
 draft: false
 ---
 问大家一句：TCP 是一个可靠的传输协议，那它一定能保证数据不丢失吗？

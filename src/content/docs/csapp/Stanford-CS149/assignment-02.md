@@ -1,8 +1,9 @@
 ---
 title: "Assignment 2: Scheduling Task Graphs on a Multi-Core CPU"
 description: "Everyone likes to complete tasks quickly, and in this assignment we are asking you to do just that! You will implement a C++ library that executes tasks provid…"
-tags: ["csapp"]
+tags: ["csapp", "stanford-cs149"]
 order: 999
+updatedDate: 2026-07-26
 draft: false
 ---
 # Assignment 2: Building A Task Execution Library from the Ground Up

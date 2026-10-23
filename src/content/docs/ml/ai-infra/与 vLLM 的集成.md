@@ -1,7 +1,7 @@
 ---
 title: "与 vLLM 的集成"
 description: "vLLM 是一个开源的大语言模型推理和服务库，以其PagedAttention技术而闻名："
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

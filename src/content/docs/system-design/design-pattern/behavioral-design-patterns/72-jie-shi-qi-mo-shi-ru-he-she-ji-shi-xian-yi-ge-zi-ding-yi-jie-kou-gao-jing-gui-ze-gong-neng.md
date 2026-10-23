@@ -1,8 +1,9 @@
 ---
 title: "72 | 解释器模式：如何设计实现一个自定义接口告警规则功能？"
 description: "上一节课，我们学习了命令模式。命令模式将请求封装成对象，方便作为函数参数传递和赋值给变量。它主要的应用场景是给命令的执行附加功能，换句话说，就是控制命令的执行，比如，排队、异步、延迟执行命令、给命令执行记录日志、撤销重做命令等等。总体上来讲，命令模式的应用范围并不广。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "behavioral-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 72 | 解释器模式：如何设计实现一个自定义接口告警规则功能？

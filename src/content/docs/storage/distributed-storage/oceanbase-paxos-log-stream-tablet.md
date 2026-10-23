@@ -1,8 +1,9 @@
 ---
 title: "OceanBase 分布式共识与存储架构深度笔记"
 description: "本文整理自对 OceanBase 源码及架构文档的深入讨论，涵盖 Paxos 协议在 OceanBase 中的应用范围、Tablet 与 Log Stream 的关系、写入流程、元数据自举体系、日志回收与扩容机制、Tablet Transfer 实现细节，以及 Paxos 与 Raft 的选型对比。"
-tags: ["storage"]
+tags: ["storage", "distributed-storage"]
 order: 3
+updatedDate: 2026-08-08
 draft: false
 ---
 # OceanBase 分布式共识与存储架构深度笔记

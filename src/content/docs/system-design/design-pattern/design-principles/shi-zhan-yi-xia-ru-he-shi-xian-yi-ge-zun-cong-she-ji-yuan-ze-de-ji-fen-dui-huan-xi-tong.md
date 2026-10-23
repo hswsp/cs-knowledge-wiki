@@ -1,8 +1,9 @@
 ---
 title: "24|实战一（下）：如何实现一个遵从设计原则的积分兑换系统？"
 description: "上一节课中，我们讲了积分系统的需求分析和系统设计。今天，我们来讲它的代码实现。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "design-principles"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 24|实战一（下）：如何实现一个遵从设计原则的积分兑换系统？

@@ -1,8 +1,9 @@
 ---
 title: "47 | 原型模式：如何最快速地clone一个HashMap散列表？"
 description: "对于创建型模式，前面我们已经讲了单例模式、工厂模式、建造者模式，今天我们来讲最后一个：原型模式。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "creational-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 47 | 原型模式：如何最快速地clone一个HashMap散列表？

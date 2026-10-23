@@ -1,8 +1,9 @@
 ---
 title: "加餐三 | 聊一聊Google是如何做Code Review的"
 description: "在专栏第 80 讲中，我列举了 Code Review 的重要性，在项目中执行 Code Review 会带来哪些好处，以及如何克服一些常见的难题，在项目中启动 Code Review 等等。今天，我们想再继续这个话题，和你聊一下 Code Review。不过，我刚才也说了，今天的内容会相对轻松一些，我会主要给你讲讲…"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "extra"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 加餐三 | 聊一聊Google是如何做Code Review的

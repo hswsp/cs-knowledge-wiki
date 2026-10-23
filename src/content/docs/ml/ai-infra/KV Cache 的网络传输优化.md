@@ -1,7 +1,7 @@
 ---
 title: "KV Cache 的网络传输优化"
 description: "RDMA (Remote Direct Memory Access) 是实现高性能KV Cache传输的关键技术。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

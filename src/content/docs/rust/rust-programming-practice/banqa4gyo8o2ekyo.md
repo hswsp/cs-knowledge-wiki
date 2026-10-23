@@ -1,8 +1,9 @@
 ---
 title: "14 | 类型系统：有哪些必须掌握的trait？"
 description: "你好，我是陈天。 开发软件系统时，我们弄清楚需求，要对需求进行架构上的分析和设计。在这个过程中，合理地定义和使用 trait，会让代码结构具有很好的扩展性，让系统变得非常灵活。 之前在 get hands dirty 系列中就粗略见识到了 trait 的巨大威力，使用了 / trait 进行类型间的转换（[第 5 讲…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # 14 | 类型系统：有哪些必须掌握的trait？

@@ -1,8 +1,9 @@
 ---
 title: "TCP part 3"
 description: "Last week:"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # TCP part 3

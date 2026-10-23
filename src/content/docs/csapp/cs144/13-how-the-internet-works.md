@@ -1,8 +1,9 @@
 ---
 title: "How the Internet works"
 description: "Datagram, is a packet: a short piece of data (different from phone call as a continuous connection, short pieces of data are powerful)"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # How the Internet works

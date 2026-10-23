@@ -1,7 +1,7 @@
 ---
 title: "15 | Docker安全：在虚拟的环境中，就不用考虑安全了吗？"
 description: "你好，我是何为舟。 在13讲中，我们讲了 Linux 系统安全。但是，当你在和同事讨论 Linux系统安全的时候，同事表示，公司的服务都是通过 Docker来进行容器化部署的。开发在操作中，并不会接触实际的 Linux服务器，所以不会去关注 Linux 安全。而且，因为容器是隔离的，就算容器被黑客攻击了，也只是容器内…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

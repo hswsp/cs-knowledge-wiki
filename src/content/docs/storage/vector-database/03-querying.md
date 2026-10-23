@@ -1,8 +1,9 @@
 ---
 title: "Querying"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/rwgt2m3mdq4xzww1"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Querying

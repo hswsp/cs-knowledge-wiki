@@ -3,6 +3,7 @@ title: "机器学习"
 description: "从经典机器学习到深度学习，理论与实践并重。"
 tags: ["ml"]
 order: 999
+updatedDate: 2026-10-23
 draft: false
 ---
 # 机器学习

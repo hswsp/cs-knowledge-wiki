@@ -1,8 +1,9 @@
 ---
 title: "如何阅读 Java 字节码（Byte Code）"
 description: "如何阅读 Java 字节码（Byte Code）"
-tags: ["java"]
+tags: ["java", "jvm"]
 order: 3
+updatedDate: 2026-06-22
 draft: false
 ---
 # 字节码（Byte Code）

@@ -1,8 +1,9 @@
 ---
 title: "49 | 桥接模式：如何实现支持不同类型和渠道的消息推送系统？"
 description: "上一节课我们学习了第一种结构型模式：代理模式。它在不改变原始类（或者叫被代理类）代码的情况下，通过 引入代理类来给原始类附加功能 。代理模式在平时的开发经常被用到，常 用在业务系统中开发一些非功能性需求 ，比如：监控、统计、鉴权、限流、事务、幂等、日志。"
-tags: ["system-design"]
+tags: ["system-design", "design-pattern", "structural-design-patterns"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 49 | 桥接模式：如何实现支持不同类型和渠道的消息推送系统？

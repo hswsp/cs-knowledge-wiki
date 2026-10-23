@@ -1,8 +1,9 @@
 ---
 title: "Raft 一致性引擎的工程优化深度调研"
 description: "在 AI/大模型时代，以往\"强一致分布式存储很重、很慢\"的经验正在被重写： 模型权重、向量、embedding、训练 checkpoint 这类对象 不可重建或重建成本极高 ，一旦丢失就前功尽弃，必须靠强一致、多副本、可恢复的存储兜底。 向量数据库（Milvus、Qdrant 等）、对象存储（如 Ozone）需要 选…"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 18
+updatedDate: 2026-08-26
 draft: false
 ---
 # Raft 一致性引擎的工程优化深度调研

@@ -1,8 +1,9 @@
 ---
 title: "etcd/raft（六）：只读请求优化"
 description: "本文介绍了etcd/raft中只读请求算法优化与实现。"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 16
+updatedDate: 2026-06-22
 draft: false
 ---
 # etcd/raft（六）：只读请求优化

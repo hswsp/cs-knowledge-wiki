@@ -1,8 +1,9 @@
 ---
 title: "Snapshot Read - Engine Read Path and Transaction API"
 description: "In this chapter, you will: Finish the read path based on previous chapter to support snapshot read. Implement the transaction API to support snapshot read. Imp…"
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Snapshot Read - Engine Read Path and Transaction API

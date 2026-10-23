@@ -1,8 +1,9 @@
 ---
 title: "29 | 网络开发（下）：如何使用Rust处理网络请求？"
 description: "你好，我是陈天。 上一讲介绍了如何用Rust做基于 TCP 的网络开发，通过 TcpListener 监听，使用 TcpStream 连接。在 nix 操作系统层面，一个 TcpStream 背后就是一个文件描述符。值得注意的是，当我们在处理网络应用的时候，有些问题一定要正视： 网络是不可靠的 网络的延迟可能会非常大…"
-tags: ["rust"]
+tags: ["rust", "rust-programming-practice"]
 order: 999
+updatedDate: 2026-06-14
 draft: false
 ---
 # 29 | 网络开发（下）：如何使用Rust处理网络请求？

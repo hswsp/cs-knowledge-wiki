@@ -1,8 +1,9 @@
 ---
 title: "TCP 协议有什么缺陷？"
 description: "TCP 的固有问题：队头阻塞、握手延迟、连接迁移困难等。"
-tags: ["csapp"]
+tags: ["csapp", "network", "tcp"]
 order: 22
+updatedDate: 2026-06-22
 draft: false
 ---
 写的多了后，忽然思考一个问题，TCP 通过序列号、确认应答、超时重传、流量控制、拥塞控制等方式实现了可靠传输，看起来它很完美，事实真的是这样吗？TCP 就没什么缺陷吗？

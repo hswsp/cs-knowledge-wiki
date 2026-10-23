@@ -1,8 +1,9 @@
 ---
 title: "Memtables"
 description: "In this chapter, you will: Implement memtables based on skiplists. Implement freezing memtable logic. Implement LSM read path for memtables."
-tags: ["storage"]
+tags: ["storage", "lsm-tree"]
 order: 999
+updatedDate: 2026-06-13
 draft: false
 ---
 # Memtables

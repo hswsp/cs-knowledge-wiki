@@ -1,7 +1,7 @@
 ---
 title: "Mooncake 的整体架构"
 description: "Mooncake的核心创新在于将KV Cache视为一等资源（First Class Resource），而非计算的副产品。传统LLM推理系统将KV Cache视为需要管理的内存开销，而Mooncake将整个系统架构围绕 KV Cache的存储、传输和复用 进行设计。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

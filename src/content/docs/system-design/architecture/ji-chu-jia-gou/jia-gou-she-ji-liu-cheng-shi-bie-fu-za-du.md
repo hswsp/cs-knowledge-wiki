@@ -1,8 +1,9 @@
 ---
 title: "架构设计流程：识别复杂度"
 description: "从今天开始，我将分 4 期，结合复杂度来源和架构设计原则，通过一个模拟的设计场景“前浪微博”，和你一起看看在实践中究竟如何进行架构设计。今天先来看架构设计流程第 1 步：识别复杂度。"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ji-chu-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 架构设计流程：识别复杂度

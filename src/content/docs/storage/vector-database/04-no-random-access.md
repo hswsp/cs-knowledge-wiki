@@ -1,8 +1,9 @@
 ---
 title: "No Random Access 算法详解"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/nmhuv1/qw8iu3zhn35g944g"
-tags: ["storage"]
+tags: ["storage", "vector-database"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # No Random Access 算法详解

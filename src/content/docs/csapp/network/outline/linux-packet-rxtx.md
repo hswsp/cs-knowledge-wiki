@@ -1,8 +1,9 @@
 ---
 title: "Linux 系统是如何收发网络包的？"
 description: "Linux 收发包路径、软中断与协议栈处理流程。"
-tags: ["csapp"]
+tags: ["csapp", "network", "outline"]
 order: 7
+updatedDate: 2026-06-22
 draft: false
 ---
 这次，就围绕一个问题来说。

@@ -1,8 +1,9 @@
 ---
 title: "Checkpoint 0: Networking Warmup"
 description: "用 OS stream socket 写 webget，并实现内存中流控的 ByteStream。"
-tags: ["csapp"]
+tags: ["csapp", "cs144"]
 order: 999
+updatedDate: 2026-06-22
 draft: false
 ---
 # Writing a network program using an OS stream socket

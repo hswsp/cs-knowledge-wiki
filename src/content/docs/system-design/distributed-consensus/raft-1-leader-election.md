@@ -1,8 +1,9 @@
 ---
 title: "Raft 协议（一）—— 领导者选举"
 description: "Raft 领导者选举"
-tags: ["system-design"]
+tags: ["system-design", "distributed-consensus"]
 order: 3
+updatedDate: 2026-06-22
 draft: false
 ---
 > 摘录自[Q的博客](https://juejin.cn/user/1275089220539869/posts)

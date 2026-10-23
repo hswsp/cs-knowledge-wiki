@@ -1,7 +1,7 @@
 ---
 title: "PD 分离中的 KV Cache 传输优化"
 description: "KV Cache 传输是PD分离架构的关键路径，其性能直接影响系统的TTFT和整体吞吐量。本节深入探讨各种传输优化技术。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
 draft: false
 ---

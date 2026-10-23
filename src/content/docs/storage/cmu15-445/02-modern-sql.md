@@ -1,8 +1,9 @@
 ---
 title: "02 - Modern SQL"
 description: "Edgar Codd published a major paper on relational models in the early 1970s. Originally, he only deﬁned the mathematical notation for how a DBMS could execute q…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 02 - Modern SQL

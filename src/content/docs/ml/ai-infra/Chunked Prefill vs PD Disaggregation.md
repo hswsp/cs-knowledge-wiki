@@ -1,8 +1,9 @@
 ---
 title: "Chunked Prefill vs PD Disaggregation"
 description: "在LLM服务优化领域，Chunked Prefill和PD Disaggregation是两种重要的技术方向。理解它们的原理和差异，对于选择合适的优化策略至关重要。"
-tags: ["ml"]
+tags: ["ml", "ai-infra"]
 order: 999
+updatedDate: 2026-06-19
 draft: false
 ---
 # Chunked Prefill vs PD Disaggregation

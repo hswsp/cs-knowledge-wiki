@@ -1,8 +1,9 @@
 ---
 title: "可扩展架构的基本思想和模式"
 description: "软件系统与硬件和建筑系统最大的差异在于软件是可扩展的，一个硬件生产出来后就不会再进行改变、一个建筑完工后也不会再改变其整体结构。例如，一颗 CPU 生产出来后装到一台 PC 机上，不会再返回工厂进行加工以增加新的功能；金字塔矗立千年历经风吹雨打，但其现在的结构和当时建成完工时的结构并无两样。相比之下，软件系统就完全相…"
-tags: ["system-design"]
+tags: ["system-design", "architecture", "ke-kuo-zhan-jia-gou"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 可扩展架构的基本思想和模式

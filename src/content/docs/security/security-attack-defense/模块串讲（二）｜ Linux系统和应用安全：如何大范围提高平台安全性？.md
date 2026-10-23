@@ -1,7 +1,7 @@
 ---
 title: "模块串讲（二）| Linux系统和应用安全：如何大范围提高平台安全性？"
 description: "你好，我是何为舟。&quot;Linux系统和应用安全&quot;模块讲完了，今天我通过一篇串讲，带你复习巩固一下这一模块的内容。 在这一模块中，我们重点讲解了，在开发过程中经常要接触或使用的平台、工具的安全功能。这些平台和工具包括：Linux系统、网络、容器、数据库和分布式平台。 那通过对这些平台和工具的安全功能分…"
-tags: ["security"]
+tags: ["security", "security-attack-defense"]
 order: 999
 draft: false
 ---

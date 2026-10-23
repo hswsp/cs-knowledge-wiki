@@ -1,8 +1,9 @@
 ---
 title: "ChaCha20-Poly1305"
 description: "原文链接：https://www.yuque.com/yangguangfanxing/zuyi8o/awv94ytmcoos147g"
-tags: ["security"]
+tags: ["security", "practical-cryptography-for-developers"]
 order: 999
+updatedDate: 2026-06-15
 draft: false
 ---
 # ChaCha20-Poly1305

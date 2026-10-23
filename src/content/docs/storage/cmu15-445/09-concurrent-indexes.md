@@ -1,8 +1,9 @@
 ---
 title: "09 - Concurrent Indexes"
 description: "So far, we assumed that the data structures we have discussed are single threaded. However, most DBMSs needs to allow multiple threads to safely access data st…"
-tags: ["storage"]
+tags: ["storage", "cmu15-445"]
 order: 999
+updatedDate: 2026-06-11
 draft: false
 ---
 # 09 - Concurrent Indexes
