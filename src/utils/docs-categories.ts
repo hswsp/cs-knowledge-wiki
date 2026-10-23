@@ -246,6 +246,9 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
       const dirs = parts.slice(1, -1)
       path = dirs.length ? `${section}/${dirs.join('/')}` : `${section}/其他`
     }
+    // 兜底：万一某篇落在学科根上（侧边栏没有分组、也不在任何子目录），
+    // 归入「未分组」而不是让它在学科页显示成「本层文章」。
+    if (path.split('/').length === 1) path = `${path}/未分组`
     ensure(path).docs.push(doc)
   }
 
