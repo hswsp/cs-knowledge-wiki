@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:check": "astro check --watch & astro dev",
-    "build": "astro build",
+    "build": "node scripts/astro-build.mjs",
     "preview": "astro preview",
     "sync": "astro sync",
     "check": "astro check",
@@ -23,7 +23,7 @@
     "migrate": "node scripts/migrate-content.mjs",
     "predev": "node scripts/build-nav.mjs && node scripts/migrate-content.mjs && node scripts/copy-doc-assets.mjs",
     "prebuild": "node scripts/build-nav.mjs && node scripts/migrate-content.mjs && node scripts/copy-doc-assets.mjs",
-    "build:check": "astro-pure check && astro check && astro build",
+    "build:check": "astro-pure check && astro check && node scripts/astro-build.mjs",
     "nav": "node scripts/build-nav.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "NODE_OPTIONS=--max-old-space-size=8192 vitepress build docs",

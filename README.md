@@ -45,6 +45,19 @@ npm run preview      # 预览构建结果
 | `package.json` 的 `engines` | **完全不读** | Cloudflare v3 明确不支持从 engines 检测 |
 | 构建镜像默认值 | 最低 | v3 = 22.16.0 / v2 = 18.17.1 |
 
+### Node 版本兜底
+
+`npm run build` 走的是 `scripts/astro-build.mjs`，不是直接 `astro build`。原因：Cloudflare 的
+`NODE_VERSION` 环境变量优先级高于 `.nvmrc`，一旦它被设成 20，Astro 6 会直接拒绝启动。
+
+包装脚本会检查当前 Node 版本：
+
+- **≥ 22.12** → 直接构建（本地、正常配置的 CI 都走这条）
+- **< 22.12** → 自动改用 `npx node@24` 提供的二进制重新执行，绕开环境变量
+
+所以即使 dashboard 里那个变量没改对，构建也能成功。当然还是建议把 `NODE_VERSION` 改成 `24`，
+省掉每次构建多下载一次 Node 的开销。
+
 ### 切换与回滚
 
 - **想临时回到 VitePress**：把主站项目的构建命令改成 `npm run docs:build`、输出改成 `docs/.vitepress/dist` 即可，代码不用动。
