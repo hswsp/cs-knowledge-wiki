@@ -27,7 +27,7 @@ npm run preview      # 预览构建结果
 | 只改了什么 | 结果 |
 | --- | --- |
 | 只改 Build command，输出目录仍是 `docs/.vitepress/dist` | 构建会「成功」，但 Cloudflare 在 `docs/.vitepress/dist` 里找不到文件，报 `No build output directory found`，或者部署出一个空站 |
-| 只改输出目录，命令仍是 `npm run docs:build` | 该脚本在 Astro 分支不存在（除非用下面的兼容模式），构建直接失败：`Missing script: "docs:build"` |
+| 只改输出目录，命令仍是 `npm run docs:build` | 该脚本在 Astro 分支不存在，构建直接失败：`Missing script: "docs:build"` |
 | 两项都改 | ✓ 正常构建并部署 |
 
 为什么两个目录不一样——是各自工具的默认值，本项目都没有改：
@@ -45,16 +45,6 @@ Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24
 - **Build output directory**: `dist`
 - **Framework preset**: `None`（务必不要选框架预设，否则 Cloudflare 会覆盖构建命令）
 - **NODE_VERSION**: 删除该环境变量，或设为 `24`
-
-### 兼容模式（不想改 dashboard 时）
-
-本分支的 `package.json` 额外保留了一个 `docs:build` 兼容脚本：
-
-```json
-"docs:build": "npm run assets && astro build && rm -rf docs/.vitepress/dist && mv dist docs/.vitepress/dist"
-```
-
-它会把 Astro 的产物搬回 VitePress 的输出目录，因此保持 Cloudflare 现有配置（`npm run docs:build` + `docs/.vitepress/dist`）也能构建成功。这是过渡期的兜底，**推荐改用上面干净的一套**，之后可以把这个脚本删掉。
 
 ### 注意
 
