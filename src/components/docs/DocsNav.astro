@@ -1,0 +1,156 @@
+---
+/**
+ * Hierarchical docs navigation.
+ *
+ * The stock Iris sidebar renders every doc as one flat list, which is unusable
+ * for a 900+ page knowledge base. This component renders only the current
+ * section as a collapsible directory tree, keeping the curated `order`
+ * frontmatter (derived from the old VitePress section index.md files).
+ */
+import { type CollectionEntry } from 'astro:content'
+
+import { getBlogCollection } from 'astro-pure/server'
+import { Icon } from 'astro-pure/user'
+import { cn } from 'astro-pure/utils'
+import { buildSectionTree, countDocs, sectionMeta, sortSections, type TreeNode } from '@/utils/sections'
+import DocsTree from './DocsTree.astro'
+
+export const prerender = true
+export const partial = true
+
+type Props = {
+  currentId?: string
+  class?: string
+}
+
+const { currentId, class: className } = Astro.props
+
+const docs = (await getBlogCollection('docs')) as CollectionEntry<'docs'>[]
+
+
+const sectionOf = (id?: string) => (id ? id.split('/')[0] : undefined)
+const currentSection = sectionOf(currentId)
+const sections = sortSections([...new Set(docs.map((d) => d.id.split('/')[0]))])
+
+// Sidebar shows the current section only; on /docs it lists sections.
+const tree: TreeNode | null = currentSection ? buildSectionTree(docs as any, currentSection) : null
+
+---
+
+<nav class={cn('docs-nav not-prose', className)} aria-label='文档导航'>
+  {
+    tree ? (
+      <>
+        <a
+          class='docs-nav-home'
+          href={`/docs/${currentSection}`}
+          aria-current={currentId === `${currentSection}/index` ? 'page' : undefined}
+        >
+          <Icon name='home' class='size-4' />
+          <span>{sectionMeta(currentSection!).title}</span>
+          <span class='docs-nav-count'>{countDocs(tree)}</span>
+        </a>
+        <DocsTree node={tree} currentId={currentId} depth={0} />
+      </>
+    ) : (
+      <ul class='docs-nav-sections'>
+        {sections.map((s) => (
+          <li>
+            <a href={`/docs/${s}`}>
+              <Icon name={sectionMeta(s).icon} class='size-4' />
+              <span>{sectionMeta(s).title}</span>
+              <span class='docs-nav-count'>{docs.filter((d) => d.id.startsWith(`${s}/`)).length}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</nav>
+
+<style>
+  .docs-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .docs-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 0.6rem;
+    padding: 0.35rem 0.55rem;
+    color: hsl(var(--foreground) / 0.78);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .docs-nav a:hover {
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--muted) / 0.6);
+  }
+  .docs-nav a[aria-current='page'] {
+    color: hsl(var(--primary));
+    background-color: hsl(var(--primary) / 0.1);
+    font-weight: 600;
+  }
+  .docs-nav-home {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px dashed hsl(var(--border));
+    border-radius: 0.6rem 0.6rem 0 0;
+    padding-bottom: 0.5rem;
+  }
+  .docs-nav-count {
+    margin-left: auto;
+    font-size: 0.7rem;
+    opacity: 0.55;
+    font-variant-numeric: tabular-nums;
+  }
+  .docs-nav-sections {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .docs-nav ul.docs-nav-tree {
+    list-style: none;
+    margin: 0.1rem 0 0 0;
+    padding: 0 0 0 0.5rem;
+    border-left: 1px solid hsl(var(--border) / 0.7);
+  }
+  .docs-nav .docs-nav-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    list-style: none;
+  }
+  .docs-nav .docs-nav-label::-webkit-details-marker {
+    display: none;
+  }
+  .docs-nav .docs-nav-label:hover {
+    background-color: hsl(var(--muted) / 0.5);
+  }
+  .docs-nav .docs-nav-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .docs-nav details > summary > .docs-nav-chevron {
+    transition: transform 0.15s ease;
+  }
+  .docs-nav details[open] > summary > .docs-nav-chevron {
+    transform: rotate(90deg);
+  }
+</style>

@@ -1,0 +1,308 @@
+#!/usr/bin/env node
+/**
+ * VitePress -> Astro Iris content migration.
+ *
+ * Reads  : docs/**\/*.md            (VitePress source, never modified)
+ * Writes : src/content/docs/**\/*.md (Astro content collection)
+ *
+ * Handles:
+ *  - frontmatter synthesis (title / description are required by Iris schema)
+ *  - ::: tip|info|warning|danger containers -> blockquote callouts
+ *  - ==highlight== -> <mark>
+ *  - internal absolute links /foo/bar -> /docs/foo/bar
+ *  - skips code fences so nothing above touches code
+ */
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, rmSync, existsSync } from 'node:fs'
+import { dirname, join, relative, extname } from 'node:path'
+
+const ROOT = process.cwd()
+const SRC = join(ROOT, 'docs')
+const OUT = join(ROOT, 'src', 'content', 'docs')
+const SKIP_DIRS = new Set(['.vitepress', 'public', 'node_modules'])
+
+const TITLE_MAX = 60
+const DESC_MAX = 160
+
+const CALLOUT = {
+  tip: ['💡', '提示'],
+  info: ['ℹ️', '信息'],
+  note: ['📝', '说明'],
+  warning: ['⚠️', '警告'],
+  danger: ['🚨', '危险'],
+  details: ['▸', '详情']
+}
+
+function walk(dir, acc = []) {
+  for (const name of readdirSync(dir)) {
+    if (SKIP_DIRS.has(name)) continue
+    const full = join(dir, name)
+    const st = statSync(full)
+    if (st.isDirectory()) walk(full, acc)
+    else if (extname(name).toLowerCase() === '.md') acc.push(full)
+  }
+  return acc
+}
+
+function splitFrontmatter(text) {
+  if (!text.startsWith('---')) return { data: {}, body: text }
+  const end = text.indexOf('\n---', 3)
+  if (end === -1) return { data: {}, body: text }
+  const raw = text.slice(3, end).replace(/^\n/, '')
+  const body = text.slice(end + 4).replace(/^\r?\n/, '')
+  const data = {}
+  for (const line of raw.split(/\r?\n/)) {
+    const m = line.match(/^([A-Za-z_][\w-]*)\s*:\s*(.*)$/)
+    if (!m) continue
+    let v = m[2].trim()
+    if (!v) continue
+    if (/^['"].*['"]$/.test(v)) v = v.slice(1, -1)
+    if (v.startsWith('[') && v.endsWith(']')) {
+      v = v
+        .slice(1, -1)
+        .split(',')
+        .map((s) => s.trim().replace(/^['"]|['"]$/g, ''))
+        .filter(Boolean)
+    }
+    data[m[1]] = v
+  }
+  return { data, body }
+}
+
+/** Strip markdown/math/html noise so the text can serve as a meta description. */
+function plain(text) {
+  return text
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/\$\$[\s\S]*?\$\$/g, ' ')
+    .replace(/\$[^$\n]*\$/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^#{1,6}\s.*$/gm, ' ')
+    .replace(/^:::+.*$/gm, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/[*_~|>#-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function clip(text, max) {
+  text = String(text || '').replace(/\s+/g, ' ').trim()
+  if (!text) return ''
+  return text.length <= max ? text : text.slice(0, max - 1).trimEnd() + '…'
+}
+
+function cleanTitle(value) {
+  return String(value)
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // links -> text
+    .replace(/`([^`]*)`/g, '$1') // inline code
+    .replace(/[*_~]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function firstHeading(body) {
+  const m = body.match(/^#\s+(.+)$/m)
+  return m ? cleanTitle(m[1]) : ''
+}
+
+function firstParagraph(body) {
+  const lines = body.split(/\r?\n/)
+  let inFence = false
+  let buf = []
+  for (const line of lines) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence
+      continue
+    }
+    if (inFence) continue
+    const t = line.trim()
+    if (!t) {
+      if (buf.length) break
+      continue
+    }
+    if (/^#{1,6}\s/.test(t)) {
+      if (buf.length) break
+      continue
+    }
+    if (/^(:::|!\[|\||<)/.test(t)) continue
+    if (/^\$\$/.test(t)) continue
+    buf.push(t)
+  }
+  return buf.join(' ')
+}
+
+/** Rewrite VitePress clean URLs to Astro Iris /docs routes. */
+function rewriteLinks(text) {
+  return text.replace(/(\]\(\/)([^)\s#?]+)([^)]*\))/g, (full, lead, path, tail) => {
+    if (/^\/docs\//.test(path)) return full
+    if (/\.(png|jpe?g|gif|svg|webp|pdf|ico|json|xml|mjs|js|css)$/i.test(path)) return full
+    return `${lead}docs/${path.replace(/^\//, '')}${tail}`
+  })
+}
+
+function convertContainers(lines) {
+  const out = []
+  let open = null // { icon, label }
+  for (const line of lines) {
+    const m = line.match(/^:::+\s*([A-Za-z]+)?\s*(.*)$/)
+    if (m) {
+      const type = m[1]
+      if (!type) {
+        if (open) {
+          out.push('')
+          open = null
+        }
+        continue
+      }
+      const [icon, label] = CALLOUT[type.toLowerCase()] || ['ℹ️', '提示']
+      const custom = (m[2] || '').trim()
+      open = { icon, label: custom || label }
+      out.push(`> **${icon} ${open.label}**`)
+      out.push('>')
+      continue
+    }
+    if (open) {
+      out.push(line.trim() ? `> ${line}` : '>')
+    } else {
+      out.push(line)
+    }
+  }
+  return out
+}
+
+function transformBody(body, srcRel = '') {
+  const srcDir = srcRel.includes('/') ? srcRel.slice(0, srcRel.lastIndexOf('/')) : ''
+  const lines = body.split(/\r?\n/)
+  // 1. containers (function is fence-aware enough for our content: no ::: inside fences)
+  const withContainers = convertContainers(lines)
+
+  // 2. fence-aware mark + inline link rewrite
+  let inFence = false
+  const processed = withContainers.map((line) => {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence
+      return line
+    }
+    if (inFence) return line
+    let l = line.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
+    l = rewriteLinks(l)
+    // Relative images live next to the source file; they are copied into
+    // public/docassets at build time so the repo does not duplicate ~800MB.
+    l = l.replace(/!\[([^\]]*)\]\((?!https?:|\/|data:)([^)]+)\)/g, (_m, alt, target) => {
+      const clean = target.split('#')[0].split('?')[0]
+      const resolved = [srcDir, clean]
+        .filter(Boolean)
+        .join('/')
+        .replace(/\/\.\//g, '/')
+        .replace(/^\.\//, '')
+      const encoded = encodeURI(resolved).replace(/#/g, '%23').replace(/\?/g, '%3F')
+      return `![${alt}](/docassets/${encoded})`
+    })
+    return l
+  })
+  return processed.join('\n').replace(/^\n+/, '')
+}
+
+function yamlQuote(s) {
+  return `"${String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`
+}
+
+const allFiles = walk(SRC).sort()
+
+/**
+ * Section index.md files are curated navigation lists, not prose.
+ * Astro would render each as a plain page and we would lose that order, so we
+ * read the link order out of them and turn it into the `order` frontmatter.
+ */
+function buildOrderMap() {
+  const order = new Map()
+  for (const file of allFiles) {
+    const rel = relative(SRC, file).replace(/\.md$/i, '')
+    if (rel === 'index') continue // VitePress home page, not content
+    const isSectionIndex = rel.endsWith('/index') || rel.includes('/index/')
+    if (!isSectionIndex) continue
+    const cat = rel.split('/')[0]
+    const text = readFileSync(file, 'utf8')
+    let seq = 0
+    for (const m of text.matchAll(/\[[^\]]*\]\((\.[^)\s]+|\/[^)\s]+)\)/g)) {
+      let href = m[1]
+      const wasRelative = !href.startsWith('/')
+      if (href.startsWith('./')) href = href.slice(2)
+      else if (href.startsWith('/')) href = href.slice(1)
+      href = href.replace(/^docs\//, '').replace(/[#?].*$/, '').replace(/\/$/, '')
+      // Relative links resolve inside the section, absolute ones are already rooted.
+      const id = wasRelative ? `${cat}/${href}` : href
+      if (!order.has(id)) order.set(id, ++seq)
+    }
+  }
+  return order
+}
+
+const orderMap = buildOrderMap()
+
+// VitePress home page is replaced by the Astro index page.
+const files = allFiles.filter((f) => relative(SRC, f).replace(/\.md$/i, '') !== 'index')
+if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true })
+mkdirSync(OUT, { recursive: true })
+
+let missingDesc = 0
+let synthesized = 0
+const report = []
+
+for (const file of files) {
+  const rel = relative(SRC, file)
+  const raw = readFileSync(file, 'utf8')
+  const { data, body } = splitFrontmatter(raw)
+
+  const base = rel.replace(/\.md$/i, '').split('/').pop()
+  let title = data.title || firstHeading(body) || base
+  if (Array.isArray(title)) title = title.join(' ')
+  title = clip(cleanTitle(title), TITLE_MAX) || base
+
+  let description = data.description
+  if (Array.isArray(description)) description = description.join(' ')
+  if (!description) {
+    synthesized++
+    const candidate = plain(firstParagraph(body)) || plain(body).slice(0, 300) || title
+    description = clip(candidate, DESC_MAX)
+    if (!description) {
+      description = `${title} - CS Knowledge Wiki`
+      missingDesc++
+    }
+  }
+  description = clip(description, DESC_MAX)
+
+  const firstSegment = rel.includes('/') ? rel.split('/')[0] : 'root'
+  let tags = data.tags
+  if (!Array.isArray(tags) || !tags.length) tags = [firstSegment]
+  tags = [...new Set(tags.map((t) => String(t).toLowerCase()))]
+
+  const relId = rel.replace(/\.md$/i, '')
+  const order = orderMap.get(relId) ?? (Number.isFinite(Number(data.order)) ? Number(data.order) : 999)
+
+  // Normalise index files to a stable id (dir/index) — the nav treats them as section landings.
+  const outRel = rel
+  const outFile = join(OUT, outRel)
+  mkdirSync(dirname(outFile), { recursive: true })
+
+  const fm = [
+    '---',
+    `title: ${yamlQuote(title)}`,
+    `description: ${yamlQuote(description)}`,
+    `tags: [${tags.map(yamlQuote).join(', ')}]`,
+    `order: ${order}`,
+    'draft: false',
+    '---',
+    ''
+  ].join('\n')
+
+  writeFileSync(outFile, fm + transformBody(body, rel).trimEnd() + '\n', 'utf8')
+  report.push({ file: rel, title, descriptionLen: description.length })
+}
+
+console.log(`migrated ${files.length} files -> ${relative(ROOT, OUT)}`)
+console.log(`synthesized descriptions: ${synthesized}`)
+console.log(`empty descriptions: ${missingDesc}`)
+console.log('longest titles:', report.map((r) => `${r.title.length}:${r.title}`).sort((a, b) => parseInt(b) - parseInt(a)).slice(0, 3))
+console.log('longest descs :', report.map((r) => r.descriptionLen).sort((a, b) => b - a).slice(0, 3))

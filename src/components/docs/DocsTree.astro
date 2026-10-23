@@ -1,0 +1,67 @@
+---
+/**
+ * One level of the docs directory tree. Recurses through `Astro.self`.
+ */
+import { Icon } from 'astro-pure/user'
+
+type TreeDoc = { id: string; title: string; order: number }
+type TreeNode = {
+  name: string
+  docs: TreeDoc[]
+  dirs: Map<string, TreeNode>
+}
+
+interface Props {
+  node: TreeNode
+  currentId?: string
+  depth?: number
+}
+
+const { node, currentId, depth = 0 } = Astro.props
+
+const hasChildren = node.dirs.size > 0 || node.docs.length > 0
+// Open the folders that contain the current page, plus the first level.
+const dirList = [...node.dirs.entries()].sort((a, b) => a[0].localeCompare(b[0], 'zh'))
+
+const containsActive = (dirNode: TreeNode): boolean => {
+  if (!currentId) return false
+  const prefix = `${currentId.split('/').slice(0, -1).join('/')}/`
+  for (const doc of dirNode.docs) if (doc.id === currentId) return true
+  for (const child of dirNode.dirs.values()) if (containsActive(child)) return true
+  return prefix.length > 0 && [...dirNode.docs.map((d) => d.id)].some((id) => id === currentId)
+}
+
+function label(name: string): string {
+  return name.replace(/[-_]+/g, ' ').trim()
+}
+---
+
+{
+  hasChildren && (
+    <ul class='docs-nav-tree' data-depth={depth}>
+      {dirList.map(([name, child]) => {
+        const open = containsActive(child)
+        return (
+          <li>
+            <details open={open} class='docs-nav-dir'>
+              <summary class='docs-nav-label'>
+                <Icon name='chevronRight' class='docs-nav-chevron size-3' />
+                <span class='docs-nav-text'>{label(name)}</span>
+                <span class='docs-nav-count'>{child.docs.length}</span>
+              </summary>
+              <Astro.self node={child} currentId={currentId} depth={depth + 1} />
+            </details>
+          </li>
+        )
+      })}
+      {node.docs.map((doc) => (
+        <li>
+          <a href={`/docs/${doc.id}`} aria-current={doc.id === currentId ? 'page' : undefined}>
+            <Icon name='document' class='size-3 opacity-50' />
+            <span class='docs-nav-text'>{doc.title}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
