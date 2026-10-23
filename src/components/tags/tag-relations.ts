@@ -40,7 +40,7 @@ function buildGraphData(data: GraphData) {
       id: `tag:${data.tag}`,
       label: `#${data.tag}`,
       type: 'current',
-      href: `/tags/${encodeURIComponent(data.tag)}`,
+      href: `/tags/${encodeURIComponent(data.tag)}/`,
       radius: 18
     }
   ]
@@ -63,7 +63,7 @@ function buildGraphData(data: GraphData) {
       id: `tag:${name}`,
       label: `#${name}`,
       type: 'tag',
-      href: `/tags/${encodeURIComponent(name)}`,
+      href: `/tags/${encodeURIComponent(name)}/`,
       radius: Math.min(14, 8 + Math.sqrt(count) * 2)
     })
   })

@@ -133,12 +133,21 @@ function firstParagraph(body) {
   return buf.join(' ')
 }
 
-/** Rewrite VitePress clean URLs to Astro Iris /docs routes. */
+/**
+ * Rewrite VitePress clean URLs to Astro /docs routes.
+ *
+ * Cloudflare Pages canonicalises directory routes to a trailing slash and
+ * answers the bare form with a 308 — one extra round trip per click, which on
+ * a slow edge is seconds. Emit the canonical form so links never redirect.
+ */
 function rewriteLinks(text) {
   return text.replace(/(\]\(\/)([^)\s#?]+)([^)]*\))/g, (full, lead, path, tail) => {
-    if (/^\/docs\//.test(path)) return full
+    if (path === 'docs' || path === 'docs/') return `${lead}docs/${tail}`
+    if (/^\/docs\//.test(path)) {
+      return path.endsWith('/') ? full : `${lead}${path}/${tail}`
+    }
     if (/\.(png|jpe?g|gif|svg|webp|pdf|ico|json|xml|mjs|js|css)$/i.test(path)) return full
-    return `${lead}docs/${path.replace(/^\//, '')}${tail}`
+    return `${lead}docs/${path.replace(/^\//, '')}/${tail}`
   })
 }
 

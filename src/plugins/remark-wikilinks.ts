@@ -52,10 +52,10 @@ function normalizeSlug(slug: string): string {
 }
 
 export const remarkWikilinks: Plugin<[WikilinkOptions?], Root> = function (options = {}) {
-  const { basePath = '/blog', validSlugs } = options
+  const { basePath = '/blog/', validSlugs } = options
 
   return function (tree, file) {
-    const contentBasePath = file.path?.includes('/content/docs/') ? '/docs' : basePath
+    const contentBasePath = file.path?.includes('/content/docs/') ? '/docs/' : basePath
     // Collect wikilinks for backlink processing
     const foundLinks: string[] = []
 

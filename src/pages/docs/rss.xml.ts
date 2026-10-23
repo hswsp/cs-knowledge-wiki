@@ -69,7 +69,7 @@ const GET = async (context: AstroGlobal) => {
     site: import.meta.env.SITE,
     items: await Promise.all(
       allPostsByDate.map(async (post) => ({
-        link: `/docs/${post.id}`,
+        link: `/docs/${post.id}/`,
         content: await renderContent(post, siteUrl),
         ...post.data
       }))

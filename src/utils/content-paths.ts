@@ -21,7 +21,7 @@ export function getPostSlug(post: BlogPost): string {
 }
 
 export function getPostPath(post: BlogPost): string {
-  return `/blog/${getPostSlug(post)}`
+  return `/blog/${getPostSlug(post)}/`
 }
 
 export function getPostSourceId(post: BlogPost): string {

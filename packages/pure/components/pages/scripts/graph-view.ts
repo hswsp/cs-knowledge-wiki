@@ -139,7 +139,7 @@ function buildGraph(index: ContentIndex, currentSlug: string | null, global: boo
       addNode({
         id,
         label: `#${tag}`,
-        href: `/tags/${encodeURIComponent(tag)}`,
+        href: `/tags/${encodeURIComponent(tag)}/`,
         kind: 'tag',
         current: false
       })

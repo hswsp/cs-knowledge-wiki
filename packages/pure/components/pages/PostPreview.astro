@@ -114,7 +114,7 @@ const postDate = data.updatedDate ?? data.publishDate
                 <ul class='tag-list mt-1 flex gap-2'>
                   {data.tags.map((tag: string) => (
                     <li>
-                      <Button as='a' title={tag} href={`/tags/${tag}`} variant='pill' />
+                      <Button as='a' title={tag} href={`/tags/${encodeURIComponent(tag)}/`} variant='pill' />
                     </li>
                   ))}
                 </ul>

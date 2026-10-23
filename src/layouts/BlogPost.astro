@@ -60,7 +60,7 @@ const currentPostSlug = getPostSlug(Astro.props.post)
 <PageLayout
   meta={{ articleDate, description, ogImage: socialImage, title }}
   highlightColor={primaryColor}
-  back='/blog'
+  back='/blog/'
   mode='article'
   graphTarget='#blog-graph-view'
   commentTarget={!isDraft && enableComment && config.integ.giscus?.enable ? '#giscus' : undefined}

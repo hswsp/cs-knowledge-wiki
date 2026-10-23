@@ -163,7 +163,7 @@ function buildGraph(index: ContentIndex, state: GraphState) {
   if (state.scope === 'tags') {
     entries.forEach(([, details]) => {
       details.tags.forEach((tag) =>
-        addNode(`tag:${tag}`, `#${tag}`, `/tags/${encodeURIComponent(tag)}`, 'tag')
+        addNode(`tag:${tag}`, `#${tag}`, `/tags/${encodeURIComponent(tag)}/`, 'tag')
       )
       for (let i = 0; i < details.tags.length; i += 1) {
         for (let j = i + 1; j < details.tags.length; j += 1) {
@@ -177,7 +177,7 @@ function buildGraph(index: ContentIndex, state: GraphState) {
         addNode(
           `category:${category}`,
           category.split('/').at(-1) || category,
-          `/categories/${category}`,
+          `/categories/${category}/`,
           'category'
         )
         const parent = category.split('/').slice(0, -1).join('/')
@@ -185,7 +185,7 @@ function buildGraph(index: ContentIndex, state: GraphState) {
           addNode(
             `category:${parent}`,
             parent.split('/').at(-1) || parent,
-            `/categories/${parent}`,
+            `/categories/${parent}/`,
             'category'
           )
           addEdge(`category:${parent}`, `category:${category}`, 'category', true)
@@ -196,13 +196,13 @@ function buildGraph(index: ContentIndex, state: GraphState) {
     entries.forEach(([slug, details]) => {
       addNode(slug, details.title, `/${slug}`, details.collection)
       details.tags.forEach((tag) =>
-        addNode(`tag:${tag}`, `#${tag}`, `/tags/${encodeURIComponent(tag)}`, 'tag')
+        addNode(`tag:${tag}`, `#${tag}`, `/tags/${encodeURIComponent(tag)}/`, 'tag')
       )
       details.categories.forEach((category) =>
         addNode(
           `category:${category}`,
           category.split('/').at(-1) || category,
-          `/categories/${category}`,
+          `/categories/${category}/`,
           'category'
         )
       )

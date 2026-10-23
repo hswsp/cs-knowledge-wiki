@@ -22,14 +22,14 @@ export const prerender = true
 
 export async function getStaticPaths() {
   const posts = sortMDByDate(await getBlogCollection('docs'))
-  const backlinksMap = await buildBacklinksMap(posts, '/docs')
+  const backlinksMap = await buildBacklinksMap(posts, '/docs/')
 
   return posts.map((post) => ({
     params: { id: post.id },
     props: {
       post,
       backlinks: getBacklinksForPost(backlinksMap, post.id),
-      outgoingLinks: getOutgoingLinks(post, posts, '/docs')
+      outgoingLinks: getOutgoingLinks(post, posts, '/docs/')
     }
   }))
 }
@@ -47,7 +47,7 @@ const { description, title } = post.data
 const editPath = `https://github.com/hswsp/cs-knowledge-wiki/edit/main/docs/${post.id}.md`
 ---
 
-<PageLayout meta={{ description, title }} back='/docs' graphTarget='#docs-graph-view' mode='article'>
+<PageLayout meta={{ description, title }} back='/docs/' graphTarget='#docs-graph-view' mode='article'>
   <Fragment slot='left-sidebar'>
     <DocsNav currentId={post.id} class='block mt-3' />
   </Fragment>

@@ -97,7 +97,7 @@ const meta = {
     />
 
     <nav class='blog-portals animate' aria-label='博客浏览入口'>
-      <a href='/categories'>
+      <a href='/categories/'>
         <span class='portal-icon'><Icon name='package' /></span>
         <span>
           <strong>按分类浏览</strong>
@@ -105,7 +105,7 @@ const meta = {
         </span>
         <span class='portal-arrow'>↗</span>
       </a>
-      <a href='/tags'>
+      <a href='/tags/'>
         <span class='portal-icon'><Icon name='hashtag' /></span>
         <span>
           <strong>沿标签发现</strong>
@@ -113,7 +113,7 @@ const meta = {
         </span>
         <span class='portal-arrow'>↗</span>
       </a>
-      <a href='/archives'>
+      <a href='/archives/'>
         <span class='portal-icon'><Icon name='time' /></span>
         <span>
           <strong>进入时光机</strong>
@@ -207,7 +207,7 @@ const meta = {
                           <ul class='post-card__tags' aria-label='文章标签'>
                             {post.data.tags.slice(0, 3).map((tag) => (
                               <li>
-                                <a href={`/tags/${encodeURIComponent(tag)}`}>#{tag}</a>
+                                <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
                               </li>
                             ))}
                           </ul>
@@ -256,7 +256,7 @@ const meta = {
               <ul>
                 {categories.slice(0, 5).map((category) => (
                   <li>
-                    <a href={`/categories/${category.path}`}>
+                    <a href={`/categories/${category.path}/`}>
                       <span>{category.title}</span>
                       <small>{category.count}</small>
                     </a>
@@ -272,7 +272,7 @@ const meta = {
               <ul class='tag-cloud'>
                 {tags.map(([tag, count]) => (
                   <li>
-                    <a href={`/tags/${encodeURIComponent(tag)}`}>
+                    <a href={`/tags/${encodeURIComponent(tag)}/`}>
                       <span>#{tag}</span>
                       <small>{count}</small>
                     </a>

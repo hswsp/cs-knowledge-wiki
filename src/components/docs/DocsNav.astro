@@ -8,7 +8,7 @@ import { getBlogCollection } from 'astro-pure/server'
 import { Icon } from 'astro-pure/user'
 import { cn } from 'astro-pure/utils'
 import CategoryTree from './CategoryTree.astro'
-import { buildCategoryTree, type DocEntry } from '@/utils/docs-categories'
+import { buildCategoryTree, type DocEntry , categoryHref } from '@/utils/docs-categories'
 
 export const prerender = true
 export const partial = true
@@ -33,7 +33,7 @@ const sectionNode = currentSection ? nodes.get(currentSection) : undefined
       <>
         <a
           class='docs-nav-home'
-          href={`/categories/${sectionNode.path}`}
+          href={categoryHref(sectionNode.path)}
           aria-current={currentId === `${sectionNode.path}/index` ? 'page' : undefined}
         >
           <Icon name='home' class='size-4' />
@@ -43,7 +43,7 @@ const sectionNode = currentSection ? nodes.get(currentSection) : undefined
         <CategoryTree node={sectionNode} nodes={nodes} currentId={currentId} depth={0} />
       </>
     ) : (
-      <a class='docs-nav-home' href='/categories'>
+      <a class='docs-nav-home' href='/categories/'>
         <Icon name='list' class='size-4' />
         <span>全部分类</span>
       </a>

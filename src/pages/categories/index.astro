@@ -12,7 +12,8 @@ import {
   buildCategoryTree,
   categoryDesc,
   topLevelCategories,
-  type DocEntry
+  type DocEntry,
+  categoryHref
 } from '@/utils/docs-categories'
 
 export const prerender = true
@@ -46,7 +47,7 @@ const meta = {
       {
         tops.map((node) => (
           <a
-            href={`/categories/${node.path}`}
+            href={categoryHref(node.path)}
             class='group relative flex flex-col gap-2 rounded-2xl border bg-background/50 p-6 no-underline shadow-sm transition-all hover:border-primary/50 hover:shadow-md'
           >
             <div class='flex items-baseline gap-x-3'>

@@ -57,7 +57,7 @@ const normalizePath = (value = '') =>
     .join('/')
 
 const categoryUrl = (path: string) =>
-  path ? `/categories/${path.split('/').map(encodeURIComponent).join('/')}` : '/categories'
+  path ? `/categories/${path.split('/').map(encodeURIComponent).join('/')}/` : '/categories/'
 
 const entryUrl = (entry: ContentEntry) => `/${entry.slug.replace(/^\/+/, '')}`
 
@@ -475,7 +475,7 @@ const initialize = () => {
       cloud.className = 'tag-cloud'
       for (const value of items.slice(0, 12)) {
         const chip = document.createElement('a')
-        chip.href = type === 'tag' ? `/tags/${encodeURIComponent(value)}` : value
+        chip.href = type === 'tag' ? `/tags/${encodeURIComponent(value)}/` : value
         chip.textContent = type === 'tag' ? `#${value}` : value
         cloud.append(chip)
       }

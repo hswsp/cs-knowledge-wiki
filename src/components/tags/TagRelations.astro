@@ -48,7 +48,7 @@ const graphData = JSON.stringify({ tag, relatedTags, posts }).replace(/</g, '\\u
       <ul class='tag-relations__list'>
         {relatedTags.map(({ name, count }) => (
           <li>
-            <a href={`/tags/${encodeURIComponent(name)}`} data-astro-prefetch>
+            <a href={`/tags/${encodeURIComponent(name)}/`} data-astro-prefetch>
               <span class='tag-relations__name'>
                 <span aria-hidden='true'>#</span>
                 {name}

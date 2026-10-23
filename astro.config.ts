@@ -8,7 +8,6 @@ import mermaid from 'astro-mermaid'
 // Local integrations
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
 import remarkRemoteImages from './src/plugins/remark-remote-images.ts'
-import remarkWikilinks from './src/plugins/remark-wikilinks.ts'
 // Shiki
 import {
   addCollapse,
@@ -34,7 +33,7 @@ export default defineConfig({
   // Deploy to a sub path
   // https://astro-pure.js.org/docs/setup/deployment#platform-with-base-path
   // base: '/astro-pure/',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
   // root: './my-project-directory',
   server: { host: true },
   // https://docs.astro.build/en/guides/prefetch/
@@ -83,8 +82,9 @@ export default defineConfig({
       remarkMath,
       // Must run before Astro's image optimisation: remote CDN images are left
       // as plain <img> so the build does not download ~8k files.
-      remarkRemoteImages,
-      [remarkWikilinks, { basePath: '/blog' }]
+      remarkRemoteImages
+      // 未启用 remarkWikilinks：本库没有 [[wikilink]] 写法，而它会把正文里的
+      // 嵌套数组（如 [[1, 3, 5], [0, 2]]）和引用标记误判成链接。
     ],
     rehypePlugins: [
       [rehypeKatex, {}],

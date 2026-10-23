@@ -9,7 +9,7 @@ import type { GetStaticPaths } from 'astro'
 
 import { getBlogCollection } from 'astro-pure/server'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import { buildCategoryTree, categoryLabel, docHref, type DocEntry } from '@/utils/docs-categories'
+import { buildCategoryTree, categoryLabel, docHref, type DocEntry , categoryHref } from '@/utils/docs-categories'
 
 export const prerender = true
 
@@ -43,7 +43,7 @@ const meta = {
 <PageLayout {meta}>
   <main class='mt-6 lg:mt-10 w-full max-w-5xl mx-auto px-4 pb-20'>
     <nav class='mb-6 flex flex-wrap items-center gap-2 text-sm text-muted-foreground'>
-      <a class='no-underline hover:text-primary' href='/categories'>分类</a>
+      <a class='no-underline hover:text-primary' href='/categories/'>分类</a>
       {
         breadcrumbs.map((crumb, index) => (
           <>
@@ -51,7 +51,7 @@ const meta = {
             {index === breadcrumbs.length - 1 ? (
               <span class='text-foreground'>{crumb.label}</span>
             ) : (
-              <a class='no-underline hover:text-primary' href={`/categories/${crumb.path}`}>
+              <a class='no-underline hover:text-primary' href={categoryHref(crumb.path)}>
                 {crumb.label}
               </a>
             )}
@@ -82,7 +82,7 @@ const meta = {
               return (
                 <a
                   class='group flex flex-col gap-1 rounded-xl border bg-background/50 p-5 no-underline shadow-sm transition-all hover:border-primary/50 hover:shadow-md'
-                  href={`/categories/${childNode.path}`}
+                  href={categoryHref(childNode.path)}
                 >
                   <div class='flex items-baseline gap-3'>
                     <span class='font-medium text-foreground group-hover:text-primary'>

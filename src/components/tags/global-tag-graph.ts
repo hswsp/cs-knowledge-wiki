@@ -100,12 +100,12 @@ async function renderGlobalTagGraph(root: HTMLElement, data: GraphData) {
       .attr('aria-label', (item) => `${item.label}, ${item.count} posts`)
       .style('cursor', 'pointer')
       .on('click', (_event, item) => {
-        window.location.href = `/tags/${encodeURIComponent(item.id)}`
+        window.location.href = `/tags/${encodeURIComponent(item.id)}/`
       })
       .on('keydown', (event: KeyboardEvent, item) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault()
-          window.location.href = `/tags/${encodeURIComponent(item.id)}`
+          window.location.href = `/tags/${encodeURIComponent(item.id)}/`
         }
       })
 

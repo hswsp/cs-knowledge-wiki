@@ -16,13 +16,13 @@ const categories = getPostCategorySegments(post)
   categories.length > 0 && (
     <nav class='category-breadcrumbs' aria-label='Article category'>
       <Icon name='package' class='size-4' />
-      <a href='/categories' data-astro-prefetch>
+      <a href='/categories/' data-astro-prefetch>
         分类
       </a>
       {categories.map((category) => (
         <>
           <span aria-hidden='true'>/</span>
-          <a href={`/categories/${category.path}`} data-astro-prefetch>
+          <a href={`/categories/${category.path}/`} data-astro-prefetch>
             {getCategoryLabel(category.name)}
           </a>
         </>

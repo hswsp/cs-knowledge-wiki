@@ -115,7 +115,12 @@ export function categoryDesc(path: string): string {
 }
 
 export function docHref(doc: DocEntry): string {
-  return `/docs/${doc.id}`
+  return `/docs/${doc.id}/`
+}
+
+/** 分类 URL：路径里的空格、& 等必须编码，否则浏览器会截断。 */
+export function categoryHref(path: string): string {
+  return `/categories/${path.split('/').filter(Boolean).map(encodeURIComponent).join('/')}/`
 }
 
 export type CategoryNode = {

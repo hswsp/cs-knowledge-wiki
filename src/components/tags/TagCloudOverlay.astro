@@ -28,7 +28,7 @@ const maxTagCount = Math.max(...allTags.map(([, count]) => count), 1)
           const opacity = 0.6 + ratio * 0.4;
           return (
             <a 
-              href={`/tags/${encodeURIComponent(tag)}`} 
+              href={`/tags/${encodeURIComponent(tag)}/`} 
               class='tag-cloud-item'
               style={`--tag-size: ${size}rem; --tag-opacity: ${opacity};`}
             >

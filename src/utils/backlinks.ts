@@ -68,6 +68,15 @@ function getPostContent(post: PostLike): string {
 /**
  * Normalize a slug/id for comparison
  */
+/** 内容页 URL：拼接时去掉多余的斜杠，并按 trailingSlash: 'always' 补尾斜杠。 */
+function contentUrl(basePath: string, post: { id: string }): string {
+  const base = basePath.replace(/\/+$/, '')
+  const slug = (base === '/docs' ? normalizeId(post.id) : getCanonicalSlug(post))
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '')
+  return `${base}/${slug}/`
+}
+
 function normalizeId(id: string): string {
   return id
     .toLowerCase()
@@ -223,7 +232,7 @@ function escapeRegex(str: string): string {
  */
 export async function buildBacklinksMap(
   posts: PostLike[],
-  basePath: string = '/blog'
+  basePath: string = '/blog/'
 ): Promise<BacklinksMap> {
   const backlinksMap: BacklinksMap = {}
 
@@ -264,7 +273,7 @@ export async function buildBacklinksMap(
             id: sourceId,
             title: post.data.title,
             context: getContextSnippet(content, targetSlug),
-            url: `${basePath}/${basePath === '/docs' ? normalizeId(post.id) : getCanonicalSlug(post)}`,
+            url: contentUrl(basePath, post),
             date: post.data.publishDate
           })
         }
@@ -289,7 +298,7 @@ export function getBacklinksForPost(backlinksMap: BacklinksMap, postId: string):
 export function getOutgoingLinks(
   post: PostLike,
   posts: PostLike[],
-  basePath: string = '/blog'
+  basePath: string = '/blog/'
 ): Backlink[] {
   const content = getPostContent(post)
   const links = extractLinksFromContent(content, basePath)
@@ -310,9 +319,7 @@ export function getOutgoingLinks(
       outgoing.push({
         id: targetSlug,
         title: targetPost.data.title,
-        url: `${basePath}/${
-          basePath === '/docs' ? normalizeId(targetPost.id) : getCanonicalSlug(targetPost)
-        }`,
+        url: contentUrl(basePath, targetPost),
         date: targetPost.data.publishDate
       })
     }

@@ -47,7 +47,7 @@ const formatDate = (date: Date) =>
   </div>
 
   <div class='action-pill-group'>
-    <a href='/blog' class='action-pill' title='返回博客首页'>
+    <a href='/blog/' class='action-pill' title='返回博客首页'>
       <Icon name='document' />
       <span>首页</span>
     </a>
@@ -85,7 +85,7 @@ const formatDate = (date: Date) =>
           <span class='rail-details__label'>文章分类</span>
           <div class='category-links'>
             {categories.map((category) => (
-              <a href={`/categories/${category.path}`}>{getCategoryLabel(category.name)}</a>
+              <a href={`/categories/${category.path}/`}>{getCategoryLabel(category.name)}</a>
             ))}
           </div>
         </div>

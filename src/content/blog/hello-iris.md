@@ -5,7 +5,7 @@ publishDate: 2026-10-23
 tags: [astro, meta]
 ---
 
-知识库主体已经迁移到 Astro Iris，文档入口在 [/docs](/docs)。
+知识库主体已经迁移到 Astro Iris，文档入口在 [/docs](/docs/)。
 
 迁移要点：
 

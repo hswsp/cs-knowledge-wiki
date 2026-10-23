@@ -56,7 +56,7 @@ function label(name: string): string {
       })}
       {node.docs.map((doc) => (
         <li>
-          <a href={`/docs/${doc.id}`} aria-current={doc.id === currentId ? 'page' : undefined}>
+          <a href={`/docs/${doc.id}/`} aria-current={doc.id === currentId ? 'page' : undefined}>
             <Icon name='document' class='size-3 opacity-50' />
             <span class='docs-nav-text'>{doc.title}</span>
           </a>

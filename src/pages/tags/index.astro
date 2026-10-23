@@ -46,7 +46,7 @@ const meta = { title: '标签', description: '知识库标签索引' }
         tags.map((tag) => (
           <a
             class='inline-flex items-center gap-2 rounded-full border bg-background/50 px-3.5 py-1.5 text-sm text-foreground/80 no-underline transition-colors hover:border-primary/50 hover:text-primary'
-            href={`/tags/${tag.name}`}
+            href={`/tags/${encodeURIComponent(tag.name)}/`}
           >
             <span>{tag.label}</span>
             <span class='text-xs tabular-nums text-muted-foreground'>{tag.count}</span>
