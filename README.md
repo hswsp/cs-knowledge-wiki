@@ -35,7 +35,34 @@ npm run preview      # 预览构建结果
 - **VitePress**：输出相对于内容根目录 `docs/`，即 `docs/.vitepress/dist`
 - **Astro**：默认输出仓库根目录下的 `dist/`（`astro.config.ts` 里没有设置 `outDir`）
 
-Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24）。如果 Cloudflare 项目里显式设了 `NODE_VERSION` 环境变量，它会覆盖 `.nvmrc`，需要一并修改或删除。
+### Node 版本（也是项目级设置，同样要跟着分支改）
+
+Cloudflare 决定 Node 版本的优先级，从高到低：
+
+| 来源 | 优先级 | 说明 |
+| --- | --- | --- |
+| 环境变量 `NODE_VERSION` | **最高** | Pages 项目 → Settings → Environment variables，Production 和 Preview **各有一份** |
+| 仓库里的 `.nvmrc` | 次之 | 两个分支都有，但会被上面的环境变量覆盖 |
+| `package.json` 的 `engines` | **完全不读** | Cloudflare v3 构建镜像明确不支持从 engines 检测版本，它只影响本地 `npm install` 的警告 |
+| 构建镜像默认值 | 最低 | v3 = 22.16.0，v2 = 18.17.1，v1 = 12.18.0 |
+
+两个分支的取值：
+
+| 分支 | `.nvmrc` | `NODE_VERSION` 应设为 | 为什么 |
+| --- | --- | --- | --- |
+| `main` | `20` | `20` | VitePress 只要求 Node ≥ 20 |
+| `astro-iris` | `24` | **`24`** | Astro 6 要求 Node ≥ 22.12.0，低于此版本会直接拒绝启动 |
+
+版本不匹配时 Astro 会明确报错，很容易识别：
+
+```
+Node.js v20.20.0 is not supported by Astro!
+Please upgrade Node.js to a supported version: ">=22.12.0"
+```
+
+> ⚠️ **不要图省事直接删掉 `NODE_VERSION`**。删掉后会回落到构建镜像的默认版本：v3 镜像是 22.16.0（够用），但如果项目还在 v2 镜像（默认 18.17.1）就会失败。显式写死版本最稳妥。
+>
+> ⚠️ **`NODE_VERSION` 要改两处**：Production 和 Preview 是两个独立的环境变量集合。分支预览部署（如 `astro-iris`）读的是 Preview 那一份，只改 Production 不会生效。
 
 ### 在 Cloudflare 上切到 Astro
 
@@ -44,7 +71,7 @@ Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24
 - **Build command**: `npm run build`
 - **Build output directory**: `dist`
 - **Framework preset**: `None`（务必不要选框架预设，否则 Cloudflare 会覆盖构建命令）
-- **NODE_VERSION**: 删除该环境变量，或设为 `24`
+- **NODE_VERSION**: 设为 `24`（Production 与 Preview 各一份都要改；不要直接删，理由见上一节）
 
 ### 注意
 
