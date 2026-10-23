@@ -17,10 +17,23 @@ npm run preview      # 预览构建结果
 
 本仓库有两个构建体系并存。Cloudflare Pages 的**构建命令和输出目录是项目级设置**（Settings → Build & deployments → Build configuration），不分分支，所以切换分支时**两项必须成对修改**：
 
-| 分支 | 构建工具 | 构建命令 | 输出目录 | Node 版本 |
+| 分支 | 构建工具 | **Build command** | **Build output directory** | Node 版本 |
 | --- | --- | --- | --- | --- |
 | `main` | VitePress | `npm run docs:build` | `docs/.vitepress/dist` | 20+ |
 | `astro-iris` | Astro | `npm run build` | `dist` | 22.12+ |
+
+**这两项是一对，必须同时改。** 只改一半的后果：
+
+| 只改了什么 | 结果 |
+| --- | --- |
+| 只改 Build command，输出目录仍是 `docs/.vitepress/dist` | 构建会「成功」，但 Cloudflare 在 `docs/.vitepress/dist` 里找不到文件，报 `No build output directory found`，或者部署出一个空站 |
+| 只改输出目录，命令仍是 `npm run docs:build` | 该脚本在 Astro 分支不存在（除非用下面的兼容模式），构建直接失败：`Missing script: "docs:build"` |
+| 两项都改 | ✓ 正常构建并部署 |
+
+为什么两个目录不一样——是各自工具的默认值，本项目都没有改：
+
+- **VitePress**：输出相对于内容根目录 `docs/`，即 `docs/.vitepress/dist`
+- **Astro**：默认输出仓库根目录下的 `dist/`（`astro.config.ts` 里没有设置 `outDir`）
 
 Node 版本由仓库里的 `.nvmrc` 决定（`main` 是 20，`astro-iris` 是 24）。如果 Cloudflare 项目里显式设了 `NODE_VERSION` 环境变量，它会覆盖 `.nvmrc`，需要一并修改或删除。
 
