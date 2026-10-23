@@ -106,6 +106,7 @@ npm run assets       # 重新铺开被引用的图片
 - `==高亮==` → `<mark>`
 - 站内绝对链接 `/foo` → `/docs/foo`
 - 相对图片 `asset/x.png` → `/docassets/...`
+- `docs/about/index.md` **不进知识库**，而是生成为站点自己的 `/about` 页面（`src/pages/about/index.md`，用 Iris 的 `IndividualPage` 布局）
 
 ## 说明
 

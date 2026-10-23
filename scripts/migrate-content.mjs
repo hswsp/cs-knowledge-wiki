@@ -242,7 +242,37 @@ function buildOrderMap() {
 const orderMap = buildOrderMap()
 
 // VitePress home page is replaced by the Astro index page.
-const files = allFiles.filter((f) => relative(SRC, f).replace(/\.md$/i, '') !== 'index')
+// `about/` is not a knowledge-base section: it becomes the site's own /about page.
+const files = allFiles.filter((f) => {
+  const rel = relative(SRC, f).replace(/\.md$/i, '')
+  return rel !== 'index' && !rel.startsWith('about/')
+})
+
+/** Render docs/about/index.md as the standalone /about page. */
+function emitAboutPage() {
+  const src = join(SRC, 'about', 'index.md')
+  if (!existsSync(src)) return null
+  const raw = readFileSync(src, 'utf8')
+  const { data, body } = splitFrontmatter(raw)
+  // The layout prints frontmatter.title, so drop the duplicated leading H1.
+  const bodyWithoutH1 = body.replace(/^\s*#\s+.*(\r?\n)+/, '')
+  const title = clip(cleanTitle(data.title || firstHeading(body) || '关于'), TITLE_MAX)
+  const description = clip(cleanTitle(data.description || plain(firstParagraph(body))), DESC_MAX)
+  const fm = [
+    '---',
+    "layout: '@/layouts/IndividualPage.astro'",
+    '',
+    `title: ${yamlQuote(title)}`,
+    `description: ${yamlQuote(description)}`,
+    "language: '中文'",
+    '---',
+    ''
+  ].join('\n')
+  const out = join(ROOT, 'src', 'pages', 'about', 'index.md')
+  mkdirSync(dirname(out), { recursive: true })
+  writeFileSync(out, fm + transformBody(bodyWithoutH1, 'about/index.md').trimEnd() + '\n', 'utf8')
+  return relative(ROOT, out)
+}
 if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true })
 mkdirSync(OUT, { recursive: true })
 
@@ -301,7 +331,9 @@ for (const file of files) {
   report.push({ file: rel, title, descriptionLen: description.length })
 }
 
+const aboutPage = emitAboutPage()
 console.log(`migrated ${files.length} files -> ${relative(ROOT, OUT)}`)
+console.log(`about page: ${aboutPage ?? 'skipped (docs/about/index.md not found)'}`)
 console.log(`synthesized descriptions: ${synthesized}`)
 console.log(`empty descriptions: ${missingDesc}`)
 console.log('longest titles:', report.map((r) => `${r.title.length}:${r.title}`).sort((a, b) => parseInt(b) - parseInt(a)).slice(0, 3))

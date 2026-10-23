@@ -18,7 +18,6 @@ export const SECTION_META: Record<string, SectionMeta> = {
   csapp: { title: '计算机系统', icon: 'cpu', desc: 'Linux、内存、文件系统、进程调度' },
   security: { title: '信息安全', icon: 'lock', desc: '加密、认证、安全协议、漏洞分析' },
   rust: { title: 'Rust', icon: 'wrench', desc: '所有权、并发、异步与工程实践' },
-  about: { title: '关于', icon: 'person', desc: '了解作者，欢迎交流' },
   en: { title: 'English', icon: 'globe', desc: 'English notes and translations' }
 }
 
@@ -35,8 +34,7 @@ export const SECTION_ORDER = [
   'csapp',
   'security',
   'rust',
-  'en',
-  'about'
+  'en'
 ]
 
 export function sectionMeta(section: string): SectionMeta {

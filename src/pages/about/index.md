@@ -1,12 +1,10 @@
 ---
+layout: '@/layouts/IndividualPage.astro'
+
 title: "关于我"
 description: "My name is Champagne. I'm a full-time full stack engineer and part-time photographer."
-tags: ["about"]
-order: 999
-draft: false
+language: '中文'
 ---
-# 关于我
-
 > A full-time full stack engineer and part-time photographer.
 
 ## Motto
