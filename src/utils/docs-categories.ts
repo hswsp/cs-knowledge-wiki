@@ -252,7 +252,8 @@ function buildPlacement(): Map<string, string[]> {
       // 有文章的组：链接另起一个同级「资源」页；只有链接的组：它自己就是资源页
       const hasDocs = group.docs.length > 0 || Boolean(columnKey)
       const suffix = /[A-Za-z0-9]$/.test(title) ? ' 资源' : '资源'
-      const key = hasDocs ? [...base, `${title}${suffix}`].join('/') : here.join('/')
+      // 资源页挂在该分组自己的分类下面，而不是和它并排
+      const key = hasDocs ? [...here, `${title}${suffix}`].join('/') : here.join('/')
       const bucket = EXTERNAL_LINKS.get(key) ?? []
       bucket.push(...group.links)
       EXTERNAL_LINKS.set(key, bucket)
