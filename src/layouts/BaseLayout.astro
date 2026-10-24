@@ -11,6 +11,8 @@ import config from '@/site-config'
 
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseLayout /> component.
+// KaTeX 样式：没有它，公式的 MathML 与 HTML 两套结构会同时可见，表现为乱码
+import 'katex/dist/katex.min.css'
 import '@/assets/styles/global.css'
 import '@/assets/styles/app.css'
 
