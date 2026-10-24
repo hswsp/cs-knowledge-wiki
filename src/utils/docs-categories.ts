@@ -218,6 +218,26 @@ function touchNode(path: string) {
   if (!NODE_ORDER.has(path)) NODE_ORDER.set(path, orderCursor++)
 }
 
+/**
+ * 专栏前缀 -> 它在学科根分组下的父路径。
+ *
+ * 例：ml 的「AI Infra」分组里链接了 [AI Infra 入门到前沿](./ai-infra/)，
+ * 那 ai-infra 这个专栏就应该挂在 ml/AI Infra 之下，和资源页并列。
+ */
+const COLUMN_PARENT = (() => {
+  const map = new Map<string, string[]>()
+  for (const [key, groups] of Object.entries(NAV)) {
+    if (key.includes('/')) continue
+    for (const group of groups) {
+      const column = group.docs
+        .map((d) => d.file.replace(/\/index\.md$/, ''))
+        .find((fp) => NAV[fp] !== undefined)
+      if (column) map.set(column, [key, seg(cleanTitle(group.title))])
+    }
+  }
+  return map
+})()
+
 /** 建立 文件路径 -> 所属分类路径 的映射，优先用侧边栏分组（含嵌套）。 */
 function buildPlacement(): Map<string, string[]> {
   const placement = new Map<string, string[]>()
@@ -235,22 +255,11 @@ function buildPlacement(): Map<string, string[]> {
     const sameAsColumn = base.length > 1 && title === SUBKEY_LABELS.get(base.join('/'))
     const isGeneric =
       !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title) || sameAsColumn
-    // 如果这个分组里有一篇正好是某个专栏的 index（如 ml 的「AI Infra」分组里
-    // 只有 [AI Infra 入门到前沿](./ai-infra/)），那它就是该专栏的入口，
-    // 外链和文章都应归到专栏本身，不要另起一个同名分类。
-    const columnKey = group.docs
-      .map((d) => d.file.replace(/\/index\.md$/, ''))
-      .find((fp) => NAV[fp] !== undefined)
-
-    const here = columnKey
-      ? columnKey.split('/')
-      : isGeneric
-        ? base
-        : [...base, seg(title)]
-    if (!isGeneric || columnKey) touchNode(here.join('/'))
+    const here = isGeneric ? base : [...base, seg(title)]
+    if (!isGeneric) touchNode(here.join('/'))
     if (group.links?.length) {
       // 有文章的组：链接另起一个同级「资源」页；只有链接的组：它自己就是资源页
-      const hasDocs = group.docs.length > 0 || Boolean(columnKey)
+      const hasDocs = group.docs.length > 0
       const suffix = /[A-Za-z0-9]$/.test(title) ? ' 资源' : '资源'
       // 资源页挂在该分组自己的分类下面，而不是和它并排
       const key = hasDocs ? [...here, `${title}${suffix}`].join('/') : here.join('/')
@@ -269,8 +278,14 @@ function buildPlacement(): Map<string, string[]> {
   for (const [key, groups] of Object.entries(NAV)) {
     const keySegments = key.split('/')
     const section = keySegments[0]
-    // 路径必须用原始 key，显示名只用于 label；混用会让同一批文章被拆成两个分类
-    const base = keySegments.length === 1 ? [section] : keySegments
+    // 路径必须用原始 key，显示名只用于 label；混用会让同一批文章被拆成两个分类。
+    // 若该专栏被学科根分组引用（如 ml 的 AI Infra），则挂到那个分组下。
+    const base =
+      keySegments.length === 1
+        ? [section]
+        : (COLUMN_PARENT.get(key) ?? keySegments).concat(
+            COLUMN_PARENT.has(key) ? [SUBKEY_LABELS.get(key) ?? dirLabel(keySegments.at(-1)!)] : []
+          )
     for (const group of groups) walk(group, base)
   }
 
