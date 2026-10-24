@@ -227,6 +227,10 @@ function normalizeItems(items, acc = []) {
  * 学科 index.md 里有一些分组整组都是外链（如 ml 的「AI应用」、system-design
  * 的「系统设计」），它们是精选文章集的入口，不能因为不是本地文件就丢掉。
  */
+// 侧边栏出现顺序：同一文件只记第一次出现的位置
+const seqOf = new Map()
+let seqCursor = 0
+
 function normalizeGroup(group) {
   const docs = []
   const links = []
@@ -243,7 +247,10 @@ function normalizeGroup(group) {
       continue
     }
     const file = toDocFile(item.link)
-    if (file) docs.push({ title: item.text ?? file, file })
+    if (file) {
+      if (!seqOf.has(file)) seqOf.set(file, seqCursor++)
+      docs.push({ title: item.text ?? file, file, seq: seqOf.get(file) })
+    }
   }
   return {
     title: group.text ?? '',

@@ -432,6 +432,28 @@ function buildSidebarTitles() {
 
 const sidebarTitles = buildSidebarTitles()
 
+/** 侧边栏顺序：文件 -> 序号。VitePress 的显示顺序由侧边栏定义，不是字母序。 */
+function buildSidebarSeq() {
+  const map = new Map()
+  const navPath = join(ROOT, 'src', 'data', 'docs-nav.json')
+  if (!existsSync(navPath)) return map
+  try {
+    const nav = JSON.parse(readFileSync(navPath, 'utf8'))
+    const walk = (group) => {
+      for (const doc of group.docs ?? []) {
+        if (typeof doc.seq === 'number' && !map.has(doc.file)) map.set(doc.file, doc.seq)
+      }
+      for (const child of group.children ?? []) walk(child)
+    }
+    for (const groups of Object.values(nav)) for (const g of groups) walk(g)
+  } catch {
+    // 读不到就退回 index.md 的顺序
+  }
+  return map
+}
+
+const sidebarSeq = buildSidebarSeq()
+
 /** 导航专用文字不能当文章标题 */
 const NAV_ONLY_TITLE = /^(概览|目录|←.*|进入.*|.*→)$/
 
@@ -557,7 +579,8 @@ for (const file of files) {
   tags = [...new Set(tags.map((t) => String(t).toLowerCase()))]
 
   const relId = rel.replace(/\.md$/i, '')
-  const order = orderMap.get(relId) ?? (Number.isFinite(Number(data.order)) ? Number(data.order) : 999)
+  const order =
+    sidebarSeq.get(rel) ?? orderMap.get(relId) ?? (Number.isFinite(Number(data.order)) ? Number(data.order) : 999)
 
   // Normalise index files to a stable id (dir/index) — the nav treats them as section landings.
   const outRel = rel
