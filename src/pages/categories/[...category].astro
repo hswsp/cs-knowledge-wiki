@@ -89,7 +89,7 @@ const meta = {
                       {childNode.label}
                     </span>
                     <span class='ml-auto text-xs tabular-nums text-muted-foreground'>
-                      {childNode.total} 篇
+                      {childNode.total > 0 ? `${childNode.total} 篇` : `${childNode.links.length} 个链接`}
                     </span>
                   </div>
                   {childNode.children.length > 0 && (
@@ -129,7 +129,33 @@ const meta = {
     }
 
     {
-      node.children.length === 0 && node.docs.length === 0 && (
+      node.links.length > 0 && (
+        <section class='mt-10'>
+          <h2 class='mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground'>
+            站外资源
+          </h2>
+          <ul class='flex list-none flex-col gap-1 p-0'>
+            {node.links.map((link) => (
+              <li>
+                <a
+                  class='flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/80 no-underline transition-colors hover:bg-muted/60 hover:text-primary'
+                  href={link.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <span class='size-1.5 shrink-0 rounded-full bg-primary/40' />
+                  <span class='line-clamp-2'>{link.title}</span>
+                  <span class='ml-auto text-xs text-muted-foreground'>↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      node.children.length === 0 && node.docs.length === 0 && node.links.length === 0 && (
         <p class='text-sm text-muted-foreground'>这个分类下暂时没有内容。</p>
       )
     }

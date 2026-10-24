@@ -54,7 +54,9 @@ const meta = {
               <h2 class='text-lg font-semibold text-foreground group-hover:text-primary'>
                 {node.label}
               </h2>
-              <span class='ml-auto text-xs tabular-nums text-muted-foreground'>{node.total} 篇</span>
+              <span class='ml-auto text-xs tabular-nums text-muted-foreground'>
+                {node.total > 0 ? `${node.total} 篇` : `${node.links.length} 个链接`}
+              </span>
             </div>
             <p class='text-sm text-muted-foreground line-clamp-2'>
               {categoryDesc(node.path) || `${node.children.length} 个分类`}

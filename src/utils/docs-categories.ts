@@ -17,7 +17,8 @@ import { SECTION_META } from '@/utils/sections'
 export type DocEntry = CollectionEntry<'docs'>
 
 type NavDoc = { title: string; file: string }
-type NavGroup = { title: string; docs: NavDoc[]; children?: NavGroup[] }
+export type NavLink = { title: string; href: string }
+type NavGroup = { title: string; docs: NavDoc[]; links?: NavLink[]; children?: NavGroup[] }
 type NavMap = Record<string, NavGroup[]>
 
 const NAV = navData as unknown as NavMap
@@ -140,6 +141,8 @@ export type CategoryNode = {
   desc: string
   depth: number
   docs: DocEntry[]
+  /** 分组里指向站外的精选文章链接 */
+  links: NavLink[]
   children: string[]
   total: number
 }
@@ -211,6 +214,9 @@ const SUBKEY_LABELS = subKeyLabels()
 
 
 /** 分类节点在侧边栏里的出现顺序，用于排序（中文数字标题按字母排会乱）。 */
+/** 分类路径 -> 该分类下的外部链接 */
+const EXTERNAL_LINKS = new Map<string, NavLink[]>()
+
 const NODE_ORDER = new Map<string, number>()
 let orderCursor = 0
 function touchNode(path: string) {
@@ -234,8 +240,26 @@ function buildPlacement(): Map<string, string[]> {
     const sameAsColumn = base.length > 1 && title === SUBKEY_LABELS.get(base.join('/'))
     const isGeneric =
       !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title) || sameAsColumn
-    const here = isGeneric ? base : [...base, seg(title)]
-    if (!isGeneric) touchNode(here.join('/'))
+    // 如果这个分组里有一篇正好是某个专栏的 index（如 ml 的「AI Infra」分组里
+    // 只有 [AI Infra 入门到前沿](./ai-infra/)），那它就是该专栏的入口，
+    // 外链和文章都应归到专栏本身，不要另起一个同名分类。
+    const columnKey = group.docs
+      .map((d) => d.file.replace(/\/index\.md$/, ''))
+      .find((fp) => NAV[fp] !== undefined)
+
+    const here = columnKey
+      ? columnKey.split('/')
+      : isGeneric
+        ? base
+        : [...base, seg(title)]
+    if (!isGeneric || columnKey) touchNode(here.join('/'))
+    if (group.links?.length) {
+      const key = here.join('/')
+      const bucket = EXTERNAL_LINKS.get(key) ?? []
+      bucket.push(...group.links)
+      EXTERNAL_LINKS.set(key, bucket)
+      touchNode(key)
+    }
     for (const doc of group.docs) {
       if (NAV_ONLY.test(doc.title)) continue
       setPath(doc.file, here)
@@ -269,6 +293,7 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
       desc: categoryDesc(path),
       depth: segments.length,
       docs: [],
+      links: [],
       children: [],
       total: 0
     }
@@ -298,6 +323,10 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
     // 归入「未分组」而不是让它在学科页显示成「本层文章」。
     if (path.split('/').length === 1) path = `${path}/未分组`
     ensure(path).docs.push(doc)
+  }
+
+  for (const [path, links] of EXTERNAL_LINKS) {
+    ensure(path).links = links
   }
 
   const computeTotal = (node: CategoryNode): number => {

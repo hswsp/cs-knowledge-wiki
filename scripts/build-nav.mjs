@@ -221,26 +221,42 @@ function normalizeItems(items, acc = []) {
   return acc
 }
 
-/** 保留嵌套分组：分组下可能还有 `###` 子分组。 */
+/**
+ * 保留嵌套分组，并且**保留外部链接**。
+ *
+ * 学科 index.md 里有一些分组整组都是外链（如 ml 的「AI应用」、system-design
+ * 的「系统设计」），它们是精选文章集的入口，不能因为不是本地文件就丢掉。
+ */
 function normalizeGroup(group) {
   const docs = []
+  const links = []
   const children = []
   for (const item of group.items ?? []) {
     if (!item || typeof item !== 'object') continue
     if (Array.isArray(item.items) && item.items.length) {
       children.push(normalizeGroup({ text: item.text, items: item.items }))
-    } else if (item.link) {
-      const file = toDocFile(item.link)
-      if (file) docs.push({ title: item.text ?? file, file })
+      continue
     }
+    if (!item.link) continue
+    if (/^https?:\/\//.test(item.link)) {
+      links.push({ title: item.text ?? item.link, href: item.link })
+      continue
+    }
+    const file = toDocFile(item.link)
+    if (file) docs.push({ title: item.text ?? file, file })
   }
-  return { title: group.text ?? '', docs, children: children.filter((c) => c.docs.length || c.children.length) }
+  return {
+    title: group.text ?? '',
+    docs,
+    links,
+    children: children.filter((c) => c.docs.length || c.links.length || c.children.length)
+  }
 }
 
 function normalizeGroups(groups) {
   return (groups ?? [])
     .map((group) => normalizeGroup(group))
-    .filter((group) => group.docs.length > 0 || group.children.length > 0)
+    .filter((group) => group.docs.length > 0 || group.links.length > 0 || group.children.length > 0)
 }
 
 const sidebarMap = {}
@@ -265,6 +281,7 @@ const collect = (group) => {
   for (const doc of group.docs) covered.add(doc.file)
   for (const child of group.children) collect(child)
 }
+
 for (const groups of Object.values(sidebarMap)) for (const group of groups) collect(group)
 
 console.log(`sidebar 路由前缀: ${Object.keys(sidebarMap).length}`)

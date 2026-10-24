@@ -30,10 +30,25 @@ const isOpen = (child: CategoryNode): boolean =>
             <summary class='cat-label'>
               <Icon name='chevronRight' class='cat-chevron size-3' />
               <span class='cat-text'>{child.label}</span>
-              <span class='cat-count'>{child.total}</span>
+              <span class='cat-count'>{child.total > 0 ? child.total : `${child.links.length}↗`}</span>
             </summary>
             <Astro.self node={child} nodes={nodes} currentId={currentId} depth={depth + 1} />
           </details>
+        </li>
+      ))}
+      {node.links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class='cat-doc'
+            target='_blank'
+            rel='noopener noreferrer'
+            title='站外资源'
+          >
+            <Icon name='link' class='size-3 opacity-50' />
+            <span class='cat-text'>{link.title}</span>
+            <span class='cat-ext'>↗</span>
+          </a>
         </li>
       ))}
       {node.docs.map((doc: DocEntry) => (
@@ -115,6 +130,11 @@ const isOpen = (child: CategoryNode): boolean =>
   .cat-doc:hover {
     color: hsl(var(--foreground));
     background-color: hsl(var(--muted) / 0.6);
+  }
+  .cat-ext {
+    margin-left: auto;
+    font-size: 0.7rem;
+    opacity: 0.45;
   }
   .cat-doc[aria-current='page'] {
     color: hsl(var(--primary));
