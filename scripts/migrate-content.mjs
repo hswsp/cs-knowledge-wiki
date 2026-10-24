@@ -14,6 +14,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, rmSync, existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
+import { slug as ghSlug } from 'github-slugger'
 import { dirname, join, relative, extname } from 'node:path'
 
 const ROOT = process.cwd()
@@ -177,14 +178,42 @@ function firstParagraph(body) {
  * answers the bare form with a 308 — one extra round trip per click, which on
  * a slow edge is seconds. Emit the canonical form so links never redirect.
  */
-function rewriteLinks(text) {
+/** 目录内「slug -> 原始文件名」的缓存 */
+const slugDirCache = new Map()
+function siblingBySlug(dir) {
+  if (slugDirCache.has(dir)) return slugDirCache.get(dir)
+  const map = new Map()
+  try {
+    for (const name of readdirSync(join(SRC, dir))) {
+      if (!name.endsWith('.md')) continue
+      map.set(ghSlug(name.replace(/\.md$/i, '')), name.replace(/\.md$/i, ''))
+    }
+  } catch {
+    // 目录读不到就算了
+  }
+  slugDirCache.set(dir, map)
+  return map
+}
+
+function rewriteLinks(text, srcDir = '') {
   return text.replace(/(\]\(\/)([^)\s#?]+)([^)]*\))/g, (full, lead, path, tail) => {
     if (path === 'docs' || path === 'docs/') return `${lead}docs/${tail}`
     if (/^\/docs\//.test(path)) {
       return path.endsWith('/') ? full : `${lead}${path}/${tail}`
     }
     if (/\.(png|jpe?g|gif|svg|webp|pdf|ico|json|xml|mjs|js|css)$/i.test(path)) return full
-    return `${lead}docs/${path.replace(/^\//, '')}/${tail}`
+
+    // 旧结构的链接（如 /asymmetric-key-ciphers/xxx）在新目录下可能不存在，
+    // 但同名文件往往就在当前文章所在目录里——这种就地修正。
+    const plain = path.replace(/^\//, '').replace(/\.md$/i, '')
+    if (!existsSync(join(SRC, `${plain}.md`))) {
+      // 旧链接用的是 slug（ecdh-key-exchange），磁盘上是 ECDH Key Exchange.md，
+      // 所以按 slug 在同目录里找同名文章
+      const base = plain.split('/').pop()
+      const hit = srcDir ? siblingBySlug(srcDir).get(ghSlug(base)) : undefined
+      if (hit) return `${lead}docs/${srcDir}/${ghSlug(hit)}/${tail}`
+    }
+    return `${lead}docs/${plain}/${tail}`
   })
 }
 
@@ -319,6 +348,32 @@ function fixMathSpans(line) {
     .join('')
 }
 
+
+/**
+ * 相对 .md 链接改写为 Astro 路由。
+ *
+ * VitePress 里写的是 `./Hash%20Functions.md` 这类相对链接；Astro 的内容 id 会把
+ * 文件名 slug 化（空格、标点变连字符），所以必须换算成 `/docs/<目录>/<slug>/`，
+ * 否则概览页里的每一条都点不动。slug 规则与 Astro 一致（github-slugger）。
+ */
+function rewriteRelativeDocs(line, srcDir) {
+  return line.replace(
+    /\]\((?![a-z]+:|\/|#)([^)\s]+\.md)(#[^)]*)?\)/gi,
+    (_full, target, anchor = '') => {
+      let decoded = target
+      try {
+        decoded = decodeURIComponent(target)
+      } catch {
+        // 编码非法就按原样处理
+      }
+      const base = decoded.replace(/^\.\//, '').split('/').pop().replace(/\.md$/i, '')
+      const id = ghSlug(base)
+      const dir = srcDir ? `${srcDir}/` : ''
+      return `](/docs/${dir}${id}/${anchor})`
+    }
+  )
+}
+
 function transformBody(body, srcRel = '') {
   const srcDir = srcRel.includes('/') ? srcRel.slice(0, srcRel.lastIndexOf('/')) : ''
   const lines = normalizeMathDelimiters(body.split(/\r?\n/))
@@ -349,7 +404,8 @@ function transformBody(body, srcRel = '') {
     l = l.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"')
     l = fixMathSpans(l)
     l = l.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
-    l = rewriteLinks(l)
+    l = rewriteLinks(l, srcDir)
+    l = rewriteRelativeDocs(l, srcDir)
     // VitePress 的 CSS 变量在 Astro 里不存在，iframe 边框会失效
     l = l.replaceAll('var(--vp-c-divider)', 'hsl(var(--border))')
     // Relative images live next to the source file; they are copied into
