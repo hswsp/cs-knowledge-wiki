@@ -254,6 +254,35 @@ function buildOrderMap() {
 const orderMap = buildOrderMap()
 
 /**
+ * 侧边栏标题映射。
+ *
+ * VitePress 里每篇文章的显示名是各分区 index.md 里写的链接文字，往往比
+ * markdown 的一级标题准确（正文里常写成「Intro」「命题」「引言」这类通用词）。
+ * build-nav 已经把这份数据整理到 src/data/docs-nav.json，这里直接复用。
+ */
+function buildSidebarTitles() {
+  const map = new Map()
+  const navPath = join(ROOT, 'src', 'data', 'docs-nav.json')
+  if (!existsSync(navPath)) return map
+  try {
+    const nav = JSON.parse(readFileSync(navPath, 'utf8'))
+    const walk = (group) => {
+      for (const doc of group.docs ?? []) map.set(doc.file, doc.title)
+      for (const child of group.children ?? []) walk(child)
+    }
+    for (const groups of Object.values(nav)) for (const g of groups) walk(g)
+  } catch {
+    // 读不到就退回原来的规则
+  }
+  return map
+}
+
+const sidebarTitles = buildSidebarTitles()
+
+/** 导航专用文字不能当文章标题 */
+const NAV_ONLY_TITLE = /^(概览|目录|←.*|进入.*|.*→)$/
+
+/**
  * 每篇笔记的最后提交时间，供 /archives 使用。
  * 一次 git log 取全量，避免逐文件调用。
  */
@@ -330,7 +359,12 @@ for (const file of files) {
   const { data, body } = splitFrontmatter(raw)
 
   const base = rel.replace(/\.md$/i, '').split('/').pop()
-  let title = data.title || firstHeading(body) || base
+  const isIndex = /(^|\/)index\.md$/i.test(rel)
+  const fromSidebar = isIndex ? undefined : sidebarTitles.get(rel)
+  const sidebarTitle = fromSidebar && !NAV_ONLY_TITLE.test(fromSidebar) ? fromSidebar : undefined
+  // 侧边栏标题最权威：源文件里的 frontmatter title 常是早期导入自动生成的
+  // 通用词（「引言」「命题」「定律定义」），VitePress 侧边栏用的才是正式名字
+  let title = sidebarTitle || data.title || firstHeading(body) || base
   if (Array.isArray(title)) title = title.join(' ')
   title = clip(cleanTitle(title), TITLE_MAX) || base
 
@@ -383,6 +417,7 @@ const aboutPage = emitAboutPage()
 console.log(`migrated ${files.length} files -> ${relative(ROOT, OUT)}`)
 console.log(`about page: ${aboutPage ?? 'skipped (docs/about/index.md not found)'}`)
 console.log(`synthesized descriptions: ${synthesized}`)
+console.log(`sidebar titles available: ${sidebarTitles.size}`)
 console.log(`empty descriptions: ${missingDesc}`)
 console.log('longest titles:', report.map((r) => `${r.title.length}:${r.title}`).sort((a, b) => parseInt(b) - parseInt(a)).slice(0, 3))
 console.log('longest descs :', report.map((r) => r.descriptionLen).sort((a, b) => b - a).slice(0, 3))
