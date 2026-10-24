@@ -2,6 +2,8 @@
 :root {
   /* Primary */
   --primary: 267 42% 52%;
+  /* Accent：次级点缀色，仅用于卡片/面板渐变（钢蓝，与紫色 primary 类比） */
+  --accent: 214 70% 55%;
   /* Foreground */
   --foreground: 240 10% 3.9%;
   --muted-foreground: 240 3.8% 28.1%;
@@ -21,6 +23,8 @@
 .dark {
   /* Primary */
   --primary: 267 68% 78%;
+  /* Accent：暗色下压饱和压亮度，叠 0.48/0.72 透明度后仍留在夜色里 */
+  --accent: 214 45% 48%;
   /* Foreground */
   --foreground: 220 25% 93%;
   --muted-foreground: 220 14% 68%;
