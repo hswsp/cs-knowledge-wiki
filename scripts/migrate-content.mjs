@@ -109,6 +109,41 @@ function firstHeading(body) {
   return m ? cleanTitle(m[1]) : ''
 }
 
+
+/** 判断一段纯文本是否有实质内容（不能只剩标点或几个虚词） */
+function meaningful(text) {
+  const t = String(text || '').trim()
+  if (!t) return 0
+  const cjk = (t.match(/[\u4e00-\u9fa5]/g) || []).length
+  const alnum = (t.match(/[a-zA-Z0-9]/g) || []).length
+  const punct = (t.match(/[，。；：、！？,.;:!?\-—…（）()【】《》""'']/g) || []).length
+  const letters = cjk + alnum
+  // 被公式「挖空」后容易出现连续标点或双空格，这样的句子不能当摘要
+  // 中文之间冒出的空格通常意味着这里原本是公式，被剥掉后句子就断了
+  const holed =
+    /[，。、；：]{2,}|\s{2,}|^[，。、；：]|[，。、；：]$/.test(t) ||
+    /[\u4e00-\u9fa5]\s+[\u4e00-\u9fa5]/.test(t)
+  return letters >= 12 && letters > punct && !holed ? letters : 0
+}
+
+/** 标题转纯文本：去掉公式后把中文之间的空格也收掉 */
+function plainHeading(text) {
+  return plain(text)
+    .replace(/(?<=[\u4e00-\u9fa5])\s+(?=[\u4e00-\u9fa5])/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+}
+
+/** 从正文里挑第一段“有实际内容”的文字当摘要 */
+function firstMeaningfulParagraph(body) {
+  const blocks = body.split(/\n\s*\n/)
+  for (const block of blocks) {
+    const text = plain(block)
+    if (meaningful(text)) return text
+  }
+  return ''
+}
+
 function firstParagraph(body) {
   const lines = body.split(/\r?\n/)
   let inFence = false
@@ -494,7 +529,17 @@ for (const file of files) {
   if (Array.isArray(description)) description = description.join(' ')
   if (!description) {
     synthesized++
-    const candidate = plain(firstParagraph(body)) || plain(body).slice(0, 300) || title
+    const headings = [...body.matchAll(/^##\s+(.+)$/gm)]
+      .map((m) => plainHeading(m[1]))
+      .filter((t) => t.length >= 4)
+    const fromHeadings = headings.length ? `${title}：${headings.slice(0, 3).join('、')}` : ''
+    // 公式密集的文章，任何文字摘要都会被挖出空洞，直接用章节标题拼一句
+    const mathHeavy = (body.match(/\$/g) || []).length > 20
+    const candidate =
+      (mathHeavy ? fromHeadings || firstMeaningfulParagraph(body) : firstMeaningfulParagraph(body) || fromHeadings) ||
+      plain(firstParagraph(body)) ||
+      plain(body).slice(0, 300) ||
+      title
     description = clip(candidate, DESC_MAX)
     if (!description) {
       description = `${title} - CS Knowledge Wiki`
