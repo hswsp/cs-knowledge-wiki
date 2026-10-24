@@ -78,6 +78,7 @@ function plain(text) {
     .replace(/\$[^$\n]*\$/g, ' ')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]*)\]/g, '$1')
     .replace(/^#{1,6}\s.*$/gm, ' ')
     .replace(/^:::+.*$/gm, ' ')
     .replace(/<[^>]+>/g, ' ')
@@ -95,7 +96,8 @@ function clip(text, max) {
 function cleanTitle(value) {
   return String(value)
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // links -> text
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]*)\]/g, '$1') // links -> text
     .replace(/`([^`]*)`/g, '$1') // inline code
     .replace(/[*_~]/g, '')
     .replace(/\s+/g, ' ')
@@ -204,9 +206,87 @@ function stripDuplicateHeadings(body, title) {
   return lines.slice(i).join('\n')
 }
 
+
+/**
+ * 规范化数学公式分隔符。
+ *
+ * remark-math 只把「$$ 单独占一行」的开头当成块级公式；源里存在
+ * `$$\begin{cases}` / `...\end{cases}$$` 这种内容与 $$ 同行的写法，
+ * 会导致配对错乱，后面整段公式退化成纯文本。这里统一改成 $$ 独占一行。
+ */
+function normalizeMathDelimiters(lines) {
+  const out = []
+  let inFence = false
+  let inMath = false
+  for (const line of lines) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence
+      out.push(line)
+      continue
+    }
+    if (inFence || !line.includes('$$')) {
+      out.push(line)
+      continue
+    }
+    let rest = line
+    while (rest.includes('$$')) {
+      const idx = rest.indexOf('$$')
+      const before = rest.slice(0, idx)
+      const after = rest.slice(idx + 2)
+      if (!inMath) {
+        if (before.trim()) out.push(before)
+        out.push('$$')
+        inMath = true
+      } else {
+        if (before.trim()) out.push(before)
+        out.push('$$')
+        inMath = false
+      }
+      rest = after
+    }
+    if (rest.trim()) out.push(rest)
+  }
+  return out
+}
+
+/**
+ * 去掉正文里的 HTML 字体/颜色样式（<font style>、带 style 的 span/div），
+ * 只保留内部文字。代码块内不动。
+ */
+function stripHtmlStyling(text) {
+  const parts = text.split(/(^\s*```[\s\S]*?^\s*```)/m)
+  return parts
+    .map((chunk, index) => {
+      // 奇数段是代码块，跳过
+      if (index % 2 === 1) return chunk
+      return chunk
+        .replace(/<font[^>]*>([\s\S]*?)<\/font>/gi, '$1')
+        .replace(/<span[^>]*style=[^>]*>([\s\S]*?)<\/span>/gi, '$1')
+        .replace(/<div[^>]*style=[^>]*>([\s\S]*?)<\/div>/gi, '$1')
+    })
+    .join('')
+}
+
+
+/** 修正常见的公式内转义问题：\text{num_heads} 与裸 # */
+function fixMathSpans(line) {
+  return line
+    .split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$)/)
+    .map((chunk) => {
+      if (!chunk.startsWith('$')) return chunk
+      let out = chunk.replace(/\\text\{([^}]*)\}/g, (_m, inner) =>
+        `\\text{${inner.replace(/(?<!\\)_/g, '\\_')}}`
+      )
+      // 数学里的 # 必须转义，否则 KaTeX 直接报错
+      out = out.replace(/(?<!\\)#/g, '\\#')
+      return out
+    })
+    .join('')
+}
+
 function transformBody(body, srcRel = '') {
   const srcDir = srcRel.includes('/') ? srcRel.slice(0, srcRel.lastIndexOf('/')) : ''
-  const lines = body.split(/\r?\n/)
+  const lines = normalizeMathDelimiters(body.split(/\r?\n/))
   // 1. containers (function is fence-aware enough for our content: no ::: inside fences)
   const withContainers = convertContainers(lines)
 
@@ -221,6 +301,18 @@ function transformBody(body, srcRel = '') {
     // 页面大标题由 frontmatter.title 渲染，正文里出现的 # 一律降为 ##，
     // 保证每页只有一个 h1（锚点 id 由标题文字决定，降级不影响跳转）
     let l = line.replace(/^#\s+/, '## ')
+    // LaTeX 规范化：
+    //  · C^'_i 这种「^ 后面直接跟撇号」KaTeX 不认，改写为 ^{\prime}
+    //  · equation / align* / gather* 只能用于行间公式，内联时报错，改成等价写法
+    l = l.replace(/\^'(?!')/g, "^{\\prime}")
+    l = l.replace(/\\begin\{equation\*?\}/g, '').replace(/\\end\{equation\*?\}/g, '')
+    l = l.replace(/\\begin\{align\*\}/g, '\\begin{aligned}').replace(/\\end\{align\*\}/g, '\\end{aligned}')
+    l = l.replace(/\\begin\{gather\*\}/g, '\\begin{gathered}').replace(/\\end\{gather\*\}/g, '\\end{gathered}')
+    // split 同样只能用于行间公式
+    l = l.replace(/\\begin\{split\}/g, '\\begin{aligned}').replace(/\\end\{split\}/g, '\\end{aligned}')
+    // 正文里残留的 HTML 实体会让公式解析失败
+    l = l.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"')
+    l = fixMathSpans(l)
     l = l.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
     l = rewriteLinks(l)
     // VitePress 的 CSS 变量在 Astro 里不存在，iframe 边框会失效
@@ -239,7 +331,7 @@ function transformBody(body, srcRel = '') {
     })
     return l
   })
-  return processed.join('\n').replace(/^\n+/, '')
+  return stripHtmlStyling(processed.join('\n')).replace(/^\n+/, '')
 }
 
 function yamlQuote(s) {
@@ -409,7 +501,8 @@ for (const file of files) {
       missingDesc++
     }
   }
-  description = clip(description, DESC_MAX)
+  // 描述是纯文本元信息，不能残留 markdown 链接语法（否则会原样显示）
+  description = clip(plain(description) || title, DESC_MAX)
 
   // 标签 = 学科 + 中间各层目录，这样 /tags 是一张扁平索引
   const segments = rel.split('/').slice(0, -1)
