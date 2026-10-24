@@ -106,12 +106,23 @@ const meta = {
     }
 
     {
-      node.docs.length > 0 && (
+      (node.docs.length > 0 || node.overview) && (
         <section>
           <h2 class='mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground'>
             本层文章
           </h2>
           <ul class='flex list-none flex-col gap-1 p-0'>
+            {node.overview && (
+              <li>
+                <a
+                  class='flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/80 no-underline transition-colors hover:bg-muted/60 hover:text-primary'
+                  href={docHref(node.overview)}
+                >
+                  <span class='size-1.5 shrink-0 rounded-full bg-primary/40' />
+                  <span class='line-clamp-2'>概览</span>
+                </a>
+              </li>
+            )}
             {node.docs.map((doc) => (
               <li>
                 <a
@@ -155,7 +166,7 @@ const meta = {
     }
 
     {
-      node.children.length === 0 && node.docs.length === 0 && node.links.length === 0 && (
+      node.children.length === 0 && node.docs.length === 0 && node.links.length === 0 && !node.overview && (
         <p class='text-sm text-muted-foreground'>这个分类下暂时没有内容。</p>
       )
     }

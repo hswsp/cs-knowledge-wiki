@@ -141,6 +141,8 @@ export type CategoryNode = {
   desc: string
   depth: number
   docs: DocEntry[]
+  /** 专栏的概览页（index.md），例如放了 PDF 的那一页 */
+  overview?: DocEntry
   /** 分组里指向站外的精选文章链接 */
   links: NavLink[]
   children: string[]
@@ -232,11 +234,35 @@ const COLUMN_PARENT = (() => {
       const column = group.docs
         .map((d) => d.file.replace(/\/index\.md$/, ''))
         .find((fp) => NAV[fp] !== undefined)
-      if (column) map.set(column, [key, seg(cleanTitle(group.title))])
+      // 专栏就是学科本身时跳过（math ←→ /math/ 这种自引用）
+      if (column && column.includes('/')) map.set(column, [key, seg(cleanTitle(group.title))])
     }
   }
   return map
 })()
+
+/** 归一化用于比较：去掉空格、&、大小写差异 */
+function normTitle(v: string): string {
+  return v
+    .toLowerCase()
+    .replace(/\b(and|the)\b/g, '')
+    .replace(/[与和的]/g, '')
+    .replace(/[^a-z0-9\u4e00-\u9fa5]/g, '')
+}
+
+/**
+ * 专栏节点在树里的路径。
+ *
+ * 例：math 的「抽象代数 →」分组指向 abstract-algebra 专栏，两边都叫「抽象代数」，
+ * 那就直接复用分组节点，不要再套一层，否则会出现 抽象代数/抽象代数。
+ */
+function columnBase(key: string): string[] {
+  const parent = COLUMN_PARENT.get(key)
+  if (!parent) return key.split('/')
+  const label = SUBKEY_LABELS.get(key) ?? dirLabel(key.split('/').at(-1)!)
+  const parentLeaf = parent.at(-1) ?? ''
+  return normTitle(label) === normTitle(parentLeaf) ? parent : [...parent, label]
+}
 
 /** 建立 文件路径 -> 所属分类路径 的映射，优先用侧边栏分组（含嵌套）。 */
 function buildPlacement(): Map<string, string[]> {
@@ -280,12 +306,7 @@ function buildPlacement(): Map<string, string[]> {
     const section = keySegments[0]
     // 路径必须用原始 key，显示名只用于 label；混用会让同一批文章被拆成两个分类。
     // 若该专栏被学科根分组引用（如 ml 的 AI Infra），则挂到那个分组下。
-    const base =
-      keySegments.length === 1
-        ? [section]
-        : (COLUMN_PARENT.get(key) ?? keySegments).concat(
-            COLUMN_PARENT.has(key) ? [SUBKEY_LABELS.get(key) ?? dirLabel(keySegments.at(-1)!)] : []
-          )
+    const base = keySegments.length === 1 ? [section] : columnBase(key)
     for (const group of groups) walk(group, base)
   }
 
@@ -341,6 +362,19 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
 
   for (const [path, links] of EXTERNAL_LINKS) {
     ensure(path).links = links
+  }
+
+  // 专栏的概览页（index.md）不参与分类，但要在该层可达——PDF 就放在这一页里
+  const overviewByFile = new Map<string, DocEntry>()
+  for (const doc of docs) {
+    const file = fileKey(doc)
+    if (/(^|\/)index\.md$/.test(file)) overviewByFile.set(file, doc)
+  }
+  for (const key of COLUMN_PARENT.keys()) {
+    const doc = overviewByFile.get(`${key}/index.md`)
+    if (!doc) continue
+    const node = nodes.get(columnBase(key).join('/'))
+    if (node) node.overview = doc
   }
 
   const computeTotal = (node: CategoryNode): number => {

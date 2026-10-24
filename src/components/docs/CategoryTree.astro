@@ -36,6 +36,14 @@ const isOpen = (child: CategoryNode): boolean =>
           </details>
         </li>
       ))}
+      {node.overview && (
+        <li>
+          <a href={docHref(node.overview)} class='cat-doc'>
+            <Icon name='document' class='size-3 opacity-50' />
+            <span class='cat-text'>概览</span>
+          </a>
+        </li>
+      )}
       {node.links.map((link) => (
         <li>
           <a
