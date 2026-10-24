@@ -234,8 +234,14 @@ const COLUMN_PARENT = (() => {
       const column = group.docs
         .map((d) => d.file.replace(/\/index\.md$/, ''))
         .find((fp) => NAV[fp] !== undefined)
-      // 专栏就是学科本身时跳过（math ←→ /math/ 这种自引用）
-      if (column && column.includes('/')) map.set(column, [key, seg(cleanTitle(group.title))])
+      if (!column || !column.includes('/')) continue
+      // 「专题」这类分组只是容器：里面只有专栏入口、没有外链和文章，
+      // 就不该单独占一层，专栏直接挂到学科下面。
+      const onlyColumnEntries =
+        group.docs.length > 0 &&
+        group.docs.every((d) => NAV[d.file.replace(/\/index\.md$/, '')] !== undefined) &&
+        !(group.links?.length)
+      map.set(column, onlyColumnEntries ? [key] : [key, seg(cleanTitle(group.title))])
     }
   }
   return map
@@ -274,11 +280,10 @@ function buildPlacement(): Map<string, string[]> {
     if (!existing || segments.length > existing.length) placement.set(file, segments)
   }
 
-  const walk = (group: NavGroup, base: string[]) => {
+  const walk = (group: NavGroup, base: string[], columnLabel?: string) => {
     const title = cleanTitle(group.title)
-    // 分组名和专栏名相同（如 security-attack-defense 下的「安全攻防技能30讲」）
-    // 时不再多套一层，直接并进专栏本身。
-    const sameAsColumn = base.length > 1 && title === SUBKEY_LABELS.get(base.join('/'))
+    // 分组名和专栏名相同（如 rust 专栏下的「Rust 编程实战」）时不再多套一层
+    const sameAsColumn = Boolean(columnLabel) && normTitle(title) === normTitle(columnLabel!)
     const isGeneric =
       !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title) || sameAsColumn
     const here = isGeneric ? base : [...base, seg(title)]
@@ -298,7 +303,7 @@ function buildPlacement(): Map<string, string[]> {
       if (NAV_ONLY.test(doc.title)) continue
       setPath(doc.file, here)
     }
-    for (const child of group.children ?? []) walk(child, here)
+    for (const child of group.children ?? []) walk(child, here, columnLabel)
   }
 
   for (const [key, groups] of Object.entries(NAV)) {
@@ -307,7 +312,8 @@ function buildPlacement(): Map<string, string[]> {
     // 路径必须用原始 key，显示名只用于 label；混用会让同一批文章被拆成两个分类。
     // 若该专栏被学科根分组引用（如 ml 的 AI Infra），则挂到那个分组下。
     const base = keySegments.length === 1 ? [section] : columnBase(key)
-    for (const group of groups) walk(group, base)
+    const columnLabel = keySegments.length === 1 ? undefined : SUBKEY_LABELS.get(key)
+    for (const group of groups) walk(group, base, columnLabel)
   }
 
   return placement
@@ -349,10 +355,18 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
 
     let path = PLACEMENT.get(fileKey(doc))?.join('/')
     if (!path) {
-      // 侧边栏没覆盖：按目录层级
-      const parts = doc.id.split('/')
-      const dirs = parts.slice(1, -1)
-      path = dirs.length ? `${section}/${dirs.join('/')}` : `${section}/其他`
+      // 侧边栏没覆盖：按目录层级回退，但必须尊重专栏映射，
+      // 否则同一专栏会被拆成「中文标签路径」和「原始目录路径」两套
+      const columnHit = [...COLUMN_PARENT.keys()]
+        .filter((k) => doc.id.startsWith(`${k}/`))
+        .sort((a, b) => b.length - a.length)[0]
+      if (columnHit) {
+        const rest = doc.id.slice(columnHit.length + 1).split('/').slice(0, -1)
+        path = [...columnBase(columnHit), ...rest].join('/')
+      } else {
+        const dirs = doc.id.split('/').slice(1, -1)
+        path = dirs.length ? `${section}/${dirs.join('/')}` : `${section}/其他`
+      }
     }
     // 兜底：万一某篇落在学科根上（侧边栏没有分组、也不在任何子目录），
     // 归入「未分组」而不是让它在学科页显示成「本层文章」。
