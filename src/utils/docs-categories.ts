@@ -156,14 +156,9 @@ function fileKey(doc: DocEntry): string {
 /** 这些分组名只是容器，不作为分类层级。 */
 const GENERIC_GROUP = /^(目录|概览|全部|索引|其他)$/
 
-/**
- * 专栏名覆盖。
- *
- * 侧边栏首分组给的是「AI Infra 入门到前沿」，但这个专栏的正式名字来自
- * 它的开篇文章「AI Infra (Memory Storage) 入门到前沿」，这里显式指定。
- */
+/** 专栏名覆盖：个别专栏的导航名需要和侧边栏首分组不同。 */
 const SUBKEY_LABEL_OVERRIDES: Record<string, string> = {
-  'ml/ai-infra': 'AI Infra (Memory Storage) 入门到前沿'
+  'ml/ai-infra': 'AI Infra 入门到前沿'
 }
 
 /**
@@ -254,7 +249,10 @@ function buildPlacement(): Map<string, string[]> {
         : [...base, seg(title)]
     if (!isGeneric || columnKey) touchNode(here.join('/'))
     if (group.links?.length) {
-      const key = here.join('/')
+      // 有文章的组：链接另起一个同级「资源」页；只有链接的组：它自己就是资源页
+      const hasDocs = group.docs.length > 0 || Boolean(columnKey)
+      const suffix = /[A-Za-z0-9]$/.test(title) ? ' 资源' : '资源'
+      const key = hasDocs ? [...base, `${title}${suffix}`].join('/') : here.join('/')
       const bucket = EXTERNAL_LINKS.get(key) ?? []
       bucket.push(...group.links)
       EXTERNAL_LINKS.set(key, bucket)
