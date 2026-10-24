@@ -40,7 +40,7 @@ const isOpen = (child: CategoryNode): boolean =>
         <li>
           <a href={docHref(node.overview)} class='cat-doc'>
             <Icon name='document' class='size-3 opacity-50' />
-            <span class='cat-text'>概览</span>
+            <span class='cat-text'>{node.overview.data.title}</span>
           </a>
         </li>
       )}

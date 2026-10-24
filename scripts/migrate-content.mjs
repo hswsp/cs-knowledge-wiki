@@ -181,6 +181,29 @@ function convertContainers(lines) {
   return out
 }
 
+
+/** 去掉正文开头与页面标题重复的标题行（H1 已在别处删除，这里处理同名 H2/H3）。 */
+function stripDuplicateHeadings(body, title) {
+  const norm = (v) => v.replace(/\s+/g, ' ').trim()
+  const target = norm(title)
+  const lines = body.split(/\r?\n/)
+  let i = 0
+  while (i < lines.length) {
+    const line = lines[i]
+    const m = line.match(/^\s{0,3}(#{1,6})\s+(.*)$/)
+    if (m && norm(m[2]) === target) {
+      i++
+      continue
+    }
+    if (!line.trim() && i < 3) {
+      i++
+      continue
+    }
+    break
+  }
+  return lines.slice(i).join('\n')
+}
+
 function transformBody(body, srcRel = '') {
   const srcDir = srcRel.includes('/') ? srcRel.slice(0, srcRel.lastIndexOf('/')) : ''
   const lines = body.split(/\r?\n/)
@@ -195,7 +218,10 @@ function transformBody(body, srcRel = '') {
       return line
     }
     if (inFence) return line
-    let l = line.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
+    // 页面大标题由 frontmatter.title 渲染，正文里出现的 # 一律降为 ##，
+    // 保证每页只有一个 h1（锚点 id 由标题文字决定，降级不影响跳转）
+    let l = line.replace(/^#\s+/, '## ')
+    l = l.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
     l = rewriteLinks(l)
     // VitePress 的 CSS 变量在 Astro 里不存在，iframe 边框会失效
     l = l.replaceAll('var(--vp-c-divider)', 'hsl(var(--border))')
@@ -363,8 +389,12 @@ for (const file of files) {
   const fromSidebar = isIndex ? undefined : sidebarTitles.get(rel)
   const sidebarTitle = fromSidebar && !NAV_ONLY_TITLE.test(fromSidebar) ? fromSidebar : undefined
   // 侧边栏标题最权威：源文件里的 frontmatter title 常是早期导入自动生成的
-  // 通用词（「引言」「命题」「定律定义」），VitePress 侧边栏用的才是正式名字
-  let title = sidebarTitle || data.title || firstHeading(body) || base
+  // 通用词（「引言」「命题」「定律定义」），VitePress 侧边栏用的才是正式名字。
+  // 概览页（index.md）没有侧边栏条目，用正文一级标题当名字。
+  const h1 = firstHeading(body)
+  let title = isIndex
+    ? h1 || data.title || base
+    : sidebarTitle || data.title || h1 || base
   if (Array.isArray(title)) title = title.join(' ')
   title = clip(cleanTitle(title), TITLE_MAX) || base
 
@@ -409,7 +439,10 @@ for (const file of files) {
     ''
   ].join('\n')
 
-  writeFileSync(outFile, fm + transformBody(body, rel).trimEnd() + '\n', 'utf8')
+  // 布局会用 frontmatter.title 渲染页面大标题，正文开头的 H1 若保留就会重复
+  let bodyWithoutH1 = body.replace(/^\s*#\s+[^\n]*\n?/, '')
+  bodyWithoutH1 = stripDuplicateHeadings(bodyWithoutH1, title)
+  writeFileSync(outFile, fm + transformBody(bodyWithoutH1, rel).trimEnd() + '\n', 'utf8')
   report.push({ file: rel, title, descriptionLen: description.length })
 }
 
