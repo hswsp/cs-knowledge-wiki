@@ -17,21 +17,22 @@
   --radius: 0.5rem;
 }
 
+/* Night: 深蓝灰暗色系（替代原有接近纯黑的 240 20.54% 5.2%） */
 .dark {
   /* Primary */
   --primary: 267 68% 78%;
   /* Foreground */
-  --foreground: 0 0% 98%;
-  --muted-foreground: 240 5% 74.9%;
+  --foreground: 220 25% 93%;
+  --muted-foreground: 220 14% 68%;
   /* Background */
-  --background: 240 20.54% 5.2%;
-  --muted: 240 5.9% 13%;
-  --card: 240 3.7% 24.9%;
+  --background: 222 26% 12%;
+  --muted: 222 22% 16%;
+  --card: 222 20% 19%;
 
   /* Basic */
-  --border: 240 3.7% 22.9%;
-  --input: 240 3.7% 17.9%;
-  --ring: 240 4.9% 83.9%;
+  --border: 222 16% 26%;
+  --input: 222 18% 21%;
+  --ring: 220 20% 70%;
 }
 
 :root {
