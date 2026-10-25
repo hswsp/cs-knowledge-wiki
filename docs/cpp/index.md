@@ -12,6 +12,7 @@
 - [C++11常用新特性（一）](c-plus-plus-11常用新特性一)
 - [C++11常用新特性（二）](c-plus-plus-11常用新特性二)
 - [C++ 正则表达式](c-plus-plus-正则表达式)
+- [The Annotated C++ Standard](https://huangweiran.club/cpp-annotated/topics/index.html)
 
 **C++ 顺序容器**
 
