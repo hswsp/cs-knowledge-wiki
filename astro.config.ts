@@ -3,6 +3,7 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeKatex from 'rehype-katex'
+import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkMath from 'remark-math'
 import mermaid from 'astro-mermaid'
 // Local integrations
@@ -80,6 +81,10 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkMath,
+      // CommonMark 的中文强调死角：收尾 ** 内侧是标点（含康熙部首）、外侧紧贴
+      // 汉字时不会闭合，正文里会直接漏出 **。本库 OCR 文稿大量踩中，交给该插件
+      // 按 CJK-friendly 规范解析；只影响中日韩相邻的情形，英文/数字不受影响。
+      remarkCjkFriendly,
       // Must run before Astro's image optimisation: remote CDN images are left
       // as plain <img> so the build does not download ~8k files.
       remarkRemoteImages
