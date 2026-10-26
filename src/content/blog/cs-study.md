@@ -39,6 +39,7 @@ tags: [course, resource]
 - [MIT MMAI: Modeling — MultiModal AI](https://mit-mi.github.io/mmai-course/spring2026/schedule/)
 - [Berkeley CS 285 Deep Reinforcement Learning](https://rail.eecs.berkeley.edu/deeprlcourse/)
 - [Stanford CS336: Language Modeling from Scratch](https://cs336.stanford.edu/)
+- [Stanford CS224N: Natural Language Processing with Deep Learning](https://web.stanford.edu/class/cs224n/)
 - [CMU 10-799 Diffusion & Flow Matching](https://kellyyutonghe.github.io/10799S26/)
 
 ## 计算机图形学
