@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 
 import { Icon } from 'astro-pure/user'
 import { getCategoryLabel, getPostCategorySegments } from '@/utils/content-paths'
+import { categoryHref } from '@/utils/docs-categories'
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -85,7 +86,7 @@ const formatDate = (date: Date) =>
           <span class='rail-details__label'>文章分类</span>
           <div class='category-links'>
             {categories.map((category) => (
-              <a href={`/categories/${category.path}/`}>{getCategoryLabel(category.name)}</a>
+              <a href={categoryHref(category.path)}>{getCategoryLabel(category.name)}</a>
             ))}
           </div>
         </div>

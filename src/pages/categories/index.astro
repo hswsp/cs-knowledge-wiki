@@ -8,18 +8,22 @@
 import { getBlogCollection } from 'astro-pure/server'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import KnowledgeIndexHero from '@/components/KnowledgeIndexHero.astro'
+import { blogCategoryEntries } from '@/utils/blog-categories'
 import {
+  attachBlogPosts,
   buildCategoryTree,
   categoryDesc,
+  categoryHref,
   topLevelCategories,
-  type DocEntry,
-  categoryHref
+  type DocEntry
 } from '@/utils/docs-categories'
 
 export const prerender = true
 
 const docs = (await getBlogCollection('docs')) as DocEntry[]
 const nodes = buildCategoryTree(docs)
+// 博客文章按目录归入分类：只有博客的分类（如「公开课&资源」）也能出现在列表里
+attachBlogPosts(nodes, await blogCategoryEntries())
 const tops = topLevelCategories(nodes)
 
 const meta = {

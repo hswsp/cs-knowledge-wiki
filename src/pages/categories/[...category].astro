@@ -9,13 +9,22 @@ import type { GetStaticPaths } from 'astro'
 
 import { getBlogCollection } from 'astro-pure/server'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import { buildCategoryTree, categoryLabel, docHref, type DocEntry , categoryHref } from '@/utils/docs-categories'
+import { blogCategoryEntries } from '@/utils/blog-categories'
+import {
+  attachBlogPosts,
+  buildCategoryTree,
+  categoryHref,
+  categoryLabel,
+  docHref,
+  type DocEntry
+} from '@/utils/docs-categories'
 
 export const prerender = true
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = (await getBlogCollection('docs')) as DocEntry[]
   const nodes = buildCategoryTree(docs)
+  attachBlogPosts(nodes, await blogCategoryEntries())
   return [...nodes.values()].map((node) => ({
     params: { category: node.path },
     props: { path: node.path }
@@ -26,6 +35,7 @@ const { path } = Astro.props as { path: string }
 
 const docs = (await getBlogCollection('docs')) as DocEntry[]
 const nodes = buildCategoryTree(docs)
+attachBlogPosts(nodes, await blogCategoryEntries())
 const node = nodes.get(path)!
 
 const segments = path.split('/')
@@ -127,7 +137,7 @@ const meta = {
     }
 
     {
-      node.docs.length > 0 && (
+      node.docs.length + node.posts.length > 0 && (
         <section>
           <h2 class='mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground'>
             本层文章
@@ -141,6 +151,17 @@ const meta = {
                 >
                   <span class='size-1.5 shrink-0 rounded-full bg-primary/40' />
                   <span class='line-clamp-2'>{doc.data.title}</span>
+                </a>
+              </li>
+            ))}
+            {node.posts.map((post) => (
+              <li>
+                <a
+                  class='flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/80 no-underline transition-colors hover:bg-muted/60 hover:text-primary'
+                  href={post.href}
+                >
+                  <span class='size-1.5 shrink-0 rounded-full bg-primary/40' />
+                  <span class='line-clamp-2'>{post.title}</span>
                 </a>
               </li>
             ))}
@@ -176,9 +197,11 @@ const meta = {
     }
 
     {
-      node.children.length === 0 && node.docs.length === 0 && node.links.length === 0 && !node.overview && (
-        <p class='text-sm text-muted-foreground'>这个分类下暂时没有内容。</p>
-      )
+      node.children.length === 0 &&
+        node.docs.length === 0 &&
+        node.posts.length === 0 &&
+        node.links.length === 0 &&
+        !node.overview && <p class='text-sm text-muted-foreground'>这个分类下暂时没有内容。</p>
     }
   </main>
 </PageLayout>

@@ -13,6 +13,7 @@ import {
   getPostCategory,
   getPostPath
 } from '@/utils/content-paths'
+import { categoryHref } from '@/utils/docs-categories'
 import config from '@/site-config'
 
 export const prerender = true
@@ -256,7 +257,7 @@ const meta = {
               <ul>
                 {categories.slice(0, 5).map((category) => (
                   <li>
-                    <a href={`/categories/${category.path}/`}>
+                    <a href={categoryHref(category.path)}>
                       <span>{category.title}</span>
                       <small>{category.count}</small>
                     </a>

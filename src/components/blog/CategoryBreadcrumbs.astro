@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 
 import { Icon } from 'astro-pure/user'
 import { getCategoryLabel, getPostCategorySegments } from '@/utils/content-paths'
+import { categoryHref } from '@/utils/docs-categories'
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -22,7 +23,7 @@ const categories = getPostCategorySegments(post)
       {categories.map((category) => (
         <>
           <span aria-hidden='true'>/</span>
-          <a href={`/categories/${category.path}/`} data-astro-prefetch>
+          <a href={categoryHref(category.path)} data-astro-prefetch>
             {getCategoryLabel(category.name)}
           </a>
         </>

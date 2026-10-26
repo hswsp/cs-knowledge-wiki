@@ -1,6 +1,7 @@
 ---
 title: CS study
 description: 按计算机主分类整理的顶尖高校公开课程链接：分布式、并行、数据库、网络、系统安全、编译、AI/ML、图形学。
+slug: cs-study
 publishDate: 2026-10-26
 updatedDate: 2026-10-26
 tags: [course, resource]

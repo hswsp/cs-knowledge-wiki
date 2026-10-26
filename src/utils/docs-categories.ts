@@ -111,9 +111,15 @@ export function categoryLabel(path: string): string {
   return dirLabel(last)
 }
 
+/** 只在博客里出现的分类（没有笔记）也需要一句描述。 */
+const POST_CATEGORY_DESC: Record<string, string> = {
+  '公开课&资源': 'MIT、Stanford、CMU、Berkeley 等高校公开课与学习资源清单'
+}
+
 export function categoryDesc(path: string): string {
   const segments = path.split('/').filter(Boolean)
-  if (segments.length === 1) return SECTION_META[segments[0]]?.desc ?? ''
+  if (segments.length === 1)
+    return SECTION_META[segments[0]]?.desc ?? POST_CATEGORY_DESC[segments[0]] ?? ''
   return ''
 }
 
@@ -121,9 +127,15 @@ export function docHref(doc: DocEntry): string {
   return `/docs/${doc.id}/`
 }
 
-/** 分类 URL：路径里的空格、& 等必须编码，否则浏览器会截断。 */
+/** 分类 URL：路径里的空格、中文等必须编码，否则浏览器会截断。 */
 export function categoryHref(path: string): string {
-  return `/categories/${path.split('/').filter(Boolean).map(encodeURIComponent).join('/')}/`
+  // `&` 是路径里的合法字符（sub-delim），必须保持原样：
+  // 编码成 %26 后 Astro 的开发服务器匹配不到该路由。
+  return `/categories/${path
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => encodeURIComponent(segment).replace(/%26/gi, '&'))
+    .join('/')}/`
 }
 
 function nodeLabel(segments: string[]): string {
@@ -135,12 +147,17 @@ function nodeLabel(segments: string[]): string {
   return dirLabel(segments.at(-1)!)
 }
 
+/** 博客文章在分类页里的条目：标题 + 站内链接。 */
+export type CategoryPost = { title: string; href: string }
+
 export type CategoryNode = {
   path: string
   label: string
   desc: string
   depth: number
   docs: DocEntry[]
+  /** 博客文章：博客没有侧边栏，直接按目录归入分类 */
+  posts: CategoryPost[]
   /** 专栏的概览页（index.md），例如放了 PDF 的那一页 */
   overview?: DocEntry
   /** 分组里指向站外的精选文章链接 */
@@ -321,30 +338,32 @@ function buildPlacement(): Map<string, string[]> {
 
 const PLACEMENT = buildPlacement()
 
+function ensureNode(nodes: Map<string, CategoryNode>, path: string): CategoryNode {
+  if (nodes.has(path)) return nodes.get(path)!
+  const segments = path.split('/')
+  const node: CategoryNode = {
+    path,
+    label: nodeLabel(segments),
+    desc: categoryDesc(path),
+    depth: segments.length,
+    docs: [],
+    posts: [],
+    links: [],
+    children: [],
+    total: 0
+  }
+  nodes.set(path, node)
+  if (segments.length > 1) {
+    const parent = ensureNode(nodes, segments.slice(0, -1).join('/'))
+    if (!parent.children.includes(path)) parent.children.push(path)
+  }
+  return node
+}
 
 export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
   const nodes = new Map<string, CategoryNode>()
 
-  const ensure = (path: string): CategoryNode => {
-    if (nodes.has(path)) return nodes.get(path)!
-    const segments = path.split('/')
-    const node: CategoryNode = {
-      path,
-      label: nodeLabel(segments),
-      desc: categoryDesc(path),
-      depth: segments.length,
-      docs: [],
-      links: [],
-      children: [],
-      total: 0
-    }
-    nodes.set(path, node)
-    if (segments.length > 1) {
-      const parent = ensure(segments.slice(0, -1).join('/'))
-      if (!parent.children.includes(path)) parent.children.push(path)
-    }
-    return node
-  }
+  const ensure = (path: string): CategoryNode => ensureNode(nodes, path)
 
   for (const doc of docs) {
     // 章节概览页（*/index.md）是导航入口，不作为文章列出。
@@ -433,6 +452,36 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
   }
 
   return nodes
+}
+
+/**
+ * 把博客文章并入分类树。
+ *
+ * 博客没有 VitePress 侧边栏，分类就是文章所在的子目录
+ * （`src/content/blog/公开课&资源/cs-study.md` → 分类「公开课&资源」）。
+ * 只有博客、没有笔记的分类也会建出节点，这样 /categories 列表和文章的
+ * 分类面包屑都能落到真实存在的页面。
+ */
+export function attachBlogPosts(
+  nodes: Map<string, CategoryNode>,
+  posts: { title: string; href: string; category?: string }[]
+): void {
+  if (!posts.length) return
+
+  for (const post of posts) {
+    const path = (post.category ?? '').split('/').filter(Boolean).join('/')
+    if (!path) continue
+    ensureNode(nodes, path).posts.push({ title: post.title, href: post.href })
+  }
+
+  const recompute = (node: CategoryNode): number => {
+    node.total =
+      node.docs.length +
+      node.posts.length +
+      node.children.reduce((sum, child) => sum + recompute(nodes.get(child)!), 0)
+    return node.total
+  }
+  for (const node of nodes.values()) if (node.depth === 1) recompute(node)
 }
 
 const TOP_ORDER = [

@@ -4,20 +4,80 @@
  * Kept in a module (not in a component's frontmatter) because Astro extracts
  * `getStaticPaths` into its own bundle where only imports are visible.
  */
-export type SectionMeta = { title: string; icon: string; desc: string }
+export type SectionMeta = { title: string; icon: string; desc: string; image?: string }
+
+/**
+ * Section cover images shown at the top-left of each category card.
+ * Cartoons come from Microsoft Fluent Emoji (MIT), stored under public/images/sections.
+ */
 
 export const SECTION_META: Record<string, SectionMeta> = {
-  math: { title: '数学', icon: 'sum', desc: '高等数学、线性代数、概率论、离散数学 —— 程序员需要的数学基础' },
-  algorithm: { title: '算法', icon: 'brain', desc: '数据结构、经典算法、LeetCode 题解，构建解题思维' },
-  ml: { title: '机器学习', icon: 'robot', desc: '经典 ML、深度学习、NLP、CV、大模型，从理论到实战' },
-  java: { title: 'Java', icon: 'cafe', desc: '基础 · 并发 · JVM · Spring 全家桶' },
-  cpp: { title: 'C++', icon: 'code', desc: '现代 C++、STL、模板、内存与多线程' },
-  storage: { title: '存储', icon: 'database', desc: 'MySQL、Redis、LSM-Tree、HDFS、CMU 15-445、分布式存储' },
-  'system-design': { title: '系统设计', icon: 'sitemap', desc: '分布式理论、微服务、消息队列、高可用架构' },
-  tools: { title: '工具', icon: 'tool', desc: 'Git、CMake、Lucene、Hexo 等日常开发工具' },
-  csapp: { title: '计算机系统', icon: 'cpu', desc: 'Linux、内存、文件系统、进程调度' },
-  security: { title: '信息安全', icon: 'lock', desc: '加密、认证、安全协议、漏洞分析' },
-  rust: { title: 'Rust', icon: 'wrench', desc: '所有权、并发、异步与工程实践' },
+  math: {
+    title: '数学',
+    icon: 'sum',
+    desc: '高等数学、线性代数、概率论、离散数学 —— 程序员需要的数学基础',
+    image: '/images/sections/math.png'
+  },
+  algorithm: {
+    title: '算法',
+    icon: 'brain',
+    desc: '数据结构、经典算法、LeetCode 题解，构建解题思维',
+    image: '/images/sections/algorithm.png'
+  },
+  ml: {
+    title: '机器学习',
+    icon: 'robot',
+    desc: '经典 ML、深度学习、NLP、CV、大模型，从理论到实战',
+    image: '/images/sections/ml.png'
+  },
+  java: {
+    title: 'Java',
+    icon: 'cafe',
+    desc: '基础 · 并发 · JVM · Spring 全家桶',
+    image: '/images/sections/java.png'
+  },
+  cpp: {
+    title: 'C++',
+    icon: 'code',
+    desc: '现代 C++、STL、模板、内存与多线程',
+    image: '/images/sections/cpp.png'
+  },
+  storage: {
+    title: '存储',
+    icon: 'database',
+    desc: 'MySQL、Redis、LSM-Tree、HDFS、CMU 15-445、分布式存储',
+    image: '/images/sections/storage.png'
+  },
+  'system-design': {
+    title: '系统设计',
+    icon: 'sitemap',
+    desc: '分布式理论、微服务、消息队列、高可用架构',
+    image: '/images/sections/system-design.png'
+  },
+  tools: {
+    title: '工具',
+    icon: 'tool',
+    desc: 'Git、CMake、Lucene、Hexo 等日常开发工具',
+    image: '/images/sections/tools.png'
+  },
+  csapp: {
+    title: '计算机系统',
+    icon: 'cpu',
+    desc: 'Linux、内存、文件系统、进程调度',
+    image: '/images/sections/csapp.png'
+  },
+  security: {
+    title: '信息安全',
+    icon: 'lock',
+    desc: '加密、认证、安全协议、漏洞分析',
+    image: '/images/sections/security.png'
+  },
+  rust: {
+    title: 'Rust',
+    icon: 'wrench',
+    desc: '所有权、并发、异步与工程实践',
+    image: '/images/sections/rust.png'
+  }
 }
 
 /** Section display order, mirroring the old VitePress homepage. */
