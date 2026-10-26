@@ -1,7 +1,7 @@
 # 信息检索基础
 
 :::info 背景知识
-- **词嵌入 (Embedding)**：将文本映射为高维向量，语义相近的文本在向量空间中距离近 → [详见](./representation-learning)
+- **词嵌入 (Embedding)**：将文本映射为高维向量，语义相近的文本在向量空间中距离近 → [详见](./representation-learning.md)
 - **余弦相似度**：衡量两个向量之间的角度差异，不受向量长度影响，适合文本嵌入的相似度计算
 - **RAG (检索增强生成)**：从外部知识库检索相关文档，注入 LLM 上下文以减少幻觉 → [详见](https://wang-x-xia.github.io/learn-ai/applied/rag/)
 :::

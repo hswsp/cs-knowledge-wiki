@@ -1,7 +1,7 @@
 # 有限域算术：从 AES 到 Reed-Solomon（4/4）
 > AES-GCM/GHASH、Shamir 秘密共享、性能基准、工程踩坑与参考资料
 >
-> 系列导航：[1. 数学基础与 GF(p) 素数域](./01-数学基础与-GF-p-素数域) · [2. 扩展域 GF(2^n) 与 AES](./02-扩展域-GF-2-n-与-AES) · [3. Reed-Solomon 编解码与 C 实现](./03-Reed-Solomon-编解码与C实现) · **4. GHASH、Shamir 秘密共享与工程实战**
+> 系列导航：[1. 数学基础与 GF(p) 素数域](./01-数学基础与-GF-p-素数域.md) · [2. 扩展域 GF(2^n) 与 AES](./02-扩展域-GF-2-n-与-AES.md) · [3. Reed-Solomon 编解码与 C 实现](./03-Reed-Solomon-编解码与C实现.md) · **4. GHASH、Shamir 秘密共享与工程实战**
 
 ---
 

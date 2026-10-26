@@ -1,15 +1,15 @@
 # 多模态 AI (Multimodal AI)
 
 :::info 背景知识
-- **Transformer**：基于自注意力的序列模型，输入是 token 序列 → [详见](./transformer)
+- **Transformer**：基于自注意力的序列模型，输入是 token 序列 → [详见](./transformer.md)
 - **Tokenization**：将原始数据（文本、图像等）切分为模型可处理的离散单元（token）
-- **自回归生成**：逐 token 预测下一个，适用于离散序列（文本） → [详见](./transformer#1)
-- **扩散模型**：通过逐步去噪从噪声生成连续信号（图像/视频），当前生成主流 → [详见](./diffusion-models)
+- **自回归生成**：逐 token 预测下一个，适用于离散序列（文本） → [详见](./transformer.md#1)
+- **扩散模型**：通过逐步去噪从噪声生成连续信号（图像/视频），当前生成主流 → [详见](./diffusion-models.md)
 :::
 
 > 本文档聚焦于 **Transformer/自回归路线**的多模态技术——如何将不同模态转换为 token 序列并用 Transformer 处理，以及跨模态对齐方法。
 >
-> 图像/视频生成主流是扩散模型（非自回归），详见[扩散模型](./diffusion-models)。
+> 图像/视频生成主流是扩散模型（非自回归），详见[扩散模型](./diffusion-models.md)。
 
 ---
 
@@ -55,7 +55,7 @@ BPE / SentencePiece 等子词切分已是成熟方案，词表大小通常 32k�
 
 直觉类比：文本把句子拆成 token 序列（"我/喜欢/吃/苹果"），ViT 把图像拆成 patch 序列。区别在于 CNN 靠卷积核滑窗提取局部特征，ViT 用全局注意力，每个 patch 能直接看到所有 patch。
 
-实践中，**理解**任务多用 patch 嵌入（CLIP、Gemini）。注意：图像生成主流是扩散模型（非自回归），详见[扩散模型](./diffusion-models)。
+实践中，**理解**任务多用 patch 嵌入（CLIP、Gemini）。注意：图像生成主流是扩散模型（非自回归），详见[扩散模型](./diffusion-models.md)。
 
 ### 音频
 
@@ -74,7 +74,7 @@ BPE / SentencePiece 等子词切分已是成熟方案，词表大小通常 32k�
 - **3D patch**：将视频切成时空立方体（如 2 帧×16×16），一次编码空间+时间
 - **时间维度单独建模**：图像编码后加 temporal attention 层
 
-注意：当前视频生成主流是扩散模型（非自回归），详见[扩散模型](./diffusion-models)。
+注意：当前视频生成主流是扩散模型（非自回归），详见[扩散模型](./diffusion-models.md)。
 
 ---
 

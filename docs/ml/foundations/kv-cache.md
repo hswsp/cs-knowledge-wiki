@@ -1,21 +1,21 @@
 # KV Cache 与推理优化
 
 :::info 背景知识
-- **自注意力机制**：每个 token 通过 Q·K 点积计算与其他 token 的相关度，再对 V 加权求和 → [详见](./transformer#2)
-- **自回归生成**：每步预测下一个 token，追加到序列末尾，重复直到结束 → [详见](./transformer#1)
-- **GQA/MQA**：多个 Q 头共用 KV 头，减少 KV 数量的注意力变体 → [详见](./transformer#gqa-mqa-kv)
+- **自注意力机制**：每个 token 通过 Q·K 点积计算与其他 token 的相关度，再对 V 加权求和 → [详见](./transformer.md#2)
+- **自回归生成**：每步预测下一个 token，追加到序列末尾，重复直到结束 → [详见](./transformer.md#1)
+- **GQA/MQA**：多个 Q 头共用 KV 头，减少 KV 数量的注意力变体 → [详见](./transformer.md#gqa-mqa-kv)
 - **GPU 显存 (HBM)**：GPU 的高带宽内存，是模型权重和中间状态的存储位置，容量有限（H100 为 80GB）
 :::
 
 > KV Cache 是 LLM 自回归推理的核心加速机制——用显存换计算，避免重复运算。本文档聚焦它的存储特征和各种优化手段的设计权衡。
 >
-> 相关文档：[Transformer 架构](./transformer) | [Mamba 与状态空间模型](./mamba-and-ssm)
+> 相关文档：[Transformer 架构](./transformer.md) | [Mamba 与状态空间模型](./mamba-and-ssm.md)
 
 ---
 
 ## 1. KV Cache：用显存换速度
 
-自回归生成每步只产出一个 token，但注意力计算需要当前 token 的 Query 与**所有历史 token** 的 Key/Value 做点积（注意力公式详见 [Transformer 架构 § 自注意力机制](./transformer#2)）。
+自回归生成每步只产出一个 token，但注意力计算需要当前 token 的 Query 与**所有历史 token** 的 Key/Value 做点积（注意力公式详见 [Transformer 架构 § 自注意力机制](./transformer.md#2)）。
 
 如果每步都从头算，生成第 100 个 token 就要重算前 99 个的 K/V——重复劳动随序列增长越来越严重。KV Cache 把每层算过的 K/V 向量存下来，下一步直接查表复用[^pope-2023]。
 
@@ -101,7 +101,7 @@ LLM 推理实际上分两步走，硬件瓶颈完全不同：
 
 ### GQA/MQA：从架构层面缩小 Cache
 
-Decode 的带宽瓶颈取决于 KV Cache 有多大，而 KV Cache 大小直接由 **KV 头数**决定。标准 MHA 中每个 Q 头独占一组 KV，GQA/MQA 通过让多个 Q 头共用 KV 来减少头数，从而**按比例缩小缓存**（架构原理详见 [Transformer 架构 § GQA/MQA](./transformer#gqa-mqa-kv)）。
+Decode 的带宽瓶颈取决于 KV Cache 有多大，而 KV Cache 大小直接由 **KV 头数**决定。标准 MHA 中每个 Q 头独占一组 KV，GQA/MQA 通过让多个 Q 头共用 KV 来减少头数，从而**按比例缩小缓存**（架构原理详见 [Transformer 架构 § GQA/MQA](./transformer.md#gqa-mqa-kv)）。
 
 以 Llama-3-70B（64 个 Q 头, 128K 上下文, FP16）为例：
 
@@ -211,7 +211,7 @@ Mooncake[^mooncake-2025] 的核心设计哲学是**以 KV Cache 为中心**：�
 
 应对方向：
 
-- **架构层**：GQA 减少 KV 头数（§3）；Mamba/RWKV 等 SSM 架构完全绕过 KV Cache → [Mamba 与状态空间模型](./mamba-and-ssm)
+- **架构层**：GQA 减少 KV 头数（§3）；Mamba/RWKV 等 SSM 架构完全绕过 KV Cache → [Mamba 与状态空间模型](./mamba-and-ssm.md)
 - **算法层**：FlashAttention 降低 IO 开销（§5）；稀疏注意力、Token 驱逐、量化（§4）
 - **系统层**：PagedAttention 消除碎片（§6）；分层存储扩展容量（§7）；Prefix Caching
 - **硬件层**：更大显存（H200: 141GB, B200: 192GB）、更高带宽

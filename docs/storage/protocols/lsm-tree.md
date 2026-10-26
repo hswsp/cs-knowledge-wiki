@@ -1,5 +1,5 @@
 ---
-title: LSM Tree:高性能海量数据写数据结构
+title: LSM Tree：高性能海量数据写数据结构
 description: "LSM-tree"
 date: 2022-10-18
 ---
