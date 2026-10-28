@@ -493,6 +493,18 @@ a.wikilink-highlight {
   border-radius: 0.5rem;
 }
 
+/* TOC 逐级缩进
+   astro-pure 的 TOC 组件只给 depth > 2 的条目加同一档 ps-7，三级与四级标题
+   因此落在同一个缩进上；而嵌套的 ul 被 preflight 清掉了 padding，层级信息
+   在视觉上完全丢失。这里把基础内边距统一，再按嵌套层级补回缩进。 */
+.toc-content-wrapper a.toc-item {
+  padding-inline-start: 0.75rem;
+}
+
+.toc-content-wrapper ul ul {
+  padding-inline-start: 1rem;
+}
+
 /* Scroll bar */
 :root {
   --scrollbar-thumb: hsl(var(--muted-foreground) / var(--un-bg-opacity, 0.3));
