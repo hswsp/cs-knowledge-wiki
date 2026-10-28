@@ -6,6 +6,17 @@
 
 - [进入现代计算机图形学入门](computer-graphics/)
 
+## 并发编程
+
+- [进入并发编程系列](concurrent/)
+- [01 并发地基篇：从经典论文到工程方针](concurrent/01-foundations)
+- [02 事件循环与 libev：从 select 到 epoll](concurrent/02-event-loop-libev)
+- [03 Boost.Asio：从 Reactor 到 Proactor](concurrent/03-boost-asio)
+- [04 Boost.Lockfree 与无锁容器](concurrent/04-boost-lockfree)
+- [05 oneTBB 与任务调度](concurrent/05-onetbb)
+- [06 Folly 与高性能组件](concurrent/06-folly)
+- [07 Seastar 与 thread-per-core](concurrent/07-seastar)
+
 ## Fundamentals
 
 - [C++输入输出处理](c-plus-plus-输入输出处理)
