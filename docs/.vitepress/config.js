@@ -288,7 +288,7 @@ export default defineConfig({
             ...sidebarFromIndex('cpp'),
           ],
           '/cpp/computer-graphics/': [
-            { text: '现代计算机图形学入门', items: [{ text: '概览', link: '/cpp/computer-graphics/' }, { text: '← 返回 C++', link: '/cpp/' }] },
+            { text: '现代计算机图形学入门', items: [{ text: '← 返回 C++', link: '/cpp/' }] },
             {
               text: '基础',
               collapsed: true,
