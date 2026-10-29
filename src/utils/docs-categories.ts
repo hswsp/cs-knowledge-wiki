@@ -86,7 +86,26 @@ const DIR_TITLES: Record<string, string> = {
   extra: '补充',
   preface: '前言',
   summary: '总结',
-  practice: '实践'
+  practice: '实践',
+  resources: '学习资源',
+  analysis: '复杂度分析',
+  'scientific-computing': '科学计算',
+  'data-structures': '数据结构',
+  string: '字符串',
+  sorting: '排序与选择',
+  'advanced-data-structures': '高级数据结构',
+  'augmenting-data-structures': '数据结构增强',
+  graph: '图算法',
+  'divide-and-conquer': '分治',
+  'dynamic-programming': '动态规划',
+  greedy: '贪心',
+  backtracking: '回溯',
+  fundamentals: 'C++ 基础',
+  interview: 'C++ 八股文',
+  'linear-algebra': '线性代数',
+  algebra: '代数',
+  'information-theory': '信息论与编码',
+  hpc: '高性能计算'
 }
 
 export function prettify(segment: string): string {

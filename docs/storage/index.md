@@ -13,7 +13,7 @@
 
 ## 存储引擎
 
-- [DuckDB 架构深度解析：查询引擎、存储引擎与 AI 时代的硬件适配](./duckdb-架构详解)
+- [DuckDB 架构深度解析：查询引擎、存储引擎与 AI 时代的硬件适配](./storage-engine/duckdb-架构详解)
 - [HDFS 简介](./storage-engine/hdfs-intro)
 - [OceanBase 架构图文档](./storage-engine/oceanbase-architecture)
 - [OceanBase 分布式共识与存储架构深度笔记](./storage-engine/oceanbase-paxos-log-stream-tablet)
@@ -24,9 +24,9 @@
 - [LanceDB 索引原理与实现解读](./storage-engine/lancedb-indexing)
 - [Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路](./storage-engine/lance-distributed-fts-indexing)
 - [LanceDB GPU 索引](./storage-engine/lancedb-gpu-indexing)
-- [PolarDB-X 架构深度解读](./PolarDB-X-架构解读)
-- [Tair 架构详解](./Tair架构详解)
-- [Lustre 高性能分布式文件系统：从 0 级基础到精通](./Lustre架构详解)
+- [PolarDB-X 架构深度解读](./storage-engine/PolarDB-X-架构解读)
+- [Tair 架构详解](./storage-engine/Tair架构详解)
+- [Lustre 高性能分布式文件系统：从 0 级基础到精通](./storage-engine/Lustre架构详解)
 - [Alluxio 架构深度解读](./storage-engine/alluxio-architecture)
 
 ## Intro to Database System

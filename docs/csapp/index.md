@@ -5,7 +5,7 @@
 ## 高性能计算
 
 - [CS149: Parallel Computing](./Stanford-CS149/)
-- [Triton 入门指南](./triton-intro)
+- [Triton 入门指南](./hpc/triton-intro)
 - [Performance Analysis and Tuning on Modern CPU](https://weedge.github.io/perf-book-cn/zh/)
 
 ## 计算机网络
