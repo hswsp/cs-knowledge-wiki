@@ -84,23 +84,29 @@ span.katex-display {
 }
 
 /* [Mermaid constraints] */
+/* 统一白底：mermaid 图内容固定用浅色主题绘制（深色线条/文字/箭头），
+   若跟随暗色主题会把线条变亮，叠在暗背景上就看不清。白底可保证两种主题下都清晰。 */
 .mermaid {
   overflow-x: auto;
   max-width: 100%;
-  padding: 1rem 0;
+  padding: 1rem;
   display: flex;
   justify-content: center;
-  background: transparent !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 0.5rem;
 }
 
 .mermaid svg {
   max-width: 100% !important;
   height: auto !important;
-  background-color: transparent !important;
+  background-color: #ffffff !important;
 }
 
+.dark .mermaid,
 .dark .mermaid svg {
-  background-color: transparent !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 /* [Shiki basic] */

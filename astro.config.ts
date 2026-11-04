@@ -142,7 +142,9 @@ export default defineConfig({
     // astro-pure will automatically add sitemap, mdx & unocss
     // sitemap(),
     // mdx(),
-    mermaid(),
+    // autoTheme 默认 true，会在暗色模式下把图重绘成 dark 主题（亮色线条），
+    // 叠在暗背景上箭头几乎看不见；这里固定用浅色主题 + 页面白底。
+    mermaid({ autoTheme: false, theme: 'default' }),
     AstroPureIntegration(config)
   ],
 
