@@ -38,8 +38,10 @@ export default defineConfig({
   // root: './my-project-directory',
   server: { host: true },
   // https://docs.astro.build/en/guides/prefetch/
+  // 不要用 'viewport'：本站单页 HTML 50–300 KB，首屏会一次性预取 8+ 个整页，
+  // 把连接占满后 mermaid 的按需 chunk 长期 pending，图表永远渲染不出来（已实测复现）。
   prefetch: {
-    defaultStrategy: 'viewport'
+    defaultStrategy: 'hover'
   },
 
   // [Adapter]
