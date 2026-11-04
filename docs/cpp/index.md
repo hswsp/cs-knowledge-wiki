@@ -35,6 +35,7 @@
 - [05 oneTBB 与任务调度](concurrent/05-onetbb)
 - [06 Folly 与高性能组件](concurrent/06-folly)
 - [07 Seastar 与 thread-per-core](concurrent/07-seastar)
+- [08 Mutex 慢吗？——从缓存一致性看并发协调的真实代价](concurrent/08-are-mutexes-slow)
 
 ## C++ 八股文
 
