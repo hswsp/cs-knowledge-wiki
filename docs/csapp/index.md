@@ -6,6 +6,7 @@
 
 - [CS149: Parallel Computing](./Stanford-CS149/)
 - [Triton 入门指南](./hpc/triton-intro)
+- [Mutex 慢吗？——从缓存一致性看并发协调的真实代价](./hpc/are-mutexes-slow)
 - [Performance Analysis and Tuning on Modern CPU](https://weedge.github.io/perf-book-cn/zh/)
 
 ## 计算机网络

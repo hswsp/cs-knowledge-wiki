@@ -508,10 +508,10 @@ export default defineConfig({
     ],
   },
   {
-    text: '架构设计 →',
+    text: '从 0 开始学架构 →',
     collapsed: false,
     items: [
-      { text: '进入架构设计专题', link: '/system-design/architecture/' },
+      { text: '进入从 0 开始学架构专题', link: '/system-design/architecture/' },
     ],
   },
   {
@@ -731,7 +731,7 @@ export default defineConfig({
           ],
 
           '/system-design/architecture/': [
-            { text: '架构设计', items: [{ text: '概览', link: '/system-design/architecture/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
+            { text: '从 0 开始学架构', items: [{ text: '概览', link: '/system-design/architecture/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
             {
               text: '开篇',
               collapsed: false,

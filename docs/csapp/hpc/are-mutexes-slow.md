@@ -417,6 +417,6 @@ A：编译器对锁其实很克制，手段主要是**屏障（barrier）**：�
 - [crates.io: left-right](https://crates.io/crates/left-right)（讲座作者开发的 Rust left-right 并发库；含 §6 的对齐修复版本）
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) — Ulrich Drepper（讲座推荐的缓存层级/MESI 深入读物，“第一个链接”即此类时序分解文章）
 - [Scalable Reader-Writer Locks for NUMA Systems](http://www.cs.man.ac.uk/%7Esinghars/OnlinePapers/nsdi05rwlock.pdf) — Boyd-Wickizer et al.（讲座提及的 per-core 读锁改造方案来源）
-- 站内延伸阅读：[01 并发地基篇](01-foundations.md)、[04 Boost.Lockfree 与无锁容器](04-boost-lockfree.md)、[07 Seastar 与 thread-per-core](07-seastar.md)
+- 站内延伸阅读：[01 并发地基篇](/cpp/concurrent/01-foundations)、[04 Boost.Lockfree 与无锁容器](/cpp/concurrent/04-boost-lockfree)、[07 Seastar 与 thread-per-core](/cpp/concurrent/07-seastar)
 
 <!-- 注：以上外部链接为讲座中口头推荐文献的标准出处补全，供按图索骥。 -->

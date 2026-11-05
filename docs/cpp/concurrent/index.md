@@ -22,9 +22,7 @@ description: "七篇长文，从内存序、I/O 模型、同步原语、调度�
 
 ## 特辑（讲座整理）
 
-| 篇 | 标题 | 来源 | 要回答的问题 |
-| --- | --- | --- | --- |
-| 08 | [Mutex 慢吗？——从缓存一致性看并发协调的真实代价](08-are-mutexes-slow.md) | Jon Gjengset @ Jane Street 讲座讲稿改写 | Mutex 和读写锁谁更快？为什么纯读场景下读写锁反而不如 mutex？left-right 如何靠「读者零共享」拿到线性扩展？ |
+[Mutex 慢吗？——从缓存一致性看并发协调的真实代价](/csapp/hpc/are-mutexes-slow)（Jon Gjengset @ Jane Street 讲座讲稿改写）已迁至「计算机系统 → 高性能计算」：它拆的是 MESI 与缓存行迁移的账，和 CS149、perf-book 放在一起读更顺。
 
 ## 建议读法
 
