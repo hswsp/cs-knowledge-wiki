@@ -3,7 +3,7 @@ title: CS study
 description: 按计算机主分类整理的顶尖高校公开课程链接：分布式、并行、数据库、网络、系统安全、编译、AI/ML、图形学。
 slug: cs-study
 publishDate: 2026-10-26
-updatedDate: 2026-10-26
+updatedDate: 2026-11-07
 tags: [course, resource]
 ---
 
@@ -17,6 +17,7 @@ tags: [course, resource]
 
 - [Stanford CS149 Parallel Computing](https://gfxcourses.stanford.edu/cs149/fall25)
 - [UT Austin CS380P Parallel Systems](https://www.cs.utexas.edu/~rossbach/cs380p/schedule.html)
+- [UPenn CIS 5650 GPU Programming and Architecture](https://cis5650-fall-2026.github.io/syllabus/)
 
 ## 存储系统与数据库
 
