@@ -499,7 +499,7 @@ export default defineConfig({
           ],'/system-design/': [
   { text: '系统设计', items: [
     { text: '概览', link: '/system-design/' },
-    { text: 'system-design-primer（系统设计总体大纲）', link: 'https://guide.emcsp.top/system-design-primer/' },
+    { text: 'system-design-primer', link: 'https://guide.emcsp.top/system-design-primer/' },
   ] },
   {
     text: '设计模式 →',
