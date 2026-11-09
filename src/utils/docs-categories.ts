@@ -257,6 +257,17 @@ function touchNode(path: string) {
 }
 
 /**
+ * 学科根分组里链接到、但没有独立侧边栏块的目录。
+ *
+ * csapp 的「高性能计算」分组链接了 [CS149: Parallel Computing](./Stanford-CS149/)，
+ * 但 docs/.vitepress/config.js 没有 `/csapp/Stanford-CS149/` 侧边栏块，
+ * CS149 的讲义就会按原始目录回退，在 /categories 上变成学科根下的独立分类。
+ */
+const COLUMN_PARENT_EXTRA: Record<string, string[]> = {
+  'csapp/Stanford-CS149': ['csapp', '高性能计算']
+}
+
+/**
  * 专栏前缀 -> 它在学科根分组下的父路径。
  *
  * 例：ml 的「AI Infra」分组里链接了 [AI Infra 入门到前沿](./ai-infra/)，
@@ -277,9 +288,14 @@ const COLUMN_PARENT = (() => {
         group.docs.length > 0 &&
         group.docs.every((d) => NAV[d.file.replace(/\/index\.md$/, '')] !== undefined) &&
         !(group.links?.length)
+      // 同一个专栏会被多个分组引用：内容分组（如「计算机网络」里的 CS 144）
+      // 和末尾的专题入口（「CS 144 →」）。容器组不能覆盖内容分组，
+      // 否则专栏会掉到学科根上。
+      if (onlyColumnEntries && map.has(column)) continue
       map.set(column, onlyColumnEntries ? [key] : [key, seg(cleanTitle(group.title))])
     }
   }
+  for (const [column, parent] of Object.entries(COLUMN_PARENT_EXTRA)) map.set(column, parent)
   return map
 })()
 
@@ -316,20 +332,33 @@ function buildPlacement(): Map<string, string[]> {
     if (!existing || segments.length > existing.length) placement.set(file, segments)
   }
 
-  const walk = (group: NavGroup, base: string[], columnLabel?: string) => {
+  const walk = (group: NavGroup, base: string[], columnLabel?: string, sectionLabel?: string) => {
     const title = cleanTitle(group.title)
     // 分组名和专栏名相同（如 rust 专栏下的「Rust 编程实战」）时不再多套一层
     const sameAsColumn = Boolean(columnLabel) && normTitle(title) === normTitle(columnLabel!)
+    // 学科根分组和学科同名（如 system-design 的「系统设计」组里的概览与外链）：
+    // 它就是学科自己，不该再套一层「系统设计/系统设计」，外链直接挂在学科节点上。
+    const sameAsSection =
+      base.length === 1 && !columnLabel && Boolean(sectionLabel) && normTitle(title) === normTitle(sectionLabel!)
     const isGeneric =
-      !title || GENERIC_GROUP.test(title) || NAV_ONLY.test(group.title) || sameAsColumn
+      !title ||
+      GENERIC_GROUP.test(title) ||
+      NAV_ONLY.test(group.title) ||
+      sameAsColumn ||
+      sameAsSection
     const here = isGeneric ? base : [...base, seg(title)]
     if (!isGeneric) touchNode(here.join('/'))
     if (group.links?.length) {
       // 有文章的组：链接另起一个同级「资源」页；只有链接的组：它自己就是资源页
       const hasDocs = group.docs.length > 0
       const suffix = /[A-Za-z0-9]$/.test(title) ? ' 资源' : '资源'
-      // 资源页挂在该分组自己的分类下面，而不是和它并排
-      const key = hasDocs ? [...here, `${title}${suffix}`].join('/') : here.join('/')
+      // 资源页挂在该分组自己的分类下面，而不是和它并排；
+      // 学科自己的分组不算一栏，外链归学科节点（渲染成学科页底部的「站外资源」）
+      const key = sameAsSection
+        ? here.join('/')
+        : hasDocs
+          ? [...here, `${title}${suffix}`].join('/')
+          : here.join('/')
       const bucket = EXTERNAL_LINKS.get(key) ?? []
       bucket.push(...group.links)
       EXTERNAL_LINKS.set(key, bucket)
@@ -339,7 +368,7 @@ function buildPlacement(): Map<string, string[]> {
       if (NAV_ONLY.test(doc.title)) continue
       setPath(doc.file, here)
     }
-    for (const child of group.children ?? []) walk(child, here, columnLabel)
+    for (const child of group.children ?? []) walk(child, here, columnLabel, sectionLabel)
   }
 
   for (const [key, groups] of Object.entries(NAV)) {
@@ -349,7 +378,8 @@ function buildPlacement(): Map<string, string[]> {
     // 若该专栏被学科根分组引用（如 ml 的 AI Infra），则挂到那个分组下。
     const base = keySegments.length === 1 ? [section] : columnBase(key)
     const columnLabel = keySegments.length === 1 ? undefined : SUBKEY_LABELS.get(key)
-    for (const group of groups) walk(group, base, columnLabel)
+    const sectionLabel = keySegments.length === 1 ? nodeLabel([section]) : undefined
+    for (const group of groups) walk(group, base, columnLabel, sectionLabel)
   }
 
   return placement
@@ -394,9 +424,12 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
     let path = PLACEMENT.get(fileKey(doc))?.join('/')
     if (!path) {
       // 侧边栏没覆盖：按目录层级回退，但必须尊重专栏映射，
-      // 否则同一专栏会被拆成「中文标签路径」和「原始目录路径」两套
+      // 否则同一专栏会被拆成「中文标签路径」和「原始目录路径」两套。
+      // Astro 的 doc.id 是全小写的，nav 里保留原始大小写（Stanford-CS149），
+      // 所以这里忽略大小写比较。
+      const id = doc.id.toLowerCase()
       const columnHit = [...COLUMN_PARENT.keys()]
-        .filter((k) => doc.id.startsWith(`${k}/`))
+        .filter((k) => id.startsWith(`${k.toLowerCase()}/`))
         .sort((a, b) => b.length - a.length)[0]
       if (columnHit) {
         const rest = doc.id.slice(columnHit.length + 1).split('/').slice(0, -1)
