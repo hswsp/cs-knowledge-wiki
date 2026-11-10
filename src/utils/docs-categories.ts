@@ -349,16 +349,9 @@ function buildPlacement(): Map<string, string[]> {
     const here = isGeneric ? base : [...base, seg(title)]
     if (!isGeneric) touchNode(here.join('/'))
     if (group.links?.length) {
-      // 有文章的组：链接另起一个同级「资源」页；只有链接的组：它自己就是资源页
-      const hasDocs = group.docs.length > 0
-      const suffix = /[A-Za-z0-9]$/.test(title) ? ' 资源' : '资源'
-      // 资源页挂在该分组自己的分类下面，而不是和它并排；
-      // 学科自己的分组不算一栏，外链归学科节点（渲染成学科页底部的「站外资源」）
-      const key = sameAsSection
-        ? here.join('/')
-        : hasDocs
-          ? [...here, `${title}${suffix}`].join('/')
-          : here.join('/')
+      // 外链直接挂在分组自己的分类上（渲染成该分类页底部的「站外资源」），
+      // 不再多套一层「xxx 资源」子分类。
+      const key = here.join('/')
       const bucket = EXTERNAL_LINKS.get(key) ?? []
       bucket.push(...group.links)
       EXTERNAL_LINKS.set(key, bucket)
