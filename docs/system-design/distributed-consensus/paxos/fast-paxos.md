@@ -1,7 +1,5 @@
 # Fast Paxos：用更大的 Quorum 换掉一次消息跳转
 
-> 本文以 Kaffee 的《Fast Paxos》（2018）为骨架，补全论文侧的关键结论（消息延迟下界、quorum 不等式与冲突恢复），并在文末列出参考原文中三处需要修正的地方。若还没读过 [Basic Paxos](basic-paxos.md) 与 [Multi-Paxos](multi-paxos.md)，建议先看那两篇——本文默认你已经接受「两阶段 + 多数派」这套设定。
-
 ---
 
 ## 1. 起点：Classic Paxos 的第三个跳
