@@ -68,6 +68,9 @@ function sidebarFromIndex(baseDir) {
         top._hasIndented = true
       }
 
+      // 「概览」是导航占位项，不进入侧边栏（分类页也不再渲染）
+      if (m[1].replace(/[→←]/g, '').trim() === '概览') continue
+
       const p = m[2].replace(/[<>]/g, '')
       let vpLink
       if (/^https?:\/\//.test(p)) {
@@ -154,9 +157,6 @@ export default defineConfig({
         ],
         sidebar: {
                     '/math/': [
-  { text: '数学', items: [
-    { text: '概览', link: '/math/' },
-  ] },
   {
     text: '抽象代数 →',
     collapsed: false,
@@ -167,7 +167,7 @@ export default defineConfig({
   ...sidebarFromIndex('math'),
 ],
           '/math/abstract-algebra/': [
-            { text: '抽象代数', items: [{ text: '概览', link: '/math/abstract-algebra/' }, { text: 'Galois 理论', link: '/math/abstract-algebra/galois-theory/' }, { text: '← 返回数学', link: '/math/' }] },
+            { text: '抽象代数', items: [{ text: 'Galois 理论', link: '/math/abstract-algebra/galois-theory/' }, { text: '← 返回数学', link: '/math/' }] },
             {
               text: 'Galois 理论',
               collapsed: false,
@@ -189,7 +189,6 @@ export default defineConfig({
           ],
           '/math/field-galois-theory/': [
             { text: 'Field and Galois Theory', items: [
-              { text: '概览', link: '/math/field-galois-theory/' },
               { text: '← 返回数学', link: '/math/' },
             ] },
             {
@@ -258,33 +257,20 @@ export default defineConfig({
             },
           ],
           '/algorithm/': [
-  { text: '算法', items: [
-    { text: '概览', link: '/algorithm/' },
-  ] },
   ...sidebarFromIndex('algorithm'),
 ],
           '/ml/': [
-            { text: '机器学习', items: [
-              { text: '概览', link: '/ml/' },
-            ] },
             ...sidebarFromIndex('ml'),
           ],
           '/ml/ai-infra/': [
             { text: 'AI Infra 入门到前沿', items: [
-              { text: '概览', link: '/ml/ai-infra/' },
               { text: '← 返回机器学习', link: '/ml/' },
             ] },
             ...aiInfraSidebar,
           ],
           '/java/': [
-            { text: 'Java', items: [
-                { text: '概览', link: '/java/' },
-            ] },
             ...sidebarFromIndex('java'),
           ],'/cpp/': [
-            { text: 'C++', items: [
-                { text: '概览', link: '/cpp/' },
-            ] },
             ...sidebarFromIndex('cpp'),
           ],
           '/cpp/computer-graphics/': [
@@ -367,14 +353,10 @@ export default defineConfig({
             },
           ],
           '/rust/': [
-            { text: 'Rust', items: [
-              { text: '概览', link: '/rust/' },
-            ] },
             ...sidebarFromIndex('rust'),
           ],
           '/rust/rust-programming-practice/': [
             { text: 'Rust 编程实战', items: [
-              { text: '概览', link: '/rust/rust-programming-practice/' },
               { text: '← 返回 Rust', link: '/rust/' },
               { text: '环境准备', link: '/rust/rust-programming-practice/is6psv8g5t29gv4m' },
               { text: '开篇词 | 让Rust成为你的下一门主力语言', link: '/rust/rust-programming-practice/zu25o61mb7kokw25' },
@@ -498,7 +480,6 @@ export default defineConfig({
             },
           ],'/system-design/': [
   { text: '系统设计', items: [
-    { text: '概览', link: '/system-design/' },
     { text: 'system-design-primer', link: 'https://guide.emcsp.top/system-design-primer/' },
   ] },
   {
@@ -575,7 +556,7 @@ export default defineConfig({
             },
           ],
           '/system-design/design-pattern/': [
-            { text: '设计模式', items: [{ text: '概览', link: '/system-design/design-pattern/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
+            { text: '设计模式', items: [{ text: '← 返回系统设计', link: '/system-design/' }] },
             {
               text: '前言',
               collapsed: true,
@@ -752,7 +733,7 @@ export default defineConfig({
           ],
 
           '/system-design/architecture/': [
-            { text: '从 0 开始学架构', items: [{ text: '概览', link: '/system-design/architecture/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
+            { text: '从 0 开始学架构', items: [{ text: '← 返回系统设计', link: '/system-design/' }] },
             {
               text: '开篇',
               collapsed: false,
@@ -853,14 +834,10 @@ export default defineConfig({
           ],
 
                     '/storage/': [
-  { text: '存储', items: [
-    { text: '概览', link: '/storage/' },
-  ] },
   ...sidebarFromIndex('storage'),
 ],
           '/storage/cmu15-445/': [
             { text: 'Intro to Database System', items: [
-              { text: '概览', link: '/storage/cmu15-445/' },
               { text: '← 返回存储', link: '/storage/' },
             ] },
             {
@@ -921,7 +898,6 @@ export default defineConfig({
           ],
           '/storage/vector-database/': [
             { text: 'Vector Databases in Modern AI Applications', items: [
-              { text: '概览', link: '/storage/vector-database/' },
               { text: '← 返回存储', link: '/storage/' },
             ] },
             {
@@ -941,7 +917,6 @@ export default defineConfig({
           ],
           '/storage/lsm-tree/': [
             { text: 'LSM-Tree in a Week', items: [
-              { text: '概览', link: '/storage/lsm-tree/' },
               { text: '← 返回存储', link: '/storage/' },
             ] },
             {
@@ -1000,14 +975,8 @@ export default defineConfig({
             },
           ],
           '/tools/': [
-            { text: '工具', items: [
-                { text: '概览', link: '/tools/' },
-            ] },
             ...sidebarFromIndex('tools'),
           ],'/csapp/': [
-            { text: '计算机系统', items: [
-                { text: '概览', link: '/csapp/' },
-            ] },
             ...sidebarFromIndex('csapp'),
             {
               text: 'CS 144 →',
@@ -1017,7 +986,7 @@ export default defineConfig({
               ],
             },
           ],'/csapp/cs144/': [
-            { text: 'CS 144', items: [{ text: '概览', link: '/csapp/cs144/' }, { text: '← 返回计算机系统', link: '/csapp/' }] },
+            { text: 'CS 144', items: [{ text: '← 返回计算机系统', link: '/csapp/' }] },
             {
               text: '课程笔记',
               collapsed: false,
@@ -1069,7 +1038,6 @@ export default defineConfig({
             },
           ],'/security/': [
             { text: '信息安全', items: [
-                { text: '概览', link: '/security/' },
                 { text: '安全攻防技能30讲', link: '/security/security-attack-defense/' },
                 { text: 'Practical Cryptography for Developers', link: '/security/practical-cryptography-for-developers/' },
             ] },
@@ -1089,11 +1057,11 @@ export default defineConfig({
             },
           ],
           '/security/security-attack-defense/': [
-            { text: '安全攻防技能30讲', items: [{ text: '概览', link: '/security/security-attack-defense/' }, { text: '← 返回信息安全', link: '/security/' }] },
+            { text: '安全攻防技能30讲', items: [{ text: '← 返回信息安全', link: '/security/' }] },
             ...securitySidebar,
           ],
           '/security/practical-cryptography-for-developers/': [
-            { text: 'Practical Cryptography for Developers', items: [{ text: '概览', link: '/security/practical-cryptography-for-developers/' }, { text: '← 返回信息安全', link: '/security/' }] },
+            { text: 'Practical Cryptography for Developers', items: [{ text: '← 返回信息安全', link: '/security/' }] },
             ...practicalCryptographySidebar,
           ],}, 
         outline: { label: '本页目录', level: [2, 3] },

@@ -177,8 +177,6 @@ export type CategoryNode = {
   docs: DocEntry[]
   /** 博客文章：博客没有侧边栏，直接按目录归入分类 */
   posts: CategoryPost[]
-  /** 专栏的概览页（index.md），例如放了 PDF 的那一页 */
-  overview?: DocEntry
   /** 分组里指向站外的精选文章链接 */
   links: NavLink[]
   children: string[]
@@ -440,40 +438,6 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
 
   for (const [path, links] of EXTERNAL_LINKS) {
     ensure(path).links = links
-  }
-
-  // 标题与本节点同名的文章（教程目录页、章节引导文）应作为概览而不是普通文章
-  for (const node of nodes.values()) {
-    const selfIdx = node.docs.findIndex((d) => normTitle(d.data.title) === normTitle(node.label))
-    // 有同名文章时用它当概览（它是教程目录页/章节引导页，内容比 index.md 更全）
-    if (selfIdx !== -1) node.overview = node.docs.splice(selfIdx, 1)[0]
-  }
-
-  // 章节引导文的标题往往和子分类同名（Hash Functions.md ↔ 「Hash Functions」分组），
-  // 它会同时出现在「本层文章」和「子分类」里。这里把它挪进对应子分类当概览页。
-  for (const node of nodes.values()) {
-    for (const childPath of node.children) {
-      const child = nodes.get(childPath)
-      if (!child) continue
-      const idx = node.docs.findIndex((d) => normTitle(d.data.title) === normTitle(child.label))
-      if (idx === -1) continue
-      const [doc] = node.docs.splice(idx, 1)
-      if (!child.overview) child.overview = doc
-      else child.docs.unshift(doc)
-    }
-  }
-
-  // 专栏的概览页（index.md）不参与分类，但要在该层可达——PDF 就放在这一页里
-  const overviewByFile = new Map<string, DocEntry>()
-  for (const doc of docs) {
-    const file = fileKey(doc)
-    if (/(^|\/)index\.md$/.test(file)) overviewByFile.set(file, doc)
-  }
-  for (const key of COLUMN_PARENT.keys()) {
-    const doc = overviewByFile.get(`${key}/index.md`)
-    if (!doc) continue
-    const node = nodes.get(columnBase(key).join('/'))
-    if (node) node.overview = doc
   }
 
   const computeTotal = (node: CategoryNode): number => {
