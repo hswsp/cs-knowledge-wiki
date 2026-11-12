@@ -4,6 +4,9 @@
 
 ## 分布式共识
 
+- [如何解决分布式系统中的"幽灵复现"？](/system-design/distributed-consensus/03-ghost-reappearance)
+- [Pompē：拜占庭有序共识协议详解](/system-design/distributed-consensus/11-pompe-ordered-consensus)
+
 ### Paxos 协议
 
 - [Basic Paxos](/system-design/distributed-consensus/paxos/basic-paxos)
@@ -28,11 +31,6 @@
 ### Gossip 协议
 
 - [Gossip 协议详解](/system-design/distributed-consensus/gossip/04-gossip-protocol)
-
-### 其他共识协议
-
-- [如何解决分布式系统中的"幽灵复现"？](/system-design/distributed-consensus/others/03-ghost-reappearance)
-- [Pompē：拜占庭有序共识协议详解](/system-design/distributed-consensus/others/11-pompe-ordered-consensus)
 
 ## 消息队列
 

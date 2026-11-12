@@ -524,7 +524,12 @@ export default defineConfig({
   },
 ],
           '/system-design/distributed-consensus/': [
-            { text: '分布式共识', items: [{ text: '概览', link: '/system-design/distributed-consensus/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
+            { text: '分布式共识', items: [
+              { text: '概览', link: '/system-design/distributed-consensus/' },
+              { text: '如何解决"幽灵复现"？', link: '/system-design/distributed-consensus/03-ghost-reappearance' },
+              { text: 'Pompē：拜占庭有序共识协议详解', link: '/system-design/distributed-consensus/11-pompe-ordered-consensus' },
+              { text: '← 返回系统设计', link: '/system-design/' },
+            ] },
             {
               text: 'Paxos 协议',
               collapsed: true,
@@ -563,14 +568,6 @@ export default defineConfig({
               collapsed: true,
               items: [
                 { text: 'Gossip 协议详解', link: '/system-design/distributed-consensus/gossip/04-gossip-protocol' },
-              ],
-            },
-            {
-              text: '其他共识协议',
-              collapsed: true,
-              items: [
-                { text: '如何解决"幽灵复现"？', link: '/system-design/distributed-consensus/others/03-ghost-reappearance' },
-                { text: 'Pompē：拜占庭有序共识协议详解', link: '/system-design/distributed-consensus/others/11-pompe-ordered-consensus' },
               ],
             },
           ],
