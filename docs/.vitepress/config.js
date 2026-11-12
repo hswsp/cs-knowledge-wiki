@@ -526,31 +526,51 @@ export default defineConfig({
           '/system-design/distributed-consensus/': [
             { text: '分布式共识', items: [{ text: '概览', link: '/system-design/distributed-consensus/' }, { text: '← 返回系统设计', link: '/system-design/' }] },
             {
-              text: 'Raft 算法总结',
+              text: 'Paxos 协议',
               collapsed: true,
               items: [
-                { text: 'Raft算法总结（一）', link: '/system-design/distributed-consensus/01-raft-summary-1' },
-                { text: 'Raft算法总结（二）', link: '/system-design/distributed-consensus/02-raft-summary-2' },
-                { text: '如何解决"幽灵复现"？', link: '/system-design/distributed-consensus/03-ghost-reappearance' },
+                { text: 'Basic Paxos', link: '/system-design/distributed-consensus/paxos/basic-paxos' },
+                { text: 'Multi-Paxos', link: '/system-design/distributed-consensus/paxos/multi-paxos' },
+              ],
+            },
+            {
+              text: 'Raft 算法',
+              collapsed: false,
+              items: [
+                { text: 'Raft算法总结（一）', link: '/system-design/distributed-consensus/raft/01-raft-summary-1' },
+                { text: 'Raft算法总结（二）', link: '/system-design/distributed-consensus/raft/02-raft-summary-2' },
+                { text: 'Raft（一）领导者选举', link: '/system-design/distributed-consensus/raft/raft-1-leader-election' },
+                { text: 'Raft（二）日志复制与压缩', link: '/system-design/distributed-consensus/raft/raft-2-log-replication' },
+                { text: 'Raft（三）集群成员变更', link: '/system-design/distributed-consensus/raft/raft-3-membership-change' },
+                { text: 'MIT 6.824 Lab 2 - Raft', link: '/system-design/distributed-consensus/raft/mit-6824-lab2-raft' },
+                { text: '主流使用 Raft 的对象存储：一致性引擎的工程优化', link: '/system-design/distributed-consensus/raft/raft-object-storage-engineering' },
+                {
+                  text: 'etcd/raft 源码解读',
+                  collapsed: true,
+                  items: [
+                    { text: 'etcd/raft（一）：raftexample', link: '/system-design/distributed-consensus/raft/etcd-raft/05-etcd-raft-1-raftexample' },
+                    { text: 'etcd/raft（二）：etcd/raft总体设计', link: '/system-design/distributed-consensus/raft/etcd-raft/06-etcd-raft-2-design' },
+                    { text: 'etcd/raft（三）：Raft选举', link: '/system-design/distributed-consensus/raft/etcd-raft/07-etcd-raft-3-election' },
+                    { text: 'etcd/raft（四）：Raft日志', link: '/system-design/distributed-consensus/raft/etcd-raft/08-etcd-raft-4-log' },
+                    { text: 'etcd/raft（五）：Raft成员变更', link: '/system-design/distributed-consensus/raft/etcd-raft/09-etcd-raft-5-membership' },
+                    { text: 'etcd/raft（六）：只读请求优化', link: '/system-design/distributed-consensus/raft/etcd-raft/10-etcd-raft-6-readonly' },
+                  ],
+                },
               ],
             },
             {
               text: 'Gossip 协议',
               collapsed: true,
               items: [
-                { text: 'Gossip 协议详解', link: '/system-design/distributed-consensus/04-gossip-protocol' },
+                { text: 'Gossip 协议详解', link: '/system-design/distributed-consensus/gossip/04-gossip-protocol' },
               ],
             },
             {
-              text: 'etcd/raft 源码解读',
+              text: '其他共识协议',
               collapsed: true,
               items: [
-                { text: '（一）raftexample', link: '/system-design/distributed-consensus/05-etcd-raft-1-raftexample' },
-                { text: '（二）总体设计', link: '/system-design/distributed-consensus/06-etcd-raft-2-design' },
-                { text: '（三）Raft选举', link: '/system-design/distributed-consensus/07-etcd-raft-3-election' },
-                { text: '（四）Raft日志', link: '/system-design/distributed-consensus/08-etcd-raft-4-log' },
-                { text: '（五）Raft成员变更', link: '/system-design/distributed-consensus/09-etcd-raft-5-membership' },
-                { text: '（六）只读请求优化', link: '/system-design/distributed-consensus/10-etcd-raft-6-readonly' },
+                { text: '如何解决"幽灵复现"？', link: '/system-design/distributed-consensus/others/03-ghost-reappearance' },
+                { text: 'Pompē：拜占庭有序共识协议详解', link: '/system-design/distributed-consensus/others/11-pompe-ordered-consensus' },
               ],
             },
           ],
