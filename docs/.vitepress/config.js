@@ -525,23 +525,25 @@ export default defineConfig({
 ],
           '/system-design/distributed-consensus/': [
             { text: '分布式共识', items: [
-              { text: '概览', link: '/system-design/distributed-consensus/' },
+              { text: '← 返回系统设计', link: '/system-design/' },
               { text: '如何解决"幽灵复现"？', link: '/system-design/distributed-consensus/03-ghost-reappearance' },
               { text: 'Pompē：拜占庭有序共识协议详解', link: '/system-design/distributed-consensus/11-pompe-ordered-consensus' },
-              { text: '← 返回系统设计', link: '/system-design/' },
             ] },
             {
               text: 'Paxos 协议',
               collapsed: true,
               items: [
+                { text: '← 返回分布式共识', link: '/system-design/distributed-consensus/' },
                 { text: 'Basic Paxos', link: '/system-design/distributed-consensus/paxos/basic-paxos' },
                 { text: 'Multi-Paxos', link: '/system-design/distributed-consensus/paxos/multi-paxos' },
+                { text: 'Fast Paxos', link: '/system-design/distributed-consensus/paxos/fast-paxos' },
               ],
             },
             {
               text: 'Raft 算法',
               collapsed: false,
               items: [
+                { text: '← 返回分布式共识', link: '/system-design/distributed-consensus/' },
                 { text: 'Raft算法总结（一）', link: '/system-design/distributed-consensus/raft/01-raft-summary-1' },
                 { text: 'Raft算法总结（二）', link: '/system-design/distributed-consensus/raft/02-raft-summary-2' },
                 { text: 'Raft（一）领导者选举', link: '/system-design/distributed-consensus/raft/raft-1-leader-election' },
@@ -567,6 +569,7 @@ export default defineConfig({
               text: 'Gossip 协议',
               collapsed: true,
               items: [
+                { text: '← 返回分布式共识', link: '/system-design/distributed-consensus/' },
                 { text: 'Gossip 协议详解', link: '/system-design/distributed-consensus/gossip/04-gossip-protocol' },
               ],
             },
