@@ -28,6 +28,7 @@
 - [Tair 架构详解](./storage-engine/Tair架构详解)
 - [Lustre 高性能分布式文件系统：从 0 级基础到精通](./storage-engine/Lustre架构详解)
 - [Alluxio 架构深度解读](./storage-engine/alluxio-architecture)
+- [PostgreSQL 14 Internals 中文版：深入解析运行原理](https://postgres-internals.cn/docs/chapter01/)
 
 ## Intro to Database System
 
