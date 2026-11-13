@@ -1,8 +1,8 @@
 ---
-title: 同一电脑上同时使用GitHub和Gitee
+title: "同一电脑同时使用 GitHub 与 Gitee"
+order: 3
 date: 2022-09-02
 ---
-
 ::: info
 有些教程说并需要清空全局用户名和邮箱。这是错的！！！！
 

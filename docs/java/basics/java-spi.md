@@ -1,9 +1,9 @@
 ---
-title: Java SPI (Service Provider Interface) 机制详解
+title: "Java SPI 机制详解"
+order: 1
 description: "Java SPI"
 date: 2022-01-25
 ---
-
  本质：Java SPI 实际上是“基于接口的编程＋策略模式＋约定配置文件” 组合实现的动态加载机制，在JDK中提供了工具类：“`java.util.ServiceLoader`”来实现服务查找。
 
 # 什么是SPI ？

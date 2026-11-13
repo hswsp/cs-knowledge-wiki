@@ -1,22 +1,22 @@
-### Astro ###
+### Astro / VitePress 构建产物 ###
+# 不带前导斜杠的 dist/ 匹配任意层级，所以 docs/.vitepress/dist/ 不必单列
 dist/
 .astro/
-
-### Vercel ###
 .vercel/
 
-### Vim ###
-[._]*.un~
+# VitePress 缓存（docs/ 在本仓库里只是内容源，theme/ 与 config 才是源码）
+docs/.vitepress/cache/
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+### 构建时生成，不入库 ###
+# 由 docs/ 里的引用按需铺开（图片本体已在 docs/ 内跟踪，约 787MB）
+public/docassets/
+.docassets-manifest.json
 
-# Code workspace files
-*.code-workspace
+# Astro 内容集合：由 npm run migrate 从 docs/ 生成
+src/content/docs/
+
+# 本地 npm 缓存（npm 全局缓存在沙箱里不可写）
+.npm-cache/
 
 ### Node ###
 # logs
@@ -32,37 +32,26 @@ node_modules/
 .env
 .env.production
 
-### Custom ###
+### 编辑器 / 系统 ###
+# Vim
+[._]*.un~
+
+# VisualStudioCode
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Code workspace files
+*.code-workspace
+
+# macOS
 .DS_Store
+
+### Custom ###
 old_blog
 ignore.*
 bunfig.toml
 /src/content/blog/test.*
 /test/
-
-# Astro build output
-dist/
-.astro/
-
-# Generated at build time from docs/ (787MB of images already tracked there)
-public/docassets/
-.docassets-manifest.json
-
-# local npm cache (npm's global cache is not writable in this sandbox)
-.npm-cache/
-
-# VitePress leftovers (docs/ is now only the content source)
-docs/.vitepress/dist/
-docs/.vitepress/cache/
-
-# 以下为 astro-iris 分支的构建产物。Git 切换分支不会删除未跟踪文件，
-# 这些目录会残留在工作区；不加规则的话 `git add -A` 会把它们（约 1.4GB）提交进来。
-.astro/
-dist/
-.npm-cache/
-.docassets-manifest.json
-public/docassets/
-
-# 由 npm run migrate / nav 从 docs/ 生成，不入库
-src/content/docs/
-src/data/docs-nav.json

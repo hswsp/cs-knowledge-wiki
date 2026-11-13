@@ -1,8 +1,8 @@
 ---
-title: "题目描述"
+title: "经典区间 DP 模板题"
+order: 10
 description: "这是 LeetCode 上的「516. 最长回文子序列」，难度为「中等」。"
 ---
-
 # 题目描述
 
 

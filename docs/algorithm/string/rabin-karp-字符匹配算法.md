@@ -1,8 +1,8 @@
 ---
-title: "高效寻找重复子序列"
+title: "RABIN KARP 字符匹配算法"
+order: 4
 description: "我之前用状态机的思路讲解了[有限状态机实现 KMP 算法详解](https://www.yuque.com/yangguangfanxing/coma88/siqpvs)，说实话 KMP 算法确实不太好理解。不过今天我来讲一讲字符串匹配的另"
 ---
-
 我之前用状态机的思路讲解了[有限状态机实现 KMP 算法详解](https://www.yuque.com/yangguangfanxing/coma88/siqpvs)，说实话 KMP 算法确实不太好理解。不过今天我来讲一讲字符串匹配的另一种经典算法：Rabin-Karp 算法，这是一个很简单优雅的算法。
 
 

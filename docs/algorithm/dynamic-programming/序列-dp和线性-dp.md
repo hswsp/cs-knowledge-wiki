@@ -1,8 +1,8 @@
 ---
-title: "题目描述"
+title: "序列 DP和线性 DP"
+order: 14
 description: "这是 LeetCode 上的「139. 单词拆分」，难度为「中等」。"
 ---
-
 # 题目描述
 
 

@@ -1,8 +1,8 @@
 ---
-title: "什么是最小生成树"
+title: "Kruskal 最小生成树算法"
+order: 8
 description: "图论中知名度比较高的算法应该就是 [Dijkstra 最短路径算法](https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247492167&idx=1&sn=bc96c8f9725"
 ---
-
 图论中知名度比较高的算法应该就是 [Dijkstra 最短路径算法](https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247492167&idx=1&sn=bc96c8f97252afdb3973c7d760edb9c0&scene=21#wechat_redirect)，[环检测和拓扑排序](https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247491897&idx=1&sn=c2d77dd649548d077815af3c976b61d1&scene=21#wechat_redirect)，[二分图判定算法](https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247492491&idx=1&sn=4c6f4f6864640ecaa4e48acd0acd31c6&scene=21#wechat_redirect) 以及今天要讲的最小生成树（Minimum Spanning Tree）算法了。
 
 

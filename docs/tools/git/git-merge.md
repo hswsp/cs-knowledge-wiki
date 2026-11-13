@@ -1,9 +1,9 @@
 ---
-title: git merge的三种操作
+title: "git merge 的三种操作"
+order: 2
 description: "git merge的三种操作merge, squash merge, 和rebase merge"
 date: 2023-01-20
 ---
-
 `git merge`的三种操作`merge`, `squash merge`, 和`rebase merge`
 
 举例来说：

@@ -1,3 +1,7 @@
+---
+title: "78 | 开源实战二（上）：从Unix开源开发学习应对大型复杂项目开发"
+order: 3
+---
 # 78 | 开源实战二（上）：从Unix开源开发学习应对大型复杂项目开发
 
 ![](https://images.spumn.eu.cc/blog/34d478f1d9728f82.png)

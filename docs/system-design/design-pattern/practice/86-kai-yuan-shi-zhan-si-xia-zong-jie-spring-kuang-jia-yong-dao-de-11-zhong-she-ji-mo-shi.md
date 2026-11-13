@@ -1,3 +1,7 @@
+---
+title: "86 | 开源实战四（下）：总结Spring框架用到的11种设计模式"
+order: 11
+---
 # 86 | 开源实战四（下）：总结Spring框架用到的11种设计模式
 
 ![](https://images.spumn.eu.cc/blog/046e69b1a9d975db.png)

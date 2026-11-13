@@ -1,3 +1,7 @@
+---
+title: "76 | 开源实战一（上）：通过剖析Java JDK源码学习灵活应用设计模式"
+order: 1
+---
 # 76 | 开源实战一（上）：通过剖析Java JDK源码学习灵活应用设计模式
 
 ![](https://images.spumn.eu.cc/blog/8f4faffea5a84cfe.png)

@@ -1,3 +1,7 @@
+---
+title: "Embedding 层"
+order: 2
+---
 # 手搓 Transformer（二）：Embedding 层
 
 ## 前言

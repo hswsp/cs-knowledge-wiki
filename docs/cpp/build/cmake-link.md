@@ -1,9 +1,9 @@
 ---
-title: CMake简单入门
+title: "CMake 简单入门"
+order: 1
 description: "CMake 变量，引入头文件，链接库"
 date: 2021-10-30
 ---
-
 # 新建项目
 
 新建项目t4，目录结构如下：

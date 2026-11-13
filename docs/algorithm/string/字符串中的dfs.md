@@ -1,8 +1,8 @@
 ---
-title: "题目描述"
+title: "字符串中的DFS"
+order: 2
 description: "[395. Longest Substring with At Least K Repeating Characters](https://leetcode.cn/problems/longest-substring-with-at-lea"
 ---
-
 # 题目描述
 
 

@@ -1,9 +1,9 @@
 ---
-title: Raft 协议（三）—— 集群成员变更
+title: "Raft（三）集群成员变更"
+order: 6
 description: "Raft集群成员变更"
 date: 2022-09-16
 ---
-
 ![Raft 协议实战系列（五）—— 集群成员变更与日志压缩](https://images.spumn.eu.cc/blog/28cb380877f15f9e.webp)
 
 > 摘录自:[Q的博客](https://juejin.cn/post/6902274909959880711),[Raft 笔记(六) – Cluster membership change](https://youjiali1995.github.io/raft/etcd-raft-cluster-membership-change/)

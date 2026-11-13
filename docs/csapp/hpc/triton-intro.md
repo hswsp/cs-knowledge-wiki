@@ -1,8 +1,8 @@
 ---
 title: "Triton 入门指南"
+order: 2
 description: "用 Python 编写高性能 GPU 内核：编程模型、向量加法、融合 Softmax、MatMul、自动调优与编译管线。"
 ---
-
 # Triton 入门指南：用 Python 编写高性能 GPU 内核
 
 Triton 是一个**专为深度学习与高性能计算设计、用 Python 编写的高性能 GPU 内核编程语言与编译器**。它的口号很朴素：让你**用 Python 的写法，写出接近手工 CUDA 的性能**——不用管线程、warp、共享内存这些细节，编译器替你搞定。

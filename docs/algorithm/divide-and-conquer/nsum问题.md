@@ -1,8 +1,8 @@
 ---
-title: "一、twoSum 问题"
+title: "NSum问题"
+order: 8
 description: "本文就由浅入深，层层推进，用一个函数来解决所有 nSum 类型的问题。"
 ---
-
 > 双指针应用+递归
 >
 

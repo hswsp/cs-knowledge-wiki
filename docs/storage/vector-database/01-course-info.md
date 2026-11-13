@@ -1,7 +1,8 @@
 ---
+title: "01 - Course Info"
+order: 1
 source: https://www.yuque.com/yangguangfanxing/nmhuv1/epx2p7udbh53koga
 ---
-
 # Course Info
 
 > 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/epx2p7udbh53koga](https://www.yuque.com/yangguangfanxing/nmhuv1/epx2p7udbh53koga)

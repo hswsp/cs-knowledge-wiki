@@ -1,3 +1,7 @@
+---
+title: "Fast Paxos"
+order: 2
+---
 # Fast Paxos：用更大的 Quorum 换掉一次消息跳转
 
 ---
@@ -234,4 +238,4 @@ Kaffee 的结论是「理论上可行，实际中很难操作」，我基本同�
 
 ---
 
-*← 返回[分布式共识](/system-design/distributed-consensus)* · *上一篇：[Multi-Paxos](multi-paxos.md)*
+*← 返回[分布式共识](/system-design/distributed-consensus/)* · *上一篇：[Multi-Paxos](/system-design/distributed-consensus/paxos/multi-paxos/)*

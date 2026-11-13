@@ -1,9 +1,9 @@
 ---
-title: Multi-decree Paxos
+title: "Multi-Paxos"
+order: 3
 description: "理解分布式一致性:Paxos协议之Multi-Paxos"
 date: 2023-02-16
 ---
-
 > 转载自[理解分布式一致性:Paxos协议之Multi-Paxos](https://juejin.cn/post/6891459638546399245)
 
 在前面一篇文章我们讲到了Basic Paxos，本篇文章我会讲解更加通用和普遍的Multi-Paxos协议。

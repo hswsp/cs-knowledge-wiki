@@ -1,9 +1,9 @@
 ---
-title: Single-decree Paxos
+title: "Basic Paxos"
+order: 1
 description: "理解分布式一致性:Paxos协议之Basic Paxos"
 date: 2023-02-16
 ---
-
 大家可能在各个场合都听说过Paxos协议，毕竟这个开创性的协议是很多分布式协议的鼻祖，比如后面比较有名的Raft协议就是基于Paxos协议发展而来的。现实中也有很多产品在使用Paxos协议，像是Google的Chubby，Spanner，IBM的SVC等。 但是在笔者的学习过程中，发现介绍Paxos协议的很多，但是真正能把它讲明白的却很少。所以笔者特意花了一定的时间来研究Paxos协议，现把学习结果分析如下。
 
 其实Paxos的作者Leslie Lamport早在2001年就写过一篇Paxos Made Simple的论文，来尽可能的简化Paxos的描述。大家可以在[Paxos Made Simple](https://www.microsoft.com/en-us/research/uploads/prod/2016/12/paxos-simple-Copy.pdf)获取作者的这篇论文。

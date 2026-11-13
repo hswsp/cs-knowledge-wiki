@@ -1,3 +1,7 @@
+---
+title: "93 | 项目实战二：设计实现一个通用的接口幂等框架（分析）"
+order: 23
+---
 # 93 | 项目实战二：设计实现一个通用的接口幂等框架（分析）
 
 ![](https://images.spumn.eu.cc/blog/12f9ceaaac587efd.png)

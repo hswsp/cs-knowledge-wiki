@@ -9,13 +9,18 @@
  *  - frontmatter synthesis (title / description are required by Iris schema)
  *  - ::: tip|info|warning|danger containers -> blockquote callouts
  *  - ==highlight== -> <mark>
- *  - internal absolute links /foo/bar -> /docs/foo/bar
+ *  - internal absolute links /foo/bar -> /docs/foo/bar/
+ *  - relative .md links and images resolved from the file's own directory
  *  - skips code fences so nothing above touches code
+ *
+ * 目录结构是唯一的事实来源：目录 = 分类，目录里的 index.md = 该分类页
+ * （frontmatter 的 title / description / order 直接决定分类名、简介与排序）。
+ * 每篇文章的 title / order 也写在它自己的 frontmatter 里。
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, rmSync, existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { slug as ghSlug } from 'github-slugger'
-import { dirname, join, relative, extname } from 'node:path'
+import { dirname, join, relative, extname, posix } from 'node:path'
 
 const ROOT = process.cwd()
 const SRC = join(ROOT, 'docs')
@@ -178,43 +183,38 @@ function firstParagraph(body) {
  * answers the bare form with a 308 — one extra round trip per click, which on
  * a slow edge is seconds. Emit the canonical form so links never redirect.
  */
-/** 目录内「slug -> 原始文件名」的缓存 */
-const slugDirCache = new Map()
-function siblingBySlug(dir) {
-  if (slugDirCache.has(dir)) return slugDirCache.get(dir)
-  const map = new Map()
-  try {
-    for (const name of readdirSync(join(SRC, dir))) {
-      if (!name.endsWith('.md')) continue
-      map.set(ghSlug(name.replace(/\.md$/i, '')), name.replace(/\.md$/i, ''))
-    }
-  } catch {
-    // 目录读不到就算了
-  }
-  slugDirCache.set(dir, map)
-  return map
+/** 站内静态资源前缀，链接重写时放行 */
+const STATIC_PREFIX = /^\/(docassets|images|diagrams|pdfjs|favicon|logo|api|blog|about|tags|archives|links|projects|search|terms)\//
+const ASSET_EXT = /\.(png|jpe?g|gif|svg|webp|pdf|ico|json|xml|mjs|js|css|zip|html?)$/i
+
+/**
+ * 站内绝对链接 `/a/b`、`/a/b/` 统一成 Astro 正式路由 `/docs/a/b/`。
+ *
+ * trailingSlash 为 always，Astro 的规范 URL 一定带尾斜杠，不带会多吃一次 308。
+ */
+function toDocsRoute(path) {
+  if (STATIC_PREFIX.test(path)) return null
+  if (ASSET_EXT.test(path)) return null
+  const p = path.replace(/^\/+/, '').replace(/^docs\//, '').replace(/\/+$/, '')
+  return p ? `/docs/${p}/` : null
 }
 
-function rewriteLinks(text, srcDir = '') {
-  return text.replace(/(\]\(\/)([^)\s#?]+)([^)]*\))/g, (full, lead, path, tail) => {
-    if (path === 'docs' || path === 'docs/') return `${lead}docs/${tail}`
-    if (/^\/docs\//.test(path)) {
-      return path.endsWith('/') ? full : `${lead}${path}/${tail}`
+function rewriteLinks(text) {
+  const out = text.replace(
+    /(\]\()(?![a-z]+:|\/\/|#)(\/[^)\s#?]*)([^)]*\))/gi,
+    (full, lead, path, tail) => {
+      const route = toDocsRoute(path)
+      return route ? `${lead}${route}${tail}` : full
     }
-    if (/\.(png|jpe?g|gif|svg|webp|pdf|ico|json|xml|mjs|js|css)$/i.test(path)) return full
-
-    // 旧结构的链接（如 /asymmetric-key-ciphers/xxx）在新目录下可能不存在，
-    // 但同名文件往往就在当前文章所在目录里——这种就地修正。
-    const plain = path.replace(/^\//, '').replace(/\.md$/i, '')
-    if (!existsSync(join(SRC, `${plain}.md`))) {
-      // 旧链接用的是 slug（ecdh-key-exchange），磁盘上是 ECDH Key Exchange.md，
-      // 所以按 slug 在同目录里找同名文章
-      const base = plain.split('/').pop()
-      const hit = srcDir ? siblingBySlug(srcDir).get(ghSlug(base)) : undefined
-      if (hit) return `${lead}docs/${srcDir}/${ghSlug(hit)}/${tail}`
+  )
+  // 正文里手写的 HTML 链接（<a href="/storage/">）走同一条规则
+  return out.replace(
+    /(<a\b[^>]*?\bhref=")(\/[^"]*)(")/gi,
+    (full, pre, path, post) => {
+      const route = toDocsRoute(path)
+      return route ? `${pre}${route}${post}` : full
     }
-    return `${lead}docs/${plain}/${tail}`
-  })
+  )
 }
 
 function convertContainers(lines) {
@@ -352,24 +352,28 @@ function fixMathSpans(line) {
 /**
  * 相对 .md 链接改写为 Astro 路由。
  *
- * VitePress 里写的是 `./Hash%20Functions.md` 这类相对链接；Astro 的内容 id 会把
- * 文件名 slug 化（空格、标点变连字符），所以必须换算成 `/docs/<目录>/<slug>/`，
- * 否则概览页里的每一条都点不动。slug 规则与 Astro 一致（github-slugger）。
+ * 内容里写的是 `../sorting/快速排序.md` 这类相对路径（VitePress 和 Astro 都认），
+ * 这里按源文件所在目录解析成真正的目标，再换算成内容 id 的 slug 形式
+ * `/docs/<目录>/<slug>/`。指向 `index.md` 的链接落到分类页本身。
  */
 function rewriteRelativeDocs(line, srcDir) {
   return line.replace(
-    /\]\((?![a-z]+:|\/|#)([^)\s]+\.md)(#[^)]*)?\)/gi,
-    (_full, target, anchor = '') => {
+    /(\]\()(?![a-z]+:|\/|#)([^)\s]+\.md)(#[^)]*)?(\))/gi,
+    (_full, lead, target, anchor = '', close) => {
       let decoded = target
       try {
         decoded = decodeURIComponent(target)
       } catch {
         // 编码非法就按原样处理
       }
-      const base = decoded.replace(/^\.\//, '').split('/').pop().replace(/\.md$/i, '')
-      const id = ghSlug(base)
-      const dir = srcDir ? `${srcDir}/` : ''
-      return `](/docs/${dir}${id}/${anchor})`
+      const resolved = posix.normalize(posix.join(srcDir || '.', decoded)).replace(/^\.\//, '')
+      const noExt = resolved.replace(/\.md$/i, '')
+      const dir = posix.dirname(noExt) === '.' ? '' : posix.dirname(noExt)
+      if (posix.basename(noExt) === 'index') {
+        return `${lead}/docs/${dir ? dir + '/' : ''}${anchor}${close}`
+      }
+      const id = ghSlug(posix.basename(noExt))
+      return `${lead}/docs/${dir ? dir + '/' : ''}${id}/${anchor}${close}`
     }
   )
 }
@@ -404,7 +408,7 @@ function transformBody(body, srcRel = '') {
     l = l.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"')
     l = fixMathSpans(l)
     l = l.replace(/(?<!`)==([^=\n]+)==(?!`)/g, '<mark>$1</mark>')
-    l = rewriteLinks(l, srcDir)
+    l = rewriteLinks(l)
     l = rewriteRelativeDocs(l, srcDir)
     // VitePress 的 CSS 变量在 Astro 里不存在，iframe 边框会失效
     l = l.replaceAll('var(--vp-c-divider)', 'hsl(var(--border))')
@@ -412,12 +416,17 @@ function transformBody(body, srcRel = '') {
     // public/docassets at build time so the repo does not duplicate ~800MB.
     l = l.replace(/!\[([^\]]*)\]\((?!https?:|\/|data:)([^)]+)\)/g, (_m, alt, target) => {
       const clean = target.split('#')[0].split('?')[0]
-      const resolved = [srcDir, clean]
-        .filter(Boolean)
-        .join('/')
-        .replace(/\/\.\//g, '/')
+      const resolved = posix
+        .normalize([srcDir, clean].filter(Boolean).join('/'))
         .replace(/^\.\//, '')
-      const encoded = encodeURI(resolved).replace(/#/g, '%23').replace(/\?/g, '%3F')
+      // 源里可能是已经编码过的写法（`image%201.png`），先解码再编码，避免二次转义
+      let plainPath = resolved
+      try {
+        plainPath = decodeURIComponent(resolved)
+      } catch {
+        // 非法编码就按原样处理
+      }
+      const encoded = encodeURI(plainPath).replace(/#/g, '%23').replace(/\?/g, '%3F')
       return `![${alt}](/docassets/${encoded})`
     })
     return l
@@ -432,86 +441,35 @@ function yamlQuote(s) {
 const allFiles = walk(SRC).sort()
 
 /**
- * Section index.md files are curated navigation lists, not prose.
- * Astro would render each as a plain page and we would lose that order, so we
- * read the link order out of them and turn it into the `order` frontmatter.
- */
-function buildOrderMap() {
-  const order = new Map()
-  for (const file of allFiles) {
-    const rel = relative(SRC, file).replace(/\.md$/i, '')
-    if (rel === 'index') continue // VitePress home page, not content
-    const isSectionIndex = rel.endsWith('/index') || rel.includes('/index/')
-    if (!isSectionIndex) continue
-    const cat = rel.split('/')[0]
-    const text = readFileSync(file, 'utf8')
-    let seq = 0
-    for (const m of text.matchAll(/\[[^\]]*\]\((\.[^)\s]+|\/[^)\s]+)\)/g)) {
-      let href = m[1]
-      const wasRelative = !href.startsWith('/')
-      if (href.startsWith('./')) href = href.slice(2)
-      else if (href.startsWith('/')) href = href.slice(1)
-      href = href.replace(/^docs\//, '').replace(/[#?].*$/, '').replace(/\/$/, '')
-      // Relative links resolve inside the section, absolute ones are already rooted.
-      const id = wasRelative ? `${cat}/${href}` : href
-      if (!order.has(id)) order.set(id, ++seq)
-    }
-  }
-  return order
-}
-
-const orderMap = buildOrderMap()
-
-/**
- * 侧边栏标题映射。
+ * 目录的显示名：读该目录 index.md 的 frontmatter title。
  *
- * VitePress 里每篇文章的显示名是各分区 index.md 里写的链接文字，往往比
- * markdown 的一级标题准确（正文里常写成「Intro」「命题」「引言」这类通用词）。
- * build-nav 已经把这份数据整理到 src/data/docs-nav.json，这里直接复用。
+ * 目录 = 分类，index.md 是这个分类页的唯一出处（标题、简介、排序）。
+ * 标签（/tags）也用这条链：ancestorTitles 会返回从学科到父目录的全部标题。
  */
-function buildSidebarTitles() {
-  const map = new Map()
-  const navPath = join(ROOT, 'src', 'data', 'docs-nav.json')
-  if (!existsSync(navPath)) return map
-  try {
-    const nav = JSON.parse(readFileSync(navPath, 'utf8'))
-    const walk = (group) => {
-      for (const doc of group.docs ?? []) map.set(doc.file, doc.title)
-      for (const child of group.children ?? []) walk(child)
-    }
-    for (const groups of Object.values(nav)) for (const g of groups) walk(g)
-  } catch {
-    // 读不到就退回原来的规则
+const dirTitleCache = new Map()
+function dirTitle(dir) {
+  if (dirTitleCache.has(dir)) return dirTitleCache.get(dir)
+  let title = ''
+  const file = join(SRC, dir, 'index.md')
+  if (existsSync(file)) {
+    const { data, body } = splitFrontmatter(readFileSync(file, 'utf8'))
+    title = data.title || firstHeading(body) || ''
   }
-  return map
+  dirTitleCache.set(dir, title)
+  return title
 }
 
-const sidebarTitles = buildSidebarTitles()
-
-/** 侧边栏顺序：文件 -> 序号。VitePress 的显示顺序由侧边栏定义，不是字母序。 */
-function buildSidebarSeq() {
-  const map = new Map()
-  const navPath = join(ROOT, 'src', 'data', 'docs-nav.json')
-  if (!existsSync(navPath)) return map
-  try {
-    const nav = JSON.parse(readFileSync(navPath, 'utf8'))
-    const walk = (group) => {
-      for (const doc of group.docs ?? []) {
-        if (typeof doc.seq === 'number' && !map.has(doc.file)) map.set(doc.file, doc.seq)
-      }
-      for (const child of group.children ?? []) walk(child)
-    }
-    for (const groups of Object.values(nav)) for (const g of groups) walk(g)
-  } catch {
-    // 读不到就退回 index.md 的顺序
+/** 从学科到父目录的分类标题链，用作文章的 tags */
+function ancestorTitles(rel) {
+  const segments = rel.split('/').slice(0, -1)
+  const out = []
+  for (let i = 1; i <= segments.length; i++) {
+    const title = dirTitle(segments.slice(0, i).join('/'))
+    if (title) out.push(title)
+    else out.push(segments[i - 1])
   }
-  return map
+  return out.length ? out : ['root']
 }
-
-const sidebarSeq = buildSidebarSeq()
-
-/** 导航专用文字不能当文章标题 */
-const NAV_ONLY_TITLE = /^(概览|目录|←.*|进入.*|.*→)$/
 
 /**
  * 每篇笔记的最后提交时间，供 /archives 使用。
@@ -591,20 +549,30 @@ for (const file of files) {
 
   const base = rel.replace(/\.md$/i, '').split('/').pop()
   const isIndex = /(^|\/)index\.md$/i.test(rel)
-  const fromSidebar = isIndex ? undefined : sidebarTitles.get(rel)
-  const sidebarTitle = fromSidebar && !NAV_ONLY_TITLE.test(fromSidebar) ? fromSidebar : undefined
-  // 侧边栏标题最权威：源文件里的 frontmatter title 常是早期导入自动生成的
-  // 通用词（「引言」「命题」「定律定义」），VitePress 侧边栏用的才是正式名字。
-  // 概览页（index.md）没有侧边栏条目，用正文一级标题当名字。
+  // 文章标题的唯一出处是它自己的 frontmatter（迁移时已从侧边栏固化进来），
+  // 其次是正文一级标题。分类页同理，取目录 index.md 的 frontmatter。
   const h1 = firstHeading(body)
-  let title = isIndex
-    ? h1 || data.title || base
-    : sidebarTitle || data.title || h1 || base
+  let title = data.title || h1 || base
   if (Array.isArray(title)) title = title.join(' ')
   title = clip(cleanTitle(title), TITLE_MAX) || base
 
   let description = data.description
   if (Array.isArray(description)) description = description.join(' ')
+  if (!description && isIndex) {
+    // 分类页（index.md）没有简介时按篇数生成，别从正文捞链接文字当简介
+    synthesized++
+    const dir = rel.split('/').slice(0, -1).join('/')
+    let count = 0
+    const countIn = (d) => {
+      for (const name of readdirSync(join(SRC, d))) {
+        const full = join(SRC, d, name)
+        if (statSync(full).isDirectory()) countIn(`${d}/${name}`)
+        else if (name.endsWith('.md') && name !== 'index.md') count++
+      }
+    }
+    countIn(dir)
+    description = `${title}：${count} 篇笔记`
+  }
   if (!description) {
     synthesized++
     const headings = [...body.matchAll(/^##\s+(.+)$/gm)]
@@ -627,16 +595,13 @@ for (const file of files) {
   // 描述是纯文本元信息，不能残留 markdown 链接语法（否则会原样显示）
   description = clip(plain(description) || title, DESC_MAX)
 
-  // 标签 = 学科 + 中间各层目录，这样 /tags 是一张扁平索引
-  const segments = rel.split('/').slice(0, -1)
-  const derivedTags = segments.length ? segments : ['root']
+  // 标签 = 学科 + 各层分类名，这样 /tags 是一张扁平索引
+  const derivedTags = ancestorTitles(rel)
   let tags = data.tags
   if (!Array.isArray(tags) || !tags.length) tags = derivedTags
   tags = [...new Set(tags.map((t) => String(t).toLowerCase()))]
 
-  const relId = rel.replace(/\.md$/i, '')
-  const order =
-    sidebarSeq.get(rel) ?? orderMap.get(relId) ?? (Number.isFinite(Number(data.order)) ? Number(data.order) : 999)
+  const order = Number.isFinite(Number(data.order)) ? Number(data.order) : 999
 
   // Normalise index files to a stable id (dir/index) — the nav treats them as section landings.
   const outRel = rel
@@ -667,7 +632,6 @@ const aboutPage = emitAboutPage()
 console.log(`migrated ${files.length} files -> ${relative(ROOT, OUT)}`)
 console.log(`about page: ${aboutPage ?? 'skipped (docs/about/index.md not found)'}`)
 console.log(`synthesized descriptions: ${synthesized}`)
-console.log(`sidebar titles available: ${sidebarTitles.size}`)
 console.log(`empty descriptions: ${missingDesc}`)
 console.log('longest titles:', report.map((r) => `${r.title.length}:${r.title}`).sort((a, b) => parseInt(b) - parseInt(a)).slice(0, 3))
 console.log('longest descs :', report.map((r) => r.descriptionLen).sort((a, b) => b - a).slice(0, 3))

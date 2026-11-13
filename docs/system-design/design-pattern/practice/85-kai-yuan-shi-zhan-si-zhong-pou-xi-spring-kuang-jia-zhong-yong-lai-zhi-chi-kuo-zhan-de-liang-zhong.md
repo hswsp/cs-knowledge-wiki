@@ -1,3 +1,7 @@
+---
+title: "85 | 开源实战四（中）：剖析Spring框架中用来支持扩展的两种设计模式"
+order: 10
+---
 # 85 | 开源实战四（中）：剖析Spring框架中用来支持扩展的两种设计模式
 
 ![](https://images.spumn.eu.cc/blog/b8093bb678861810.png)

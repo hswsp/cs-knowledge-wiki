@@ -142,7 +142,9 @@ const GET = async (_context: AstroGlobal) => {
     return import.meta.env.PROD ? !data.draft : true
   })
 
-  const docs = await getCollection('docs', ({ data }) => {
+  // 目录里的 index.md 是分类页，不进搜索索引
+  const docs = await getCollection('docs', ({ data, filePath }) => {
+    if (/(^|\/)index\.md$/i.test(filePath ?? '')) return false
     return import.meta.env.PROD ? !data.draft : true
   })
 

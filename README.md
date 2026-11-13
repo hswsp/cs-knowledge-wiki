@@ -121,66 +121,76 @@ Astro 版也能构建成功（代价是每次多下载一次 Node）。
 
 ## 目录结构
 
+**目录结构就是分类树**，没有第二份配置：
+
 ```
-docs/                # 内容源（原 VitePress 的 Markdown，迁移脚本从这里读取）
-src/content/docs/    # 迁移生成，Astro 内容集合（906 篇）
+docs/                          # 唯一内容源
+  storage/index.md             # 学科页：title / description / order 决定显示名与排序
+  storage/storage-basics/      # 子分类（目录就是分类）
+    index.md
+    lsm-tree.md                # 子分类自己的文章
+  storage/storage-engine/index.md
+  storage/cmu15-445/
+    index.md
+    course-notes/              # 子分类还能再套子分类
+      index.md
+      ...
+src/content/docs/              # 迁移生成，Astro 内容集合（1038 个 .md，gitignore）
+src/utils/docs-categories.ts   # 目录树 -> 分类树（/docs、/categories、侧边栏共用）
+docs/.vitepress/sidebar.js     # 同一棵目录树 -> VitePress 侧边栏（备份站点用）
 scripts/
-  migrate-content.mjs   # docs/ -> src/content/docs/ 的迁移脚本
-  copy-doc-assets.mjs   # 把被引用的本地图片铺到 public/docassets/
-public/              # 静态资源（含从 docs/public 合并的 7MB 素材）
-src/utils/sections.ts  # 13 个学科的标题/图标/描述与目录树构建
+  migrate-content.mjs          # docs/ -> src/content/docs/
+  copy-doc-assets.mjs          # 被引用的本地图片铺到 public/docassets/
 ```
 
-## 内容约定：新笔记怎么进入分类导航
+## 内容约定：目录即分类
 
-站点的分类来自**两个来源**，按优先级生效：
+规则只有三条：
 
-1. **学科 `index.md` 里的分组链接**（人工编排，决定分组名和顺序）
-2. **目录结构**（兜底，只负责"没被列出"的笔记）
+1. **一个目录 = 一个分类**。`docs/storage/storage-engine/` 就是 `/docs/storage/storage-engine/` 这个分类页。
+2. **目录里的 `index.md` 是这个分类页**，它的 frontmatter 决定显示名、简介和排序：
 
-### 要出现在某个分组下，就在 index.md 里加一行
+   ```markdown
+   ---
+   title: "存储引擎"
+   description: "数据库内核、存储引擎实现"
+   order: 2
+   ---
 
-编辑 `docs/<学科>/index.md`：
+   ## 站外资源
 
-```markdown
-## 分布式共识              <!-- 二级分类 -->
+   - [PostgreSQL 14 Internals 中文版](https://postgres-internals.cn/docs/chapter01/)
+   ```
 
-- [Basic Paxos](./distributed-consensus/basic-paxos)
-- [Raft（一）领导者选举](./distributed-consensus/raft-1-leader-election)
+   `index.md` 的正文会原样渲染在分类页顶部，下面自动列出「子分类」卡片和「本层文章」。
+3. **目录里的其他 `.md` = 本层文章**，和子分类同级并列展示。所以外层目录可以既有子分类，
+   又有自己单独的文章：
 
-### 消息队列                <!-- 三级子分类（可选） -->
+   ```
+   storage/
+     storage-engine/                      ← 子分类
+     io-uring-如何重塑高性能存储.md        ← 本层文章（和子分类同级）
+   ```
 
-  - [Kafka 两年踩过的坑](./messaging/kafka-practice)
+   文章自己的 `title` / `order` 写在自己的 frontmatter 里。
 
-**加粗的标题**              <!-- 四级分组（可选） -->
+### 新增一篇笔记
 
-  - [某篇文章](./某篇文章)
-```
+1. 放进对应目录（没有目录就先建，并给新目录写一个 `index.md`）；
+2. `npm run migrate`（`npm run dev` / `npm run build` 会自动跑）。
 
-支持的层级：`##` → 二级分类，`###` → 三级子分类，`**粗体**` → 四级分组，列表项 → 文章。
+不需要再改任何侧边栏或导航文件——Astro 主站和 VitePress 备份站都从目录推导。
 
-链接写法：**相对路径、不带 `.md`**。同目录直接写文件名，子目录写 `./子目录/文件名`，也可以写站点绝对路径 `/数学/xxx`。
+### 链接与图片怎么写
 
-### 没写进 index.md 会怎样
+- 站内链接：写 `/storage/storage-engine/lustre-架构详解`（**不带** `/docs/` 前缀、不带 `.md`、不带尾斜杠），
+  迁移脚本会补成 Astro 的 `/docs/.../` 路由。
+- 图片：写相对路径 `./asset/xxx.png` 或 `../figures/xxx.png`，构建时按引用铺到 `public/docassets/`。
 
-不会丢，按顺序兜底：
+### 自动生成的信息
 
-| 情况 | 归到哪 |
-| --- | --- |
-| 在某个子目录里 | 该目录成为分类 |
-| 正好在学科根目录 | 「未分组」 |
-| `index.md` 本身 | 不算文章，只作为导航入口（各章节的「概览」页） |
-
-### 改完之后
-
-```bash
-npm run migrate    # 重新生成内容集合，分类自动刷新
-```
-
-### 另外两类自动生成的信息
-
-- **标签**：自动取「学科 + 各层目录」，所以 `/tags` 天然是一张扁平索引；在 frontmatter 里写 `tags:` 则用你写的。
-- **归档时间**：迁移时从 git 最后一次提交取 `updatedDate`，所以提交越勤，`/archives` 越准。
+- **标签**：取「学科 + 各层分类名」这条链；在 frontmatter 里写 `tags:` 则用你写的。
+- **归档时间**：迁移时从 git 最后一次提交取 `updatedDate`。
 
 ## 内容迁移
 
@@ -193,13 +203,12 @@ npm run assets       # 重新铺开被引用的图片
 
 迁移脚本负责：
 
-- 生成 Iris 必需的 `title` / `description` frontmatter（超长自动截断）
-- 从各学科 `index.md` 的链接顺序推导 `order`，保留原有的目录编排
-- `::: tip` 容器 → blockquote 提示块
-- `==高亮==` → `<mark>`
-- 站内绝对链接 `/foo` → `/docs/foo`
-- 相对图片 `asset/x.png` → `/docassets/...`
-- `docs/about/index.md` **不进知识库**，而是生成为站点自己的 `/about` 页面（`src/pages/about/index.md`，用 Iris 的 `IndividualPage` 布局）
+- 生成 Iris 必需的 `title` / `description` frontmatter（分类页没有简介时按篇数生成）
+- 把 frontmatter 里的 `order` 原样带过去（分类与文章的顺序都来自这里）
+- 站内绝对链接 `/foo/bar` → `/docs/foo/bar/`；相对 `.md` 链接按所在目录解析
+- 相对图片 `./asset/x.png` → `/docassets/...`（支持 `../`）
+- `::: tip` 容器 → blockquote 提示块；`==高亮==` → `<mark>`
+- `docs/about/index.md` **不进知识库**，而是生成为站点自己的 `/about` 页面
 
 ## 说明
 

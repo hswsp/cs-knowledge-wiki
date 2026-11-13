@@ -1,111 +1,52 @@
 /**
- * 知识库分类：目录结构 + VitePress 侧边栏分组，两个来源合并。
+ * 知识库分类树：**目录结构就是分类树**。
  *
- * 侧边栏分组（`src/data/docs-nav.json`，由 scripts/build-nav.mjs 生成）表达了
- * 「哪些文章属于同一个专题」；目录结构补上侧边栏没覆盖到的部分。
+ * 约定（也是 docs/ 的唯一组织规则）：
  *
- * 放置规则（每篇文章都会落到某个子分类下）：
- *   1. 侧边栏的子路由前缀（如 cpp/computer-graphics）→ 二级分类，其分组为三级
- *   2. 学科根侧边栏里的分组（如 Fundamentals、C++ 八股文）→ 二级分类
- *   3. 两者都没覆盖 → 按目录层级；正好在学科根下的归入「其他」
+ *   docs/storage/                 ← 分类「存储」，页面 = storage/index.md
+ *     index.md                    ← 这一层的标题 / 简介 / 排序
+ *     storage-engine/             ← 子分类，同级页 = storage-engine/index.md
+ *       index.md
+ *       lustre.md                 ← 子分类自己的文章
+ *     io-uring.md                 ← 本层文章：和子分类同级并列
+ *
+ * 所以这里不再解析任何侧边栏：分类名、简介、顺序全部来自各级 index.md 的
+ * frontmatter（title / description / order），文章的标题与顺序来自它自己的
+ * frontmatter。目录里没有 index.md 时退回目录名的美化形式。
  */
 import type { CollectionEntry } from 'astro:content'
 
-import navData from '../data/docs-nav.json'
-import { SECTION_META } from '@/utils/sections'
-
 export type DocEntry = CollectionEntry<'docs'>
 
-type NavDoc = { title: string; file: string }
-export type NavLink = { title: string; href: string }
-type NavGroup = { title: string; docs: NavDoc[]; links?: NavLink[]; children?: NavGroup[] }
-type NavMap = Record<string, NavGroup[]>
+export type CategoryPost = { title: string; href: string }
 
-const NAV = navData as unknown as NavMap
-
-/** 导航用的占位条目（概览、返回、专题入口），不算文章。 */
-const NAV_ONLY = /^(概览|←.*|进入.*|.*→)$/
-
-function cleanTitle(title: string): string {
-  return title.replace(/[→←]/g, '').trim()
+export type CategoryNode = {
+  /** 分类路径 = 目录路径（`storage/storage-engine`） */
+  path: string
+  label: string
+  desc: string
+  depth: number
+  order: number
+  /** 本层文章（直属该目录的 .md，不含 index.md） */
+  docs: DocEntry[]
+  /** 按目录归入的博客文章 */
+  posts: CategoryPost[]
+  /** 子分类路径 */
+  children: string[]
+  total: number
+  /** 该分类页对应的 index.md */
+  page?: DocEntry
 }
 
-/** URL 段落里不能出现斜杠。 */
-function seg(value: string): string {
-  return cleanTitle(value).replace(/[/\\]/g, '-').trim() || '其他'
-}
-
+/** 没有 index.md 的目录（历史遗留）的显示名兜底 */
 const DIR_TITLES: Record<string, string> = {
-  architecture: '架构',
-  'ji-chu-jia-gou': '基础架构',
-  'gao-ke-yong-jia-gou-mo-xing': '高可用架构模型',
-  'gao-xing-neng-jia-gou-mo-shi': '高性能架构模式',
-  'ke-kuo-zhan-jia-gou': '可扩展架构',
-  'jia-gou-shi-zhan': '架构实战',
-  'te-bie-fang-song': '特别放送',
-  'design-pattern': '设计模式',
-  'design-principles': '设计原则',
-  'object-oriented': '面向对象',
-  'behavioral-design-patterns': '行为型模式',
-  'creational-design-patterns': '创建型模式',
-  'structural-design-patterns': '结构型模式',
-  'standardization-and-reconstruction': '规范与重构',
-  'distributed-consensus': '分布式共识',
-  'distributed-storage': '分布式存储',
-  messaging: '消息队列',
-  'computer-graphics': '计算机图形学',
-  'abstract-algebra': '抽象代数',
-  'field-galois-theory': '域与伽罗瓦理论',
-  'galois-theory': '伽罗瓦理论',
-  'ai-infra': 'AI 基础设施',
   foundations: '基础',
-  transformer: 'Transformer',
-  'cmu15-445': 'CMU 15-445',
-  'cmu-db': 'CMU DB',
-  'cmu15445-bi-ji': 'CMU15-445 笔记',
-  'lsm-tree': 'LSM-Tree',
-  'storage-engine': '存储引擎',
-  'vector-database': '向量数据库',
-  hardware: '硬件',
-  protocols: '协议',
-  'rust-programming-practice': 'Rust 编程实战',
-  'practical-cryptography-for-developers': '实用密码学',
-  'stanford-cs149': 'Stanford CS149',
-  'cs144': 'CS 144',
-  'security-attack-defense': '安全攻防',
   basics: '基础',
-  concurrent: '并发',
-  jvm: 'JVM',
-  spring: 'Spring',
-  build: '构建',
-  linux: 'Linux',
-  network: '网络',
-  git: 'Git',
-  blog: '博客工具',
-  search: '搜索',
   extra: '补充',
   preface: '前言',
   summary: '总结',
   practice: '实践',
-  resources: '学习资源',
-  analysis: '复杂度分析',
-  'scientific-computing': '科学计算',
-  'data-structures': '数据结构',
-  string: '字符串',
-  sorting: '排序与选择',
-  'advanced-data-structures': '高级数据结构',
-  'augmenting-data-structures': '数据结构增强',
-  graph: '图算法',
-  'divide-and-conquer': '分治',
-  'dynamic-programming': '动态规划',
-  greedy: '贪心',
-  backtracking: '回溯',
-  fundamentals: 'C++ 基础',
-  interview: 'C++ 八股文',
-  'linear-algebra': '线性代数',
-  algebra: '代数',
-  'information-theory': '信息论与编码',
-  hpc: '高性能计算'
+  resources: '学习资源'
 }
 
 export function prettify(segment: string): string {
@@ -123,30 +64,26 @@ function dirLabel(segment: string): string {
   return DIR_TITLES[segment] ?? prettify(segment)
 }
 
-export function categoryLabel(path: string): string {
-  const segments = path.split('/').filter(Boolean)
-  const last = segments.at(-1) ?? path
-  if (segments.length === 1) return SECTION_META[last]?.title ?? dirLabel(last)
-  return dirLabel(last)
+/** 内容集合的 filePath -> `cpp/xxx.md`（Astro 的 id 会被小写化，不能用） */
+export function fileKey(doc: DocEntry): string {
+  const path = (doc.filePath ?? '').replace(/\\/g, '/')
+  const at = path.indexOf('src/content/docs/')
+  return at >= 0 ? path.slice(at + 'src/content/docs/'.length) : path
 }
 
-/** 只在博客里出现的分类（没有笔记）也需要一句描述。 */
-const POST_CATEGORY_DESC: Record<string, string> = {
-  '公开课&资源': 'MIT、Stanford、CMU、Berkeley 等高校公开课与学习资源清单'
+/** 是不是分类页（目录里的 index.md） */
+export function isIndexDoc(doc: DocEntry): boolean {
+  return /(^|\/)index\.md$/i.test(fileKey(doc))
 }
 
-export function categoryDesc(path: string): string {
-  const segments = path.split('/').filter(Boolean)
-  if (segments.length === 1)
-    return SECTION_META[segments[0]]?.desc ?? POST_CATEGORY_DESC[segments[0]] ?? ''
-  return ''
+/** 文章 / 分类页所在目录（'' 表示内容根） */
+export function docNodePath(doc: DocEntry): string {
+  const rel = fileKey(doc)
+  const at = rel.lastIndexOf('/')
+  return at === -1 ? '' : rel.slice(0, at)
 }
 
-export function docHref(doc: DocEntry): string {
-  return `/docs/${doc.id}/`
-}
-
-/** 分类 URL：路径里的空格、中文等必须编码，否则浏览器会截断。 */
+/** 分类页 URL（/categories 视图）*/
 export function categoryHref(path: string): string {
   // `&` 是路径里的合法字符（sub-delim），必须保持原样：
   // 编码成 %26 后 Astro 的开发服务器匹配不到该路由。
@@ -157,308 +94,92 @@ export function categoryHref(path: string): string {
     .join('/')}/`
 }
 
-function nodeLabel(segments: string[]): string {
-  if (segments.length === 1) return SECTION_META[segments[0]]?.title ?? dirLabel(segments[0])
-  if (segments.length === 2) {
-    const column = SUBKEY_LABELS.get(segments.slice(0, 2).join('/'))
-    if (column) return column
-  }
-  return dirLabel(segments.at(-1)!)
+/** 分类页真正的地址：目录 + index.md 渲染出来的 /docs/<path>/ */
+export function nodeHref(path: string): string {
+  return `/docs/${path
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => encodeURIComponent(segment).replace(/%26/gi, '&'))
+    .join('/')}/`
 }
 
-/** 博客文章在分类页里的条目：标题 + 站内链接。 */
-export type CategoryPost = { title: string; href: string }
-
-export type CategoryNode = {
-  path: string
-  label: string
-  desc: string
-  depth: number
-  docs: DocEntry[]
-  /** 博客文章：博客没有侧边栏，直接按目录归入分类 */
-  posts: CategoryPost[]
-  /** 分组里指向站外的精选文章链接 */
-  links: NavLink[]
-  children: string[]
-  total: number
+export function docHref(doc: DocEntry): string {
+  return `/docs/${doc.id}/`
 }
 
-/** 内容集合的 filePath -> `cpp/xxx.md` 形式 */
-function fileKey(doc: DocEntry): string {
-  const p = doc.filePath ?? ''
-  return p.replace(/^.*?src\/content\/docs\//, '')
+/** 标签 / 面包屑里的路径片段显示名 */
+export function categoryLabel(path: string): string {
+  const last = path.split('/').filter(Boolean).at(-1) ?? path
+  return dirLabel(last)
 }
 
-/** 这些分组名只是容器，不作为分类层级。 */
-const GENERIC_GROUP = /^(目录|概览|全部|索引|其他)$/
-
-/** 专栏名覆盖：个别专栏的导航名需要和侧边栏首分组不同。 */
-const SUBKEY_LABEL_OVERRIDES: Record<string, string> = {
-  'ml/ai-infra': 'AI Infra 入门到前沿'
-}
-
-/**
- * 子路由前缀的显示名（等于 VitePress 侧边栏里的专栏名）。
- *
- * 优先级：显式覆盖 → 该前缀自己的首个分组标题 → 父级里指向它的分组 → 目录名美化。
- */
-function subKeyLabels(): Map<string, string> {
-  const labels = new Map<string, string>()
-
-  const firstTitleFor = (group: NavGroup, key: string): string | undefined => {
-    const title = cleanTitle(group.title)
-    const hasIt = group.docs.some((doc) => doc.file.startsWith(`${key}/`))
-    if (hasIt && title) return title
-    for (const child of group.children ?? []) {
-      const hit = firstTitleFor(child, key)
-      if (hit) return hit
-    }
-    return undefined
-  }
-
-  for (const key of Object.keys(NAV)) {
-    if (!key.includes('/')) continue
-    const override = SUBKEY_LABEL_OVERRIDES[key]
-    if (override) {
-      labels.set(key, override)
-      continue
-    }
-    // 专栏自己的首个分组标题 —— 就是 VitePress 侧边栏里显示的那个名字
-    const own = NAV[key]?.map((g) => cleanTitle(g.title)).find((t) => t && !GENERIC_GROUP.test(t))
-    if (own) {
-      labels.set(key, own)
-      continue
-    }
-    // 退回父级分组标题
-    const section = key.split('/')[0]
-    let fromParent: string | undefined
-    for (const group of NAV[section] ?? []) {
-      fromParent = firstTitleFor(group, key)
-      if (fromParent) break
-    }
-    labels.set(key, fromParent ?? dirLabel(key.split('/').at(-1)!))
-  }
-  return labels
-}
-
-const SUBKEY_LABELS = subKeyLabels()
-
-
-/** 分类节点在侧边栏里的出现顺序，用于排序（中文数字标题按字母排会乱）。 */
-/** 分类路径 -> 该分类下的外部链接 */
-const EXTERNAL_LINKS = new Map<string, NavLink[]>()
-
-const NODE_ORDER = new Map<string, number>()
-let orderCursor = 0
-function touchNode(path: string) {
-  if (!NODE_ORDER.has(path)) NODE_ORDER.set(path, orderCursor++)
-}
-
-/**
- * 学科根分组里链接到、但没有独立侧边栏块的目录。
- *
- * csapp 的「高性能计算」分组链接了 [CS149: Parallel Computing](./Stanford-CS149/)，
- * 但 docs/.vitepress/config.js 没有 `/csapp/Stanford-CS149/` 侧边栏块，
- * CS149 的讲义就会按原始目录回退，在 /categories 上变成学科根下的独立分类。
- */
-const COLUMN_PARENT_EXTRA: Record<string, string[]> = {
-  'csapp/Stanford-CS149': ['csapp', '高性能计算']
-}
-
-/**
- * 专栏前缀 -> 它在学科根分组下的父路径。
- *
- * 例：ml 的「AI Infra」分组里链接了 [AI Infra 入门到前沿](./ai-infra/)，
- * 那 ai-infra 这个专栏就应该挂在 ml/AI Infra 之下，和资源页并列。
- */
-const COLUMN_PARENT = (() => {
-  const map = new Map<string, string[]>()
-  for (const [key, groups] of Object.entries(NAV)) {
-    if (key.includes('/')) continue
-    for (const group of groups) {
-      const column = group.docs
-        .map((d) => d.file.replace(/\/index\.md$/, ''))
-        .find((fp) => NAV[fp] !== undefined)
-      if (!column || !column.includes('/')) continue
-      // 「专题」这类分组只是容器：里面只有专栏入口、没有外链和文章，
-      // 就不该单独占一层，专栏直接挂到学科下面。
-      const onlyColumnEntries =
-        group.docs.length > 0 &&
-        group.docs.every((d) => NAV[d.file.replace(/\/index\.md$/, '')] !== undefined) &&
-        !(group.links?.length)
-      // 同一个专栏会被多个分组引用：内容分组（如「计算机网络」里的 CS 144）
-      // 和末尾的专题入口（「CS 144 →」）。容器组不能覆盖内容分组，
-      // 否则专栏会掉到学科根上。
-      if (onlyColumnEntries && map.has(column)) continue
-      map.set(column, onlyColumnEntries ? [key] : [key, seg(cleanTitle(group.title))])
-    }
-  }
-  for (const [column, parent] of Object.entries(COLUMN_PARENT_EXTRA)) map.set(column, parent)
-  return map
-})()
-
-/** 归一化用于比较：去掉空格、&、大小写差异 */
-function normTitle(v: string): string {
-  return v
-    .toLowerCase()
-    .replace(/\b(and|the)\b/g, '')
-    .replace(/[与和的]/g, '')
-    .replace(/[^a-z0-9\u4e00-\u9fa5]/g, '')
-}
-
-/**
- * 专栏节点在树里的路径。
- *
- * 例：math 的「抽象代数 →」分组指向 abstract-algebra 专栏，两边都叫「抽象代数」，
- * 那就直接复用分组节点，不要再套一层，否则会出现 抽象代数/抽象代数。
- */
-function columnBase(key: string): string[] {
-  const parent = COLUMN_PARENT.get(key)
-  if (!parent) return key.split('/')
-  const label = SUBKEY_LABELS.get(key) ?? dirLabel(key.split('/').at(-1)!)
-  const parentLeaf = parent.at(-1) ?? ''
-  return normTitle(label) === normTitle(parentLeaf) ? parent : [...parent, label]
-}
-
-/** 建立 文件路径 -> 所属分类路径 的映射，优先用侧边栏分组（含嵌套）。 */
-function buildPlacement(): Map<string, string[]> {
-  const placement = new Map<string, string[]>()
-
-  const setPath = (file: string, segments: string[]) => {
-    // 更深的分类优先（子路由前缀比学科根更具体）
-    const existing = placement.get(file)
-    if (!existing || segments.length > existing.length) placement.set(file, segments)
-  }
-
-  const walk = (group: NavGroup, base: string[], columnLabel?: string, sectionLabel?: string) => {
-    const title = cleanTitle(group.title)
-    // 分组名和专栏名相同（如 rust 专栏下的「Rust 编程实战」）时不再多套一层
-    const sameAsColumn = Boolean(columnLabel) && normTitle(title) === normTitle(columnLabel!)
-    // 学科根分组和学科同名（如 system-design 的「系统设计」组里的概览与外链）：
-    // 它就是学科自己，不该再套一层「系统设计/系统设计」，外链直接挂在学科节点上。
-    const sameAsSection =
-      base.length === 1 && !columnLabel && Boolean(sectionLabel) && normTitle(title) === normTitle(sectionLabel!)
-    const isGeneric =
-      !title ||
-      GENERIC_GROUP.test(title) ||
-      NAV_ONLY.test(group.title) ||
-      sameAsColumn ||
-      sameAsSection
-    const here = isGeneric ? base : [...base, seg(title)]
-    if (!isGeneric) touchNode(here.join('/'))
-    if (group.links?.length) {
-      // 外链直接挂在分组自己的分类上（渲染成该分类页底部的「站外资源」），
-      // 不再多套一层「xxx 资源」子分类。
-      const key = here.join('/')
-      const bucket = EXTERNAL_LINKS.get(key) ?? []
-      bucket.push(...group.links)
-      EXTERNAL_LINKS.set(key, bucket)
-      touchNode(key)
-    }
-    for (const doc of group.docs) {
-      if (NAV_ONLY.test(doc.title)) continue
-      setPath(doc.file, here)
-    }
-    for (const child of group.children ?? []) walk(child, here, columnLabel, sectionLabel)
-  }
-
-  for (const [key, groups] of Object.entries(NAV)) {
-    const keySegments = key.split('/')
-    const section = keySegments[0]
-    // 路径必须用原始 key，显示名只用于 label；混用会让同一批文章被拆成两个分类。
-    // 若该专栏被学科根分组引用（如 ml 的 AI Infra），则挂到那个分组下。
-    const base = keySegments.length === 1 ? [section] : columnBase(key)
-    const columnLabel = keySegments.length === 1 ? undefined : SUBKEY_LABELS.get(key)
-    const sectionLabel = keySegments.length === 1 ? nodeLabel([section]) : undefined
-    for (const group of groups) walk(group, base, columnLabel, sectionLabel)
-  }
-
-  return placement
-}
-
-const PLACEMENT = buildPlacement()
-
-function ensureNode(nodes: Map<string, CategoryNode>, path: string): CategoryNode {
-  if (nodes.has(path)) return nodes.get(path)!
-  const segments = path.split('/')
-  const node: CategoryNode = {
-    path,
-    label: nodeLabel(segments),
-    desc: categoryDesc(path),
-    depth: segments.length,
-    docs: [],
-    posts: [],
-    links: [],
-    children: [],
-    total: 0
-  }
-  nodes.set(path, node)
-  if (segments.length > 1) {
-    const parent = ensureNode(nodes, segments.slice(0, -1).join('/'))
-    if (!parent.children.includes(path)) parent.children.push(path)
-  }
-  return node
+export function categoryDesc(path: string): string {
+  return ''
 }
 
 export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
   const nodes = new Map<string, CategoryNode>()
 
-  const ensure = (path: string): CategoryNode => ensureNode(nodes, path)
+  const ensure = (path: string): CategoryNode => {
+    const existing = nodes.get(path)
+    if (existing) return existing
+    const segments = path.split('/')
+    const node: CategoryNode = {
+      path,
+      label: dirLabel(segments.at(-1)!),
+      desc: '',
+      depth: segments.length,
+      order: 999,
+      docs: [],
+      posts: [],
+      children: [],
+      total: 0
+    }
+    nodes.set(path, node)
+    if (segments.length > 1) {
+      const parent = ensure(segments.slice(0, -1).join('/'))
+      if (!parent.children.includes(path)) parent.children.push(path)
+    }
+    return node
+  }
 
   for (const doc of docs) {
-    // 章节概览页（*/index.md）是导航入口，不作为文章列出。
-    // 注意：Astro 会把 index.md 的 id 剥成目录名，所以只能看 filePath。
-    if (/(^|\/)index\.md$/.test(fileKey(doc))) continue
-    const section = doc.id.split('/')[0]
-    ensure(section)
-
-    let path = PLACEMENT.get(fileKey(doc))?.join('/')
-    if (!path) {
-      // 侧边栏没覆盖：按目录层级回退，但必须尊重专栏映射，
-      // 否则同一专栏会被拆成「中文标签路径」和「原始目录路径」两套。
-      // Astro 的 doc.id 是全小写的，nav 里保留原始大小写（Stanford-CS149），
-      // 所以这里忽略大小写比较。
-      const id = doc.id.toLowerCase()
-      const columnHit = [...COLUMN_PARENT.keys()]
-        .filter((k) => id.startsWith(`${k.toLowerCase()}/`))
-        .sort((a, b) => b.length - a.length)[0]
-      if (columnHit) {
-        const rest = doc.id.slice(columnHit.length + 1).split('/').slice(0, -1)
-        path = [...columnBase(columnHit), ...rest].join('/')
-      } else {
-        const dirs = doc.id.split('/').slice(1, -1)
-        path = dirs.length ? `${section}/${dirs.join('/')}` : `${section}/其他`
-      }
+    const rel = fileKey(doc)
+    if (!rel || rel === 'index.md') continue // 站点首页不算分类页
+    const dir = docNodePath(doc)
+    if (!dir) continue
+    const node = ensure(dir)
+    if (/(^|\/)index\.md$/i.test(rel)) {
+      node.page = doc
+      node.label = doc.data.title || node.label
+      node.desc = doc.data.description || ''
+      node.order = doc.data.order ?? 999
+      continue
     }
-    // 兜底：万一某篇落在学科根上（侧边栏没有分组、也不在任何子目录），
-    // 归入「未分组」而不是让它在学科页显示成「本层文章」。
-    if (path.split('/').length === 1) path = `${path}/未分组`
-    ensure(path).docs.push(doc)
+    node.docs.push(doc)
   }
-
-  for (const [path, links] of EXTERNAL_LINKS) {
-    ensure(path).links = links
-  }
-
-  const computeTotal = (node: CategoryNode): number => {
-    node.total =
-      node.docs.length + node.children.reduce((sum, c) => sum + computeTotal(nodes.get(c)!), 0)
-    return node.total
-  }
-  for (const node of nodes.values()) if (node.depth === 1) computeTotal(node)
 
   for (const node of nodes.values()) {
-    node.children.sort((a, b) => {
-      const oa = NODE_ORDER.get(a) ?? 9999
-      const ob = NODE_ORDER.get(b) ?? 9999
-      return oa - ob || a.localeCompare(b, 'zh')
-    })
     node.docs.sort(
       (a, b) =>
         (a.data.order ?? 999) - (b.data.order ?? 999) ||
         a.data.title.localeCompare(b.data.title, 'zh')
     )
+    node.children.sort((a, b) => {
+      const na = nodes.get(a)!
+      const nb = nodes.get(b)!
+      return na.order - nb.order || na.label.localeCompare(nb.label, 'zh')
+    })
   }
+
+  const computeTotal = (node: CategoryNode): number => {
+    node.total =
+      node.docs.length +
+      node.posts.length +
+      node.children.reduce((sum, child) => sum + computeTotal(nodes.get(child)!), 0)
+    return node.total
+  }
+  for (const node of nodes.values()) if (node.depth === 1) computeTotal(node)
 
   return nodes
 }
@@ -466,10 +187,10 @@ export function buildCategoryTree(docs: DocEntry[]): Map<string, CategoryNode> {
 /**
  * 把博客文章并入分类树。
  *
- * 博客没有 VitePress 侧边栏，分类就是文章所在的子目录
+ * 博客没有目录约定，分类就是文章所在的子目录
  * （`src/content/blog/公开课&资源/cs-study.md` → 分类「公开课&资源」）。
- * 只有博客、没有笔记的分类也会建出节点，这样 /categories 列表和文章的
- * 分类面包屑都能落到真实存在的页面。
+ * 只有博客、没有笔记的分类也会建出节点，这样 /categories 列表和文章面包屑
+ * 都能落到真实存在的页面。
  */
 export function attachBlogPosts(
   nodes: Map<string, CategoryNode>,
@@ -477,10 +198,33 @@ export function attachBlogPosts(
 ): void {
   if (!posts.length) return
 
+  const ensure = (path: string): CategoryNode => {
+    const existing = nodes.get(path)
+    if (existing) return existing
+    const segments = path.split('/')
+    const node: CategoryNode = {
+      path,
+      label: dirLabel(segments.at(-1)!),
+      desc: '',
+      depth: segments.length,
+      order: 999,
+      docs: [],
+      posts: [],
+      children: [],
+      total: 0
+    }
+    nodes.set(path, node)
+    if (segments.length > 1) {
+      const parent = ensure(segments.slice(0, -1).join('/'))
+      if (!parent.children.includes(path)) parent.children.push(path)
+    }
+    return node
+  }
+
   for (const post of posts) {
     const path = (post.category ?? '').split('/').filter(Boolean).join('/')
     if (!path) continue
-    ensureNode(nodes, path).posts.push({ title: post.title, href: post.href })
+    ensure(path).posts.push({ title: post.title, href: post.href })
   }
 
   const recompute = (node: CategoryNode): number => {
@@ -493,26 +237,20 @@ export function attachBlogPosts(
   for (const node of nodes.values()) if (node.depth === 1) recompute(node)
 }
 
-const TOP_ORDER = [
-  'math',
-  'algorithm',
-  'ml',
-  'java',
-  'cpp',
-  'storage',
-  'system-design',
-  'tools',
-  'csapp',
-  'security',
-  'rust'
-]
-
+/** 学科列表，按 index.md 里的 order 排序 */
 export function topLevelCategories(nodes: Map<string, CategoryNode>): CategoryNode[] {
   return [...nodes.values()]
-    .filter((n) => n.depth === 1)
-    .sort((a, b) => {
-      const ia = TOP_ORDER.indexOf(a.path)
-      const ib = TOP_ORDER.indexOf(b.path)
-      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib) || a.path.localeCompare(b.path)
-    })
+    .filter((node) => node.depth === 1)
+    .sort((a, b) => a.order - b.order || a.label.localeCompare(b.label, 'zh'))
+}
+
+/** 文章所属分类的祖先链（从学科到父目录），用于面包屑与标签 */
+export function ancestorsOf(nodes: Map<string, CategoryNode>, path: string): CategoryNode[] {
+  const segments = path.split('/').filter(Boolean)
+  const out: CategoryNode[] = []
+  for (let i = 1; i <= segments.length; i++) {
+    const node = nodes.get(segments.slice(0, i).join('/'))
+    if (node) out.push(node)
+  }
+  return out
 }

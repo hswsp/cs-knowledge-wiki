@@ -1,3 +1,7 @@
+---
+title: "20|理论六：我为何说KISS、YAGNI原则看似简单，却经常被用错？"
+order: 3
+---
 # 20|理论六：我为何说KISS、YAGNI原则看似简单，却经常被用错？
 
 ![](https://images.spumn.eu.cc/blog/791d25f67c06bda3.png)

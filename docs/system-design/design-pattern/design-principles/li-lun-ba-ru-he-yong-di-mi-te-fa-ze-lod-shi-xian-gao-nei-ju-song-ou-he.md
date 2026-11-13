@@ -1,3 +1,7 @@
+---
+title: "22|理论八：如何用迪米特法则（LOD）实现“高内聚、松耦合”？"
+order: 1
+---
 # 22|理论八：如何用迪米特法则（LOD）实现“高内聚、松耦合”？
 
 ![](https://images.spumn.eu.cc/blog/777c2862d08937a1.png)
@@ -20,7 +24,7 @@
 
 所谓高内聚，就是指相近的功能应该放到同一个类中，不相近的功能不要放到同一个类中。**相近的功能往往会被同时修改，放到同一个类中**，修改会比较集中，代码容易维护。实际上，我们前面讲过的单一职责原则是实现代码高内聚非常有效的设计原则。对于这一点，你可以回过头再去看下专栏的第 15 讲。
 
-➡️ [li-lun-yi-dui-yu-dan-yi-zhi-ze-yuan-ze-ru-he-pan-ding-mou-ge-lei-de-zhi-ze-shi-fou-gou-dan-yi](/system-design/design-pattern/design-principles/li-lun-yi-dui-yu-dan-yi-zhi-ze-yuan-ze-ru-he-pan-ding-mou-ge-lei-de-zhi-ze-shi-fou-gou-dan-yi)
+➡️ [li-lun-yi-dui-yu-dan-yi-zhi-ze-yuan-ze-ru-he-pan-ding-mou-ge-lei-de-zhi-ze-shi-fou-gou-dan-yi](/system-design/design-pattern/design-principles/li-lun-yi-dui-yu-dan-yi-zhi-ze-yuan-ze-ru-he-pan-ding-mou-ge-lei-de-zhi-ze-shi-fou-gou-dan-yi/)
 
 ### 我们再来看一下，什么是“松耦合”？
 
@@ -200,7 +204,7 @@ public class Deserializer {
 
 如果我们既不想违背高内聚的设计思想，也不想违背迪米特法则，那我们该如何解决这个问题呢？实际上，通过引入两个接口就能轻松解决这个问题，具体的代码如下所示。实际上，我们在第 18 节课中讲到“接口隔离原则”的时候，第三个例子就使用了类似的实现思路，你可以结合着一块儿来看。
 
-➡️ [li-lun-si-jie-kou-ge-li-yuan-ze-you-na-san-zhong-ying-yong-yuan-ze-zhong-de-jie-kou-gai-ru-he-li-jie](/system-design/design-pattern/design-principles/li-lun-si-jie-kou-ge-li-yuan-ze-you-na-san-zhong-ying-yong-yuan-ze-zhong-de-jie-kou-gai-ru-he-li-jie)
+➡️ [li-lun-si-jie-kou-ge-li-yuan-ze-you-na-san-zhong-ying-yong-yuan-ze-zhong-de-jie-kou-gai-ru-he-li-jie](/system-design/design-pattern/design-principles/li-lun-si-jie-kou-ge-li-yuan-ze-you-na-san-zhong-ying-yong-yuan-ze-zhong-de-jie-kou-gai-ru-he-li-jie/)
 
 ```java
 public interface Serializable {

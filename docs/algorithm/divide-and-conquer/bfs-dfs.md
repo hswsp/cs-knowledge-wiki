@@ -1,8 +1,8 @@
 ---
-title: "bfs-dfs"
+title: "BFS&DFS"
+order: 7
 description: "_插入封面图片，点击图片，设置图片大小_"
 ---
-
 #### ![](https://images.spumn.eu.cc/blog/cddb405251bf88fb.png)
 _插入封面图片，点击图片，设置图片大小_
 

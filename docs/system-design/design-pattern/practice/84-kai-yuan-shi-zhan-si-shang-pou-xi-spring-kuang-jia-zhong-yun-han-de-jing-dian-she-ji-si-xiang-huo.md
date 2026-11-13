@@ -1,3 +1,7 @@
+---
+title: "84 | 开源实战四（上）：剖析Spring框架中蕴含的经典设计思想或原则"
+order: 9
+---
 # 84 | 开源实战四（上）：剖析Spring框架中蕴含的经典设计思想或原则
 
 ![](https://images.spumn.eu.cc/blog/7ffc6230daf8115f.png)

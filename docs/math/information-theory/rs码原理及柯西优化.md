@@ -1,3 +1,7 @@
+---
+title: "RS码原理及柯西优化"
+order: 7
+---
 > 摘录自：[RS码原理及柯西优化](https://grandsail.github.io/posts/reed-solomon-code-caucy-optimize/)
 >
 

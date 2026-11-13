@@ -1,9 +1,9 @@
 ---
-title: Brief Introduction To Spring Cloud
+title: "Spring Cloud 简介"
+order: 1
 description: "spring-cloud-intro"
 date: 2022-09-05
 ---
-
 提起微服务，不得不提 Spring Cloud 全家桶系列，Spring Cloud 是一个服务治理平台，是若干个框架的集合（A lightweight event-driven **microservices** framework），提供了全套的分布式系统解决方案。包含了：服务注册与发现、配置中心、服务网关、智能路由、负载均衡、断路器、监控跟踪、分布式消息队列等等。
 
 Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state). 

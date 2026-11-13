@@ -1,7 +1,8 @@
 ---
+title: "02 - Intro-What is a Vector DB"
+order: 2
 source: https://www.yuque.com/yangguangfanxing/nmhuv1/xwep8spkdtwnkluw
 ---
-
 # Intro-What is a Vector DB
 
 > 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/xwep8spkdtwnkluw](https://www.yuque.com/yangguangfanxing/nmhuv1/xwep8spkdtwnkluw)

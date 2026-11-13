@@ -1,3 +1,7 @@
+---
+title: "Encoder 组装"
+order: 3
+---
 # 手搓 Transformer（五）：Encoder组装
 
 ## 前言

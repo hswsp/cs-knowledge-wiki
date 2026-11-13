@@ -1,3 +1,7 @@
+---
+title: "11|实战一（上）：业务开发常用的基于贫血模型的MVC架构违背OOP吗？"
+order: 10
+---
 # 11|实战一（上）：业务开发常用的基于贫血模型的MVC架构违背OOP吗？
 
 ![](https://images.spumn.eu.cc/blog/e42dca67890ab58a.png)

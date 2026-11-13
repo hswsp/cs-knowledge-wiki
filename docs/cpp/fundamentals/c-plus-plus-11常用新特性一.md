@@ -1,8 +1,8 @@
 ---
-title: "nullptr"
+title: "C++11常用新特性（一）"
+order: 2
 description: "对于异步编程十分实用的Future/Promise以及智能指针等，这里不做整理介绍。"
 ---
-
 > 教程地址： [https://github.com/0voice/cpp_new_features](https://github.com/0voice/cpp_new_features)
 >
 

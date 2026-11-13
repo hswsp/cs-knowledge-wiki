@@ -1,3 +1,7 @@
+---
+title: "87 | 开源实战五（上）：MyBatis如何权衡易用性、性能和灵活性？"
+order: 12
+---
 # 87 | 开源实战五（上）：MyBatis如何权衡易用性、性能和灵活性？
 
 ![](https://images.spumn.eu.cc/blog/ca1e4afeef3c9ca0.png)

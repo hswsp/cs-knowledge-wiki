@@ -8,7 +8,7 @@ import { getBlogCollection } from 'astro-pure/server'
 import { Icon } from 'astro-pure/user'
 import { cn } from 'astro-pure/utils'
 import CategoryTree from './CategoryTree.astro'
-import { buildCategoryTree, type DocEntry , categoryHref } from '@/utils/docs-categories'
+import { buildCategoryTree, nodeHref, type DocEntry } from '@/utils/docs-categories'
 
 export const prerender = true
 export const partial = true
@@ -33,8 +33,8 @@ const sectionNode = currentSection ? nodes.get(currentSection) : undefined
       <>
         <a
           class='docs-nav-home'
-          href={categoryHref(sectionNode.path)}
-          aria-current={currentId === `${sectionNode.path}/index` ? 'page' : undefined}
+          href={nodeHref(sectionNode.path)}
+          aria-current={currentId === sectionNode.page?.id ? 'page' : undefined}
         >
           <Icon name='home' class='size-4' />
           <span>{sectionNode.label}</span>

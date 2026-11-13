@@ -1,3 +1,7 @@
+---
+title: "整体结构、数据流与实现思路"
+order: 6
+---
 # 手搓 Transformer（一）：整体结构、数据流与实现思路
 
 > [手搓transformer（一）：整体结构、数据流与实现思路](https://zhuanlan.zhihu.com/p/2023866936040203643)

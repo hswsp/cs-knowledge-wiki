@@ -1,3 +1,7 @@
+---
+title: "81 | 开源实战三（上）：借Google Guava学习发现和开发通用功能模块"
+order: 6
+---
 # 81 | 开源实战三（上）：借Google Guava学习发现和开发通用功能模块
 
 ![](https://images.spumn.eu.cc/blog/50e2510ec2718de3.png)

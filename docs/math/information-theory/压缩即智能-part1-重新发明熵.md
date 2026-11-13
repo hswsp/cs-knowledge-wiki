@@ -1,8 +1,8 @@
 ---
-title: "Part 1：重新发明熵（压缩即智能）"
+title: "压缩即智能 Part 1：重新发明熵"
+order: 5
 description: "从月球机器人例子出发，重新发现香农信息论中的信息量、熵、前缀码与无噪声编码定理，理解为什么大模型预训练等价于压缩。"
 ---
-
 # 重新发明熵：压缩即智能 Part 1
 
 > [Reinventing Entropy | Compression & Intelligence Part 1](https://www.3blue1brown.com/lessons/entropy/#reinventing-entropy-compression-intelligence-part-1)

@@ -1,9 +1,9 @@
 ---
-title: JVM CPU 使用率飙高问题的排查过程
+title: "JVM CPU 飙高问题的排查过程"
+order: 7
 description: "How to Troubleshoot High Java CPU Usage Issues"
 date: 2022-11-07
 ---
-
 # 问题现象
 
 首先，我们一起看看通过 VisualVM 监控到的机器 CPU 使用率图：

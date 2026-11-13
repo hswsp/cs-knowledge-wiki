@@ -1,8 +1,8 @@
 ---
-title: "Part 2：交叉熵是什么？（压缩即智能）"
+title: "压缩即智能 Part 2：交叉熵是什么"
+order: 6
 description: "从跨语言压缩聚类切入，定义交叉熵、推导大模型预训练损失函数为什么必须是负对数似然，介绍知识蒸馏与 KL 散度。"
 ---
-
 # 交叉熵是什么？：压缩即智能 Part 2
 
 > [But what is Cross-Entropy? | Compression is Intelligence Part 2](https://www.3blue1brown.com/lessons/cross-entropy/#but-what-is-cross-entropy-compression-is-intelligence-part-2)

@@ -1,9 +1,9 @@
 ---
-title: 6.824 Lab 2 - Raft
+title: "MIT 6.824 Lab 2 - Raft"
+order: 3
 description: "MIT 6.824 Lab 2 - Raft"
 date: 2022-09-17
 ---
-
 > **The source code of this Lab is [Here](https://github.com/hswsp/MIT-6.824/tree/main/Lab%202-Raft)**
 
 # Background

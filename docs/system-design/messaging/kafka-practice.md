@@ -1,9 +1,9 @@
 ---
 title: kafka两年踩过的一些非比寻常的坑
+order: 1
 description: "kafka-practice"
 date: 2022-11-06
 ---
-
 > 本文章摘录自 [苏三说技术](https://mp.weixin.qq.com/s/YPkE3Tsu3RVbhfVZCBt1pQ)。汲取前人Kafaka使用经验！
 
 # 前言 

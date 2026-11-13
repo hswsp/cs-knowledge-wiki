@@ -1,9 +1,9 @@
 ---
-title: 用github pages + hexo搭建博客详细教程
+title: "GitHub Pages + Hexo 搭建博客"
+order: 2
 description: "Hexo 是一个博客框架。它把本地文件里的信息生成一个网页。"
 date: 2022-08-30
 ---
-
 # Github Pages
 
 github pages 是github提供给用户用来展示个人或者项目主页的静态网页系统。每个用户都可以使用自己的github项目创建，上传静态页面的html文件，github会帮你自动更新你的页面。

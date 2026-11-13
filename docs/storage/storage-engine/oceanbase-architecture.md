@@ -1,8 +1,8 @@
 ---
-title: OceanBase 架构图文档
+title: "OceanBase 架构图文档"
+order: 11
 description: "OceanBase 分布式数据库架构图与组件关系"
 ---
-
 # OceanBase 架构图文档
 
 <div style="display: flex; align-items: center; gap: 8px; margin: 0 0 12px 0; font-size: 14px; color: var(--vp-c-text-2);">

@@ -1,3 +1,7 @@
+---
+title: "JDK 11 ZGC"
+order: 2
+---
 #  JDK 11  ZGC
 
 > 来源[12 张图带你彻底理解 ZGC](https%3A//mp.weixin.qq.com/s/UuelBa8vasVbDjnUzlIs4w)

@@ -1,8 +1,14 @@
 ---
+import { getBlogCollection } from 'astro-pure/server'
 import { Button, Icon } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
+import { buildCategoryTree, isIndexDoc, topLevelCategories, type DocEntry } from '@/utils/docs-categories'
 
 import DocsContents from './DocsContents.astro'
+
+const allDocs = (await getBlogCollection('docs')) as DocEntry[]
+const articleCount = allDocs.filter((doc) => !isIndexDoc(doc)).length
+const sectionCount = topLevelCategories(buildCategoryTree(allDocs)).length
 
 const meta = {
   title: '知识库',
@@ -21,7 +27,7 @@ const meta = {
         class='mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary shadow-sm'
       >
         <Icon name='earth' class='mr-2 size-4' />
-        906 篇笔记 · 13 个学科
+        {articleCount} 篇笔记 · {sectionCount} 个学科
       </div>
       <h1
         class='text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-foreground mb-6'

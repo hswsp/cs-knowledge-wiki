@@ -1,3 +1,7 @@
+---
+title: "Transformer 组装"
+order: 8
+---
 # 手搓 Transformer（七）：Transformer组装
 
 > 本文是手搓 [Transformer](https://zhida.zhihu.com/search?content_id=272618377&content_type=Article&match_order=1&q=Transformer&zhida_source=entity)系列的第七篇。前面六篇我们逐一实现了 TokenEmbedding、[PositionEmbedding](https://zhida.zhihu.com/search?content_id=272618377&content_type=Article&match_order=1&q=PositionEmbedding&zhida_source=entity)、Multi-Head Attention、[LayerNorm](https://zhida.zhihu.com/search?content_id=272618377&content_type=Article&match_order=1&q=LayerNorm&zhida_source=entity)、Encoder 和 [Decoder](https://zhida.zhihu.com/search?content_id=272618377&content_type=Article&match_order=1&q=Decoder&zhida_source=entity)，现在终于到了最激动人心的环节——把所有模块组装成一个完整的 Transformer。由于训练代码也值得专门讲解，所以本文不对训练做讲解。不过在我的仓库中，有一个toy train，可以尝试自行运行，并观察训练中输出的变化情况~

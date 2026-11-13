@@ -1,8 +1,8 @@
 ---
-title: "ASCII码"
+title: "C++输入输出处理"
+order: 3
 description: "![](https://images.spumn.eu.cc/blog/c2c637b52f22dfc3.png)"
 ---
-
 ![](https://images.spumn.eu.cc/blog/c2c637b52f22dfc3.png)
 
 # ASCII码

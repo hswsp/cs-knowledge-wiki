@@ -7,13 +7,15 @@
 import { getBlogCollection } from 'astro-pure/server'
 import PageLayout from '@/layouts/BaseLayout.astro'
 import KnowledgeIndexHero from '@/components/KnowledgeIndexHero.astro'
-import { docHref, type DocEntry } from '@/utils/docs-categories'
+import { docHref, isIndexDoc, type DocEntry } from '@/utils/docs-categories'
 
 export const prerender = true
 
 const docs = (await getBlogCollection('docs')) as DocEntry[]
 
 const dated = docs
+  // 分类页（目录里的 index.md）不算笔记
+  .filter((doc) => !isIndexDoc(doc))
   .map((doc) => ({
     doc,
     date: doc.data.updatedDate ?? doc.data.publishDate

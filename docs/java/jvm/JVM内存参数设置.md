@@ -1,3 +1,7 @@
+---
+title: "JVM 内存参数设置"
+order: 5
+---
 # JVM内存参数设置
 
 `JVM_XMX`, `JVM_XMS`, 和 `JVM_XMN` 是用于配置 Java 虚拟机 (JVM) 的不同内存参数：

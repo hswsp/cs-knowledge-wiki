@@ -1,3 +1,7 @@
+---
+title: "17|理论三：里式替换（LSP）跟多态有何区别？哪些代码违背了LSP？"
+order: 4
+---
 # 17|理论三：里式替换（LSP）跟多态有何区别？哪些代码违背了LSP？
 
 ![](https://images.spumn.eu.cc/blog/e4b2e4573c031aa0.png)

@@ -12,11 +12,14 @@ import { getBlogCollection } from 'astro-pure/server'
 import { Icon } from 'astro-pure/user'
 import { cn } from 'astro-pure/utils'
 import { sectionMeta, sortSections } from '@/utils/sections'
+import { isIndexDoc } from '@/utils/docs-categories'
 
 export const prerender = true
 export const partial = true
 
-const docs = (await getBlogCollection('docs')) as CollectionEntry<'docs'>[]
+const all = (await getBlogCollection('docs')) as CollectionEntry<'docs'>[]
+// 目录里的 index.md 是分类页，不是文章
+const docs = all.filter((doc) => !isIndexDoc(doc as never))
 
 
 const bySection = new Map<string, CollectionEntry<'docs'>[]>()

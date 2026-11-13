@@ -1,8 +1,8 @@
 ---
-title: "方法一：最小堆"
+title: "丑数问题:针对下标的DP"
+order: 3
 description: "[264. Ugly Number II](https://leetcode.cn/problems/ugly-number-ii/)"
 ---
-
 [264. Ugly Number II](https://leetcode.cn/problems/ugly-number-ii/)
 
 

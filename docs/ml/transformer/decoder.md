@@ -1,3 +1,7 @@
+---
+title: "Decoder 拼装"
+order: 1
+---
 # 手搓 Transformer（六）：Decoder 拼装
 
 ## 前言

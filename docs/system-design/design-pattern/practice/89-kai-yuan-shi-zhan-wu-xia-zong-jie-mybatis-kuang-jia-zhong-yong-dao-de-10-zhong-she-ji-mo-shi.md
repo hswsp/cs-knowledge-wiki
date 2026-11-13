@@ -1,3 +1,7 @@
+---
+title: "89 | 开源实战五（下）：总结MyBatis框架中用到的10种设计模式"
+order: 14
+---
 # 89 | 开源实战五（下）：总结MyBatis框架中用到的10种设计模式
 
 ![](https://images.spumn.eu.cc/blog/9301ee9d610be877.png)

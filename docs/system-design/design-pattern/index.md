@@ -1,28 +1,5 @@
-# 设计模式
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-> ## &#x20; Reference:
->
-> &#x20;  [Design Patterns](https://sourcemaking.com/design\_patterns)
-
+---
+title: "设计模式"
+description: "## &#x20; Reference:"
+order: 3
+---

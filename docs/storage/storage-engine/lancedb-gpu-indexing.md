@@ -1,3 +1,7 @@
+---
+title: "LanceDB GPU 索引"
+order: 7
+---
 # LanceDB GPU 索引
 
 做向量检索的朋友大概都有这个经历：数据量上到千万级之后，建索引就是泡杯咖啡等半小时；上亿级，挂着跑一晚上；十亿级，纯 CPU 跑 IVF-PQ 动辄数天。这也是为什么我看到 LanceDB 文档里那句 **"billions of rows in under four hours on a 1-8 GPU cluster"** 的时候，决定把它的 GPU 索引实现从头到尾看一遍。

@@ -14,6 +14,7 @@ import {
   buildCategoryTree,
   categoryDesc,
   categoryHref,
+  isIndexDoc,
   topLevelCategories,
   type DocEntry
 } from '@/utils/docs-categories'
@@ -41,7 +42,7 @@ const meta = {
       description='学科 → 二级分类 → 文章。也可以直接用顶部搜索。'
       stats={[
         { label: '学科', value: tops.length },
-        { label: '笔记', value: docs.length }
+        { label: '笔记', value: docs.filter((doc) => !isIndexDoc(doc)).length }
       ]}
       statsLabel='知识库概览'
       symbol='分类'

@@ -1,7 +1,11 @@
+---
+title: "有限域算术：从 AES 到 Reed-Solomon（1/4）数学基础与 GF(p) 素数域"
+order: 1
+---
 # 有限域算术：从 AES 到 Reed-Solomon（1/4）
 > 群环域公理、GF(p) 的模算术、费马小定理与逆元
 >
-> 系列导航：**1. 数学基础与 GF(p) 素数域** · [2. 扩展域 GF(2^n) 与 AES](./02-扩展域-GF-2-n-与-AES.md) · [3. Reed-Solomon 编解码与 C 实现](./03-Reed-Solomon-编解码与C实现.md) · [4. GHASH、Shamir 秘密共享与工程实战](./04-GHASH-Shamir-与工程实战.md)
+> 系列导航：**1. 数学基础与 GF(p) 素数域** · [2. 扩展域 GF(2^n) 与 AES](/math/information-theory/02-扩展域-gf-2-n-与-aes/) · [3. Reed-Solomon 编解码与 C 实现](/math/information-theory/03-reed-solomon-编解码与c实现/) · [4. GHASH、Shamir 秘密共享与工程实战](/math/information-theory/04-ghash-shamir-与工程实战/)
 
 ---
 

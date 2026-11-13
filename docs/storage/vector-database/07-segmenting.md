@@ -1,7 +1,8 @@
 ---
+title: "07 - Segmenting"
+order: 7
 source: https://www.yuque.com/yangguangfanxing/nmhuv1/wi8sesq43m5npm2q
 ---
-
 # Segmenting
 
 > 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/wi8sesq43m5npm2q](https://www.yuque.com/yangguangfanxing/nmhuv1/wi8sesq43m5npm2q)

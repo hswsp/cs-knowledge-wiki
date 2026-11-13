@@ -1,9 +1,9 @@
 ---
-title: Raft 协议（一）—— 领导者选举
+title: "Raft（一）领导者选举"
+order: 4
 description: "Raft 领导者选举"
 date: 2022-09-16
 ---
-
 > 摘录自[Q的博客](https://juejin.cn/user/1275089220539869/posts)
 
 # Raft是什么？

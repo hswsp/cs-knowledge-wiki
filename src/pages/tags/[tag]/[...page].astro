@@ -6,25 +6,43 @@ import type { GetStaticPaths } from 'astro'
 
 import { getBlogCollection } from 'astro-pure/server'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import { categoryLabel, docHref, type DocEntry } from '@/utils/docs-categories'
+import { categoryLabel, docHref, isIndexDoc, type DocEntry } from '@/utils/docs-categories'
+import { getPostPath } from '@/utils/content-paths'
 
 export const prerender = true
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const docs = (await getBlogCollection('docs')) as DocEntry[]
-  const tags = [...new Set(docs.flatMap((doc) => doc.data.tags ?? []))]
+  const posts = await getBlogCollection('blog')
+  const tags = [
+    ...new Set([...docs, ...posts].flatMap((entry) => entry.data.tags ?? []))
+  ]
   return tags.map((tag) => ({ params: { tag, page: undefined }, props: { tag } }))
 }
 
 const { tag } = Astro.props as { tag: string }
 
 const docs = (await getBlogCollection('docs')) as DocEntry[]
-const matched = docs
-  .filter((doc) => (doc.data.tags ?? []).includes(tag))
-  .sort(
-    (a, b) =>
-      (a.data.order ?? 999) - (b.data.order ?? 999) || a.data.title.localeCompare(b.data.title, 'zh')
-  )
+const posts = await getBlogCollection('blog')
+
+/** 笔记 + 博客文章共用同一张列表 */
+const matched = [
+  ...docs
+    .filter((doc) => !isIndexDoc(doc) && (doc.data.tags ?? []).includes(tag))
+    .sort(
+      (a, b) =>
+        (a.data.order ?? 999) - (b.data.order ?? 999) ||
+        a.data.title.localeCompare(b.data.title, 'zh')
+    )
+    .map((doc) => ({ title: doc.data.title, href: docHref(doc), date: doc.data.updatedDate })),
+  ...posts
+    .filter((post) => (post.data.tags ?? []).includes(tag))
+    .map((post) => ({
+      title: post.data.title,
+      href: getPostPath(post),
+      date: post.data.publishDate as Date | undefined
+    }))
+]
 
 const meta = { title: `标签：${categoryLabel(tag)}`, description: `${matched.length} 篇笔记` }
 ---
@@ -49,14 +67,14 @@ const meta = { title: `标签：${categoryLabel(tag)}`, description: `${matched.
 
     <ul class='flex list-none flex-col gap-1 p-0'>
       {
-        matched.map((doc) => (
+        matched.map((item) => (
           <li>
             <a
               class='flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/80 no-underline transition-colors hover:bg-muted/60 hover:text-primary'
-              href={docHref(doc)}
+              href={item.href}
             >
               <span class='size-1.5 shrink-0 rounded-full bg-primary/40' />
-              <span class='line-clamp-2'>{doc.data.title}</span>
+              <span class='line-clamp-2'>{item.title}</span>
             </a>
           </li>
         ))

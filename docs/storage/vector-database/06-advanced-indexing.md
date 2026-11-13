@@ -1,7 +1,8 @@
 ---
+title: "06 - Advanced indexing"
+order: 6
 source: https://www.yuque.com/yangguangfanxing/nmhuv1/ffox3o473ky0yud9
 ---
-
 # Advanced indexing
 
 > 原文链接：[https://www.yuque.com/yangguangfanxing/nmhuv1/ffox3o473ky0yud9](https://www.yuque.com/yangguangfanxing/nmhuv1/ffox3o473ky0yud9)

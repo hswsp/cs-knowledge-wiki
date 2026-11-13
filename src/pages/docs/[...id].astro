@@ -1,4 +1,13 @@
 ---
+/**
+ * 文档路由：`/docs/<path>/`
+ *
+ * 一条路由同时服务两种页面（它们的 id 天然不冲突）：
+ *   · 目录页 —— 目录里的 index.md，id 就是目录路径（storage/design-pattern）
+ *   · 文章页 —— 目录里的其他 .md（storage/design-pattern/behavioral/xxx）
+ *
+ * 目录页渲染 index.md 正文 + 子分类卡片 + 本层文章列表；文章页渲染正文与目录。
+ */
 import { render, type CollectionEntry } from 'astro:content'
 
 import { MediumZoom } from 'astro-pure/advanced'
@@ -7,6 +16,7 @@ import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import PageLayout from '@/layouts/ContentLayout.astro'
 import Backlinks from '@/components/blog/Backlinks.astro'
 import OutgoingLinks from '@/components/blog/OutgoingLinks.astro'
+import CategorySections from '@/components/categories/CategorySections.astro'
 import HelpSupport from '@/components/docs/HelpSupport.astro'
 import {
   buildBacklinksMap,
@@ -14,6 +24,14 @@ import {
   getOutgoingLinks,
   type Backlink
 } from '@/utils/backlinks'
+import {
+  buildCategoryTree,
+  docNodePath,
+  isIndexDoc,
+  nodeHref,
+  type CategoryNode,
+  type DocEntry
+} from '@/utils/docs-categories'
 
 import DocsContents from './DocsContents.astro'
 import DocsNav from '@/components/docs/DocsNav.astro'
@@ -21,30 +39,45 @@ import DocsNav from '@/components/docs/DocsNav.astro'
 export const prerender = true
 
 export async function getStaticPaths() {
-  const posts = sortMDByDate(await getBlogCollection('docs'))
-  const backlinksMap = await buildBacklinksMap(posts, '/docs/')
+  const docs = (await getBlogCollection('docs')) as DocEntry[]
+  const nodes = buildCategoryTree(docs)
+  const articles = sortMDByDate(docs.filter((doc) => !isIndexDoc(doc)))
+  const backlinksMap = await buildBacklinksMap(articles, '/docs/')
 
-  return posts.map((post) => ({
-    params: { id: post.id },
-    props: {
-      post,
-      backlinks: getBacklinksForPost(backlinksMap, post.id),
-      outgoingLinks: getOutgoingLinks(post, posts, '/docs/')
+  return docs.map((doc) => {
+    const isPage = isIndexDoc(doc)
+    const path = docNodePath(doc)
+    return {
+      params: { id: isPage ? path : doc.id },
+      props: {
+        post: doc,
+        isPage,
+        path,
+        node: isPage ? nodes.get(path)! : nodes.get(path),
+        nodes,
+        backlinks: isPage ? [] : getBacklinksForPost(backlinksMap, doc.id),
+        outgoingLinks: isPage ? [] : getOutgoingLinks(doc, articles, '/docs/')
+      }
     }
-  }))
+  })
 }
 
 type Props = {
   post: CollectionEntry<'docs'>
+  isPage: boolean
+  path: string
+  node: CategoryNode | undefined
+  nodes: Map<string, CategoryNode>
   backlinks: Backlink[]
   outgoingLinks: Backlink[]
 }
 
-const { post, backlinks, outgoingLinks } = Astro.props
+const { post, isPage, path, node, nodes, backlinks, outgoingLinks } = Astro.props as Props
 const { Content, headings } = await render(post)
 const { description, title } = post.data
 
-const editPath = `https://github.com/hswsp/cs-knowledge-wiki/edit/main/docs/${post.id}.md`
+const editTarget = isIndexDoc(post) ? `${path}/index.md` : `${post.id}.md`
+const editPath = `https://github.com/hswsp/cs-knowledge-wiki/edit/main/docs/${editTarget}`
 ---
 
 <PageLayout meta={{ description, title }} back='/docs/' graphTarget='#docs-graph-view' mode='article'>
@@ -73,9 +106,17 @@ const editPath = `https://github.com/hswsp/cs-knowledge-wiki/edit/main/docs/${po
 
   <Content />
 
+  {
+    isPage && node && (
+      <div class='mt-10 border-t pt-8'>
+        <CategorySections node={node} nodes={nodes} />
+      </div>
+    )
+  }
+
   <div slot='content-after' class='mt-8 flex flex-col gap-3 border-t pt-8 sm:gap-6'>
     {
-      (outgoingLinks.length > 0 || backlinks.length > 0) && (
+      !isPage && (outgoingLinks.length > 0 || backlinks.length > 0) && (
         <div id='wikilinks-section' class='flex flex-col gap-3'>
           {outgoingLinks.length > 0 && <OutgoingLinks links={outgoingLinks} />}
           {backlinks.length > 0 && (
@@ -84,7 +125,7 @@ const editPath = `https://github.com/hswsp/cs-knowledge-wiki/edit/main/docs/${po
         </div>
       )
     }
-    <GraphView currentSlug={`docs/${post.id}`} id='docs-graph-view' />
+    {!isPage && <GraphView currentSlug={`docs/${post.id}`} id='docs-graph-view' />}
   </div>
 
   <div slot='bottom'>

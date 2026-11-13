@@ -1,3 +1,7 @@
+---
+title: "etcd/raft（二）：etcd/raft总体设计"
+order: 2
+---
 # etcd/raft（二）：etcd/raft总体设计
 
 ## 引言

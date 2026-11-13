@@ -1,9 +1,9 @@
 ---
-title: 如何阅读 Java 字节码（Byte Code）
+title: "如何阅读 Java 字节码"
+order: 1
 description: "如何阅读 Java 字节码（Byte Code）"
 date: 2022-09-14
 ---
-
 # 字节码（Byte Code）
 
 学习 Java 的都知道，我们所编写的 `.java` 代码文件通过编译将会生成 `.class` 文件，最初的方式就是通过 JDK 的 `javac` 指令来编译，再通过 `java` 命令执行 main 方法所在的类，从而执行我们的 Java 程序。而在这中间所生成的 .class 文件中的内容，就是 JVM 可以处理运行的字节码（Byte Code），它由 JVM 解释为对应系统可运行的机器指令，这也是我们的 Java 程序能够做到一处编译处处执行的原理。

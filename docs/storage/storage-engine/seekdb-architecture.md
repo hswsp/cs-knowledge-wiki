@@ -1,8 +1,8 @@
 ---
-title: SeekDB Architecture
+title: "SeekDB Architecture"
+order: 14
 description: "SeekDB architecture overview and component diagram"
 ---
-
 # SeekDB Architecture
 
 <div style="display: flex; align-items: center; gap: 8px; margin: 0 0 12px 0; font-size: 14px; color: var(--vp-c-text-2);">

@@ -1,8 +1,8 @@
 ---
 title: "网络拥塞指数退避算法详解"
+order: 1
 description: "重试风暴、Capped Exponential Backoff、Jitter 与生产级 C++17 实现。"
 ---
-
 > 当成千上万个客户端同时撞向一个濒临崩溃的服务时，最糟糕的"重试策略"，是大家整齐划一地"立即再试一次"。
 >
 > ——指数退避（Exponential Backoff）就是为了打破这种"步调一致的灾难"而生。

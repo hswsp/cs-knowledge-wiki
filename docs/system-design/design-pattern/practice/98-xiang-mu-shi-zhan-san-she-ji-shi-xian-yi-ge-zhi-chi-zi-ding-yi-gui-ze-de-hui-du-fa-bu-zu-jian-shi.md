@@ -1,3 +1,7 @@
+---
+title: "98 | 项目实战三：设计实现一个支持自定义规则的灰度发布组件（实现）"
+order: 22
+---
 # 98 | 项目实战三：设计实现一个支持自定义规则的灰度发布组件（实现）
 
 ![](https://images.spumn.eu.cc/blog/7501d384da61d5b0.png)
@@ -14,7 +18,7 @@
 
 我们希望支持不同格式（JSON、YAML、XML 等）、不同存储方式（本地配置文件、Redis、Zookeeper、或者自研配置中心等）的灰度规则配置方式。实际上，这一点跟之前的限流框架中限流规则的格式和存储方式完全一致，代码实现也是相同的，所以在接下来的讲解中，就不重复啰嗦了，你可以回过头去看下第 92 讲。
 
-➡️ [92-xiang-mu-shi-zhan-yi-she-ji-shi-xian-yi-ge-zhi-chi-ge-zhong-suan-fa-de-xian-liu-kuang-jia-shi-xia](/system-design/design-pattern/practice/92-xiang-mu-shi-zhan-yi-she-ji-shi-xian-yi-ge-zhi-chi-ge-zhong-suan-fa-de-xian-liu-kuang-jia-shi-xia)
+➡️ [92-xiang-mu-shi-zhan-yi-she-ji-shi-xian-yi-ge-zhi-chi-ge-zhong-suan-fa-de-xian-liu-kuang-jia-shi-xia](/system-design/design-pattern/practice/92-xiang-mu-shi-zhan-yi-she-ji-shi-xian-yi-ge-zhi-chi-ge-zhong-suan-fa-de-xian-liu-kuang-jia-shi-xia/)
 
 ### 灰度规则的语法格式
 

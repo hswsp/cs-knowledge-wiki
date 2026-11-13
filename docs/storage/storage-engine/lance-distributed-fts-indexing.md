@@ -1,7 +1,8 @@
 ---
+title: "Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路"
+order: 4
 source: https://www.yuque.com/yangguangfanxing/nmhuv1/dfudg7ka3q3ke7pr
 ---
-
 # Lance分布式FTS索引构建：从单机到集群的全文搜索进化之路
 
 > 摘录自：[https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew](https://mp.weixin.qq.com/s/zy6QQxFMLaiasTpaRqvwew)

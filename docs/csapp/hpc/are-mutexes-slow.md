@@ -1,7 +1,8 @@
 ---
+title: "Mutex 慢吗？——从缓存一致性看并发协调的真实代价"
+order: 1
 description: “Jane Street 技术讲座《The Cost of Concurrency Coordination》（Jon Gjengset）演讲稿改写：Mutex 慢不慢不由接口决定，而由缓存行在核心之间的移动距离决定。从 MESI 协议、读写锁的读计数争用，到 left-right 数据结构与伪共享调试实录。”
 ---
-
 # Mutex 慢吗？——从缓存一致性看并发协调的真实代价
 
 > 本文根据 Jon Gjengset 在 Jane Street 的技术讲座 **“Are Mutexes Slow?”**（正式标题 *The Cost of Concurrency Coordination）整理。除第 7 节问答环节的部分补充事实外，所有论点、实验设置与数字均出自讲座本身；文中基准数字是演讲者在**其演示机器上的单次观测值**，量级可信、精确值不可移植。
@@ -417,6 +418,6 @@ A：编译器对锁其实很克制，手段主要是**屏障（barrier）**：�
 - [crates.io: left-right](https://crates.io/crates/left-right)（讲座作者开发的 Rust left-right 并发库；含 §6 的对齐修复版本）
 - [What Every Programmer Should Know About Memory](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf) — Ulrich Drepper（讲座推荐的缓存层级/MESI 深入读物，“第一个链接”即此类时序分解文章）
 - [Scalable Reader-Writer Locks for NUMA Systems](http://www.cs.man.ac.uk/%7Esinghars/OnlinePapers/nsdi05rwlock.pdf) — Boyd-Wickizer et al.（讲座提及的 per-core 读锁改造方案来源）
-- 站内延伸阅读：[01 并发地基篇](/cpp/concurrent/01-foundations)、[04 Boost.Lockfree 与无锁容器](/cpp/concurrent/04-boost-lockfree)、[07 Seastar 与 thread-per-core](/cpp/concurrent/07-seastar)
+- 站内延伸阅读：[01 并发地基篇](/cpp/concurrency/01-foundations/)、[04 Boost.Lockfree 与无锁容器](/cpp/concurrency/04-boost-lockfree/)、[07 Seastar 与 thread-per-core](/cpp/concurrency/07-seastar/)
 
 <!-- 注：以上外部链接为讲座中口头推荐文献的标准出处补全，供按图索骥。 -->

@@ -1,9 +1,9 @@
 ---
-title: Linux 物理卷(PV)、逻辑卷(LV)、卷组(VG)管理
+title: "Linux 物理卷(PV)、逻辑卷(LV)、卷组(VG)管理"
+order: 1
 description: "Linux 物理卷(PV)、逻辑卷(LV)、卷组(VG)管理"
 date: 2023-02-05
 ---
-
 # **相关概念**
 
 逻辑卷是使用逻辑卷组管理(Logic Volume Manager)创建出来的设备，如果要了解逻辑卷，那么首先需要了解逻辑卷管理中的一些概念。

@@ -1,3 +1,7 @@
+---
+title: "82 | 开源实战三（中）：剖析Google Guava中用到的几种设计模式"
+order: 7
+---
 # 82 | 开源实战三（中）：剖析Google Guava中用到的几种设计模式
 
 ![](https://images.spumn.eu.cc/blog/2722771502105418.png)

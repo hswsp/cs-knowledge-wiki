@@ -1,8 +1,8 @@
 ---
-title: "LeetCode [208. Implement Trie (Prefix Tree)](https://leetcode-cn.com/problems/implement-trie-prefix-tree/)"
+title: "Trie树应用"
+order: 4
 description: "A trie (pronounced as \"try\") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a da"
 ---
-
 # LeetCode [208. Implement Trie (Prefix Tree)](https://leetcode-cn.com/problems/implement-trie-prefix-tree/)
 
 

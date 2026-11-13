@@ -1,8 +1,8 @@
 ---
 title: "ping 的工作原理"
+order: 2
 description: "ping 命令背后的 ICMP Echo Request/Reply 详解。"
 ---
-
 在日常生活或工作中，我们在判断与对方**网络是否畅通**，使用的最多的莫过于 `ping` 命令了。
 
 

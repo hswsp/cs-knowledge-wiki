@@ -1,8 +1,8 @@
 ---
-title: "定律定义"
+title: "Lucas定理求组合数"
+order: 7
 description: "[Lucas's theorem](https://en.wikipedia.org/wiki/Lucas%27s_theorem)：我们令n=sp+q , m=tp+r.（0≤q ，r ≤p-1）"
 ---
-
 # 定律定义
 
 

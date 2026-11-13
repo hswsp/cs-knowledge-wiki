@@ -54,7 +54,11 @@ const renderContent = async (post: CollectionEntry<'docs'>, site: URL) => {
 }
 
 const GET = async (context: AstroGlobal) => {
-  const allPostsByDate = sortMDByDate(await getBlogCollection('docs')) as CollectionEntry<'docs'>[]
+  const allDocs = (await getBlogCollection('docs')) as CollectionEntry<'docs'>[]
+  // 分类页（index.md）不进 RSS
+  const allPostsByDate = sortMDByDate(
+    allDocs.filter((doc) => !/(^|\/)index\.md$/i.test(doc.filePath ?? ''))
+  )
   const siteUrl = context.site ?? new URL(import.meta.env.SITE)
 
   return rss({

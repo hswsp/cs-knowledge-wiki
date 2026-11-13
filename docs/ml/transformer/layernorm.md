@@ -1,3 +1,7 @@
+---
+title: "LayerNorm 层"
+order: 4
+---
 # 手搓 Transformer（四）：LayerNorm层
 
 ## **前言**

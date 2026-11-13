@@ -1,9 +1,9 @@
 ---
-title: HDFS简介
+title: "HDFS 简介"
+order: 3
 description: "Intro to HDFS"
 date: 2022-10-20
 ---
-
 # **相关背景资料**
 
 **Hadoop**：一个分布式系统基础架构，由Apache基金会开发。用户可以在不了解分布式底层细节的情况下，开发分布式程序。充分利用集群的威力高速运算和存储。

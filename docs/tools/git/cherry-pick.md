@@ -1,9 +1,9 @@
 ---
-title: Cherry-Pick的使用
+title: "Cherry-Pick 的使用"
+order: 1
 description: "Cherry-Pick"
 date: 2020-09-28
 ---
-
 # Cherry-Pick的作用
 
 假设当前所在分支为B，可以在Version Control 的 Log 中选择在A分支单个commit或者多个commit的内容，会将选中的内容拉到B分支重新进行commit，之后记得push上去，就完成了公共功能代码的拉取。

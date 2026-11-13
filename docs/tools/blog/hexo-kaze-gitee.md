@@ -1,9 +1,9 @@
 ---
-title: Hexo+Kaze+Gitee Pages 搭建静态博客网站
+title: "Hexo + Kaze + Gitee Pages 搭建静态博客"
+order: 1
 description: "Hexo 详解 "
 date: 2022-08-30
 ---
-
 # 前言
 
 建网站本身是一个很大的工程，涉及前端页面的搭建，网站数据的存储，还要购置服务器资源，甚至是后期的维护，过程相当繁琐。

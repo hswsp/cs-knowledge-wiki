@@ -1,7 +1,8 @@
 ---
+title: "Lance Format vs Parquet 列式格式"
+order: 5
 source: https://www.yuque.com/yangguangfanxing/nmhuv1/hxboo5fhcgt5sx6d
 ---
-
 # Lance Format vs Parquet 列式格式
 
 学习笔记：向量数据库存储格式对比

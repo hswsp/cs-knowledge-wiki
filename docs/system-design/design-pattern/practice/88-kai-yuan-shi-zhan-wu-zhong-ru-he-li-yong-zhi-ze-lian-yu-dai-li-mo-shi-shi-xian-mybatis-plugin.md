@@ -1,3 +1,7 @@
+---
+title: "88 | 开源实战五（中）：如何利用职责链与代理模式实现MyBatis Plugin？"
+order: 13
+---
 # 88 | 开源实战五（中）：如何利用职责链与代理模式实现MyBatis Plugin？
 
 ![](https://images.spumn.eu.cc/blog/7ed3b2c9e57f61b4.png)

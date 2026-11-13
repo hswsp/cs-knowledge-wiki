@@ -1,3 +1,7 @@
+---
+title: "etcd/raft（五）：Raft成员变更"
+order: 5
+---
 # etcd/raft（五）：Raft成员变更
 
 ## 引言

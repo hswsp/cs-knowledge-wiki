@@ -1,8 +1,8 @@
 ---
-title: "一、KMP 算法概述"
+title: "有限状态机实现 KMP 算法详解"
+order: 1
 description: "KMP 算法（Knuth-Morris-Pratt 算法）是一个著名的字符串匹配算法，效率很高，但是确实有点复杂。"
 ---
-
 KMP 算法（Knuth-Morris-Pratt 算法）是一个著名的字符串匹配算法，效率很高，但是确实有点复杂。
 
 

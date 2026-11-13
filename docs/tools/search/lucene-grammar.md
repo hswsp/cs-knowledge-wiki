@@ -1,9 +1,9 @@
 ---
-title: Kibana使用之Lucene的语法查询
+title: "Kibana 使用之 Lucene 语法查询"
+order: 1
 description: "Grammar of Lucene"
 date: 2022-11-02
 ---
-
 Kibana使用的查询语法是Lucene的查询语法，下面了解下Lucene的查询语法，了解了Lucene的查询语法也就知道了改如何使用Kibana的使用方式。
 
 Lucene查询语法以可读的方式书写，然后使用JavaCC进行词法转换，转换成机器可识别的查询。

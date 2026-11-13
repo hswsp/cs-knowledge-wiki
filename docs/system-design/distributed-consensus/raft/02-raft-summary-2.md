@@ -1,3 +1,7 @@
+---
+title: "Raft算法总结（二）"
+order: 2
+---
 # etcd/raft工程性设计
 
 接下来我们看一看在《Consensus: Bridging Theory and Practice》大论文中，提到了很多《In Search of an Understandable Consensus Algorithm (Extended Version)》中没有涉及的，但是在实际工程落地中非常重要的细节。

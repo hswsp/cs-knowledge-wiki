@@ -4,7 +4,7 @@
  * 通过 Astro.self 递归，子分类可折叠。
  */
 import { Icon } from 'astro-pure/user'
-import { type CategoryNode, docHref, type DocEntry } from '@/utils/docs-categories'
+import { type CategoryNode, docHref, nodeHref, type DocEntry } from '@/utils/docs-categories'
 
 interface Props {
   node: CategoryNode
@@ -29,26 +29,11 @@ const isOpen = (child: CategoryNode): boolean =>
           <details open={isOpen(child)} class='cat-dir'>
             <summary class='cat-label'>
               <Icon name='chevronRight' class='cat-chevron size-3' />
-              <span class='cat-text'>{child.label}</span>
-              <span class='cat-count'>{child.total > 0 ? child.total : `${child.links.length}↗`}</span>
+              <a class='cat-text' href={nodeHref(child.path)}>{child.label}</a>
+              <span class='cat-count'>{child.total > 0 ? child.total : '·'}</span>
             </summary>
             <Astro.self node={child} nodes={nodes} currentId={currentId} depth={depth + 1} />
           </details>
-        </li>
-      ))}
-      {node.links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class='cat-doc'
-            target='_blank'
-            rel='noopener noreferrer'
-            title='站外资源'
-          >
-            <Icon name='link' class='size-3 opacity-50' />
-            <span class='cat-text'>{link.title}</span>
-            <span class='cat-ext'>↗</span>
-          </a>
         </li>
       ))}
       {node.docs.map((doc: DocEntry) => (
