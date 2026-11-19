@@ -1,0 +1,98 @@
+---
+// 客户端渲染 mermaid 图。见 src/plugins/mermaid.ts 的说明：替换 astro-mermaid
+// 的自带脚本，原因是它的加载时机绑定在「首次页面就有图」上，ClientRouter 跳转
+// 到有图的页面时不会渲染。样式在 src/assets/styles/global.css 的 [Mermaid] 段。
+---
+
+<script>
+  type MermaidAPI = (typeof import('mermaid'))['default']
+
+  const SELECTOR = 'pre.mermaid:not([data-mermaid-state])'
+
+  // 把渲染前的原始定义存在内存里，避免像旧实现那样塞进 data-* 属性（每张图多 ~1KB DOM）
+  const sources = new WeakMap<Element, string>()
+  const queued = new WeakSet<Element>()
+  let mermaidPromise: Promise<MermaidAPI> | null = null
+  let diagramCount = 0
+
+  function loadMermaid(): Promise<MermaidAPI> {
+    mermaidPromise ??= import('mermaid')
+      .then((mod) => {
+        mod.default.initialize({
+          // 图内容固定浅色主题 + 白底（见 global.css 的 Mermaid 段）：暗色主题下
+          // 线条会变亮，叠在暗背景上就看不见了。
+          startOnLoad: false,
+          theme: 'default',
+          gitGraph: {
+            mainBranchName: 'main',
+            showCommitLabel: true,
+            showBranches: true,
+            rotateCommitLabel: true
+          }
+        })
+        return mod.default
+      })
+      .catch((error) => {
+        // 让下一次 page-load 还有机会重试
+        mermaidPromise = null
+        throw error
+      })
+    return mermaidPromise
+  }
+
+  // 视口内（以及下一屏）的图先画，其余顺延，避免长文章首屏被后面的图抢 CPU
+  function viewportRank(el: Element) {
+    const rect = el.getBoundingClientRect()
+    const height = window.innerHeight || 800
+    return rect.top < height * 1.5 && rect.bottom > -height * 0.5 ? 0 : 1
+  }
+
+  function renderError(message: string) {
+    const box = document.createElement('div')
+    box.style.cssText = 'color:#b91c1c;padding:1rem;border:1px solid #fca5a5;border-radius:.5rem'
+    box.textContent = `Mermaid 渲染失败：${message}`
+    return box
+  }
+
+  async function renderDiagrams() {
+    const pending = [...document.querySelectorAll<HTMLElement>(SELECTOR)].filter(
+      (el) => !queued.has(el)
+    )
+    if (!pending.length) return
+
+    for (const el of pending) {
+      sources.set(el, el.textContent ?? '')
+      queued.add(el)
+    }
+    pending.sort((a, b) => viewportRank(a) - viewportRank(b))
+
+    let mermaid: MermaidAPI
+    try {
+      mermaid = await loadMermaid()
+    } catch (error) {
+      console.error('[mermaid] 加载失败', error)
+      return
+    }
+
+    // 一次只画一张：mermaid.render 是重 CPU 的同步布局，并发跑会互相拖慢。
+    // 期间若发生站内跳转，旧节点 isConnected 为 false，直接跳过。
+    for (const el of pending) {
+      if (!el.isConnected) continue
+      const source = sources.get(el) ?? ''
+      const id = `mermaid-${++diagramCount}`
+      try {
+        const { svg } = await mermaid.render(id, source)
+        if (!el.isConnected) continue
+        el.innerHTML = svg
+        el.dataset.mermaidState = 'done'
+      } catch (error) {
+        if (!el.isConnected) continue
+        el.replaceChildren(renderError((error as Error).message || '未知错误'))
+        el.dataset.mermaidState = 'failed'
+      }
+    }
+  }
+
+  renderDiagrams()
+  document.addEventListener('astro:page-load', renderDiagrams)
+</script>

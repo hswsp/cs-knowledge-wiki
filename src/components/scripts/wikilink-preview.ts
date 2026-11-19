@@ -40,9 +40,9 @@ const elementToInstance: WeakMap<HTMLElement, Instance> = new WeakMap()
 async function loadContentIndex(): Promise<ContentIndex> {
   if (contentIndex) return contentIndex
 
-  const response = await fetch('/contentIndex.json')
+  const response = await fetch('/searchIndex.json')
   if (!response.ok) {
-    throw new Error('Failed to fetch contentIndex.json')
+    throw new Error('Failed to fetch searchIndex.json')
   }
 
   contentIndex = await response.json()

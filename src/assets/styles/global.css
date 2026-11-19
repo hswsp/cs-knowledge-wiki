@@ -98,9 +98,19 @@ span.katex-display {
 }
 
 .mermaid svg {
+  display: block;
+  margin-inline: auto;
   max-width: 100% !important;
   height: auto !important;
   background-color: #ffffff !important;
+}
+
+/* 渲染前：先按固定高度占位（减少布局跳动），并把原始 mermaid 定义隐藏掉，
+   否则会先闪一段源码文本再变成图。data-mermaid-state 由 MermaidRuntime 写入。 */
+.mermaid:not([data-mermaid-state]) {
+  min-height: 12rem;
+  color: transparent;
+  user-select: none;
 }
 
 .dark .mermaid,

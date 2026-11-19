@@ -408,9 +408,33 @@ async function setupGraphView(root: HTMLElement) {
   }
 }
 
+// 图谱在文章底部，绝大多数读者读不到。等它接近视口再拉数据 + 跑 d3 力导向，
+// 文章首屏就不用为一张看不见的图下载索引并占用主线程（数据 0.4 MB / 约 90 KB gzip）。
+const observed = new WeakSet<HTMLElement>()
+
+function scheduleGraphView(root: HTMLElement) {
+  if (initialized.has(root) || observed.has(root)) return
+  observed.add(root)
+
+  if (typeof IntersectionObserver === 'undefined') {
+    setupGraphView(root)
+    return
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return
+      observer.disconnect()
+      setupGraphView(root)
+    },
+    { rootMargin: '600px 0px' }
+  )
+  observer.observe(root)
+}
+
 export function initGraphView() {
   document.querySelectorAll<HTMLElement>('[data-graph-view]').forEach((root) => {
-    setupGraphView(root)
+    scheduleGraphView(root)
   })
 }
 

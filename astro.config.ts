@@ -5,7 +5,7 @@ import { defineConfig, fontProviders } from 'astro/config'
 import rehypeKatex from 'rehype-katex'
 import remarkCjkFriendly from 'remark-cjk-friendly'
 import remarkMath from 'remark-math'
-import mermaid from 'astro-mermaid'
+import mermaid from './src/plugins/mermaid.ts'
 // Local integrations
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
 import remarkRemoteImages from './src/plugins/remark-remote-images.ts'
@@ -142,9 +142,10 @@ export default defineConfig({
     // astro-pure will automatically add sitemap, mdx & unocss
     // sitemap(),
     // mdx(),
-    // autoTheme 默认 true，会在暗色模式下把图重绘成 dark 主题（亮色线条），
-    // 叠在暗背景上箭头几乎看不见；这里固定用浅色主题 + 页面白底。
-    mermaid({ autoTheme: false, theme: 'default' }),
+    // 自己的 mermaid 集成：只负责把 ```mermaid 转成 <pre class="mermaid">，
+    // 客户端渲染交给 src/components/MermaidRuntime.astro。图固定浅色主题 + 白底，
+    // 暗色模式下若跟随主题会把线条变亮，叠在暗背景上就看不见了。
+    mermaid(),
     AstroPureIntegration(config)
   ],
 

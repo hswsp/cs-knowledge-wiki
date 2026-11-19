@@ -6,6 +6,7 @@ import CategoryBrowserOverlay from '@/components/categories/CategoryBrowserOverl
 import CustomHeader from '@/components/CustomHeader.astro'
 import TagCloudOverlay from '@/components/tags/TagCloudOverlay.astro'
 import KnowledgeGraph from '@/components/graph/KnowledgeGraph.astro'
+import MermaidRuntime from '@/components/MermaidRuntime.astro'
 import PageTransition from '@/components/PageTransition.astro'
 import config from '@/site-config'
 
@@ -55,6 +56,7 @@ const {
     <CategoryBrowserOverlay />
     <KnowledgeGraph />
     <TagCloudOverlay />
+    <MermaidRuntime />
     <slot name='overlay' />
 
     {/* Set highlight color */}

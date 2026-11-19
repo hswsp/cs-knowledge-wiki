@@ -1079,7 +1079,7 @@ const initialize = () => {
       contentsList.innerHTML = '<p class="browser-empty">正在加载内容索引...</p>'
       preview.innerHTML = '<p class="browser-empty">加载完成后显示预览。</p>'
       try {
-        const response = await fetch('/contentIndex.json')
+        const response = await fetch('/searchIndex.json')
         if (!response.ok) throw new Error(`content index: ${response.status}`)
         const data = (await response.json()) as ContentIndexResponse
         entries = Array.isArray(data) ? data : Object.values(data)

@@ -1395,8 +1395,8 @@ async function fillDocument(data: ContentIndex) {
 export async function initSearch() {
   const currentSlug = getCurrentSlug()
 
-  contentIndexPromise ??= fetch('/contentIndex.json').then((response) => {
-    if (!response.ok) throw new Error('Failed to fetch contentIndex.json')
+  contentIndexPromise ??= fetch('/searchIndex.json').then((response) => {
+    if (!response.ok) throw new Error('Failed to fetch searchIndex.json')
     return response.json() as Promise<ContentIndex>
   })
 
