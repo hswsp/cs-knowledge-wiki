@@ -4,21 +4,47 @@ order: 2
 ---
 # Fast Paxos：用更大的 Quorum 换掉一次消息跳转
 
----
-
 ## 1. 起点：Classic Paxos 的第三个跳
 
-Paxos 的历史可以切成三段：1998 年《The Part-Time Parliament》给出原始描述，2001 年《Paxos Made Simple》重述一次，2005 年 Lamport 又写了《Fast Paxos》（MSR-TR-2005-33，期刊版 2006 年发表于 *Distributed Computing*）。**正确性在 1998 年就已经足够**，后面所有工作做的都是同一件事：在延迟、吞吐、消息量之间重新分配代价。
+Paxos 的历史可以切成三段：1998 年《The Part-Time Parliament》给出原始描述，2001 年《Paxos Made Simple》重述一次，2005 年 Lamport 又写了《Fast Paxos》（MSR-TR-2005-112，期刊版 2006 年发表于 *Distributed Computing*）。**正确性在 1998 年就已经足够**，后面所有工作做的都是同一件事：在延迟、吞吐、消息量之间重新分配代价。
 
-Classic Paxos 一次决议的消息路径是三步：
+Fast Paxos 动的就是「正常路径有几跳」，所以先把这三跳数清楚。
 
+### 1.1 正常路径是哪三跳
+
+下面的前提是 Leader 稳定、Phase 1 已经摊薄（也就是 Multi-Paxos 的做法），只数一次决议真正要付的通信：
+
+| 跳 | 谁 → 谁 | 报文 | 这一跳在干什么 |
+| --- | --- | --- | --- |
+| 第 1 跳 | Client → Leader | 提案请求（「我想提 v」） | 把值从客户端搬进协议 |
+| 第 2 跳 | Leader → Acceptor | Phase2a `accept(n, v)` | Leader 把值交下去，请副本投票 |
+| 第 3 跳 | Acceptor → Learner | Phase2b `accepted(n, v)` | 投票结果抵达 Learner，v 被选中 |
+
+```mermaid
+sequenceDiagram
+    participant C as Client(Proposer+Learner)
+    participant L as Leader(Coordinator)
+    participant A as Acceptors(N 个)
+    Note over L,A: Phase1a/1b 只在选主时付一次，稳态下摊薄，不计入下面三跳
+    C->>L: ① 提案 v
+    Note right of C: 第 1 跳：值经 Leader 搬运
+    L->>A: ② Phase2a accept(n, v)
+    Note right of L: 第 2 跳：值进入投票
+    A->>C: ③ Phase2b accepted(n, v)
+    Note right of A: 第 3 跳：Learner 学到结果，v 被选中
 ```
-Proposer → Leader(Coordinator) → Acceptor → Learner
-```
 
-这一步之差为什么值得单独写一篇论文？因为 Lamport 自己后来证明了：**在正常无冲突的情况下，达到共识最少需要 2 个消息延迟**，而 Classic Paxos 走的是 3 个。Fast Paxos 就是贴着这个下界设计的算法——它把正常路径压到 2 个延迟，代价是冲突时退化成 3 个，而这个冲突代价后来也被证明是不可避免的（详见 Lamport 对 [TR-2005-33](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-33.pdf) 的背景自述）。
+三跳按职责可以分成两类：第 2、3 跳是协议本体——删掉第 2 跳没人投票，删掉第 3 跳没人知道结果；第 1 跳只是**值的搬运**，它不产生任何协议状态，Leader 在这一跳里是个纯粹的转述者。
 
-所以本文的问题可以一句话表述：**在 Leader 仍然是协调者的前提下，能不能让值不经过 Leader 就直接进入投票？**
+所以本节标题里的「第三个跳」，指的就是多出来的那一个：**它在时间上排第 1，在成本账上排第 3**。
+
+### 1.2 为什么这一跳值得写一篇论文
+
+先摆两条界：**任何共识算法都至少要 2 个消息延迟**，才有进程能学到被选定的值；而且在两个提案并发提出时，没有算法能保证 2 跳内学到结果。两条界都在 Fast Paxos 论文 §1 里讲了出处。
+
+关键在于下界的适用范围。传统表述里，「提议者」和「决定者」是同一批进程，值不需要搬运，所以 Classic Paxos 恰好用满 2 跳；一旦放进真正的 C/S 系统——客户端提议、服务端决定——它就变成 3 跳，多出来的正是上面那第 1 跳。论文管这叫「虚幻的最优」：最优的不是算法，是问题表述。
+
+所以 Fast Paxos 贴着下界设计的实际含义是：正常路径压到 2 跳，冲突时退化成 3 跳。整个论文就是在回答一个问题——**在 Leader 仍然是协调者的前提下，能不能让值不经过 Leader 就直接进入投票？**
 
 ## 2. 角色重述：把协议放回 C/S 架构
 
@@ -88,18 +114,36 @@ sequenceDiagram
     participant C as Client(Proposer+Learner)
     participant L as Leader(Coordinator)
     participant A as Acceptors(N 个)
-    L->>A: Phase1a 提议 round i
-    A-->>L: Phase1b 承诺 + 已接受的最高编号值
-    L->>A: Phase2a = Any（空值，开启 Fast Round i）
-    Note over A: Acceptor 进入 round i，等 Client 直接提交值
-    C->>A: 直接提交 (i, v)（省掉经 Leader 一跳）
-    A-->>C: Phase2b 已接受 (i, v)
-    Note over C: 收到 i-Quorum 份接受 → v 被选中，再广播给其余 Learner
+    Note over L,A: Phase1a/1b 摊薄 + Phase2a = Any，都在提案到达前预发，不占关键路径
+    L-->>A: Any（空值，开启 fast round i）
+    C->>A: ① 提案 v，直接投给 Acceptor
+    Note right of C: 第 1 跳：值不再经 Leader 搬运
+    A->>C: ② Phase2b accepted(i, v)
+    Note right of A: 第 2 跳：Learner 学到结果，v 被选中
+    A-->>L: 另发一份 2b 给 Leader，供其察觉冲突
 ```
 
 注意 Phase1a/1b 在稳态下是可以长期复用的（这就是 Multi-Paxos 的做法），真正每次决议都要付的成本只有「Client → Acceptor → Learner」这两跳。
 
-## 5. 冲突：乐观锁的代价
+### 4.4 对比：到底少了哪一跳
+
+把两张时序图按「提案之后的第几个延迟」对齐：
+
+| 累计延迟 | Classic Paxos | Fast Paxos |
+| --- | --- | --- |
+| 1 | Client → Leader（第 1 跳） | Client → Acceptor（值直达副本） |
+| 2 | Leader → Acceptor（第 2 跳） | Acceptor → Learner（学到结果） |
+| 3 | Acceptor → Learner（第 3 跳） | —— |
+
+答案很明确：**少掉的是 Classic 的第 1 跳，也就是「值在 Client 与 Acceptor 之间经过 Leader 的那次搬运」**。Classic 里值的路径是 `Client → Leader → Acceptor`，两跳；Fast 里是 `Client → Acceptor`，一跳。
+
+有三点容易读错，必须说清：
+
+1. **`Leader → Acceptor` 这条链路并没有消失**，Any 仍然走它。但 Any 不带值，可以在提案到达之前很久就发掉（论文的说法是：它几乎为每个实例都发一条，但一条物理消息能覆盖所有这些实例，摊薄成本可以忽略），所以它不占「提案之后」的时钟。反过来，如果 Any 必须等到有提案才能发，省下的那一跳立刻会被还回去。
+2. **Phase2a 也没有消失**，它只是换了发送者和接收者的关系：Acceptor 收到 Client 的提案后，把这条提案**当作** round i 的 Phase2a 来执行。协议阶段一分为四的骨架完好，变的是「谁有权指名值」。
+3. **前提是不冲突**。两个不同提案被不同 Acceptor 以不同顺序收到时，2 跳不成立，这正是下一节的题目。
+
+## 5. 冲突从哪来
 
 ### 5.1 为什么编号全序还会撞
 
@@ -107,10 +151,12 @@ sequenceDiagram
 
 因为 **Fast Round 是 round 级的容器，不是提案级的**。Any 一下发，整轮编号 i 就定了；之后不管多少个 Client 报 `(11, v)`、`(12, w)`，在 round i 眼里都是「round i 收到了 v 和 w 两个值」。Kaffee 举的例子很精确：round 10 里 Proposer1 报 `(11, 1)`、Proposer2 报 `(12, 2)`，对 round 10 而言就是「有两个值，谁也说不清该选哪个」。
 
+顺带把「冲突（collision）」这个词说准：它不是「两个提案同时发出」，而是**两个提案被不同 Acceptor 以不同顺序收到**。发送时间相同、但所有副本的收序一致时，大家投的还是同一个值（第一个到达的那个），根本没有冲突。这也是论文说「所有 Acceptor 挂同一块以太网时冲突几乎不会发生」的原因。
+
 ### 5.2 冲突的两种后果
 
-1. **没有人凑够 fast quorum**：值压根没被选中，这一轮的延迟白付；
-2. **有值被选中但 Leader 难以确认**：恢复时 Leader 拿到多个候选值，无法用「编号最大」这条规则唯一确定，必须靠额外的判定规则（下一节的 O4）去推。
+1. **没有任何值凑够 fast quorum**：这一轮白付，什么都没选中，要重来；
+2. **值凑够了，但 Leader 手上的 2b 不完整**：它无法用「编号最大」这条规则唯一确定该继承谁，必须靠额外的判定规则（第 7 节的 O4）去推。推错一次，一致性就破了。
 
 ### 5.3 锁死安全性的两个条件
 
@@ -143,7 +189,7 @@ Fast Paxos 靠两条约束把安全性重新焊死：
 
 $$(N - F) + 2(N - E) > 2N \;\Longrightarrow\; N > 2E + F$$
 
-这就是 Fast Paxos 那两个著名的条件：
+这就是 Fast Paxos 那两个著名的条件（论文 §3.4.1 的写法也是这两条）：
 
 $$N > 2F \qquad N > 2E + F$$
 
@@ -151,7 +197,7 @@ $$N > 2F \qquad N > 2E + F$$
 
 $$Q \ge \left\lfloor \frac{2N}{3} \right\rfloor + 1$$
 
-代入 $N = 3E + 1$ 时恰好是 $Q = 2E + 1$。
+论文里「最大化 E」的取法是 $E = F = \lceil N/3 \rceil - 1$，代入 $N = 3E + 1$ 时恰好是 $Q = 2E + 1$。
 
 ### 6.3 常见配置与对照
 
@@ -163,9 +209,9 @@ $$Q \ge \left\lfloor \frac{2N}{3} \right\rfloor + 1$$
 
 一句话：**同样的容错能力，Fast Paxos 要多一截副本**（3 → 4，5 → 7），而且每次写要有更多副本参与投票并回包。这就是「少一跳」的对价——用带宽和节点数换延迟。
 
-## 7. 冲突恢复（Recovery）
+## 7. 冲突恢复：一个具体例子走完
 
-### 7.1 为什么 2b 要发给 Leader
+### 7.1 为什么 2b 要抄送 Leader
 
 正常情况下 Acceptor 只把 Phase2b 回给 Learner 就够了，但在 Fast Paxos 里**必须顺手也发给 Leader**。否则 Leader 以为一切正常，根本不知道发生过冲突，也就不会启动恢复。
 
@@ -173,26 +219,95 @@ $$Q \ge \left\lfloor \frac{2N}{3} \right\rfloor + 1$$
 
 恢复之所以能做得便宜，靠的是这个观察：**Round i 的 Phase2b 与 Round i+1 的 Phase1b 在语义上等价**。两者都表达两件事：
 
-1. 我参与过哪些 round、投了什么值；
+1. 我参与过哪些 round、投了什么值（`vrnd`、`vval`）；
 2. 我承诺不再对小于 i+1 的 round 投票。
+
+第 2 条是隐含的：Acceptor 一旦在 round i 投了票，它的 `rnd` 就被推到 i，自然不会再对更小的轮次投票。
 
 所以只要 Leader 手上的 2b 足够还原出完整的投票情况，它就能**跳过 Phase1a/1b**，直接进 Round i+1 的 Phase2a。这就是恢复路径能比「从头重来」便宜的原因。
 
-### 7.3 两条恢复路线
+### 7.3 选值规则
 
-- **协调者式恢复（coordinator-based）**：Leader 发现冲突，若证据足以判定某个值已被选中，直接执行 Round i+1 的 Phase2a；证据不足就老老实实从 Phase1a 重来。
-- **非协调式恢复（non-coordinated）**：Acceptor 之间互传 2b，每个 Acceptor 自己算、自己执行 Round i+1 的 Phase2a。这又省掉 Leader 一跳，但要求 i-Quorum 与 (i+1)-Quorum 完全相同，而且 Acceptor 被迫兼职 Proposer。Kaffee 的评价是「搞得过于复杂」，论文本身也只把它当可选项。
+把收到的 2b 当成 round i+1 的 1b，记 $Q$ 为这批 Acceptor，规则只有四条（对应论文 Figure 2）：
 
-## 8. 完整流程
+```text
+k     = Q 中报告的最大投票轮次
+V     = Q 中「在轮次 k 投过票」的值集合
+O4(v) = 存在一个 k-quorum R，使 R∩Q 里每个人都「在轮次 k 投了 v」
+
+k = 0             → 任选一个已提出的值（fast round 里就是发 Any）
+|V| = 1           → 就选它
+V 中恰有一个值满足 O4 → 必须选它
+否则               → 任选一个已提出的值
+```
+
+第 1 支就是无冲突的正常情况。真正需要动脑的是后三支，而 $O4$ 的形状可以这样理解：**「v 有可能已被选中」的判据，是存在一个 fast quorum，它与你已知集合 $Q$ 的交集里所有人都投了 v**。
+
+为什么是「可能」而不是「确定」：异步模型下 Leader 分不清「C 投了 w」和「C 投了 v、消息还在路上」，所以只能按最坏情况判。方向也是对的——继承一个「可能被选中、实际没被选中」的值是安全的（它毕竟是提出过的值），漏掉一个「已被选中」的值才是致命的。
+
+下面两个例子都用 $N = 4$：Acceptor 为 A、B、C、D，fast quorum 与 classic quorum 都是 3（$N = 3E+1$，$E = 1$）。
+
+### 7.4 例 1：谁也没凑够，自由取值
+
+Round 10 是 fast round，Leader 已经发过 Any。两个 Client 同时报值：
+
+| Acceptor | round 10 收到并投了什么 | Leader 收到 2b 了吗 |
+| --- | --- | --- |
+| A | v | ✓ |
+| B | v | ✓ |
+| C | w | ✓ |
+| D | w | ✓ |
+
+v 和 w 各拿 2 票，都不到 fast quorum 3，**round 10 一个值都没选中**。
+
+Leader 把 4 份 2b 当 1b 用：$Q = \{A, B, C, D\}$，$k = 10$，$V = \{v, w\}$。$|V| = 2$，接着测 $O4$：每取一个 3 元 fast quorum，它与 $Q$ 的交集里都混着 v 和 w，凑不出「全票同一值」，所以 $O4(v)$ 和 $O4(w)$ 都是假。规则落到最后一支：**任选一个已提出的值**，比如选 v 进 round 11。
+
+代价是 round 10 白付一次投票，安全性毫无损失——因为确实没有值被选中，选谁都不与「已选中」冲突。
+
+### 7.5 例 2：已经选中但看不全，O4 救命
+
+同样的配置，换一组到达情况：
+
+| Acceptor | round 10 投了什么 | Leader 收到 2b 了吗 |
+| --- | --- | --- |
+| A | v | ✓ |
+| B | v | ✓ |
+| C | v | ✗（消息丢失或迟到） |
+| D | w | ✓ |
+
+事实上 v 拿了 A、B、C 三票 = fast quorum，**v 已经被选中**，这是既成事实，谁也不能翻。但 Leader 只看到 $Q = \{A, B, D\}$ 三份 2b。
+
+如果 Leader 沿用 Classic Paxos 的规则——「取 `(vrnd, vval)` 里轮次最大的那一批」——它只能定位到 round 10，而 round 10 里有 v 和 w 两个值，规则就断在这里了：一旦它随便挑中 w，round 11 会把 w 也选中，系统出现两个被选定的值。
+
+$O4$ 就是补这个洞的：
+
+- $O4(v)$：取 round 10 的 fast quorum $R = \{A, B, C\}$，$R \cap Q = \{A, B\}$，两人 `vrnd` 都是 10 且都投了 v → **成立**。（C 到底投了什么都无所谓——$O4$ 只约束交集内的 Acceptor）
+- $O4(w)$：$Q$ 里只有 D 投 w；而任何 3 元 fast quorum 与 $Q$ 的交集至少有 $|R| + |Q| - N = 3 + 3 - 4 = 2$ 个 Acceptor，不可能全投 w → **不成立**。
+
+唯一满足 $O4$ 的值是 v，所以 Leader 必须选 v 进 round 11。**冲突在这里被安全化解**：v 被继承下来，round 11 不会推翻它，代价只是多了 classic quorum 那一轮的 2a/2b。
+
+这里还藏着一个结论：**两个值不可能同时满足 $O4$**。若 $O4(v)$ 与 $O4(w)$ 都成立，则存在两个 fast quorum $R_v$、$R_w$，使 $R_v \cap Q$ 全投 v、$R_w \cap Q$ 全投 w；而 $R_v \cap R_w \cap Q$ 非空正是第 6 节那条 $Q_c + 2Q_f > 2N$ 保证的，非空就意味着有个 Acceptor 在 round 10 投了两个值——矛盾。
+
+$O4$ 之所以写成「存在一个 quorum」，而不是「取票数最多的值」，也是这个原因：它要表达的是 quorum 级的交集性质。论文先一步把「多数派」泛化成任意 quorum 集合（`i`-quorum 还可以随轮次变化），在这个前提下「票数」根本没有定义，只有「谁的投票集合能盖住一个 quorum」才有意义。
+
+### 7.6 两条恢复路线
+
+- **协调式恢复（coordinated recovery）**：Leader 发现冲突后，把收到的 2b 当 1b，直接执行 Round i+1 的 Phase2a。代价是 round i+1 的 Phase 2（两个消息延迟、两次落盘）。论文建议 i+1 取 **classic** round number——协调式恢复里 Leader 从不发 Any，而 classic quorum 只会比 fast quorum 更小，没有理由让它也是 fast round。
+- **非协调式恢复（uncoordinated recovery）**：Acceptor 之间互传 2b，每个 Acceptor 自己算、自己执行 Round i+1 的 Phase2b，省掉 Leader 一跳（只多一个消息延迟）。两个前提：i 和 i+1 **都**必须是 fast round number，否则少了 fast quorum 的相交保证；所有 Acceptor 必须用**同一个** (i+1)-quorum 判定，否则各自算出的值不同、round i+1 又会失败——协调者通常直接在 Any 消息里指定这个 $Q$。
+
+论文对两者的取舍很克制：非协调式看起来更便宜，但它要求 2b 发给所有 Acceptor，冲突频繁时消息量会上来；冲突极罕见时，干脆换一个更大的轮次重来最划算。Kaffee 的评价是「搞得过于复杂」，论文本身也只把它当可选项。
+
+## 8. 一次决议的完整流程
 
 1. **Phase1a**：Leader 向 Acceptor 提出 round i。
 2. **Phase1b**：Acceptor 回复承诺，附带已接受的最高编号提案与值。
 3. **Phase2a**：Leader 汇总回值，决定走哪条路——
-   - 无任何值：**发 Any**，开启 fast round，Acceptor 等 Client 直接报值；
+   - 无任何值：**发 Any**，开启 fast round，Acceptor 等 Client 直接报值（Classic Round 则自己指名值）；
    - 只有一个值：直接作为该 round 的值提交；
-   - 有多个值：按判定规则挑出「可能已被选中」的那一个；
-   - 多个值但都不满足判定规则：自由决定一个，把决定权收回。
-4. **Phase2b**：Acceptor 投完，把结果发给 Learner（以及 Leader，供其察觉冲突）。
+   - 有多个值：按 $O4$ 判定挑出「可能已被选中」的那一个；
+   - 多个值但都不满足 $O4$：自由决定一个，把决定权收回。
+4. **Phase2b**：Acceptor 投完，把结果发给 Learner（**以及 Leader，供其察觉冲突**）。
+5. **冲突分支**：Leader 从 2b 发现 round i 里出现了多个值，按 §7 的规则走协调式或非协调式恢复，进 round i+1。
 
 ## 9. 成本模型与工程现实
 
@@ -222,17 +337,17 @@ Kaffee 的结论是「理论上可行，实际中很难操作」，我基本同�
 
 真正继承 Fast Paxos 思想的是后来的工作：**EPaxos 的 fast path**、**Flexible Paxos 的 quorum 松弛理论**，都是沿着「重新设计 quorum 结构来换延迟」这条线走的。
 
-## 10. 与参考原文的三处出入
+## 10. 与参考原文的几处出入
 
 整理时对照论文，发现 Kaffee 原文有三处需要修正，读原文时如果对不上，问题大概出在这里：
 
 1. **阶段编号写错**：原文 §2 把「Acceptor 回应已参与投票的最大编号和值」标成 `Phase2b`，应为 `Phase1b`；把「Leader 收集 Acceptor 的返回值」标成 `Phase2a`，实际是 1b 的接收动作。本文第 3.1 节的表格按论文更正。
 2. **§7.1 的 quorum 下标可疑**：原文写「Leader 在 Round i 中收到 (i+1)-Quorum 个 Phase2b 消息」，字面说不通。按论文语义应是「收到的 2b 足以凑成一个 **i-Quorum**（该 fast round 自己的 quorum）的完整投票」，才谈得上直接跳到 Round i+1 的 Phase2a。
-3. **§6 的 quorum 下界不是通式**：原文写 $|Q_f| \ge N - \lceil N/4 \rceil \ge \lceil 3N/4 \rceil$，代入 $N=7$ 得 5，而 $\lceil 3N/4 \rceil = 6$，两个不等式自相矛盾。严格的界来自 $Q_c + 2Q_f > 2N$：$Q_c = Q_f$ 时为 $\lfloor 2N/3 \rfloor + 1$，在 $N = 3E+1$ 时恰好 $2E+1$。中文资料里流传的「fast quorum 要 3N/4」只是 $N = 4, 5$ 附近的具体数字，别当通式用。
+3. **§6 的 quorum 下界不是通式**：原文写 $|Q_f| \ge N - \lceil N/4 \rceil \ge \lceil 3N/4 \rceil$，代入 $N=7$ 得 5，而 $\lceil 3N/4 \rceil = 6$，两个不等式自相矛盾——下取整写成了上取整。即便改对，它也只在「最大化 F」这一种取法（$F = \lceil N/2 \rceil - 1$、$E = \lfloor N/4 \rfloor$）下成立；通式来自 $Q_c + 2Q_f > 2N$，$Q_c = Q_f$ 时为 $\lfloor 2N/3 \rfloor + 1$，在 $N = 3E+1$ 时恰好 $2E+1$。中文资料里流传的「fast quorum 要 3N/4」，别当通式用。
 
 ## 参考资料
 
-- Leslie Lamport. *Fast Paxos*. MSR-TR-2005-33（期刊版：*Distributed Computing* 19(2):79–103, 2006）。[PDF](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-33.pdf)
+- Leslie Lamport. *Fast Paxos*. MSR-TR-2005-112（期刊版：*Distributed Computing* 19(2):79–103, 2006）。[PDF](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2005-112.pdf)
 - Leslie Lamport. *Paxos Made Simple* (2001)。[PDF](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)
 - Kaffee.《Fast Paxos》. 博客园, 2018-03。[原文](https://www.cnblogs.com/kaffeetrinken/p/8490736.html)
 
