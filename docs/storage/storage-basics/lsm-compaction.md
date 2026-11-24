@@ -569,7 +569,7 @@ R5 (最老)  [....GB级大文件....]  ← ⚠️ 里面可能还有 foo 的旧�
 + 下次读 foo：查 R1~R3 输出 → 没有；查 R4 → 没有；查 R5 → **读到旧值，数据复活**；
 + 所以必须把 tombstone 保留写入输出 run，继续"遮住"R5 里的旧值。
 
-只有当触发**<font style="color:#DF2A3F;">全量合并</font>**<font style="color:#DF2A3F;">（R1+R2+R3+R4+R5 全部一起合并）时，才能安全丢掉 tombstone</font>——因为此时 R5 也在输入里，它的旧值会一起被归并丢弃，没有"漏网"的文件了。
+只有当触发<font style="color:#DF2A3F;">**全量合并**</font><font style="color:#DF2A3F;">（R1+R2+R3+R4+R5 全部一起合并）时，才能安全丢掉 tombstone</font>——因为此时 R5 也在输入里，它的旧值会一起被归并丢弃，没有"漏网"的文件了。
 
 #### 为什么这是 Tiered/Universal 的痛点
 全量合并在 Tiered/Universal 里是**最贵的操作**（要读写所有数据），所以不会频繁发生：
@@ -685,11 +685,11 @@ HBase 的 compaction 策略本身也在演进：早期 RatioBasedCompactionPolic
 
 
 ### 7.3 常见调优手段
-+ **增大 **`write_buffer_size`：减少 flush 频率，降低 L0 SST 数量；
-+ **调整 **`max_background_compactions` / `max_subcompactions`：提高后台并发；
++ **增大**`write_buffer_size`：减少 flush 频率，降低 L0 SST 数量；
++ **调整**`max_background_compactions` / `max_subcompactions`：提高后台并发；
 + **合理设置 fanout**：SSD 上 fanout=8~10 常用，HDD 上可减小；
 + `level_compaction_dynamic_level_bytes=true`：避免小数据库的额外写放大；
-+ **设置 **`ttl` + FIFO/UCS：时序数据一定要利用 TTL 让旧数据整块淘汰；
++ **设置**`ttl` + FIFO/UCS：时序数据一定要利用 TTL 让旧数据整块淘汰；
 + **业务低峰期限速**：通过 `ratelimiter` 限制 compaction IO，避免挤压前台请求；
 + **监控 compaction stats**：重点观察 `compaction-pending`、`write-amplification`、`stall` 条件。
 
