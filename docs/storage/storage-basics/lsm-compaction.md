@@ -1,6 +1,6 @@
 ---
 title: "LSM-Tree Compaction 策略全景：从 Leveled 到 Universal、FIFO 与工业界变体"
-order: 2
+order: 6
 description: "深入解析 LSM-Tree 中的各类 Compaction 策略，包括 RocksDB/LevelDB/Cassandra/HBase 的实现差异与权衡"
 date: 2026-07-22
 ---

@@ -76,8 +76,7 @@ export function isIndexDoc(doc: DocEntry): boolean {
   return /(^|\/)index\.md$/i.test(fileKey(doc))
 }
 
-/** 文章 / 分类页所在目录（'' 表示内容根） */
-export function docNodePath(doc: DocEntry): string {
+/** 文章 / 分类页所在目录（'' 表示内容根） */export function docNodePath(doc: DocEntry): string {
   const rel = fileKey(doc)
   const at = rel.lastIndexOf('/')
   return at === -1 ? '' : rel.slice(0, at)
@@ -105,6 +104,22 @@ export function nodeHref(path: string): string {
 
 export function docHref(doc: DocEntry): string {
   return `/docs/${doc.id}/`
+}
+
+/**
+ * 分类页正文（index.md）里直接链接过的本层文章。
+ *
+ * 「大标题分组」写在各目录自己的 index.md 里（`## LSM 原理解读` + 一组链接），
+ * 由正文渲染；这里找出正文已经链接过的文章，让分类页不再把它们重复列一遍。
+ * 迁移脚本会把正文里的相对 `xxx.md` 统一改写成 `/docs/<目录>/<slug>/`，所以按
+ * 文章 id 在正文里找这个路由就行（id 与正文路由都按小写比较）。
+ */
+export function indexLinkedDocIds(node: CategoryNode): Set<string> {
+  const body = node.page?.body?.toLowerCase()
+  if (!body) return new Set()
+  return new Set(
+    node.docs.filter((doc) => body.includes(`](/docs/${doc.id.toLowerCase()}/`)).map((doc) => doc.id)
+  )
 }
 
 /** 标签 / 面包屑里的路径片段显示名 */

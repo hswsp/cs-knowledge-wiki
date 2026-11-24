@@ -5,8 +5,12 @@
  * 目录页（/docs/<path>/，由 index.md 渲染）和 /categories/<path> 共用，
  * 保证两个入口点进去看到的是同一套卡片，而不是一边卡片一边折叠列表。
  * 站外资源写在目录自己的 index.md 正文里，不再单独渲染。
+ *
+ * 分组也是写在 index.md 正文里的（`## LSM 原理解读` + 一组链接），由正文渲染；
+ * 这里只负责把已经在正文里链接过的文章从自动列表里去掉，避免同一页列两遍。
+ * 没在正文里出现的文章（新加还没补进分组的）仍然会出现在「本层文章」里。
  */
-import { categoryHref, docHref, type CategoryNode } from '@/utils/docs-categories'
+import { categoryHref, docHref, indexLinkedDocIds, type CategoryNode } from '@/utils/docs-categories'
 
 interface Props {
   node: CategoryNode
@@ -14,6 +18,10 @@ interface Props {
 }
 
 const { node, nodes } = Astro.props
+
+const linked = indexLinkedDocIds(node)
+const rest = node.docs.filter((doc) => !linked.has(doc.id))
+const hasPosts = node.posts.length > 0
 ---
 
 {
@@ -52,13 +60,13 @@ const { node, nodes } = Astro.props
 }
 
 {
-  node.docs.length + node.posts.length > 0 && (
+  (rest.length > 0 || hasPosts) && (
     <section>
       <h2 class='mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground'>
-        本层文章
+        {rest.length > 0 ? '本层文章' : '相关博客'}
       </h2>
       <ul class='flex list-none flex-col gap-1 p-0'>
-        {node.docs.map((doc) => (
+        {rest.map((doc) => (
           <li>
             <a
               class='flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground/80 no-underline transition-colors hover:bg-muted/60 hover:text-primary'
