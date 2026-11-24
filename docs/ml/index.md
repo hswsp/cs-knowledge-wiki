@@ -7,3 +7,4 @@ order: 3
 ## 站外资源
 
 - [Learn Claude Code](https://learn.shareai.run/zh/)
+- [Inference Engineering](https://inference-engineering.wengjialin.com/book/)
