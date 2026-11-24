@@ -1,6 +1,6 @@
 ---
-title: "01 - LSM 树设计原理"
-order: 1
+title: "LSM 树设计原理"
+order: 7
 ---
 # 存储系统中的算法：LSM 树设计原理
 

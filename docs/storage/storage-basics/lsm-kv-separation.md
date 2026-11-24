@@ -1,6 +1,6 @@
 ---
-title: "02 - KV 分离的实现"
-order: 2
+title: "KV 分离的实现"
+order: 8
 ---
 # LSM 存储引擎中 KV 分离的实现
 

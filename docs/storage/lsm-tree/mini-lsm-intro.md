@@ -1,6 +1,6 @@
 ---
-title: "03 - Mini-LSM 课程介绍"
-order: 3
+title: "Mini-LSM 课程介绍"
+order: 1
 ---
 # 可能是史上最完整的 LSM-Tree 存储课程
 
