@@ -686,10 +686,10 @@ HBase 的 compaction 策略本身也在演进：早期 RatioBasedCompactionPolic
 
 ### 7.3 常见调优手段
 + **增大 **`write_buffer_size`：减少 flush 频率，降低 L0 SST 数量；
-+ **调整 **`max_background_compactions`** / **`max_subcompactions`：提高后台并发；
++ **调整 **`max_background_compactions` / `max_subcompactions`：提高后台并发；
 + **合理设置 fanout**：SSD 上 fanout=8~10 常用，HDD 上可减小；
 + `level_compaction_dynamic_level_bytes=true`：避免小数据库的额外写放大；
-+ **设置 **`ttl`** + FIFO/UCS**：时序数据一定要利用 TTL 让旧数据整块淘汰；
++ **设置 **`ttl` + FIFO/UCS：时序数据一定要利用 TTL 让旧数据整块淘汰；
 + **业务低峰期限速**：通过 `ratelimiter` 限制 compaction IO，避免挤压前台请求；
 + **监控 compaction stats**：重点观察 `compaction-pending`、`write-amplification`、`stall` 条件。
 
