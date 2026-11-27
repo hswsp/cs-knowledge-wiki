@@ -84,6 +84,8 @@ for _ in 0..n_threads {
 - 随线程增加同样大约掉 10 倍，前段略好于 mutex；
 - **关键差异：mutex 掉下去以后躺平，读写锁却持续恶化**：读者越多，读写锁反而比 mutex 还慢。
 
+![RwLock 与 Mutex 的纯读吞吐对比：双核即断崖，8 线程之后 RwLock 反而低于 Mutex](https://images.spumn.eu.cc/cs-knowledge-wiki/csapp/hpc/are-mutexes-slow/rwlock-vs-mutex-read.png)
+
 讲座在这里故意停顿发问：一个号称专为读多写少设计的同步原语，为什么在纯读场景下会被朴素 mutex 反超？如果你的第一反应是“不知道啊，这不合理”——恭喜，这正是讲座有意制造的直觉缺口。答案要到 CPU 缓存里找。
 
 ---
